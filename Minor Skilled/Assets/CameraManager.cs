@@ -110,15 +110,14 @@ public class CameraManager : MonoBehaviour
                 _currentCamera.transform.rotation = _firstPersonPivot.parent.rotation;
                 break;
             case CameraMode.ThirdPerson:
-                // _currentCamera.transform.RotateAround(transform.position, _currentCamera.transform.up,
-                //     (xRotateInput * (_rotateSpeed * Time.deltaTime)));
+                
                 break;
         }
 
         float offsetHullRotation = hullRotateInput * _properties._rotateSpeed;
         float turretRotation = xRotateInput * _rotateSpeed;
         _turretTransform.Rotate(Vector3.up * ((turretRotation - offsetHullRotation) * Time.deltaTime));
-
+        
         Quaternion rotQuat = _barrelTransform.rotation;
         Vector3 euler = rotQuat.eulerAngles;
         euler.x -= yRotateInput * _rotateSpeed * Time.deltaTime;
