@@ -27,19 +27,17 @@ public class CameraManager : MonoBehaviour
     [Header("Third person properties")] [SerializeField]
     private Camera _thirdPersonCam;
 
-    [SerializeField] private float _rotateSpeed = 60f;
+    [SerializeField] private float _rotateSpeed = 40f;
 
     private Camera _currentCamera;
     private CameraMode _camMode;
     [SerializeField] private Transform _turretTransform;
     [SerializeField] private Transform _barrelTransform;
-    [SerializeField] private float _highestCannonY = 15f;
-    [SerializeField] private float _lowestCannonY = -45f;
+    [SerializeField] private TankProperties _properties;
     
     private void Start()
     {
-        _camMode = CameraMode.FirstPerson;
-        OnFirstPerson();
+        EnableFirstPerson();
     }
 
     private void Update()
@@ -52,39 +50,42 @@ public class CameraManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            OnADS();
-            _camMode = CameraMode.ADS;
+            EnableADS();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            OnFirstPerson();
-            _camMode = CameraMode.FirstPerson;
+            EnableFirstPerson();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            OnThirdPerson();
-            _camMode = CameraMode.ThirdPerson;
+            EnableThirdPerson();
         }
     }
 
-    private void OnADS()
+    private void EnableADS()
     {
+        _camMode = CameraMode.ADS;
+
         _currentCamera = _adsCam;
         _adsCam.gameObject.SetActive(true);
         _firstPersonCam.gameObject.SetActive(false);
         _thirdPersonCam.gameObject.SetActive(false);
     }
 
-    private void OnFirstPerson()
+    private void EnableFirstPerson()
     {
+        _camMode = CameraMode.FirstPerson;
+
         _currentCamera = _firstPersonCam;
         _firstPersonCam.gameObject.SetActive(true);
         _adsCam.gameObject.SetActive(false);
         _thirdPersonCam.gameObject.SetActive(false);
     }
 
-    private void OnThirdPerson()
+    private void EnableThirdPerson()
     {
+        _camMode = CameraMode.ThirdPerson;
+
         _currentCamera = _thirdPersonCam;
         _thirdPersonCam.gameObject.SetActive(true);
         _firstPersonCam.gameObject.SetActive(false);
@@ -95,20 +96,13 @@ public class CameraManager : MonoBehaviour
     {
         float xRotateInput = Input.GetAxis("Mouse X");
         float yRotateInput = Input.GetAxis("Mouse Y");
+        float hullRotateInput = Input.GetAxis("Horizontal");
 
         switch (_camMode)
         {
             case CameraMode.ADS:
                 _currentCamera.transform.position = _adsPivot.position + _ADSCameraOffset;
                 _currentCamera.transform.rotation = _adsPivot.parent.parent.rotation;
-                _turretTransform.Rotate(Vector3.up * (xRotateInput * (_rotateSpeed * Time.deltaTime)));
-
-                Quaternion quatRot = _barrelTransform.rotation;
-                Vector3 barrelRotation = quatRot.eulerAngles;
-                barrelRotation.x += yRotateInput * (_rotateSpeed * Time.deltaTime);
-                float clampedX = Mathf.Clamp(barrelRotation.x, _highestCannonY, _lowestCannonY);
-                quatRot.eulerAngles = barrelRotation;
-                _barrelTransform.rotation = quatRot;
                 break;
             case CameraMode.FirstPerson:
                 _currentCamera.transform.position = _firstPersonPivot.position + _firstPersonCameraOffset;
@@ -116,10 +110,19 @@ public class CameraManager : MonoBehaviour
                 _currentCamera.transform.rotation = _firstPersonPivot.parent.rotation;
                 break;
             case CameraMode.ThirdPerson:
-                _turretTransform.Rotate(Vector3.up * (xRotateInput * (_rotateSpeed * Time.deltaTime)));
                 // _currentCamera.transform.RotateAround(transform.position, _currentCamera.transform.up,
                 //     (xRotateInput * (_rotateSpeed * Time.deltaTime)));
                 break;
         }
+
+        float offsetHullRotation = hullRotateInput * _properties._rotateSpeed;
+        float turretRotation = xRotateInput * _rotateSpeed;
+        _turretTransform.Rotate(Vector3.up * ((turretRotation - offsetHullRotation) * Time.deltaTime));
+
+        Quaternion rotQuat = _barrelTransform.rotation;
+        Vector3 euler = rotQuat.eulerAngles;
+        euler.x -= yRotateInput * _rotateSpeed * Time.deltaTime;
+        rotQuat.eulerAngles = euler;
+        _barrelTransform.rotation = rotQuat;
     }
 }
