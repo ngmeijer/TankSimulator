@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 181129c53af746e7ba620a1ecb7331e3, type: 3}
   m_Name: New Tank Properties
   m_EditorClassIdentifier: 
-  _acceleration: 2000
-  _maxSpeed: 500
-  _rotateSpeed: 15
+  Acceleration: 1000
+  BrakeTorque: 500
+  LeftTrackSpeed: 1500
+  RightTrackSpeed: 1500
+  MaxSpeed: 10
+  HullRotateSpeed: 15
+  TurretRotateSpeed: 45
