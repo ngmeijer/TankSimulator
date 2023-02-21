@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 enum MoveDirection
@@ -20,49 +21,87 @@ public class MovementManager : MonoBehaviour
     [SerializeField] private List<WheelCollider> _rightTrackWheelColliders = new List<WheelCollider>();
 
     private float currentAcceleration;
+    private float currentBrakeTorque;
 
     [SerializeField] private Transform _turretTransform;
+    [SerializeField] private bool _lockTurret;
+    
     [SerializeField] private Transform _hullTransform;
+    [SerializeField] private Transform _centerOfMass;
     
     private MoveDirection _moveDirection;
+    private float moveInput;
+    private float rotateInput;
+    
+    private void Start()
+    {
+        _rb.centerOfMass = _centerOfMass.localPosition;
+    }
 
     private void Update()
     {
-        float moveInput = Input.GetAxis("Vertical");
-        float rotateInput = Input.GetAxis("Horizontal");
+        moveInput = Input.GetAxis("Vertical");
+        rotateInput = Input.GetAxis("Horizontal");
         
-        if (moveInput > 0)
-            MoveForward(moveInput);
+        if (moveInput > 0 && rotateInput == 0)
+            MoveForward();
 
-        if (moveInput < 0)
-            MoveBackward(moveInput);
+        if (moveInput < 0 && rotateInput == 0)
+            MoveBackward();
 
-        RotateTank(rotateInput);
+        if(rotateInput < 0 || rotateInput > 0)
+            RotateTank();
         TurretFollowHullRotation();
+        AnimateTankTracks(_rb.velocity.magnitude);
     }
 
-    private void AnimateTankTracks(float leftTrackSpeed, float rightTrackSpeed)
+    private void OnDrawGizmos()
     {
-        Debug.Log("animating tank tracks");
-        var offsetLeft = Time.time * leftTrackSpeed;
-        var offsetRight = Time.time * rightTrackSpeed;
-        _leftTrackRenderer.material.mainTextureOffset = new Vector2(0, offsetLeft);
-        _rightTrackRenderer.material.mainTextureOffset = new Vector2(0, offsetRight);
+        Gizmos.color = Color.yellow;
+        
+        Handles.Label(transform.position + new Vector3(0, 2, 0), $"Velocity: {_rb.velocity.magnitude}");
+
+        foreach (var wheel in _leftTrackWheelColliders)
+        {
+            Gizmos.DrawSphere(wheel.transform.position, 0.2f);
+            Handles.Label(wheel.transform.position - new Vector3(0, 0.25f, 0), $"Motor torque: {wheel.motorTorque}");
+        }
+        
+        foreach (var wheel in _rightTrackWheelColliders)
+        {
+            Gizmos.DrawSphere(wheel.transform.position, 0.2f);
+            Handles.Label(wheel.transform.position - new Vector3(0, 0.25f, 0), $"Motor torque: {wheel.motorTorque}");
+        }
     }
 
-    private void MoveForward(float inputValue)
+    private void FixedUpdate()
+    {
+        if (moveInput == 0 && rotateInput == 0 && _rb.velocity.magnitude > 0)
+        {
+            SetMotorTorque(0f,0f);
+            _rb.velocity *= 0.95f;
+        }
+    }
+
+    private void AnimateTankTracks(float speed)
+    {
+        var offset = Time.time * speed;
+        _leftTrackRenderer.material.mainTextureOffset = new Vector2(0, offset);
+        _rightTrackRenderer.material.mainTextureOffset = new Vector2(0, offset);
+    }
+
+    private void MoveForward()
     {
         if (_moveDirection != MoveDirection.Forward)
         {
             _moveDirection = MoveDirection.Forward;
-            SetBrakeTorque(0f, 0f);
+            //SetBrakeTorque(0f, 0f);
         }
 
-        MoveTank(inputValue);
-        AnimateTankTracks(currentAcceleration, currentAcceleration);
+        MoveTank();
     }
 
-    private void MoveBackward(float inputValue)
+    private void MoveBackward()
     {
         if (_moveDirection != MoveDirection.Backward)
         {
@@ -73,8 +112,10 @@ public class MovementManager : MonoBehaviour
             //     SetBrakeTorque(_properties.BrakeTorque, _properties.BrakeTorque);
         }
 
-        MoveTank(inputValue);
-        AnimateTankTracks(currentAcceleration, currentAcceleration);
+        // if (_moveDirection == MoveDirection.Backward && currentBrakeTorque != 0)
+            // SetBrakeTorque(0f,0f);
+
+        MoveTank();
     }
 
     private void TurretFollowHullRotation()
@@ -95,12 +136,14 @@ public class MovementManager : MonoBehaviour
             
         foreach (var collider in _rightTrackWheelColliders)
         {
+            //Debug.Log($"RotateInput: {rotateInput}. Torque: {collider.motorTorque}");
             collider.motorTorque = rightTrackTorque;
         }
     }
 
     private void SetBrakeTorque(float leftTrackBrakeTorque, float rightTrackBrakeTorque)
     {
+        currentBrakeTorque = leftTrackBrakeTorque;
         foreach (var collider in _leftTrackWheelColliders)
         {
             collider.brakeTorque = leftTrackBrakeTorque;
@@ -112,30 +155,50 @@ public class MovementManager : MonoBehaviour
         }
     }
 
-    private void RotateTank(float rotateInput)
+    private void RotateTank()
     {
+        if (CheckIfAtMaxSpeed()) 
+            return;
+        
         //Rotating to the right
         if (rotateInput > 0)
         {
-            currentAcceleration = _properties.LeftTrackSpeed * rotateInput;
-            AnimateTankTracks(currentAcceleration, 0f);
+            currentAcceleration = _properties.SingleTrackSpeed * rotateInput;
+
+            if (moveInput < 0)
+                currentAcceleration *= -1;
             SetMotorTorque(currentAcceleration, 0f);
+            //SetBrakeTorque(0f, _properties.BrakeTorque);
         }
         
         //Rotating to the left
         if (rotateInput < 0)
         {
-            currentAcceleration = _properties.RightTrackSpeed * -rotateInput;
-            AnimateTankTracks(0f, currentAcceleration);
+            currentAcceleration = _properties.SingleTrackSpeed * -rotateInput;
+
+            if (moveInput < 0)
+                currentAcceleration *= -1;
             SetMotorTorque(0f, currentAcceleration);
+            //SetBrakeTorque(_properties.BrakeTorque, 0f);
         }
     }
 
-    private void MoveTank(float inputValue)
+    private void MoveTank()
     {
-        if (_rb.velocity.magnitude > _properties.MaxSpeed) return;
-        currentAcceleration = _properties.Acceleration * inputValue;
-        Debug.Log(currentAcceleration);
+        if (CheckIfAtMaxSpeed()) return;
+        
+        currentAcceleration = _properties.Acceleration * moveInput;
         SetMotorTorque(currentAcceleration, currentAcceleration);
+    }
+
+    private bool CheckIfAtMaxSpeed()
+    {
+        if (_rb.velocity.magnitude >= _properties.MaxSpeed)
+        {
+            _rb.velocity *= 0.95f;
+            return true;
+        };
+
+        return false;
     }
 }

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Acceleration: 1000
   BrakeTorque: 500
-  LeftTrackSpeed: 1500
-  RightTrackSpeed: 1500
-  MaxSpeed: 10
+  SingleTrackSpeed: 2000
+  InverseTrackSpeedPercent: 0.1
+  MaxSpeed: 8
   HullRotateSpeed: 15
   TurretRotateSpeed: 45

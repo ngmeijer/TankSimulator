@@ -31,6 +31,7 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private TankProperties _properties;
     
     private Camera _currentCamera;
+    private Transform _currentCameraPivot;
     private CameraMode _camMode;
     
     private void Start()
@@ -43,9 +44,6 @@ public class CameraManager : MonoBehaviour
     {
         CheckCameraSwitch();
         HandleCameraTransform();
-        // Quaternion turretQuat = _turretTransform.rotation;
-        // turretQuat.eulerAngles = new Vector3(0, turretQuat.eulerAngles.y, 0);
-        // _turretTransform.rotation = turretQuat;
     }
 
     private void CheckCameraSwitch()
@@ -69,6 +67,7 @@ public class CameraManager : MonoBehaviour
         _camMode = CameraMode.ADS;
 
         _currentCamera = _adsCam;
+        _currentCameraPivot = _adsPivot;
         _adsCam.gameObject.SetActive(true);
         _firstPersonCam.gameObject.SetActive(false);
         _thirdPersonCam.gameObject.SetActive(false);
@@ -79,6 +78,7 @@ public class CameraManager : MonoBehaviour
         _camMode = CameraMode.FirstPerson;
 
         _currentCamera = _firstPersonCam;
+        _currentCameraPivot = _firstPersonPivot;
         _firstPersonCam.gameObject.SetActive(true);
         _adsCam.gameObject.SetActive(false);
         _thirdPersonCam.gameObject.SetActive(false);
@@ -89,6 +89,7 @@ public class CameraManager : MonoBehaviour
         _camMode = CameraMode.ThirdPerson;
 
         _currentCamera = _thirdPersonCam;
+        _currentCameraPivot = _thirdPersonPivot;
         _thirdPersonCam.gameObject.SetActive(true);
         _firstPersonCam.gameObject.SetActive(false);
         _adsCam.gameObject.SetActive(false);
@@ -101,25 +102,29 @@ public class CameraManager : MonoBehaviour
         switch (_camMode)
         {
             case CameraMode.ADS:
-                _currentCamera.transform.position = _adsPivot.position;
                 _currentCamera.transform.rotation = _adsPivot.parent.parent.rotation;
-                _turretTransform.Rotate(_turretTransform.up * (xRotateInput * (_properties.TurretRotateSpeed * Time.deltaTime)));
                 break;
             case CameraMode.FirstPerson:
-                _currentCamera.transform.position = _firstPersonPivot.position;
-                _firstPersonPivot.parent.Rotate(_firstPersonPivot.parent.transform.up * (xRotateInput * (_properties.TurretRotateSpeed * Time.deltaTime)));
                 _currentCamera.transform.rotation = _firstPersonPivot.parent.rotation;
                 break;
             case CameraMode.ThirdPerson:
-                _currentCamera.transform.position = _thirdPersonPivot.position;
                 _currentCamera.transform.RotateAround(transform.position, Vector3.up,
                     (xRotateInput * (_properties.TurretRotateSpeed * Time.deltaTime)));
                 _currentCamera.transform.LookAt(_thirdPersonLookAt);
-                _turretTransform.Rotate(_turretTransform.up * (xRotateInput * (_properties.TurretRotateSpeed * Time.deltaTime)));
                 break;
         }
 
-        OffsetCannonRotationOnMove(xRotateInput);
+        _currentCamera.transform.position = _currentCameraPivot.position;
+
+        //_turretTransform.localRotation *= Quaternion.Euler(0, _properties.TurretRotateSpeed * Time.deltaTime, 0);
+
+        Quaternion localRot = _turretTransform.localRotation;
+        Vector3 localEuler = localRot.eulerAngles;
+        localEuler.y += _properties.TurretRotateSpeed * Time.deltaTime;
+        localRot.eulerAngles = localEuler;
+        //_turretTransform.localRotation = localRot;
+        
+        //OffsetCannonRotationOnMove(xRotateInput);
         TiltCannon();
     }
 
