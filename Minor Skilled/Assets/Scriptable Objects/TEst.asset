@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 181129c53af746e7ba620a1ecb7331e3, type: 3}
+  m_Name: TEst
+  m_EditorClassIdentifier: 
+  Acceleration: 16.94
+  BrakeTorque: 500
+  SingleTrackSpeed: 0
+  MaxSpeed: 0
+  HullRotateSpeed: 15
+  TurretRotateSpeed: 60
+  TankMass: 0

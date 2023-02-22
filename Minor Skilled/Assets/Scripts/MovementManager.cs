@@ -12,13 +12,10 @@ enum MoveDirection
 
 public class MovementManager : MonoBehaviour
 {
-    [SerializeField] private Rigidbody _rb;
-    [SerializeField] private TankProperties _properties;
-
+    private TankComponentManager _manager; 
+    
     [SerializeField] private MeshRenderer _leftTrackRenderer;
     [SerializeField] private MeshRenderer _rightTrackRenderer;
-    [SerializeField] private List<WheelCollider> _leftTrackWheelColliders = new List<WheelCollider>();
-    [SerializeField] private List<WheelCollider> _rightTrackWheelColliders = new List<WheelCollider>();
 
     private float currentAcceleration;
     private float currentBrakeTorque;
@@ -32,10 +29,15 @@ public class MovementManager : MonoBehaviour
     private MoveDirection _moveDirection;
     private float moveInput;
     private float rotateInput;
-    
+
+    private void Awake()
+    {
+        _manager = GetComponent<TankComponentManager>();
+    }
+
     private void Start()
     {
-        _rb.centerOfMass = _centerOfMass.localPosition;
+        _manager.TankRB.centerOfMass = _centerOfMass.localPosition;
     }
 
     private void Update()
@@ -52,22 +54,25 @@ public class MovementManager : MonoBehaviour
         if(rotateInput < 0 || rotateInput > 0)
             RotateTank();
         TurretFollowHullRotation();
-        AnimateTankTracks(_rb.velocity.magnitude);
+        AnimateTankTracks(_manager.TankRB.velocity.magnitude);
     }
 
+    
     private void OnDrawGizmos()
     {
+        if (!Application.isPlaying) return;
+        
         Gizmos.color = Color.yellow;
         
-        Handles.Label(transform.position + new Vector3(0, 2, 0), $"Velocity: {_rb.velocity.magnitude}");
+        Handles.Label(transform.position + new Vector3(0, 2, 0), $"Velocity: {_manager.TankRB.velocity.magnitude}");
 
-        foreach (var wheel in _leftTrackWheelColliders)
+        foreach (var wheel in _manager.LeftTrackWheelColliders)
         {
             Gizmos.DrawSphere(wheel.transform.position, 0.2f);
             Handles.Label(wheel.transform.position - new Vector3(0, 0.25f, 0), $"Motor torque: {wheel.motorTorque}");
         }
         
-        foreach (var wheel in _rightTrackWheelColliders)
+        foreach (var wheel in _manager.RightTrackWheelColliders)
         {
             Gizmos.DrawSphere(wheel.transform.position, 0.2f);
             Handles.Label(wheel.transform.position - new Vector3(0, 0.25f, 0), $"Motor torque: {wheel.motorTorque}");
@@ -76,10 +81,10 @@ public class MovementManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (moveInput == 0 && rotateInput == 0 && _rb.velocity.magnitude > 0)
+        if (moveInput == 0 && rotateInput == 0 && _manager.TankRB.velocity.magnitude > 0)
         {
             SetMotorTorque(0f,0f);
-            _rb.velocity *= 0.95f;
+            _manager.TankRB.velocity *= 0.95f;
         }
     }
 
@@ -129,12 +134,12 @@ public class MovementManager : MonoBehaviour
 
     private void SetMotorTorque(float leftTrackTorque, float rightTrackTorque)
     {
-        foreach (var collider in _leftTrackWheelColliders)
+        foreach (var collider in _manager.LeftTrackWheelColliders)
         {
             collider.motorTorque = leftTrackTorque;
         }
             
-        foreach (var collider in _rightTrackWheelColliders)
+        foreach (var collider in _manager.RightTrackWheelColliders)
         {
             //Debug.Log($"RotateInput: {rotateInput}. Torque: {collider.motorTorque}");
             collider.motorTorque = rightTrackTorque;
@@ -144,12 +149,12 @@ public class MovementManager : MonoBehaviour
     private void SetBrakeTorque(float leftTrackBrakeTorque, float rightTrackBrakeTorque)
     {
         currentBrakeTorque = leftTrackBrakeTorque;
-        foreach (var collider in _leftTrackWheelColliders)
+        foreach (var collider in _manager.LeftTrackWheelColliders)
         {
             collider.brakeTorque = leftTrackBrakeTorque;
         }
             
-        foreach (var collider in _rightTrackWheelColliders)
+        foreach (var collider in _manager.RightTrackWheelColliders)
         {
             collider.brakeTorque = rightTrackBrakeTorque;
         }
@@ -163,7 +168,7 @@ public class MovementManager : MonoBehaviour
         //Rotating to the right
         if (rotateInput > 0)
         {
-            currentAcceleration = _properties.SingleTrackSpeed * rotateInput;
+            currentAcceleration = _manager.Properties.SingleTrackSpeed * rotateInput;
 
             if (moveInput < 0)
                 currentAcceleration *= -1;
@@ -174,7 +179,7 @@ public class MovementManager : MonoBehaviour
         //Rotating to the left
         if (rotateInput < 0)
         {
-            currentAcceleration = _properties.SingleTrackSpeed * -rotateInput;
+            currentAcceleration = _manager.Properties.SingleTrackSpeed * -rotateInput;
 
             if (moveInput < 0)
                 currentAcceleration *= -1;
@@ -187,15 +192,15 @@ public class MovementManager : MonoBehaviour
     {
         if (CheckIfAtMaxSpeed()) return;
         
-        currentAcceleration = _properties.Acceleration * moveInput;
+        currentAcceleration = _manager.Properties.Acceleration * moveInput;
         SetMotorTorque(currentAcceleration, currentAcceleration);
     }
 
     private bool CheckIfAtMaxSpeed()
     {
-        if (_rb.velocity.magnitude >= _properties.MaxSpeed)
+        if (_manager.TankRB.velocity.magnitude >= _manager.Properties.MaxSpeed)
         {
-            _rb.velocity *= 0.95f;
+            _manager.TankRB.velocity *= 0.95f;
             return true;
         };
 
