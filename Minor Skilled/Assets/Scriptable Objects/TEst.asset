@@ -18,4 +18,5 @@ MonoBehaviour:
   MaxSpeed: 0
   HullRotateSpeed: 15
   TurretRotateSpeed: 60
-  TankMass: 0
+  TurretTiltSpeed: 80
+  TankMass: 1

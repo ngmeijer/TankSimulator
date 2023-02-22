@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: New Tank Properties
   m_EditorClassIdentifier: 
   Acceleration: 1000
-  BrakeTorque: 500
   SingleTrackSpeed: 2000
-  InverseTrackSpeedPercent: 0.1
   MaxSpeed: 8
   HullRotateSpeed: 15
-  TurretRotateSpeed: 45
+  TurretRotateSpeed: 60
+  TurretTiltSpeed: 80
+  TankMass: 1000

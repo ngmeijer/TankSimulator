@@ -14,17 +14,15 @@ public class CameraManager : MonoBehaviour
 {
     [Header("ADS properties")] 
     [SerializeField] private Camera _adsCam;
-    [SerializeField] private Transform _adsPivot;
 
     [Header("First person properties")] 
     [SerializeField] private Camera _firstPersonCam;
-    [SerializeField] private Transform _firstPersonPivot;
 
     [Header("Third person properties")] 
     [SerializeField] private Camera _thirdPersonCam;
     [SerializeField] private Transform _thirdPersonPivot;
-    [SerializeField] private Transform _thirdPersonLookAt;
-    
+    [SerializeField] private float thirdPersonCamOffsetY;
+
     [Header("Tank components")]
     [SerializeField] private Transform _turretTransform;
     [SerializeField] private Transform _barrelTransform;
@@ -33,7 +31,11 @@ public class CameraManager : MonoBehaviour
     private Camera _currentCamera;
     private Transform _currentCameraPivot;
     private CameraMode _camMode;
-    
+    private Vector3 turretCurrentEulerAngles;
+    private Vector3 barrelCurrentEulerAngles;
+    [SerializeField] private float barrelMinY;
+    [SerializeField] private float barrelMaxY;
+
     private void Start()
     {
         EnableFirstPerson();
@@ -44,6 +46,10 @@ public class CameraManager : MonoBehaviour
     {
         CheckCameraSwitch();
         HandleCameraTransform();
+        HandleTurretRotation();
+        OffsetCannonRotationOnTankRotation();
+        TiltCannon();
+        _turretTransform.localEulerAngles = turretCurrentEulerAngles;
     }
 
     private void CheckCameraSwitch()
@@ -67,7 +73,6 @@ public class CameraManager : MonoBehaviour
         _camMode = CameraMode.ADS;
 
         _currentCamera = _adsCam;
-        _currentCameraPivot = _adsPivot;
         _adsCam.gameObject.SetActive(true);
         _firstPersonCam.gameObject.SetActive(false);
         _thirdPersonCam.gameObject.SetActive(false);
@@ -78,7 +83,6 @@ public class CameraManager : MonoBehaviour
         _camMode = CameraMode.FirstPerson;
 
         _currentCamera = _firstPersonCam;
-        _currentCameraPivot = _firstPersonPivot;
         _firstPersonCam.gameObject.SetActive(true);
         _adsCam.gameObject.SetActive(false);
         _thirdPersonCam.gameObject.SetActive(false);
@@ -89,7 +93,6 @@ public class CameraManager : MonoBehaviour
         _camMode = CameraMode.ThirdPerson;
 
         _currentCamera = _thirdPersonCam;
-        _currentCameraPivot = _thirdPersonPivot;
         _thirdPersonCam.gameObject.SetActive(true);
         _firstPersonCam.gameObject.SetActive(false);
         _adsCam.gameObject.SetActive(false);
@@ -97,59 +100,54 @@ public class CameraManager : MonoBehaviour
 
     private void HandleCameraTransform()
     {
-        float xRotateInput = Input.GetAxis("Mouse X");
-
+        Vector3 cameraEuler;
         switch (_camMode)
         {
             case CameraMode.ADS:
-                _currentCamera.transform.rotation = _adsPivot.parent.parent.rotation;
                 break;
             case CameraMode.FirstPerson:
-                _currentCamera.transform.rotation = _firstPersonPivot.parent.rotation;
+                cameraEuler = new Vector3(barrelCurrentEulerAngles.x / 1.5f, 0,0);
+                _currentCamera.transform.localEulerAngles = cameraEuler;
                 break;
             case CameraMode.ThirdPerson:
-                _currentCamera.transform.RotateAround(transform.position, Vector3.up,
-                    (xRotateInput * (_properties.TurretRotateSpeed * Time.deltaTime)));
-                _currentCamera.transform.LookAt(_thirdPersonLookAt);
+                _currentCamera.transform.localPosition = _thirdPersonPivot.localPosition + new Vector3(0, thirdPersonCamOffsetY, 0); 
+                cameraEuler = new Vector3(barrelCurrentEulerAngles.x / 2, 0,_currentCamera.transform.localEulerAngles.z);
+                _currentCamera.transform.localEulerAngles = cameraEuler;
                 break;
         }
-
-        _currentCamera.transform.position = _currentCameraPivot.position;
-
-        //_turretTransform.localRotation *= Quaternion.Euler(0, _properties.TurretRotateSpeed * Time.deltaTime, 0);
-
-        Quaternion localRot = _turretTransform.localRotation;
-        Vector3 localEuler = localRot.eulerAngles;
-        localEuler.y += _properties.TurretRotateSpeed * Time.deltaTime;
-        localRot.eulerAngles = localEuler;
-        //_turretTransform.localRotation = localRot;
-        
-        //OffsetCannonRotationOnMove(xRotateInput);
-        TiltCannon();
     }
 
-    private void OffsetCannonRotationOnMove(float xRotateInputValue)
+    private void HandleTurretRotation()
+    {
+        float xRotateInput = Input.GetAxis("Mouse X");
+
+        turretCurrentEulerAngles += new Vector3(0, xRotateInput, 0) * Time.deltaTime * _properties.TurretRotateSpeed;
+    }
+
+    private void OffsetCannonRotationOnTankRotation()
     {
         float moveInput = Input.GetAxis("Vertical");
         float hullRotateInput = Input.GetAxis("Horizontal");
+        float xRotateInput = Input.GetAxis("Mouse X");
 
-        if (moveInput == 0) return;
+        if (moveInput == 0 && hullRotateInput == 0) return;
 
         float offsetHullRotation = hullRotateInput * _properties.HullRotateSpeed;
-        float turretRotation = xRotateInputValue * _properties.TurretRotateSpeed;
-        _turretTransform.Rotate(_turretTransform.up * ((turretRotation - offsetHullRotation) * Time.deltaTime));
+        float turretRotation = xRotateInput * _properties.TurretRotateSpeed;
+        turretCurrentEulerAngles += new Vector3(0, turretRotation - offsetHullRotation) * Time.deltaTime;
     }
 
     private void TiltCannon()
     {
         float yRotateInput = Input.GetAxis("Mouse Y");
 
-        Quaternion rotQuat = _barrelTransform.rotation;
-        Vector3 euler = rotQuat.eulerAngles;
+        //Move cannon up and down
+        barrelCurrentEulerAngles -= new Vector3(yRotateInput, 0, 0) * Time.deltaTime * _properties.TurretTiltSpeed;
+        barrelCurrentEulerAngles.x = Mathf.Clamp(barrelCurrentEulerAngles.x, barrelMaxY, barrelMinY);
+        _barrelTransform.localEulerAngles = barrelCurrentEulerAngles;
         
-        euler.x -= yRotateInput * _properties.TurretRotateSpeed * Time.deltaTime;
-        euler.x = Mathf.Clamp(euler.x, 305f, 359f);
-        rotQuat.eulerAngles = euler;
-        _barrelTransform.rotation = rotQuat;
+        //Inverts the delta for the camera. Cannon moves up, camera moves down.
+        thirdPersonCamOffsetY -= yRotateInput * _properties.TurretTiltSpeed * 0.1f * Time.deltaTime;
+        thirdPersonCamOffsetY = Mathf.Clamp(thirdPersonCamOffsetY, -2.5f, 2.5f);
     }
 }

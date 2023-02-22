@@ -100,7 +100,6 @@ public class MovementManager : MonoBehaviour
         if (_moveDirection != MoveDirection.Forward)
         {
             _moveDirection = MoveDirection.Forward;
-            //SetBrakeTorque(0f, 0f);
         }
 
         MoveTank();
@@ -112,13 +111,7 @@ public class MovementManager : MonoBehaviour
         {
             _moveDirection = MoveDirection.Backward;
             SetMotorTorque(0f, 0f);
-            
-            // if(_rb.velocity.magnitude > 0)
-            //     SetBrakeTorque(_properties.BrakeTorque, _properties.BrakeTorque);
         }
-
-        // if (_moveDirection == MoveDirection.Backward && currentBrakeTorque != 0)
-            // SetBrakeTorque(0f,0f);
 
         MoveTank();
     }
@@ -141,22 +134,7 @@ public class MovementManager : MonoBehaviour
             
         foreach (var collider in _manager.RightTrackWheelColliders)
         {
-            //Debug.Log($"RotateInput: {rotateInput}. Torque: {collider.motorTorque}");
             collider.motorTorque = rightTrackTorque;
-        }
-    }
-
-    private void SetBrakeTorque(float leftTrackBrakeTorque, float rightTrackBrakeTorque)
-    {
-        currentBrakeTorque = leftTrackBrakeTorque;
-        foreach (var collider in _manager.LeftTrackWheelColliders)
-        {
-            collider.brakeTorque = leftTrackBrakeTorque;
-        }
-            
-        foreach (var collider in _manager.RightTrackWheelColliders)
-        {
-            collider.brakeTorque = rightTrackBrakeTorque;
         }
     }
 
@@ -170,10 +148,14 @@ public class MovementManager : MonoBehaviour
         {
             currentAcceleration = _manager.Properties.SingleTrackSpeed * rotateInput;
 
+            foreach (var wheel in _manager.RightTrackWheelColliders)
+            {
+                
+            }
+
             if (moveInput < 0)
                 currentAcceleration *= -1;
             SetMotorTorque(currentAcceleration, 0f);
-            //SetBrakeTorque(0f, _properties.BrakeTorque);
         }
         
         //Rotating to the left
@@ -181,10 +163,14 @@ public class MovementManager : MonoBehaviour
         {
             currentAcceleration = _manager.Properties.SingleTrackSpeed * -rotateInput;
 
+            foreach (var wheel in _manager.LeftTrackWheelColliders)
+            {
+                
+            }
+            
             if (moveInput < 0)
                 currentAcceleration *= -1;
             SetMotorTorque(0f, currentAcceleration);
-            //SetBrakeTorque(_properties.BrakeTorque, 0f);
         }
     }
 
