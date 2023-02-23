@@ -10,7 +10,7 @@ public enum CameraMode
     ThirdPerson
 }
 
-public class CameraManager : MonoBehaviour
+public class CameraComponent : MonoBehaviour
 {
     [Header("ADS properties")] 
     [SerializeField] private Camera _adsCam;
@@ -23,18 +23,18 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private Transform _thirdPersonPivot;
     [SerializeField] private float thirdPersonCamOffsetY;
 
-    [Header("Tank components")]
-    [SerializeField] private Transform _turretTransform;
-    [SerializeField] private Transform _barrelTransform;
-    [SerializeField] private TankProperties _properties;
-    
+    private TankComponentManager _componentManager;
+    private MoveComponent _processor;
+
     private Camera _currentCamera;
     private Transform _currentCameraPivot;
     private CameraMode _camMode;
-    private Vector3 turretCurrentEulerAngles;
-    private Vector3 barrelCurrentEulerAngles;
-    [SerializeField] private float barrelMinY;
-    [SerializeField] private float barrelMaxY;
+
+    private void Awake()
+    {
+        _componentManager = GetComponent<TankComponentManager>();
+        _processor = GetComponent<MoveComponent>();
+    }
 
     private void Start()
     {
@@ -46,10 +46,7 @@ public class CameraManager : MonoBehaviour
     {
         CheckCameraSwitch();
         HandleCameraTransform();
-        HandleTurretRotation();
-        OffsetCannonRotationOnTankRotation();
-        TiltCannon();
-        _turretTransform.localEulerAngles = turretCurrentEulerAngles;
+        OffsetCameraOnCannonTilt();
     }
 
     private void CheckCameraSwitch()
@@ -106,48 +103,23 @@ public class CameraManager : MonoBehaviour
             case CameraMode.ADS:
                 break;
             case CameraMode.FirstPerson:
-                cameraEuler = new Vector3(barrelCurrentEulerAngles.x / 1.5f, 0,0);
+                cameraEuler = new Vector3(_componentManager.BarrelEulerAngles.x / 1.5f, 0,0);
                 _currentCamera.transform.localEulerAngles = cameraEuler;
                 break;
             case CameraMode.ThirdPerson:
                 _currentCamera.transform.localPosition = _thirdPersonPivot.localPosition + new Vector3(0, thirdPersonCamOffsetY, 0); 
-                cameraEuler = new Vector3(barrelCurrentEulerAngles.x / 2, 0,_currentCamera.transform.localEulerAngles.z);
+                cameraEuler = new Vector3(_componentManager.BarrelEulerAngles.x / 2, 0,_currentCamera.transform.localEulerAngles.z);
                 _currentCamera.transform.localEulerAngles = cameraEuler;
                 break;
         }
     }
 
-    private void HandleTurretRotation()
-    {
-        float xRotateInput = Input.GetAxis("Mouse X");
-
-        turretCurrentEulerAngles += new Vector3(0, xRotateInput, 0) * Time.deltaTime * _properties.TurretRotateSpeed;
-    }
-
-    private void OffsetCannonRotationOnTankRotation()
-    {
-        float moveInput = Input.GetAxis("Vertical");
-        float hullRotateInput = Input.GetAxis("Horizontal");
-        float xRotateInput = Input.GetAxis("Mouse X");
-
-        if (moveInput == 0 && hullRotateInput == 0) return;
-
-        float offsetHullRotation = hullRotateInput * _properties.HullRotateSpeed;
-        float turretRotation = xRotateInput * _properties.TurretRotateSpeed;
-        turretCurrentEulerAngles += new Vector3(0, turretRotation - offsetHullRotation) * Time.deltaTime;
-    }
-
-    private void TiltCannon()
+    private void OffsetCameraOnCannonTilt()
     {
         float yRotateInput = Input.GetAxis("Mouse Y");
-
-        //Move cannon up and down
-        barrelCurrentEulerAngles -= new Vector3(yRotateInput, 0, 0) * Time.deltaTime * _properties.TurretTiltSpeed;
-        barrelCurrentEulerAngles.x = Mathf.Clamp(barrelCurrentEulerAngles.x, barrelMaxY, barrelMinY);
-        _barrelTransform.localEulerAngles = barrelCurrentEulerAngles;
         
         //Inverts the delta for the camera. Cannon moves up, camera moves down.
-        thirdPersonCamOffsetY -= yRotateInput * _properties.TurretTiltSpeed * 0.1f * Time.deltaTime;
+        thirdPersonCamOffsetY -= yRotateInput * _componentManager.Properties.TurretTiltSpeed * 0.1f * Time.deltaTime;
         thirdPersonCamOffsetY = Mathf.Clamp(thirdPersonCamOffsetY, -2.5f, 2.5f);
     }
 }
