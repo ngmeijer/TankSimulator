@@ -19,3 +19,4 @@ MonoBehaviour:
   TurretRotateSpeed: 60
   TurretTiltSpeed: 80
   TankMass: 1000
+  FireForce: 2500

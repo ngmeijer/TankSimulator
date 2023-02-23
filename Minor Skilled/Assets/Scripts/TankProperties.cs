@@ -10,4 +10,7 @@ public class TankProperties : ScriptableObject
     public float TurretRotateSpeed = 60f;
     public float TurretTiltSpeed = 80f;
     public float TankMass;
+
+    public float FireForce = 50f;
+    public float FireRate = 5f;
 }

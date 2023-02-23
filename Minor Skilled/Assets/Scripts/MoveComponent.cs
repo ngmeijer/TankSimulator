@@ -20,6 +20,7 @@ public class MoveComponent : MonoBehaviour
     [SerializeField] private bool _lockTurret;
     [SerializeField] private float barrelMinY;
     [SerializeField] private float barrelMaxY;
+    [SerializeField] private float kickbackForce = 9000f;
     private MoveDirection _moveDirection;
 
     private void Awake()
@@ -170,5 +171,10 @@ public class MoveComponent : MonoBehaviour
     {
         SetMotorTorque(0f,0f);
         MultiplyVelocity(0.95f);
+    }
+
+    public void TankKickback()
+    {
+        _componentManager.TankRB.AddForce(0,0, -_componentManager.GetCurrentBarrelDirection().z * kickbackForce,ForceMode.Impulse);
     }
 }

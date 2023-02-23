@@ -20,6 +20,7 @@ public class TankComponentManager : MonoBehaviour
 
     [Header("Shooting")] 
     public Transform ShellSpawnpoint;
+    public Transform VFXPivot;
 
     [HideInInspector] public Vector3 BarrelEulerAngles;
     [HideInInspector] public Vector3 TurretEulerAngles;
@@ -34,5 +35,10 @@ public class TankComponentManager : MonoBehaviour
     {
         BarrelTransform.localEulerAngles = BarrelEulerAngles;
         TurretTransform.localEulerAngles = TurretEulerAngles;
+    }
+
+    public Vector3 GetCurrentBarrelDirection()
+    {
+        return BarrelTransform.forward;
     }
 }
