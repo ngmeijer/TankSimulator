@@ -15,8 +15,10 @@ MonoBehaviour:
   Acceleration: 1000
   SingleTrackSpeed: 2000
   MaxSpeed: 8
-  HullRotateSpeed: 15
+  HullRotateSpeed: 20
   TurretRotateSpeed: 60
   TurretTiltSpeed: 80
   TankMass: 1000
-  FireForce: 2500
+  FireForce: 10000
+  FireRate: 5
+  ReloadTime: 2
