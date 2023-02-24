@@ -11,11 +11,13 @@ public class PlayerInput : MonoBehaviour
     private float tiltInput;
     private MoveComponent moveComponent;
     private ShootComponent shootComponent;
+    private TurretControlComponent turretControlComponent;
     
     private void Start()
     {
         moveComponent = GetComponent<MoveComponent>();
         shootComponent = GetComponent<ShootComponent>();
+        turretControlComponent = GetComponent<TurretControlComponent>();
     }
 
     private void Update()
@@ -26,7 +28,11 @@ public class PlayerInput : MonoBehaviour
         if (shootComponent != null)
         {
             TankFire();
-            shootComponent.TrackDistance();
+        }
+
+        if (turretControlComponent != null)
+        {
+            turretControlComponent.TiltCannon(tiltInput);
         }
     }
 
@@ -42,13 +48,13 @@ public class PlayerInput : MonoBehaviour
         if (moveInput < 0 && rotateInput == 0)
             moveComponent.MoveBackward(moveInput);
 
-        moveComponent.RotateTank(rotateInput, moveInput);
-        moveComponent.TiltCannon(tiltInput);
+        if(rotateInput < 0 || rotateInput > 0)
+            moveComponent.RotateTank(rotateInput, moveInput);
     }
 
     private void TankFire()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && shootComponent.readyToFire)
         {
             shootComponent.FireShell();
             moveComponent.TankKickback();

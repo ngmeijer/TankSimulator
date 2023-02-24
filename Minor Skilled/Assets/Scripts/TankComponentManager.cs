@@ -8,6 +8,7 @@ public class TankComponentManager : MonoBehaviour
 {
     public TankProperties Properties;
     public Rigidbody TankRB;
+    public HUDManager HUDManager;
     
     [Header("Transformation")]
     public List<WheelCollider> LeftTrackWheelColliders = new List<WheelCollider>(); 

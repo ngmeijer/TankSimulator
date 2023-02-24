@@ -42,7 +42,7 @@ public class CameraComponent : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         CheckCameraSwitch();
         HandleCameraTransform();

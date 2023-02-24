@@ -2,18 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class ShootComponent : MonoBehaviour
+public class ShootComponent : TankComponent
 {
     [SerializeField] private GameObject defaultShellPrefab;
-    private TankComponentManager componentManager;
     [SerializeField] private ParticleSystem fireExplosion;
-    private bool readyToFire;
-
-    private void Awake()
-    {
-        componentManager = GetComponent<TankComponentManager>();
-    }
+    public bool readyToFire { get; private set; } = true;
 
     public void FireShell()
     {
@@ -24,21 +19,30 @@ public class ShootComponent : MonoBehaviour
         fireExplosion.transform.rotation = componentManager.VFXPivot.rotation;
         fireExplosion.Play();
         readyToFire = false;
+        StartCoroutine(ReloadCannon());
+    }
+
+    private void Update()
+    {
+        componentManager.HUDManager.UpdateDistanceUI(TrackDistance());
     }
 
     private IEnumerator ReloadCannon()
     {
-        
-        yield return null;
+        StartCoroutine(componentManager.HUDManager.UpdateReloadUI(componentManager.Properties.ReloadTime));
+        yield return new WaitForSeconds(componentManager.Properties.ReloadTime);
+
+        readyToFire = true;
     }
 
     public float TrackDistance()
     {
         RaycastHit hit;
+        Debug.DrawRay(componentManager.ShellSpawnpoint.position, componentManager.ShellSpawnpoint.forward * 1000, Color.red);
         if (Physics.Raycast(componentManager.ShellSpawnpoint.position, componentManager.ShellSpawnpoint.forward,
-          out hit, Mathf.Infinity, 0))
+          out hit, Mathf.Infinity))
         {
-            return hit.distance;
+            return (float)Math.Round(hit.distance, 2);
         }
         return 0;
     }

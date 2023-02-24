@@ -31,8 +31,6 @@ public class MoveComponent : MonoBehaviour
     private void Update()
     {
         AnimateTankTracks(_componentManager.TankRB.velocity.magnitude);
-        HandleTurretRotation();
-        OffsetCannonRotationOnTankRotation();
     }
     
     private void OnDrawGizmos()
@@ -109,16 +107,29 @@ public class MoveComponent : MonoBehaviour
 
     public void RotateTank(float rotateInputValue, float moveInputValue)
     {
-        if (rotateInputValue == 0) return;
-        
         if (CheckIfAtMaxSpeed()) 
             return;
-        
-        currentAcceleration = _componentManager.Properties.SingleTrackSpeed * rotateInputValue;
 
         if (moveInputValue < 0)
-            currentAcceleration *= -1;
-        SetMotorTorque(currentAcceleration, 0f);
+        {
+            if(rotateInputValue < 0)
+                currentAcceleration = _componentManager.Properties.SingleTrackSpeed * rotateInputValue;
+            else if (rotateInputValue > 0)
+                currentAcceleration = -(_componentManager.Properties.SingleTrackSpeed * rotateInputValue);
+            Debug.Log($"Moving back. acceleration: {currentAcceleration}");
+        }
+        else
+        {
+            currentAcceleration = Mathf.Abs(_componentManager.Properties.SingleTrackSpeed * rotateInputValue);
+        }
+        
+        //Rotating to left
+        if (rotateInputValue < 0)
+            SetMotorTorque(0, currentAcceleration);
+        
+        //Rotating to right
+        if(rotateInputValue > 0)
+            SetMotorTorque(currentAcceleration, 0);
     }
 
     private void MoveTank(float inputValue)
@@ -131,6 +142,8 @@ public class MoveComponent : MonoBehaviour
 
     private bool CheckIfAtMaxSpeed()
     {
+        
+        
         if (_componentManager.TankRB.velocity.magnitude >= _componentManager.Properties.MaxSpeed)
         {
             _componentManager.TankRB.velocity *= 0.95f;
@@ -138,33 +151,6 @@ public class MoveComponent : MonoBehaviour
         };
 
         return false;
-    }
-    
-    private void HandleTurretRotation()
-    {
-        float xRotateInput = Input.GetAxis("Mouse X");
-
-        _componentManager.TurretEulerAngles += new Vector3(0, xRotateInput, 0) * Time.deltaTime * _componentManager.Properties.TurretRotateSpeed;
-    }
-
-    private void OffsetCannonRotationOnTankRotation()
-    {
-        float moveInput = Input.GetAxis("Vertical");
-        float hullRotateInput = Input.GetAxis("Horizontal");
-        float xRotateInput = Input.GetAxis("Mouse X");
-
-        if (moveInput == 0 && hullRotateInput == 0) return;
-
-        float offsetHullRotation = hullRotateInput * _componentManager.Properties.HullRotateSpeed;
-        float turretRotation = xRotateInput * _componentManager.Properties.TurretRotateSpeed;
-        _componentManager.TurretEulerAngles += new Vector3(0, turretRotation - offsetHullRotation) * Time.deltaTime;
-    }
-
-    public void TiltCannon(float inputValue)
-    {
-        //Move cannon up and down
-        _componentManager.BarrelEulerAngles -= new Vector3(inputValue, 0, 0) * Time.deltaTime * _componentManager.Properties.TurretTiltSpeed;
-        _componentManager.BarrelEulerAngles.x = Mathf.Clamp(_componentManager.BarrelEulerAngles.x, barrelMaxY, barrelMinY);
     }
 
     public void SlowTankDown()
