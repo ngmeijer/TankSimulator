@@ -30,7 +30,10 @@ public class MoveComponent : MonoBehaviour
 
     private void Update()
     {
+        _componentManager.TankRB.velocity =
+            Vector3.ClampMagnitude(_componentManager.TankRB.velocity, _componentManager.Properties.MaxSpeed);
         AnimateTankTracks(_componentManager.TankRB.velocity.magnitude);
+        _componentManager.HUDManager.UpdateTankSpeedUI((float)Math.Round(_componentManager.TankRB.velocity.magnitude, 2));
     }
     
     private void OnDrawGizmos()
@@ -116,7 +119,6 @@ public class MoveComponent : MonoBehaviour
                 currentAcceleration = _componentManager.Properties.SingleTrackSpeed * rotateInputValue;
             else if (rotateInputValue > 0)
                 currentAcceleration = -(_componentManager.Properties.SingleTrackSpeed * rotateInputValue);
-            Debug.Log($"Moving back. acceleration: {currentAcceleration}");
         }
         else
         {
@@ -142,15 +144,7 @@ public class MoveComponent : MonoBehaviour
 
     private bool CheckIfAtMaxSpeed()
     {
-        
-        
-        if (_componentManager.TankRB.velocity.magnitude >= _componentManager.Properties.MaxSpeed)
-        {
-            _componentManager.TankRB.velocity *= 0.95f;
-            return true;
-        };
-
-        return false;
+        return _componentManager.TankRB.velocity.magnitude >= _componentManager.Properties.MaxSpeed;
     }
 
     public void SlowTankDown()

@@ -8,6 +8,8 @@ public class HUDManager : MonoBehaviour
 {
     [SerializeField] private Slider reloadIndicator;
     [SerializeField] private TextMeshProUGUI distanceIndicator;
+    [SerializeField] private TextMeshProUGUI tankSpeedIndicator;
+    [SerializeField] private TextMeshProUGUI ammoCountIndicator;
     
     public IEnumerator UpdateReloadUI(float reloadTime)
     {
@@ -29,5 +31,15 @@ public class HUDManager : MonoBehaviour
             return;
         }
         distanceIndicator.SetText($"{trackDistance}m");
+    }
+
+    public void UpdateTankSpeedUI(float speed)
+    {
+        tankSpeedIndicator.SetText($"{speed} km/h");
+    }
+
+    public void UpdateAmmoCountUI(float ammoCount)
+    {
+        ammoCountIndicator.SetText($"{ammoCount}");
     }
 }

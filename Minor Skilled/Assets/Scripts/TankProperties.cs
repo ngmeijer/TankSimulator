@@ -14,4 +14,5 @@ public class TankProperties : ScriptableObject
     public float FireForce = 50f;
     public float FireRate = 5f;
     public float ReloadTime = 4f;
+    public int AmmoCount = 5;
 }

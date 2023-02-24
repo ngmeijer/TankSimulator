@@ -15,5 +15,7 @@ public class Shell : MonoBehaviour
         rb.AddExplosionForce(10000, transform.position, 12);
         explosion.Play();
         GFX.SetActive(false);
+        GFX.transform.localPosition = Vector3.zero;
+        GFX.transform.localRotation = Quaternion.identity;
     }
 }

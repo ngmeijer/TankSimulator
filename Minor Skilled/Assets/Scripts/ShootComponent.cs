@@ -8,7 +8,15 @@ public class ShootComponent : TankComponent
 {
     [SerializeField] private GameObject defaultShellPrefab;
     [SerializeField] private ParticleSystem fireExplosion;
-    public bool readyToFire { get; private set; } = true;
+
+    public int CurrentAmmoCount { get; private set; }
+    public bool reloading { get; private set; } = true;
+
+    private void Start()
+    {
+        CurrentAmmoCount = componentManager.Properties.AmmoCount;
+        componentManager.HUDManager.UpdateAmmoCountUI(CurrentAmmoCount);
+    }
 
     public void FireShell()
     {
@@ -18,8 +26,12 @@ public class ShootComponent : TankComponent
         fireExplosion.transform.position = componentManager.VFXPivot.position;
         fireExplosion.transform.rotation = componentManager.VFXPivot.rotation;
         fireExplosion.Play();
-        readyToFire = false;
-        StartCoroutine(ReloadCannon());
+        reloading = false;
+        CurrentAmmoCount--;
+        componentManager.HUDManager.UpdateAmmoCountUI(CurrentAmmoCount);
+        if (CurrentAmmoCount > 0)
+            StartCoroutine(ReloadCannon());
+        else reloading = false;
     }
 
     private void Update()
@@ -32,8 +44,10 @@ public class ShootComponent : TankComponent
         StartCoroutine(componentManager.HUDManager.UpdateReloadUI(componentManager.Properties.ReloadTime));
         yield return new WaitForSeconds(componentManager.Properties.ReloadTime);
 
-        readyToFire = true;
+        reloading = true;
     }
+
+    public bool HasAmmo() => CurrentAmmoCount > 0;
 
     public float TrackDistance()
     {

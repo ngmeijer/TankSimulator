@@ -26,14 +26,10 @@ public class PlayerInput : MonoBehaviour
             TankTransformation();
 
         if (shootComponent != null)
-        {
             TankFire();
-        }
 
         if (turretControlComponent != null)
-        {
             turretControlComponent.TiltCannon(tiltInput);
-        }
     }
 
     private void TankTransformation()
@@ -54,7 +50,7 @@ public class PlayerInput : MonoBehaviour
 
     private void TankFire()
     {
-        if (Input.GetMouseButtonDown(0) && shootComponent.readyToFire)
+        if (Input.GetMouseButtonDown(0) && shootComponent.reloading && shootComponent.HasAmmo())
         {
             shootComponent.FireShell();
             moveComponent.TankKickback();
