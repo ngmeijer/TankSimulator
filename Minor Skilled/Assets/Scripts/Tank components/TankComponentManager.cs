@@ -9,7 +9,8 @@ public class TankComponentManager : MonoBehaviour
     public TankProperties Properties;
     public Rigidbody TankRB;
     public HUDManager HUDManager;
-    
+    public EventManager eventManager;
+
     [Header("Transformation")]
     public List<WheelCollider> LeftTrackWheelColliders = new List<WheelCollider>(); 
     public List<WheelCollider> RightTrackWheelColliders = new List<WheelCollider>();
@@ -25,6 +26,11 @@ public class TankComponentManager : MonoBehaviour
 
     [HideInInspector] public Vector3 BarrelEulerAngles;
     [HideInInspector] public Vector3 TurretEulerAngles;
+
+    private void Awake()
+    {
+        eventManager = FindObjectOfType<EventManager>();
+    }
 
     private void OnValidate()
     {

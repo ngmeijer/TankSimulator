@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(MoveComponent))]
 public class PlayerInput : MonoBehaviour
@@ -9,15 +10,30 @@ public class PlayerInput : MonoBehaviour
     private float moveInput;
     private float rotateInput;
     private float tiltInput;
+    private float scrollInput;
+    
     private MoveComponent moveComponent;
     private ShootComponent shootComponent;
     private TurretControlComponent turretControlComponent;
-    
-    private void Start()
+    private CameraComponent cameraComponent;
+
+    private TankComponentManager componentManager;
+
+    public GameEvent OnShellFired = new GameEvent();
+
+    private void Awake()
     {
         moveComponent = GetComponent<MoveComponent>();
         shootComponent = GetComponent<ShootComponent>();
         turretControlComponent = GetComponent<TurretControlComponent>();
+        cameraComponent = GetComponent<CameraComponent>();
+        componentManager = GetComponent<TankComponentManager>();
+    }
+
+    private void Start()
+    {
+        componentManager.HUDManager.UpdateAmmoCountUI(shootComponent.CurrentAmmoCount);
+        componentManager.HUDManager.UpdateShellTypeUI(shootComponent.CurrentShellType);
     }
 
     private void Update()
@@ -26,10 +42,30 @@ public class PlayerInput : MonoBehaviour
             TankTransformation();
 
         if (shootComponent != null)
+        {
             TankFire();
+            ShellTypeSwitch();
+            componentManager.HUDManager.UpdateDistanceUI(shootComponent.TrackDistance());
+        }
 
         if (turretControlComponent != null)
-            turretControlComponent.TiltCannon(tiltInput);
+        {
+            float turretYDelta = turretControlComponent.TiltCannon(tiltInput);
+            //componentManager.HUDManager.UpdateCrosshairYPosition(turretYDelta);
+        }
+
+        if (cameraComponent != null)
+        {
+            CheckZoom();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (moveInput == 0 && rotateInput == 0 && moveComponent.IsTankMoving())
+        {
+            moveComponent.SlowTankDown();
+        }
     }
 
     private void TankTransformation()
@@ -50,18 +86,33 @@ public class PlayerInput : MonoBehaviour
 
     private void TankFire()
     {
-        if (Input.GetMouseButtonDown(0) && shootComponent.reloading && shootComponent.HasAmmo())
+        if (Input.GetMouseButtonDown(0) && shootComponent.CanFire && shootComponent.HasAmmo())
         {
+            componentManager.eventManager.OnShellFired?.Invoke("Shell fired. Reloading!");
+            componentManager.HUDManager.UpdateAmmoCountUI(shootComponent.CurrentAmmoCount);
             shootComponent.FireShell();
             moveComponent.TankKickback();
+            if (shootComponent.CurrentAmmoCount > 0)
+                StartCoroutine(componentManager.HUDManager.UpdateReloadUI(componentManager.Properties.ReloadTime));
         }
     }
-
-    private void FixedUpdate()
+    
+    private void ShellTypeSwitch()
     {
-        if (moveInput == 0 && rotateInput == 0 && moveComponent.IsTankMoving())
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
-            moveComponent.SlowTankDown();
+            shootComponent.SwitchShell();
+            componentManager.HUDManager.UpdateShellTypeUI(shootComponent.CurrentShellType);
         }
+    }
+    
+    private void CheckZoom()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            cameraComponent.RightMBADSActivate();
+        }
+        scrollInput = Input.GetAxis("Mouse ScrollWheel");
+        //cameraComponent.ZoomADSCamera(scrollInput);
     }
 }

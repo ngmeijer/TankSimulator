@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 8452314821403775366}
   - component: {fileID: 7496617927495930269}
   m_Layer: 0
-  m_Name: SM_Veh_Attach_Tank_Round_01
-  m_TagString: Untagged
+  m_Name: HE-Round
+  m_TagString: Shell
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -33,6 +33,7 @@ Transform:
   m_Children:
   - {fileID: 5581931937785440989}
   - {fileID: 2252701395350006219}
+  - {fileID: 1757428443129361425}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -58,14 +59,14 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1923346891657082}
   serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Mass: 5
+  m_Drag: 0.1
+  m_AngularDrag: 0.01
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &7496617927495930269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,6 +82,45 @@ MonoBehaviour:
   explosion: {fileID: 5744542405290620739}
   GFX: {fileID: 6428007088455408325}
   rb: {fileID: 8452314821403775366}
+  shellType: High Explosive (HE)
+  forceOnImpact: 4000
+  centerOfMass: {fileID: 1757428443129361425}
+  Damage: 150
+  AbsoluteArmorPenetration: 20
+  RelativeArmorPenetration: 5
+  CriticalChance: 0
+  CriticalDamageMultiplier: 0
+--- !u!1 &1826645723882946420
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1757428443129361425}
+  m_Layer: 0
+  m_Name: CenterOfMass
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1757428443129361425
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1826645723882946420}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.296}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4913056757324238}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6428007088455408325
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,6 +215,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FX_Explosion_Large_Dark_01
       objectReference: {fileID: 0}
+    - target: {fileID: 1974830201887114, guid: 8baff3207836e304f95274c39c8d572c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4325717242527976, guid: 8baff3207836e304f95274c39c8d572c, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -222,6 +266,10 @@ PrefabInstance:
     - target: {fileID: 198257776428887678, guid: 8baff3207836e304f95274c39c8d572c, type: 3}
       propertyPath: playOnAwake
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198414929906883958, guid: 8baff3207836e304f95274c39c8d572c, type: 3}
+      propertyPath: stopAction
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 198414929906883958, guid: 8baff3207836e304f95274c39c8d572c, type: 3}
       propertyPath: lengthInSec

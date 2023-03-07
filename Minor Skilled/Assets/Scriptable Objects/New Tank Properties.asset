@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: New Tank Properties
   m_EditorClassIdentifier: 
   Acceleration: 1000
+  ReverseAcceleration: 500
   SingleTrackSpeed: 2000
   MaxSpeed: 8
   HullRotateSpeed: 20
   TurretRotateSpeed: 60
   TurretTiltSpeed: 80
   TankMass: 1000
-  FireForce: 10000
-  FireRate: 5
+  FireForce: 90000
   ReloadTime: 2
+  AmmoCount: 5

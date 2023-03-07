@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum CameraMode
@@ -14,6 +15,7 @@ public class CameraComponent : MonoBehaviour
 {
     [Header("ADS properties")] 
     [SerializeField] private Camera _adsCam;
+    [SerializeField] private float zoomSpeed;
 
     [Header("First person properties")] 
     [SerializeField] private Camera _firstPersonCam;
@@ -24,16 +26,15 @@ public class CameraComponent : MonoBehaviour
     [SerializeField] private float thirdPersonCamOffsetY;
 
     private TankComponentManager _componentManager;
-    private MoveComponent _processor;
 
     private Camera _currentCamera;
     private Transform _currentCameraPivot;
     private CameraMode _camMode;
+    private CameraMode _previousCamMode;
 
     private void Awake()
     {
         _componentManager = GetComponent<TankComponentManager>();
-        _processor = GetComponent<MoveComponent>();
     }
 
     private void Start()
@@ -49,20 +50,47 @@ public class CameraComponent : MonoBehaviour
         OffsetCameraOnCannonTilt();
     }
 
+    public void RightMBADSActivate()
+    {
+        if (_camMode != CameraMode.ADS)
+        {
+            _previousCamMode = _camMode;
+            EnableADS();
+        }
+        else
+        {
+            switch (_previousCamMode)
+            {
+                case CameraMode.FirstPerson:
+                    EnableFirstPerson();
+                    break;
+                case CameraMode.ThirdPerson:
+                    EnableThirdPerson();
+                    break;
+            }
+        }
+    }
+
+    public void ZoomADSCamera(float zoomInput)
+    {
+        if (zoomInput == 0) return;
+        
+        if (_camMode == CameraMode.ADS)
+        {
+            float newZ = _adsCam.transform.position.z + (zoomInput * zoomSpeed * Time.deltaTime);
+            Vector3 newPos = _adsCam.transform.position + new Vector3(0, 0, newZ);
+            _adsCam.transform.position = newPos;
+        }
+    }
+
     private void CheckCameraSwitch()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
             EnableADS();
-        }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
             EnableFirstPerson();
-        }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
             EnableThirdPerson();
-        }
     }
 
     private void EnableADS()

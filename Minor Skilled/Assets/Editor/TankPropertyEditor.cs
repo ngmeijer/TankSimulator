@@ -14,9 +14,14 @@ public class TankPropertyEditor : EditorWindow
 
     private string tankName;
     private float acceleration;
+    private float reverseAcceleration;
     private float singleTrackAcceleration;
     private float maxSpeed;
     private float rigidbodyMass;
+    private float reloadTime;
+    private float fireForce;
+    private float maxHealth;
+    private float maxArmor;
     private float wheelMass;
     private float wheelRadius;
     private float wheelDampingRate;
@@ -193,7 +198,11 @@ public class TankPropertyEditor : EditorWindow
         singleTrackAcceleration = _retrievedPropertyData.SingleTrackSpeed;
         maxSpeed = _retrievedPropertyData.MaxSpeed;
         rigidbodyMass = _retrievedPropertyData.TankMass;
-        
+        reloadTime = _retrievedPropertyData.ReloadTime;
+        fireForce = _retrievedPropertyData.FireForce;
+        maxHealth = _retrievedPropertyData.MaxHealth;
+        maxArmor = _retrievedPropertyData.MaxArmor;
+
         //Wheel
         if (_selectedTank.LeftTrackWheelColliders.Count == 0) return;
         tankWheelProps = _selectedTank.LeftTrackWheelColliders[0];
@@ -248,10 +257,15 @@ public class TankPropertyEditor : EditorWindow
 
             //
             _newPropertyData.Acceleration = EditorGUILayout.Slider("Acceleration", _newPropertyData.Acceleration, 0, 10000);
+            _newPropertyData.ReverseAcceleration = EditorGUILayout.Slider("Reverse acceleration", _newPropertyData.ReverseAcceleration, 0, 10000);
             _newPropertyData.SingleTrackSpeed = EditorGUILayout.Slider("Single track acceleration", _newPropertyData.SingleTrackSpeed, 0, 10000);
             _newPropertyData.MaxSpeed = EditorGUILayout.Slider("Max speed", _newPropertyData.MaxSpeed, 0, 50);
             _newPropertyData.TankMass = EditorGUILayout.Slider("Tank mass", _newPropertyData.TankMass, 1, 10000);
-            
+            _newPropertyData.ReloadTime = EditorGUILayout.Slider("Reload time", _newPropertyData.ReloadTime, 0.5f, 50f);
+            _newPropertyData.FireForce = EditorGUILayout.Slider("Fire force", _newPropertyData.FireForce, 1, 100000);
+            _newPropertyData.MaxHealth = EditorGUILayout.IntSlider("Max health", _newPropertyData.MaxHealth, 1, 1000);
+            _newPropertyData.MaxArmor = EditorGUILayout.IntSlider("Max armor", _newPropertyData.MaxArmor, 1, 1000);
+
             //
             GUILayout.Space(20);
             DrawWheelColliderProperties();

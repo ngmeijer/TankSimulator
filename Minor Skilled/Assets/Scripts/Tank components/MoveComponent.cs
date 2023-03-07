@@ -138,7 +138,10 @@ public class MoveComponent : MonoBehaviour
     {
         if (CheckIfAtMaxSpeed()) return;
         
-        currentAcceleration = _componentManager.Properties.Acceleration * inputValue;
+        if(inputValue > 0)
+            currentAcceleration = _componentManager.Properties.Acceleration * inputValue;
+        if(inputValue < 0)
+            currentAcceleration = _componentManager.Properties.ReverseAcceleration * inputValue;
         SetMotorTorque(currentAcceleration, currentAcceleration);
     }
 
