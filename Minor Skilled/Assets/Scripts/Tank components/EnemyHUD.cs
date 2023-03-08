@@ -15,7 +15,7 @@ public class EnemyHUD : BaseHUDManager
 
     private void Update()
     {
-        canvas.transform.LookAt(playerTransform.position - canvas.transform.position);
+        canvas.transform.LookAt(playerTransform.position);
     }
 
     public override void UpdateName(string name)

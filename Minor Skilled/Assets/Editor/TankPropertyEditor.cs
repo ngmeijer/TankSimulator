@@ -94,7 +94,7 @@ public class TankPropertyEditor : EditorWindow
         DrawListOfTanks();
 
         GUILayout.Space(10);
-        GUILayout.Label("Select a tank to edit properties (cannot edit tanks in playmode)", _cursiveStyle);
+        GUILayout.Label("Select a tank to edit properties (cannot save values in playmode!)", _cursiveStyle);
         DrawCurrentlySelectedTank();
 
         if (_currentlySelectedTankIndex != NO_TANK_SELECTED)
