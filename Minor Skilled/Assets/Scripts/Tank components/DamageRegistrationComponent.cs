@@ -22,6 +22,13 @@ public class DamageRegistrationComponent : TankComponent
     public int MaxArmor { get; private set; }
     public int MaxHealth { get; private set; }
 
+    private GameObject lastColliderHit;
+
+    [SerializeField] private GameObject destroyedTankGFX;
+    [SerializeField] private GameObject functioningTankGFX;
+    [SerializeField] private Camera destroyedTankCamera;
+    [SerializeField] private GameObject deathVFX;
+
     private void Start()
     {
         MaxHealth = componentManager.Properties.MaxHealth;
@@ -30,28 +37,44 @@ public class DamageRegistrationComponent : TankComponent
         Health = MaxHealth;
         Armor = MaxArmor;
         
-        componentManager.HUDManager.SetMaxHealth(MaxHealth);
-        componentManager.HUDManager.SetMaxArmor(MaxArmor);
+        componentManager.entityHUD.SetMaxHealth(MaxHealth);
+        //componentManager.entityHUD.SetMaxArmor(MaxArmor);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (!collision.collider.CompareTag("Shell")) return;
-        if (!collision.collider.TryGetComponent(out Shell shell))
-        {
-            Debug.Log("failed to get Shell component");
-            return;
-        }
+        if (!collision.collider.TryGetComponent(out Shell shell)) return;
+        if (collision.collider.gameObject == lastColliderHit) return;
+        lastColliderHit = collision.collider.gameObject;
+
+        UpdateHealth(shell.Damage);
         
-        int totalArmorLost = CalculateArmorLeft(shell);
-        CalculateHealthLeft(shell, totalArmorLost);
-        
-        componentManager.HUDManager.UpdateHealth(Health);
-        componentManager.HUDManager.UpdateArmor(Armor);
+        componentManager.entityHUD.UpdateHealth(Health);
 
         string partHit = collision.GetContact(0).thisCollider.name;
+        NotifyPopupForCollidedPart(partHit);
+    }
+
+    private void UpdateHealth(int damage)
+    {
+        Health -= damage;
+        if (Health < 0)
+        {
+            componentManager.HasDied = true;
+            functioningTankGFX.SetActive(false);
+            destroyedTankGFX.SetActive(true);
+            if(destroyedTankCamera != null)
+                destroyedTankCamera.gameObject.SetActive(true);
+            deathVFX.SetActive(true);
+            componentManager.eventManager.OnEntityDeath?.Invoke(componentManager);
+        }
+    }
+
+    private void NotifyPopupForCollidedPart(string partName)
+    {
         string formattedPartText = "";
-        switch (partHit)
+        switch (partName)
         {
             case "HullFront":
                 formattedPartText = "The front of the hull";
@@ -75,22 +98,6 @@ public class DamageRegistrationComponent : TankComponent
                 formattedPartText = "The right tracks";
                 break;
         }
-        componentManager.eventManager.OnTankComponentHit.Invoke($"{formattedPartText} has been hit!");
-    }
-
-    private int CalculateArmorLeft(Shell shell)
-    {
-        int relativeArmorPenetrated = shell.RelativeArmorPenetration * Health;
-        int absoluteArmorPenetrated = shell.AbsoluteArmorPenetration * Health;
-        int totalArmorLost = relativeArmorPenetrated + absoluteArmorPenetrated;
-        Armor -= totalArmorLost;
-        return totalArmorLost;
-    }
-
-    private void CalculateHealthLeft(Shell shell, int totalArmorLost)
-    {
-        int damageReceived = shell.Damage - totalArmorLost;
-        if (damageReceived > 0)
-            Health -= damageReceived;
+        componentManager.eventManager.OnTankComponentHit.Invoke($"{formattedPartText} of {componentManager.Properties.TankName} has been hit!");
     }
 }

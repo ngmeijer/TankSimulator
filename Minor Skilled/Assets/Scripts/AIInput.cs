@@ -21,10 +21,11 @@ public class AIInput : MonoBehaviour
 
     private IEnumerator testShoot()
     {
-        componentManager.eventManager.OnShellFired?.Invoke("Enemy has fired a shell!");
+        if(componentManager.HasDied) StopCoroutine(testShoot());
         yield return new WaitForSeconds(componentManager.Properties.ReloadTime);
         
         shootComponent.FireShell();
+        componentManager.eventManager.OnShellFired?.Invoke("Enemy has fired a shell!");
 
         StartCoroutine(testShoot());
     }

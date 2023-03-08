@@ -33,7 +33,6 @@ public class MoveComponent : MonoBehaviour
         _componentManager.TankRB.velocity =
             Vector3.ClampMagnitude(_componentManager.TankRB.velocity, _componentManager.Properties.MaxSpeed);
         AnimateTankTracks(_componentManager.TankRB.velocity.magnitude);
-        _componentManager.HUDManager.UpdateTankSpeedUI((float)Math.Round(_componentManager.TankRB.velocity.magnitude, 2));
     }
     
     private void OnDrawGizmos()

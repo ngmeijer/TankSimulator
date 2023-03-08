@@ -193,7 +193,7 @@ public class TankPropertyEditor : EditorWindow
         _currentlySelectedTankIndex = index;
         _selectedTank = _foundTanks[index];
         _newPropertyData = _selectedTank.Properties;
-        
+
         acceleration = _retrievedPropertyData.Acceleration;
         singleTrackAcceleration = _retrievedPropertyData.SingleTrackSpeed;
         maxSpeed = _retrievedPropertyData.MaxSpeed;

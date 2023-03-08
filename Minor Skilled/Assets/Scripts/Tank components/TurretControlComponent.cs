@@ -12,7 +12,6 @@ public class TurretControlComponent : TankComponent
     {
         HandleTurretRotation();
         OffsetCannonRotationOnTankRotation();
-        componentManager.HUDManager.SetTurretRotationUI(componentManager.TurretEulerAngles);
     }
 
     private void HandleTurretRotation()

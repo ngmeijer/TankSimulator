@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 181129c53af746e7ba620a1ecb7331e3, type: 3}
-  m_Name: New Tank Properties
+  m_Name: EnemyProperties
   m_EditorClassIdentifier: 
+  TankName: USA Tank
   Acceleration: 1000
   ReverseAcceleration: 500
   SingleTrackSpeed: 2000
@@ -21,5 +22,7 @@ MonoBehaviour:
   TurretTiltSpeed: 80
   TankMass: 1000
   FireForce: 90000
-  ReloadTime: 2
-  AmmoCount: 5
+  ReloadTime: 5
+  AmmoCount: 10
+  MaxArmor: 100
+  MaxHealth: 500

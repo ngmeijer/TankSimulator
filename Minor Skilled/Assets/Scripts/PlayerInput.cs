@@ -21,6 +21,8 @@ public class PlayerInput : MonoBehaviour
 
     public GameEvent OnShellFired = new GameEvent();
 
+    private PlayerHUD playerHUD;
+
     private void Awake()
     {
         moveComponent = GetComponent<MoveComponent>();
@@ -28,16 +30,20 @@ public class PlayerInput : MonoBehaviour
         turretControlComponent = GetComponent<TurretControlComponent>();
         cameraComponent = GetComponent<CameraComponent>();
         componentManager = GetComponent<TankComponentManager>();
+
+        playerHUD = componentManager.entityHUD as PlayerHUD;
     }
 
     private void Start()
     {
-        componentManager.HUDManager.UpdateAmmoCountUI(shootComponent.CurrentAmmoCount);
-        componentManager.HUDManager.UpdateShellTypeUI(shootComponent.CurrentShellType);
+        playerHUD.UpdateAmmoCountUI(shootComponent.CurrentAmmoCount);
+        playerHUD.UpdateShellTypeUI(shootComponent.CurrentShellType);
     }
 
     private void Update()
     {
+        if (componentManager.HasDied) return;
+        
         if (moveComponent != null)
             TankTransformation();
 
@@ -45,13 +51,14 @@ public class PlayerInput : MonoBehaviour
         {
             TankFire();
             ShellTypeSwitch();
-            componentManager.HUDManager.UpdateDistanceUI(shootComponent.TrackDistance());
+            playerHUD.UpdateDistanceUI(shootComponent.TrackDistance());
         }
 
         if (turretControlComponent != null)
         {
             float turretYDelta = turretControlComponent.TiltCannon(tiltInput);
             //componentManager.HUDManager.UpdateCrosshairYPosition(turretYDelta);
+            playerHUD.SetTurretRotationUI(componentManager.TurretEulerAngles);
         }
 
         if (cameraComponent != null)
@@ -82,6 +89,8 @@ public class PlayerInput : MonoBehaviour
 
         if(rotateInput < 0 || rotateInput > 0)
             moveComponent.RotateTank(rotateInput, moveInput);
+        
+        playerHUD.UpdateTankSpeedUI((float)Math.Round(componentManager.TankRB.velocity.magnitude, 2));
     }
 
     private void TankFire()
@@ -89,11 +98,11 @@ public class PlayerInput : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && shootComponent.CanFire && shootComponent.HasAmmo())
         {
             componentManager.eventManager.OnShellFired?.Invoke("Shell fired. Reloading!");
-            componentManager.HUDManager.UpdateAmmoCountUI(shootComponent.CurrentAmmoCount);
             shootComponent.FireShell();
+            playerHUD.UpdateAmmoCountUI(shootComponent.CurrentAmmoCount);
             moveComponent.TankKickback();
             if (shootComponent.CurrentAmmoCount > 0)
-                StartCoroutine(componentManager.HUDManager.UpdateReloadUI(componentManager.Properties.ReloadTime));
+                StartCoroutine(playerHUD.UpdateReloadUI(componentManager.Properties.ReloadTime));
         }
     }
     
@@ -102,7 +111,7 @@ public class PlayerInput : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             shootComponent.SwitchShell();
-            componentManager.HUDManager.UpdateShellTypeUI(shootComponent.CurrentShellType);
+            playerHUD.UpdateShellTypeUI(shootComponent.CurrentShellType);
         }
     }
     

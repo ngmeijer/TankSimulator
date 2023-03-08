@@ -3,6 +3,7 @@
 [CreateAssetMenu(menuName = "Scriptable Objects/Tank Properties")]
 public class TankProperties : ScriptableObject
 {
+    public string TankName;
     public float Acceleration = 1500f;
     public float ReverseAcceleration = 500f;
     public float SingleTrackSpeed = 2000f;
