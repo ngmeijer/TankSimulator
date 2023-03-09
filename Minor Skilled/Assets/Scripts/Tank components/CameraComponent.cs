@@ -14,7 +14,6 @@ public class CameraComponent : MonoBehaviour
 {
     [Header("ADS properties")] 
     [SerializeField] private Camera _adsCam;
-    [SerializeField] private float zoomSpeed;
 
     [Header("First person properties")] 
     [SerializeField] private Camera _firstPersonCam;
@@ -70,18 +69,6 @@ public class CameraComponent : MonoBehaviour
         }
     }
 
-    public void ZoomADSCamera(float zoomInput)
-    {
-        if (zoomInput == 0) return;
-        
-        if (_camMode == CameraMode.ADS)
-        {
-            float newZ = _adsCam.transform.position.z + (zoomInput * zoomSpeed * Time.deltaTime);
-            Vector3 newPos = _adsCam.transform.position + new Vector3(0, 0, newZ);
-            _adsCam.transform.position = newPos;
-        }
-    }
-
     private void CheckCameraSwitch()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -124,21 +111,11 @@ public class CameraComponent : MonoBehaviour
 
     private void HandleCameraTransform()
     {
-        Vector3 cameraEuler;
-        switch (_camMode)
-        {
-            case CameraMode.ADS:
-                break;
-            case CameraMode.FirstPerson:
-                cameraEuler = new Vector3(_componentManager.BarrelEulerAngles.x / 1.5f, 0,0);
-                _currentCamera.transform.localEulerAngles = cameraEuler;
-                break;
-            case CameraMode.ThirdPerson:
-                _currentCamera.transform.localPosition = _thirdPersonPivot.localPosition + new Vector3(0, thirdPersonCamOffsetY, 0); 
-                cameraEuler = new Vector3(_componentManager.BarrelEulerAngles.x / 2, 0,_currentCamera.transform.localEulerAngles.z);
-                _currentCamera.transform.localEulerAngles = cameraEuler;
-                break;
-        }
+        Vector3 barrelEuler = _componentManager.GetBarrelEuler();
+        if(_camMode == CameraMode.ThirdPerson)
+            _currentCamera.transform.localPosition = _thirdPersonPivot.localPosition + new Vector3(0, thirdPersonCamOffsetY, 0); 
+        
+        _currentCamera.transform.localEulerAngles = new Vector3(barrelEuler.x, 0,0);;
     }
 
     private void OffsetCameraOnCannonTilt()

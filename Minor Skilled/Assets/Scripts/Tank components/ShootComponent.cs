@@ -8,6 +8,8 @@ using UnityEngine.Events;
 
 public class ShootComponent : TankComponent
 {
+    [SerializeField] private Transform ShellSpawnpoint;
+    [SerializeField] private Transform VFXPivot;
     [SerializeField] private ParticleSystem fireExplosion;
     [SerializeField] private List<Shell> _shellPrefabs;
     private int _maxShellTypes;
@@ -26,13 +28,29 @@ public class ShootComponent : TankComponent
 
     public void FireShell()
     {
+        InstantiateShell();
+        HandleExplosionFX();
+        InitiateReloadSequence();
+        componentManager.EventManager.OnShellFired.Invoke($"{componentManager.Properties.TankName} has fired a shell!");
+    }
+
+    private void InstantiateShell()
+    {
         GameObject shellInstance = Instantiate(_shellPrefabs[_currentShellIndex].gameObject,
-            componentManager.ShellSpawnpoint.position, componentManager.ShellSpawnpoint.rotation);
+            ShellSpawnpoint.position, ShellSpawnpoint.rotation);
         Rigidbody rb = shellInstance.GetComponent<Rigidbody>();
         rb.AddForce(rb.transform.forward * componentManager.Properties.FireForce);
-        fireExplosion.transform.position = componentManager.VFXPivot.position;
-        fireExplosion.transform.rotation = componentManager.VFXPivot.rotation;
+    }
+
+    private void HandleExplosionFX()
+    {
+        fireExplosion.transform.position = VFXPivot.position;
+        fireExplosion.transform.rotation = VFXPivot.rotation;
         fireExplosion.Play();
+    }
+
+    private void InitiateReloadSequence()
+    {
         CanFire = false;
         CurrentAmmoCount--;
         if (CurrentAmmoCount > 0)
@@ -52,9 +70,9 @@ public class ShootComponent : TankComponent
     public float TrackDistance()
     {
         RaycastHit hit;
-        Debug.DrawRay(componentManager.ShellSpawnpoint.position, componentManager.ShellSpawnpoint.forward * 1000,
+        Debug.DrawRay(ShellSpawnpoint.position, ShellSpawnpoint.forward * 1000,
             Color.red);
-        if (Physics.Raycast(componentManager.ShellSpawnpoint.position, componentManager.ShellSpawnpoint.forward,
+        if (Physics.Raycast(ShellSpawnpoint.position, ShellSpawnpoint.forward,
                 out hit, Mathf.Infinity))
         {
             return (float)Math.Round(hit.distance, 2);
@@ -69,5 +87,10 @@ public class ShootComponent : TankComponent
         if (_currentShellIndex > _maxShellTypes - 1)
             _currentShellIndex = 0;
         CurrentShellType = _shellPrefabs[_currentShellIndex].GetShellType();
+    }
+
+    public void SwitchToSpecificShell()
+    {
+        
     }
 }

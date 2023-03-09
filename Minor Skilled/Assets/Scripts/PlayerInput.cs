@@ -30,12 +30,12 @@ public class PlayerInput : MonoBehaviour
         turretControlComponent = GetComponent<TurretControlComponent>();
         cameraComponent = GetComponent<CameraComponent>();
         componentManager = GetComponent<TankComponentManager>();
-
-        playerHUD = componentManager.entityHUD as PlayerHUD;
     }
 
     private void Start()
     {
+        playerHUD = componentManager.EntityHUD as PlayerHUD;
+
         playerHUD.UpdateAmmoCountUI(shootComponent.CurrentAmmoCount);
         playerHUD.UpdateShellTypeUI(shootComponent.CurrentShellType);
     }
@@ -58,7 +58,7 @@ public class PlayerInput : MonoBehaviour
         {
             float turretYDelta = turretControlComponent.TiltCannon(tiltInput);
             //componentManager.HUDManager.UpdateCrosshairYPosition(turretYDelta);
-            playerHUD.SetTurretRotationUI(componentManager.TurretEulerAngles);
+            //playerHUD.SetTurretRotationUI(componentManager.TurretEulerAngles);
         }
 
         if (cameraComponent != null)
@@ -69,7 +69,7 @@ public class PlayerInput : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (moveInput == 0 && rotateInput == 0 && moveComponent.IsTankMoving())
+        if (moveInput == 0 && rotateInput == 0 && moveComponent.GetTankVelocity() > 0)
         {
             moveComponent.SlowTankDown();
         }
@@ -89,18 +89,15 @@ public class PlayerInput : MonoBehaviour
 
         if(rotateInput < 0 || rotateInput > 0)
             moveComponent.RotateTank(rotateInput, moveInput);
-        
-        playerHUD.UpdateTankSpeedUI((float)Math.Round(componentManager.TankRB.velocity.magnitude, 2));
     }
 
     private void TankFire()
     {
         if (Input.GetMouseButtonDown(0) && shootComponent.CanFire && shootComponent.HasAmmo())
         {
-            componentManager.eventManager.OnShellFired?.Invoke("Shell fired. Reloading!");
+            componentManager.EventManager.OnShellFired?.Invoke("Shell fired. Reloading!");
             shootComponent.FireShell();
             playerHUD.UpdateAmmoCountUI(shootComponent.CurrentAmmoCount);
-            moveComponent.TankKickback();
             if (shootComponent.CurrentAmmoCount > 0)
                 StartCoroutine(playerHUD.UpdateReloadUI(componentManager.Properties.ReloadTime));
         }

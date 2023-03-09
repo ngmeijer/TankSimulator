@@ -7,18 +7,29 @@ public class TurretControlComponent : TankComponent
     [SerializeField] private float barrelMinY;
     [SerializeField] private float barrelMaxY;
     private Vector3 currentLerpEuler;
-
+    
+    [HideInInspector] public Vector3 BarrelEulerAngles;      
+    [HideInInspector] public Vector3 TurretEulerAngles;    
+    public Transform TurretTransform;       
+    public Transform BarrelTransform;    
+    
     private void Update()
     {
         HandleTurretRotation();
         OffsetCannonRotationOnTankRotation();
     }
+    
+    private void LateUpdate()                                        
+    {                                                                
+        BarrelTransform.localEulerAngles  = BarrelEulerAngles;        
+        TurretTransform.localEulerAngles = TurretEulerAngles;        
+    }                                                                
 
     private void HandleTurretRotation()
     {
         float xRotateInput = Input.GetAxis("Mouse X");
 
-        componentManager.TurretEulerAngles += new Vector3(0, xRotateInput, 0) * (Time.deltaTime * componentManager.Properties.TurretRotateSpeed);
+        TurretEulerAngles += new Vector3(0, xRotateInput, 0) * (Time.deltaTime * componentManager.Properties.TurretRotateSpeed);
     }
 
     private void OffsetCannonRotationOnTankRotation()
@@ -31,17 +42,27 @@ public class TurretControlComponent : TankComponent
 
         float offsetHullRotation = hullRotateInput * componentManager.Properties.HullRotateSpeed;
         float turretRotation = xRotateInput * componentManager.Properties.TurretRotateSpeed;
-        componentManager.TurretEulerAngles += new Vector3(0, turretRotation - offsetHullRotation) * Time.deltaTime;
+        TurretEulerAngles += new Vector3(0, turretRotation - offsetHullRotation) * Time.deltaTime;
     }
 
     public float TiltCannon(float inputValue)
     {
         //Move cannon up and down
         float delta = inputValue * Time.deltaTime * componentManager.Properties.TurretTiltSpeed;
-        componentManager.BarrelEulerAngles -= new Vector3(delta, 0, 0);
-        componentManager.BarrelEulerAngles.x =
-            Mathf.Clamp(componentManager.BarrelEulerAngles.x, barrelMaxY, barrelMinY);
+        BarrelEulerAngles -= new Vector3(delta, 0, 0);
+        BarrelEulerAngles.x =
+            Mathf.Clamp(BarrelEulerAngles.x, barrelMaxY, barrelMinY);
 
         return delta;
+    }
+    
+    public Vector3 GetCurrentBarrelDirection()  
+    {                                           
+        return BarrelTransform.forward;         
+    }
+
+    public Vector3 GetBarrelEuler()
+    {
+        return BarrelTransform.rotation.eulerAngles;
     }
 }

@@ -37,7 +37,7 @@ public class DamageRegistrationComponent : TankComponent
         Health = MaxHealth;
         Armor = MaxArmor;
         
-        componentManager.entityHUD.SetMaxHealth(MaxHealth);
+        componentManager.EntityHUD.SetMaxHealth(MaxHealth);
         //componentManager.entityHUD.SetMaxArmor(MaxArmor);
     }
 
@@ -50,7 +50,7 @@ public class DamageRegistrationComponent : TankComponent
 
         UpdateHealth(shell.Damage);
         
-        componentManager.entityHUD.UpdateHealth(Health);
+        componentManager.EntityHUD.UpdateHealth(Health);
 
         string partHit = collision.GetContact(0).thisCollider.name;
         NotifyPopupForCollidedPart(partHit);
@@ -67,7 +67,7 @@ public class DamageRegistrationComponent : TankComponent
             if(destroyedTankCamera != null)
                 destroyedTankCamera.gameObject.SetActive(true);
             deathVFX.SetActive(true);
-            componentManager.eventManager.OnEntityDeath?.Invoke(componentManager);
+            componentManager.EventManager.OnEntityDeath?.Invoke(componentManager);
         }
     }
 
@@ -98,6 +98,6 @@ public class DamageRegistrationComponent : TankComponent
                 formattedPartText = "The right tracks";
                 break;
         }
-        componentManager.eventManager.OnTankComponentHit.Invoke($"{formattedPartText} of {componentManager.Properties.TankName} has been hit!");
+        componentManager.EventManager.OnTankComponentHit.Invoke($"{formattedPartText} of {componentManager.Properties.TankName} has been hit!");
     }
 }

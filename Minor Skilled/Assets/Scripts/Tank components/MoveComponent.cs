@@ -10,29 +10,39 @@ enum MoveDirection
     Backward
 };
 
-public class MoveComponent : MonoBehaviour
+public class MoveComponent : TankComponent
 {
-    private TankComponentManager _componentManager; 
-    
     private float currentAcceleration;
     private float currentBrakeTorque;
 
-    [SerializeField] private bool _lockTurret;
-    [SerializeField] private float barrelMinY;
-    [SerializeField] private float barrelMaxY;
+    private Rigidbody TankRB;
+    [SerializeField] private Transform centerOfMass;
+    public List<WheelCollider> LeftTrackWheelColliders = new List<WheelCollider>();  
+    public List<WheelCollider> RightTrackWheelColliders = new List<WheelCollider>(); 
+    [SerializeField] private MeshRenderer leftTrackRenderer;    
+    [SerializeField] private MeshRenderer rightTrackRenderer;   
     [SerializeField] private float kickbackForce = 9000f;
     private MoveDirection _moveDirection;
-
-    private void Awake()
+    
+    protected override void Awake()
     {
-        _componentManager = GetComponent<TankComponentManager>();
+        base.Awake();
+        TankRB = GetComponent<Rigidbody>();
+    }
+    
+    private void Start()
+    {
+        componentManager.EventManager.OnShellFired.AddListener((content) => TankKickbackOnShellFire());
+        TankRB.centerOfMass = centerOfMass.localPosition;
     }
 
     private void Update()
     {
-        _componentManager.TankRB.velocity =
-            Vector3.ClampMagnitude(_componentManager.TankRB.velocity, _componentManager.Properties.MaxSpeed);
-        AnimateTankTracks(_componentManager.TankRB.velocity.magnitude);
+        TankRB.velocity =
+            Vector3.ClampMagnitude(TankRB.velocity, componentManager.Properties.MaxSpeed);
+        AnimateTankTracks(GetTankVelocity());
+        
+        componentManager.EntityHUD.UpdateSpeed((float)Math.Round(GetTankVelocity(), 2));
     }
     
     private void OnDrawGizmos()
@@ -41,36 +51,36 @@ public class MoveComponent : MonoBehaviour
         
         Gizmos.color = Color.yellow;
         
-        Handles.Label(transform.position + new Vector3(0, 2, 0), $"Velocity: {_componentManager.TankRB.velocity.magnitude}");
+        Handles.Label(transform.position + new Vector3(0, 2, 0), $"Velocity: {TankRB.velocity.magnitude}");
 
-        foreach (var wheel in _componentManager.LeftTrackWheelColliders)
+        foreach (var wheel in LeftTrackWheelColliders)
         {
             Gizmos.DrawSphere(wheel.transform.position, 0.2f);
             Handles.Label(wheel.transform.position - new Vector3(0, 0.25f, 0), $"Motor torque: {wheel.motorTorque}");
         }
         
-        foreach (var wheel in _componentManager.RightTrackWheelColliders)
+        foreach (var wheel in RightTrackWheelColliders)
         {
             Gizmos.DrawSphere(wheel.transform.position, 0.2f);
             Handles.Label(wheel.transform.position - new Vector3(0, 0.25f, 0), $"Motor torque: {wheel.motorTorque}");
         }
     }
 
-    public bool IsTankMoving()
+    public float GetTankVelocity()
     {
-        return _componentManager.TankRB.velocity.magnitude > 0;
+        return TankRB.velocity.magnitude;
     }
 
-    public void MultiplyVelocity(float multiplier)
+    private void MultiplyVelocity(float multiplier)
     {
-        _componentManager.TankRB.velocity *= multiplier;
+        TankRB.velocity *= multiplier;
     }
 
     private void AnimateTankTracks(float speed)
     {
         var offset = Time.time * speed;
-        _componentManager.LeftTrackRenderer.material.mainTextureOffset = new Vector2(0, offset);
-        _componentManager.RightTrackRenderer.material.mainTextureOffset = new Vector2(0, offset);
+        leftTrackRenderer.material.mainTextureOffset = new Vector2(0, offset);
+        rightTrackRenderer.material.mainTextureOffset = new Vector2(0, offset);
     }
 
     public void MoveForward(float inputValue)
@@ -96,12 +106,12 @@ public class MoveComponent : MonoBehaviour
 
     public void SetMotorTorque(float leftTrackTorque, float rightTrackTorque)
     {
-        foreach (var collider in _componentManager.LeftTrackWheelColliders)
+        foreach (var collider in LeftTrackWheelColliders)
         {
             collider.motorTorque = leftTrackTorque;
         }
             
-        foreach (var collider in _componentManager.RightTrackWheelColliders)
+        foreach (var collider in RightTrackWheelColliders)
         {
             collider.motorTorque = rightTrackTorque;
         }
@@ -115,13 +125,13 @@ public class MoveComponent : MonoBehaviour
         if (moveInputValue < 0)
         {
             if(rotateInputValue < 0)
-                currentAcceleration = _componentManager.Properties.SingleTrackSpeed * rotateInputValue;
+                currentAcceleration = componentManager.Properties.SingleTrackSpeed * rotateInputValue;
             else if (rotateInputValue > 0)
-                currentAcceleration = -(_componentManager.Properties.SingleTrackSpeed * rotateInputValue);
+                currentAcceleration = -(componentManager.Properties.SingleTrackSpeed * rotateInputValue);
         }
         else
         {
-            currentAcceleration = Mathf.Abs(_componentManager.Properties.SingleTrackSpeed * rotateInputValue);
+            currentAcceleration = Mathf.Abs(componentManager.Properties.SingleTrackSpeed * rotateInputValue);
         }
         
         //Rotating to left
@@ -138,15 +148,15 @@ public class MoveComponent : MonoBehaviour
         if (CheckIfAtMaxSpeed()) return;
         
         if(inputValue > 0)
-            currentAcceleration = _componentManager.Properties.Acceleration * inputValue;
+            currentAcceleration = componentManager.Properties.Acceleration * inputValue;
         if(inputValue < 0)
-            currentAcceleration = _componentManager.Properties.ReverseAcceleration * inputValue;
+            currentAcceleration = componentManager.Properties.ReverseAcceleration * inputValue;
         SetMotorTorque(currentAcceleration, currentAcceleration);
     }
 
     private bool CheckIfAtMaxSpeed()
     {
-        return _componentManager.TankRB.velocity.magnitude >= _componentManager.Properties.MaxSpeed;
+        return TankRB.velocity.magnitude >= componentManager.Properties.MaxSpeed;
     }
 
     public void SlowTankDown()
@@ -155,8 +165,12 @@ public class MoveComponent : MonoBehaviour
         MultiplyVelocity(0.95f);
     }
 
-    public void TankKickback()
+    private void TankKickbackOnShellFire()
     {
-        _componentManager.TankRB.AddForce(0,0, -_componentManager.GetCurrentBarrelDirection().z * kickbackForce,ForceMode.Impulse);
+        TankRB.AddForce(0,0, -componentManager.GetCurrentBarrelDirection().z * kickbackForce,ForceMode.Impulse);
     }
+    
+    public List<WheelCollider> GetLeftWheelColliders() => LeftTrackWheelColliders;       
+                                                                                      
+    public List<WheelCollider> GetRightWheelColliders() => RightTrackWheelColliders;     
 }

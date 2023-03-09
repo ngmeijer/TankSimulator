@@ -1,14 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class BaseHUDManager : MonoBehaviour
+public abstract class BaseHUDManager : MonoBehaviour
 {
     [SerializeField] protected Slider healthIndicator;
     [SerializeField] protected Slider armorIndicator;
 
-    public virtual void UpdateName(string name)
-    {
-    }
+    public abstract void UpdateName(string name);
 
     public virtual void SetMaxHealth(int maxHealth)
     {
@@ -32,4 +30,6 @@ public class BaseHUDManager : MonoBehaviour
     {
         armorIndicator.value = armor;
     }
+
+    public abstract void UpdateSpeed(float speed);
 }

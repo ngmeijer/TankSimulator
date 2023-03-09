@@ -23,6 +23,6 @@ MonoBehaviour:
   TankMass: 1000
   FireForce: 90000
   ReloadTime: 2
-  AmmoCount: 5
+  AmmoCount: 3989
   MaxArmor: 100
   MaxHealth: 650

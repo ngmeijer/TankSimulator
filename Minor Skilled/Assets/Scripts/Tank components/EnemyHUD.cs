@@ -22,4 +22,9 @@ public class EnemyHUD : BaseHUDManager
     {
         enemyName.SetText(name);
     }
+
+    public override void UpdateSpeed(float speed)
+    {
+        
+    }
 }

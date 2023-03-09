@@ -32,10 +32,20 @@ public class PlayerHUD : BaseHUDManager
         }
     }
 
+    public override void UpdateName(string name)
+    {
+        
+    }
+
     public override void SetMaxHealth(int maxHealth)
     {
         base.SetMaxHealth(maxHealth);
         healthIndicator.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, maxHealth);
+    }
+
+    public override void UpdateSpeed(float speed)
+    {
+        tankSpeedIndicator.SetText($"{speed}km/h");
     }
 
     public void UpdateCrosshairYPosition(float offsetY)

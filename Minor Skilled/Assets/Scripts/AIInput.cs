@@ -25,8 +25,6 @@ public class AIInput : MonoBehaviour
         yield return new WaitForSeconds(componentManager.Properties.ReloadTime);
         
         shootComponent.FireShell();
-        componentManager.eventManager.OnShellFired?.Invoke("Enemy has fired a shell!");
-
         StartCoroutine(testShoot());
     }
 }

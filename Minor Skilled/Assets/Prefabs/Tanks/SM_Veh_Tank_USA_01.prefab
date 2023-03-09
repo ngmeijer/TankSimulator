@@ -57,17 +57,17 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 589670174}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.0000000035465173}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 667280417}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.25}
-  m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: 0, y: 0.000000029802322}
-  m_SizeDelta: {x: 0, y: 0.55}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -0.00000023841858, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &589670177
 CanvasRenderer:
@@ -143,8 +143,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.45000005}
-  m_SizeDelta: {x: 0, y: 1.1}
+  m_AnchoredPosition: {x: 0, y: -0.4}
+  m_SizeDelta: {x: 0, y: 0.7911}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &667280418
 MonoBehaviour:
@@ -254,7 +254,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1115229862}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.00000053644175}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -266,8 +266,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 6, y: 2}
+  m_AnchoredPosition: {x: -0.017, y: -0.1912}
+  m_SizeDelta: {x: 6, y: 1.6176}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &1115229866
 Canvas:
@@ -354,7 +354,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1366580692}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.0000000035465173}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -362,10 +362,10 @@ RectTransform:
   m_Father: {fileID: 667280417}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.25}
-  m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: 0, y: -0.000000029802322}
-  m_SizeDelta: {x: 0, y: 0.55}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -0.00000023841858, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1938497071
 GameObject:
@@ -3006,39 +3006,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Properties: {fileID: 11400000, guid: ce3145c9f7a5d3a49a0b2f4b5616eedf, type: 2}
-  TankRB: {fileID: 1629477343}
-  entityHUD: {fileID: 1629477352}
-  eventManager: {fileID: 1629477346}
+  EntityHUD: {fileID: 1629477352}
   HasDied: 0
-  LeftTrackWheelColliders:
-  - {fileID: 8888301459272059265}
-  - {fileID: 4896940684887554692}
-  - {fileID: 3438418816017547396}
-  - {fileID: 9029697590230879850}
-  - {fileID: 8967157388979792840}
-  - {fileID: 2095793640343180832}
-  - {fileID: 5646598353454267361}
-  - {fileID: 2728359456865917557}
-  - {fileID: 6746186675408801832}
-  RightTrackWheelColliders:
-  - {fileID: 5219758377972899605}
-  - {fileID: 1286770819024684834}
-  - {fileID: 5584742417100790321}
-  - {fileID: 5798064369744393960}
-  - {fileID: 7913170069940501785}
-  - {fileID: 6663285448421114462}
-  - {fileID: 3047990136741815300}
-  - {fileID: 8823853910157423619}
-  - {fileID: 2831365946989648762}
-  LeftTrackRenderer: {fileID: 6574721253826121299}
-  RightTrackRenderer: {fileID: 6573360437520440517}
-  CenterOfMass: {fileID: 1966468901}
-  TurretTransform: {fileID: 6592327624090865561}
-  BarrelTransform: {fileID: 6584859959772556609}
-  ShellSpawnpoint: {fileID: 126113170}
-  VFXPivot: {fileID: 979110557}
-  BarrelEulerAngles: {x: 0, y: 0, z: 0}
-  TurretEulerAngles: {x: 0, y: 0, z: 0}
 --- !u!114 &1629477344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3051,6 +3020,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c4731fe8ccc7424ea6e0d4ad8d86d13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShellSpawnpoint: {fileID: 126113170}
+  VFXPivot: {fileID: 979110557}
   fireExplosion: {fileID: 0}
   _shellPrefabs:
   - {fileID: 7496617927495930269, guid: d1b96fcc729323c408a29b018f8687d7, type: 3}

@@ -3,6 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ShellType
+{
+    
+}
+
 public class Shell : MonoBehaviour
 {
     [SerializeField] private ParticleSystem explosion;
