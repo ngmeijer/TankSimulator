@@ -26,3 +26,5 @@ MonoBehaviour:
   AmmoCount: 10
   MaxArmor: 100
   MaxHealth: 500
+  OnShellFired: The enemy is targeting us!
+  OnEntityDeath: One enemy less.

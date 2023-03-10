@@ -7,6 +7,7 @@ public class TankProperties : ScriptableObject
     public float Acceleration = 1500f;
     public float ReverseAcceleration = 500f;
     public float SingleTrackSpeed = 2000f;
+    public float SlowDownForce;
     public float MaxSpeed = 20f;
     public float HullRotateSpeed = 15f;
     public float TurretRotateSpeed = 60f;
@@ -18,4 +19,8 @@ public class TankProperties : ScriptableObject
     public int AmmoCount = 5;
     public int MaxArmor = 100;
     public int MaxHealth = 50;
+
+    [Header("Popup content")] 
+    public string OnShellFired;
+    public string OnEntityDeath;
 }

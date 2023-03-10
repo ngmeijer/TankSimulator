@@ -57,7 +57,7 @@ public class PlayerHUD : BaseHUDManager
         crosshair.transform.localPosition = tempPos;
     }
 
-    public void UpdateDistanceUI(float trackDistance)
+    public override void UpdateDistanceUI(float trackDistance)
     {
         if (trackDistance == 0)
         {
@@ -72,12 +72,12 @@ public class PlayerHUD : BaseHUDManager
         tankSpeedIndicator.SetText($"{speed} km/h");
     }
 
-    public void UpdateAmmoCountUI(float ammoCount)
+    public override void UpdateAmmoCountUI(int ammoCount)
     {
         ammoCountIndicator.SetText($"{ammoCount}");
     }
 
-    public void UpdateShellTypeUI(string type)
+    public override  void UpdateShellTypeUI(string type)
     {
         shellTypeIndicator.SetText(type);
     }

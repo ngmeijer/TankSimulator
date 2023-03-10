@@ -8,16 +8,16 @@ public class EventManager : MonoBehaviour
     public GameEvent OnTankComponentHit = new GameEvent();
     public UnityEvent<TankComponentManager> OnEntityDeath = new UnityEvent<TankComponentManager>();
 
-    private PopupManager popupManager;
+    private PopupManager _popupManager;
     
     private void Awake()
     {
-        popupManager = FindObjectOfType<PopupManager>();
+        _popupManager = FindObjectOfType<PopupManager>();
     }
 
     private void Start()
     {
-        OnShellFired.AddListener((content) => popupManager.CreatePopup(content));
-        OnTankComponentHit.AddListener((content) => popupManager.CreatePopup(content));
+        OnShellFired.AddListener((content) => _popupManager.CreatePopup(content));
+        OnTankComponentHit.AddListener((content) => _popupManager.CreatePopup(content));
     }
 }

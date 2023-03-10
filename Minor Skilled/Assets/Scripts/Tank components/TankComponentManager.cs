@@ -9,15 +9,18 @@ public class TankComponentManager : MonoBehaviour
     public TankProperties Properties;
     public BaseHUDManager EntityHUD;
     public EventManager EventManager { get; private set; }
-    private MoveComponent moveComponent;
-    private TurretControlComponent turretControlComponent;
+    public MoveComponent MoveComponent { get; private set; }
+    public TurretControlComponent TurretControlComponent { get; private set; }
+    public BaseShootComponent ShootComponent { get; private set; }
 
     public bool HasDied;
 
     private void Awake()
     {
-        moveComponent = GetComponent<MoveComponent>();
-        turretControlComponent = GetComponent<TurretControlComponent>();
+        MoveComponent = GetComponent<MoveComponent>();
+        TurretControlComponent = GetComponent<TurretControlComponent>();
+        ShootComponent = GetComponent<BaseShootComponent>();
+        
         EventManager = GetComponent<EventManager>();
     }
 
@@ -26,13 +29,13 @@ public class TankComponentManager : MonoBehaviour
         EntityHUD.UpdateName(Properties.TankName);
     }
 
-    public Vector3 GetCurrentBarrelDirection() => turretControlComponent.GetCurrentBarrelDirection();
-    public Vector3 GetBarrelEuler() => turretControlComponent.GetBarrelEuler();
+    public Vector3 GetCurrentBarrelDirection() => TurretControlComponent.GetCurrentBarrelDirection();
+    public Vector3 GetBarrelEuler() => TurretControlComponent.GetBarrelEuler();
     
     public List<WheelCollider> GetLeftWheelColliders()
     {
-        if (moveComponent != null)
-            return moveComponent.GetLeftWheelColliders();
+        if (MoveComponent != null)
+            return MoveComponent.GetLeftWheelColliders();
         
         Debug.LogError($"There is no MoveComponent attached to {this.gameObject.name}. Cannot retrieve wheels");
         return null;
@@ -40,8 +43,8 @@ public class TankComponentManager : MonoBehaviour
 
     public List<WheelCollider> GetRightWheelColliders()
     {
-        if (moveComponent != null)
-            return moveComponent.GetRightWheelColliders();
+        if (MoveComponent != null)
+            return MoveComponent.GetRightWheelColliders();
         
         Debug.LogError($"There is no MoveComponent attached to {this.gameObject.name}. Cannot retrieve wheels");
         return null;

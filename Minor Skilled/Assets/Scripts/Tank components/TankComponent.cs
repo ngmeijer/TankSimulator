@@ -2,10 +2,12 @@
 
 public class TankComponent : MonoBehaviour
 {
-    protected TankComponentManager componentManager;
+    protected TankComponentManager _componentManager;
+    protected TankProperties _properties;
     
     protected virtual void Awake()
     {
-        componentManager = GetComponent<TankComponentManager>();
+        _componentManager = GetComponent<TankComponentManager>();
+        _properties = _componentManager.Properties;
     }
 }

@@ -5,120 +5,84 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(MoveComponent))]
-public class PlayerInput : MonoBehaviour
+public class PlayerInput : TankComponent
 {
-    private float moveInput;
-    private float rotateInput;
-    private float tiltInput;
-    private float scrollInput;
-    
-    private MoveComponent moveComponent;
-    private ShootComponent shootComponent;
-    private TurretControlComponent turretControlComponent;
-    private CameraComponent cameraComponent;
-
-    private TankComponentManager componentManager;
-
-    public GameEvent OnShellFired = new GameEvent();
-
-    private PlayerHUD playerHUD;
-
-    private void Awake()
-    {
-        moveComponent = GetComponent<MoveComponent>();
-        shootComponent = GetComponent<ShootComponent>();
-        turretControlComponent = GetComponent<TurretControlComponent>();
-        cameraComponent = GetComponent<CameraComponent>();
-        componentManager = GetComponent<TankComponentManager>();
-    }
-
-    private void Start()
-    {
-        playerHUD = componentManager.EntityHUD as PlayerHUD;
-
-        playerHUD.UpdateAmmoCountUI(shootComponent.CurrentAmmoCount);
-        playerHUD.UpdateShellTypeUI(shootComponent.CurrentShellType);
-    }
+    private float _moveInput;
+    private float _rotateInput;
+    private float _tiltInput;
+    private float _scrollInput;
 
     private void Update()
     {
-        if (componentManager.HasDied) return;
-        
-        if (moveComponent != null)
-            TankTransformation();
+        if (_componentManager.HasDied) return;
 
-        if (shootComponent != null)
+        try
+        {
+            TankTransformation();
+        }
+        catch (Exception error)
+        {
+          Debug.LogError($"PlayerInput: {error}");  
+        }
+        
+        try
         {
             TankFire();
             ShellTypeSwitch();
-            playerHUD.UpdateDistanceUI(shootComponent.TrackDistance());
+        }
+        catch (Exception error)
+        {
+            Debug.LogError($"PlayerInput: {error}");  
         }
 
-        if (turretControlComponent != null)
+        try
         {
-            float turretYDelta = turretControlComponent.TiltCannon(tiltInput);
+            float turretYDelta = _componentManager.TurretControlComponent.TiltCannon(_tiltInput);
             //componentManager.HUDManager.UpdateCrosshairYPosition(turretYDelta);
             //playerHUD.SetTurretRotationUI(componentManager.TurretEulerAngles);
         }
-
-        if (cameraComponent != null)
+        catch (Exception error)
         {
-            CheckZoom();
+            Debug.LogError($"PlayerInput: {error}");  
         }
     }
 
     private void FixedUpdate()
     {
-        if (moveInput == 0 && rotateInput == 0 && moveComponent.GetTankVelocity() > 0)
+        if (_moveInput == 0 && _rotateInput == 0 && _componentManager.MoveComponent.GetTankVelocity() > 0)
         {
-            moveComponent.SlowTankDown();
+            _componentManager.MoveComponent.SlowTankDown();
         }
     }
 
     private void TankTransformation()
     {
-        moveInput = Input.GetAxis("Vertical");
-        rotateInput = Input.GetAxis("Horizontal");
-        tiltInput = Input.GetAxis("Mouse Y");
+        _moveInput = Input.GetAxis("Vertical");
+        _rotateInput = Input.GetAxis("Horizontal");
+        _tiltInput = Input.GetAxis("Mouse Y");
         
-        if (moveInput > 0 && rotateInput == 0)
-            moveComponent.MoveForward(moveInput);
+        if (_moveInput > 0 && _rotateInput == 0)
+            _componentManager.MoveComponent.MoveForward(_moveInput);
 
-        if (moveInput < 0 && rotateInput == 0)
-            moveComponent.MoveBackward(moveInput);
+        if (_moveInput < 0 && _rotateInput == 0)
+            _componentManager.MoveComponent.MoveBackward(_moveInput);
 
-        if(rotateInput < 0 || rotateInput > 0)
-            moveComponent.RotateTank(rotateInput, moveInput);
+        if(_rotateInput < 0 || _rotateInput > 0)
+            _componentManager.MoveComponent.RotateTank(_rotateInput, _moveInput);
     }
 
     private void TankFire()
     {
-        if (Input.GetMouseButtonDown(0) && shootComponent.CanFire && shootComponent.HasAmmo())
-        {
-            componentManager.EventManager.OnShellFired?.Invoke("Shell fired. Reloading!");
-            shootComponent.FireShell();
-            playerHUD.UpdateAmmoCountUI(shootComponent.CurrentAmmoCount);
-            if (shootComponent.CurrentAmmoCount > 0)
-                StartCoroutine(playerHUD.UpdateReloadUI(componentManager.Properties.ReloadTime));
-        }
+        if (Input.GetAxis("Fire1") == 0) return;
+        if (!_componentManager.ShootComponent.CanFire) return;
+        
+        _componentManager.ShootComponent.FireShell();
     }
     
     private void ShellTypeSwitch()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            shootComponent.SwitchShell();
-            playerHUD.UpdateShellTypeUI(shootComponent.CurrentShellType);
-        }
-    }
-    
-    private void CheckZoom()
-    {
-        if (Input.GetMouseButtonDown(1))
-        {
-            cameraComponent.RightMBADSActivate();
-        }
-        scrollInput = Input.GetAxis("Mouse ScrollWheel");
-        //cameraComponent.ZoomADSCamera(scrollInput);
+        if (!Input.GetKeyDown(KeyCode.Tab)) return;
+        
+        _componentManager.ShootComponent.SwitchShell();
     }
 }

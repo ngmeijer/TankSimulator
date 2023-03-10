@@ -15,10 +15,11 @@ MonoBehaviour:
   TankName: Player
   Acceleration: 1000
   ReverseAcceleration: 500
-  SingleTrackSpeed: 2000
+  SingleTrackSpeed: 750
+  SlowDownForce: 800
   MaxSpeed: 8
-  HullRotateSpeed: 20
-  TurretRotateSpeed: 60
+  HullRotateSpeed: 35
+  TurretRotateSpeed: 30
   TurretTiltSpeed: 80
   TankMass: 1000
   FireForce: 90000
@@ -26,3 +27,5 @@ MonoBehaviour:
   AmmoCount: 3989
   MaxArmor: 100
   MaxHealth: 650
+  OnShellFired: Shell fired! Reloading
+  OnEntityDeath: Mission failed.

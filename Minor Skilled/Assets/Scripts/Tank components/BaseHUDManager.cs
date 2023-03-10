@@ -31,5 +31,19 @@ public abstract class BaseHUDManager : MonoBehaviour
         armorIndicator.value = armor;
     }
 
-    public abstract void UpdateSpeed(float speed);
+    public virtual void UpdateSpeed(float speed)
+    {
+    }
+
+    public virtual void UpdateAmmoCountUI(int ammoCount)
+    {
+    }
+
+    public virtual void UpdateShellTypeUI(string shellType)
+    {
+    }
+
+    public virtual void UpdateDistanceUI(float targetDistance)
+    {
+    }
 }

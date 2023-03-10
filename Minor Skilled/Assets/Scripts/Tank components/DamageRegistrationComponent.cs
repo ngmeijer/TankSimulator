@@ -16,28 +16,28 @@ public enum TankParts
 
 public class DamageRegistrationComponent : TankComponent
 {
-    public int Health { get; private set; }
-    public int Armor { get; private set; }
-    
-    public int MaxArmor { get; private set; }
-    public int MaxHealth { get; private set; }
+    private int _health;
+    private int _armor;
 
-    private GameObject lastColliderHit;
+    private int _maxArmor;
+    private int _maxHealth;
 
-    [SerializeField] private GameObject destroyedTankGFX;
-    [SerializeField] private GameObject functioningTankGFX;
-    [SerializeField] private Camera destroyedTankCamera;
-    [SerializeField] private GameObject deathVFX;
+    private GameObject _lastColliderHit;
+
+    [SerializeField] private GameObject _destroyedTankGFX;
+    [SerializeField] private GameObject _functioningTankGFX;
+    [SerializeField] private Camera _destroyedTankCamera;
+    [SerializeField] private GameObject _deathVFX;
 
     private void Start()
     {
-        MaxHealth = componentManager.Properties.MaxHealth;
-        MaxArmor = componentManager.Properties.MaxArmor;
+        _maxHealth = _componentManager.Properties.MaxHealth;
+        _maxArmor = _componentManager.Properties.MaxArmor;
         
-        Health = MaxHealth;
-        Armor = MaxArmor;
+        _health = _maxHealth;
+        _armor = _maxArmor;
         
-        componentManager.EntityHUD.SetMaxHealth(MaxHealth);
+        _componentManager.EntityHUD.SetMaxHealth(_maxHealth);
         //componentManager.entityHUD.SetMaxArmor(MaxArmor);
     }
 
@@ -45,59 +45,25 @@ public class DamageRegistrationComponent : TankComponent
     {
         if (!collision.collider.CompareTag("Shell")) return;
         if (!collision.collider.TryGetComponent(out Shell shell)) return;
-        if (collision.collider.gameObject == lastColliderHit) return;
-        lastColliderHit = collision.collider.gameObject;
+        if (collision.collider.gameObject == _lastColliderHit) return;
+        _lastColliderHit = collision.collider.gameObject;
 
         UpdateHealth(shell.Damage);
-        
-        componentManager.EntityHUD.UpdateHealth(Health);
-
-        string partHit = collision.GetContact(0).thisCollider.name;
-        NotifyPopupForCollidedPart(partHit);
     }
 
     private void UpdateHealth(int damage)
     {
-        Health -= damage;
-        if (Health < 0)
-        {
-            componentManager.HasDied = true;
-            functioningTankGFX.SetActive(false);
-            destroyedTankGFX.SetActive(true);
-            if(destroyedTankCamera != null)
-                destroyedTankCamera.gameObject.SetActive(true);
-            deathVFX.SetActive(true);
-            componentManager.EventManager.OnEntityDeath?.Invoke(componentManager);
-        }
-    }
+        _health -= damage;
+        _componentManager.EntityHUD.UpdateHealth(_health);
+        if (_health >= 0) return;
 
-    private void NotifyPopupForCollidedPart(string partName)
-    {
-        string formattedPartText = "";
-        switch (partName)
-        {
-            case "HullFront":
-                formattedPartText = "The front of the hull";
-                break;
-            case "HullBack":
-                formattedPartText = "The back of the hull";
-                break;
-            case "HullLeft":
-                formattedPartText = "The left side of the hull";
-                break;
-            case "HullRight":
-                formattedPartText = "The right side of the hull";
-                break;
-            case "Turret":
-                formattedPartText = "The turret";
-                break;
-            case "LeftTrack":
-                formattedPartText = "The left tracks";
-                break;
-            case "RightTrack":
-                formattedPartText = "The right tracks";
-                break;
-        }
-        componentManager.EventManager.OnTankComponentHit.Invoke($"{formattedPartText} of {componentManager.Properties.TankName} has been hit!");
+        _componentManager.EventManager.OnTankComponentHit.Invoke(_properties.OnEntityDeath);
+        _componentManager.HasDied = true;
+        _functioningTankGFX.SetActive(false);
+        _destroyedTankGFX.SetActive(true);
+        if(_destroyedTankCamera != null)
+            _destroyedTankCamera.gameObject.SetActive(true);
+        _deathVFX.SetActive(true);
+        _componentManager.EventManager.OnEntityDeath?.Invoke(_componentManager);
     }
 }

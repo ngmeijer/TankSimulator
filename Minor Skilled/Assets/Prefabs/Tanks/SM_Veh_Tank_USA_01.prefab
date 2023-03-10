@@ -618,6 +618,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2618428110223828359}
+  - component: {fileID: 103460727}
   m_Layer: 0
   m_Name: Left track
   m_TagString: Untagged
@@ -650,6 +651,19 @@ Transform:
   m_Father: {fileID: 1153861349145567342}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &103460727
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2596001847813140635}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.8982258, y: 0.65715075, z: 6.61911}
+  m_Center: {x: -1.524529, y: 0.33353162, z: -0.018617153}
 --- !u!1 &3329834886063455794
 GameObject:
   m_ObjectHideFlags: 0
@@ -698,7 +712,7 @@ GameObject:
   - component: {fileID: 1999733467784087976}
   - component: {fileID: 3151414243612259745}
   m_Layer: 0
-  m_Name: GFX
+  m_Name: GFX (Hull)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -986,6 +1000,7 @@ GameObject:
   - component: {fileID: 6592455073790599037}
   - component: {fileID: 6564736198986571441}
   - component: {fileID: 6574721253826121299}
+  - component: {fileID: 1188092112}
   m_Layer: 0
   m_Name: SM_Veh_Tank_USA_Track_L
   m_TagString: Untagged
@@ -1058,6 +1073,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &1188092112
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6586539942204460977}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300038, guid: 77c74d23b7da4d64cb720d0a2e62f86e, type: 3}
 --- !u!1 &6586547249397923157
 GameObject:
   m_ObjectHideFlags: 0
@@ -3020,9 +3049,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c4731fe8ccc7424ea6e0d4ad8d86d13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShellSpawnpoint: {fileID: 126113170}
-  VFXPivot: {fileID: 979110557}
-  fireExplosion: {fileID: 0}
+  _shellSpawnpoint: {fileID: 126113170}
+  _VFXPivot: {fileID: 979110557}
+  _fireExplosion: {fileID: 0}
   _shellPrefabs:
   - {fileID: 7496617927495930269, guid: d1b96fcc729323c408a29b018f8687d7, type: 3}
   - {fileID: 7587118454724400453, guid: 5cd1a1d4e085d424eb7253c22f61ae02, type: 3}
@@ -3072,10 +3101,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d17ea774d8e0cdc41a168904ac95902a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyedTankGFX: {fileID: 5598812001515690012}
-  functioningTankGFX: {fileID: 3804405257550709643}
-  destroyedTankCamera: {fileID: 0}
-  deathVFX: {fileID: 3329834886063455794}
+  _destroyedTankGFX: {fileID: 5598812001515690012}
+  _functioningTankGFX: {fileID: 3804405257550709643}
+  _destroyedTankCamera: {fileID: 0}
+  _deathVFX: {fileID: 3329834886063455794}
 --- !u!114 &1629477352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3219,7 +3248,7 @@ GameObject:
   - component: {fileID: 6573151473332674765}
   - component: {fileID: 6596402722093915913}
   m_Layer: 0
-  m_Name: SM_Veh_Tank_USA_Turret_01
+  m_Name: Turret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3616,6 +3645,7 @@ GameObject:
   - component: {fileID: 6584844794025250987}
   - component: {fileID: 6564956051366097807}
   - component: {fileID: 6573360437520440517}
+  - component: {fileID: 2101430278}
   m_Layer: 0
   m_Name: SM_Veh_Tank_USA_Track_R
   m_TagString: Untagged
@@ -3688,6 +3718,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &2101430278
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6588301843280184293}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300040, guid: 77c74d23b7da4d64cb720d0a2e62f86e, type: 3}
 --- !u!1 &6588318573439764065
 GameObject:
   m_ObjectHideFlags: 0
