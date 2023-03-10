@@ -138,12 +138,15 @@ public class TankPropertyEditor : EditorWindow
     {
         _selectedTank.Properties = _newPropertyData;
 
-        foreach (var wheel in _selectedTank.LeftTrackWheelColliders)
+        List<WheelCollider> leftColliders = _selectedTank.GetLeftWheelColliders();
+        List<WheelCollider> rightColliders = _selectedTank.GetRightWheelColliders();
+
+        foreach (var wheel in leftColliders)
         {
             AssignValuesToWheel(wheel);
         }
         
-        foreach (var wheel in _selectedTank.RightTrackWheelColliders)
+        foreach (var wheel in rightColliders)
         {
             AssignValuesToWheel(wheel);
         }
@@ -194,6 +197,8 @@ public class TankPropertyEditor : EditorWindow
         _selectedTank = _foundTanks[index];
         _newPropertyData = _selectedTank.Properties;
 
+        if (_retrievedPropertyData == null) return;
+
         acceleration = _retrievedPropertyData.Acceleration;
         singleTrackAcceleration = _retrievedPropertyData.SingleTrackSpeed;
         maxSpeed = _retrievedPropertyData.MaxSpeed;
@@ -204,8 +209,8 @@ public class TankPropertyEditor : EditorWindow
         maxArmor = _retrievedPropertyData.MaxArmor;
 
         //Wheel
-        if (_selectedTank.LeftTrackWheelColliders.Count == 0) return;
-        tankWheelProps = _selectedTank.LeftTrackWheelColliders[0];
+        if (_selectedTank.GetLeftWheelColliders().Count == 0) return;
+        tankWheelProps = _selectedTank.GetLeftWheelColliders()[0];
         wheelMass = tankWheelProps.mass;
         wheelRadius = tankWheelProps.radius;
         wheelDampingRate = tankWheelProps.wheelDampingRate;
