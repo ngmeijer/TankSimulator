@@ -10,9 +10,15 @@ public class TurretControlComponent : TankComponent
     
     private Vector3 _barrelEulerAngles;      
     private Vector3 _turretEulerAngles;    
-    private Transform _turretTransform;       
-    private Transform _barrelTransform;    
-    
+    [SerializeField] private Transform _turretTransform;       
+    [SerializeField] private Transform _barrelTransform;
+
+    private void Start()
+    {
+        Debug.Assert(_turretTransform != null, $"TurretTransform on '{gameObject.name}' is null.");
+        Debug.Assert(_barrelTransform != null, $"BarrelTransform on '{gameObject.name}' is null.");
+    }
+
     private void Update()
     {
         HandleTurretRotation();

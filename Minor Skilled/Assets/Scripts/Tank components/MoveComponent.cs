@@ -79,27 +79,6 @@ public class MoveComponent : TankComponent
         _rightTrackRenderer.material.mainTextureOffset = new Vector2(0, offset);
     }
 
-    public void MoveForward(float inputValue)
-    {
-        if (_moveDirection != MoveDirection.Forward)
-        {
-            _moveDirection = MoveDirection.Forward;
-        }
-
-        MoveTank(inputValue);
-    }
-
-    public void MoveBackward(float inputValue)
-    {
-        if (_moveDirection != MoveDirection.Backward)
-        {
-            _moveDirection = MoveDirection.Backward;
-            SetMotorTorque(0f, 0f);
-        }
-
-        MoveTank(inputValue);
-    }
-
     public void SetMotorTorque(float leftTrackTorque, float rightTrackTorque)
     {
         foreach (var collider in LeftTrackWheelColliders)
@@ -139,7 +118,7 @@ public class MoveComponent : TankComponent
             SetMotorTorque(_currentAcceleration, 0);
     }
 
-    private void MoveTank(float inputValue)
+    public void MoveTank(float inputValue)
     {
         if (CheckIfAtMaxSpeed()) return;
         
