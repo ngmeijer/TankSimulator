@@ -21,9 +21,17 @@ public class MoveComponent : TankComponent
     [SerializeField] private MeshRenderer _leftTrackRenderer;    
     [SerializeField] private MeshRenderer _rightTrackRenderer;
     [SerializeField] private float _kickbackForce = 9000f;
-
+    private int _gearIndex = 0;
+    private int _wheelCount;
+    private float _rpm;
+    private float _motorTorque;
+    
     public List<WheelCollider> LeftTrackWheelColliders = new List<WheelCollider>();  
     public List<WheelCollider> RightTrackWheelColliders = new List<WheelCollider>();
+
+    private float _hudCurrentUpdateTime;
+    private float _hudMaxUpdateTime = 0.2f;
+    private float _maxSpeed;
     
     protected override void Awake()
     {
@@ -35,15 +43,24 @@ public class MoveComponent : TankComponent
     {
         _componentManager.EventManager.OnShellFired.AddListener((content) => TankKickbackOnShellFire());
         _tankRB.centerOfMass = _centerOfMass.localPosition;
+        _tankRB.mass = _properties.TankMass;
+        _maxSpeed = _properties.MaxSpeed;
+        _wheelCount = LeftTrackWheelColliders.Count + RightTrackWheelColliders.Count;
     }
 
     private void Update()
     {
         _tankRB.velocity =
-            Vector3.ClampMagnitude(_tankRB.velocity, _componentManager.Properties.MaxSpeed);
+            Vector3.ClampMagnitude(_tankRB.velocity, _maxSpeed);
         AnimateTankTracks(GetTankVelocity());
-        
-        _componentManager.EntityHUD.UpdateSpeed((float)Math.Round(GetTankVelocity(), 2));
+
+        _hudCurrentUpdateTime += Time.deltaTime;
+        if (_hudCurrentUpdateTime >= _hudMaxUpdateTime)
+        {
+            _hudCurrentUpdateTime = 0;
+            _componentManager.EntityHUD.UpdateSpeed((float)Math.Round(GetTankVelocity(), 1));
+            _componentManager.EntityHUD.UpdateGearData(_gearIndex, (int)_rpm, (int)_motorTorque);
+        }
     }
     
     private void OnDrawGizmos()
@@ -121,11 +138,18 @@ public class MoveComponent : TankComponent
     public void MoveTank(float inputValue)
     {
         if (CheckIfAtMaxSpeed()) return;
+
+        if (_gearIndex == 0) return;
+
+        if (inputValue > 0)
+        {
+            
+        }
         
-        if(inputValue > 0)
-            _currentAcceleration = _componentManager.Properties.Acceleration * inputValue;
-        if(inputValue < 0)
-            _currentAcceleration = _componentManager.Properties.ReverseAcceleration * inputValue;
+        // if(inputValue > 0)
+        //     _currentAcceleration = _componentManager.Properties.Acceleration * inputValue;
+        // if(inputValue < 0)
+        //     _currentAcceleration = _componentManager.Properties.ReverseAcceleration * inputValue;
         SetMotorTorque(_currentAcceleration, _currentAcceleration);
     }
 
@@ -147,5 +171,60 @@ public class MoveComponent : TankComponent
     
     public List<WheelCollider> GetLeftWheelColliders() => LeftTrackWheelColliders;       
                                                                                       
-    public List<WheelCollider> GetRightWheelColliders() => RightTrackWheelColliders;     
+    public List<WheelCollider> GetRightWheelColliders() => RightTrackWheelColliders;
+
+    private float CalculateRPM()
+    {
+        float minRPM = 750f;
+        float wheelRPM = GetWheelRPM() / _wheelCount;
+        float gearValue = _properties.GearRatios.Evaluate(_gearIndex);
+        float motorRPM = minRPM + (wheelRPM * _properties.FinalDriveRatio * gearValue);
+        //Debug.Log($"Dynamic RPM: {dynamicRPM}");
+        //Debug.Log($"Final drive ratio: {_properties.FinalDriveRatio}");
+        //Debug.Log($"Calculation: {minRPM} + ({wheelRPM} * {_properties.FinalDriveRatio} * {gearValue}) = {motorRPM}");
+
+        return motorRPM;
+    }
+
+    private float GetWheelRPM()
+    {
+        float totalRPM = 0;
+        
+        foreach (var wheel in RightTrackWheelColliders)
+        {
+            totalRPM += (Mathf.Abs(wheel.rpm));
+        }
+
+        foreach (var wheel in LeftTrackWheelColliders)
+        {
+            totalRPM += (Mathf.Abs(wheel.rpm));
+        }
+
+        return totalRPM;
+    }
+
+    public void CalculateTorque(float inputValue)
+    {
+        _rpm = CalculateRPM();
+        _motorTorque = _properties.MotorTorque.Evaluate(_rpm) * _properties.GearRatios.Evaluate(_gearIndex) * _properties.FinalDriveRatio * inputValue;
+        float torquePerWheel = _motorTorque / _wheelCount;
+        
+        Debug.Log(torquePerWheel);
+        
+        SetMotorTorque(torquePerWheel, torquePerWheel);
+    }
+
+    public void IncreaseGear()
+    {
+        _gearIndex++;
+        if (_gearIndex > 4)
+            _gearIndex = 4;
+    }
+
+    public void DecreaseGear()
+    {
+        _gearIndex--;
+        if (_gearIndex < -1)
+            _gearIndex = -1;
+    }
 }

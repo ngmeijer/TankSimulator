@@ -13,6 +13,7 @@ public class Shell : MonoBehaviour
     [SerializeField] private ParticleSystem explosion;
     [SerializeField] private GameObject GFX;
     [SerializeField] private Rigidbody rb;
+    [SerializeField] private Collider _collider;
     [SerializeField] private string shellType;
     [SerializeField] private float forceOnImpact = 10000;
     [SerializeField] private Transform centerOfMass;
@@ -47,6 +48,8 @@ public class Shell : MonoBehaviour
         rb.AddExplosionForce(forceOnImpact, transform.position, 12);
         GFX.SetActive(false);
         rb.isKinematic = true;
+        _collider.enabled = false;
+        
         GFX.transform.localPosition = Vector3.zero;
         GFX.transform.localRotation = Quaternion.identity;
     }

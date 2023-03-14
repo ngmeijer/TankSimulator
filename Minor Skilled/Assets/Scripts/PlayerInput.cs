@@ -8,9 +8,10 @@ using UnityEngine.Events;
 public class PlayerInput : TankComponent
 {
     private float _moveInput;
-    private float _rotateInput;
+    private float _hullRotateInput;
     private float _tiltInput;
     private float _scrollInput;
+    private float _turretRotateInput;
 
     private CameraComponent _cameraComponent;
 
@@ -26,24 +27,28 @@ public class PlayerInput : TankComponent
         if (_componentManager.HasDied) return;
 
         GetInputValues();
-        TankTransformation();
-        // CameraTranslation();
         TankFire();
         ShellTypeSwitch();
-
-        float turretYDelta = _componentManager.TurretControlComponent.TiltCannon(_tiltInput);
+        IncreaseGear();
+        DecreaseGear();
+        _componentManager.TurretControlComponent.OffsetCannonRotationOnTankRotation(_hullRotateInput, _turretRotateInput);
+        _componentManager.TurretControlComponent.HandleTurretRotation(_turretRotateInput);
+        _componentManager.TurretControlComponent.TiltCannon(_tiltInput);
+        _cameraComponent.OffsetCameraOnCannonTilt(_tiltInput);
         //componentManager.HUDManager.UpdateCrosshairYPosition(turretYDelta);
         //playerHUD.SetTurretRotationUI(componentManager.TurretEulerAngles);
     }
 
     private void LateUpdate()
     {
-        CameraTranslation();
+        _cameraComponent.UpdateCameraPosition();
     }
 
     private void FixedUpdate()
     {
-        if (_moveInput == 0 && _rotateInput == 0 && _componentManager.MoveComponent.GetTankVelocity() > 0)
+        TankTransformation();
+
+        if (_moveInput == 0 && _hullRotateInput == 0 && _componentManager.MoveComponent.GetTankVelocity() > 0)
         {
             _componentManager.MoveComponent.SlowTankDown();
         }
@@ -52,21 +57,18 @@ public class PlayerInput : TankComponent
     private void GetInputValues()
     {
         _moveInput = Input.GetAxis("Vertical");
-        _rotateInput = Input.GetAxis("Horizontal");
+        _hullRotateInput = Input.GetAxis("Horizontal");
         _tiltInput = Input.GetAxis("Mouse Y");
-    }
-
-    private void CameraTranslation()
-    {
-        _cameraComponent.UpdateCameraPosition(_moveInput);
+        _turretRotateInput = Input.GetAxis("Mouse X");
     }
 
     private void TankTransformation()
     {
-        _componentManager.MoveComponent.MoveTank(_moveInput);
-
-        if (_rotateInput < 0 || _rotateInput > 0)
-            _componentManager.MoveComponent.RotateTank(_rotateInput, _moveInput);
+        //_componentManager.MoveComponent.MoveTank(_moveInput);
+        _componentManager.MoveComponent.CalculateTorque(_moveInput);
+        
+        if (_hullRotateInput < 0 || _hullRotateInput > 0)
+            _componentManager.MoveComponent.RotateTank(_hullRotateInput, _moveInput);
     }
 
     private void TankFire()
@@ -82,5 +84,19 @@ public class PlayerInput : TankComponent
         if (!Input.GetKeyDown(KeyCode.Tab)) return;
 
         _componentManager.ShootComponent.SwitchShell();
+    }
+
+    private void IncreaseGear()
+    {
+        if (!Input.GetKeyDown(KeyCode.LeftShift)) return;
+
+        _componentManager.MoveComponent.IncreaseGear();
+    }
+
+    private void DecreaseGear()
+    {
+        if (!Input.GetKeyDown(KeyCode.LeftAlt)) return;
+
+        _componentManager.MoveComponent.DecreaseGear();
     }
 }

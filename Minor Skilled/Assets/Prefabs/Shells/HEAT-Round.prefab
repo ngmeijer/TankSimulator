@@ -81,9 +81,15 @@ MonoBehaviour:
   explosion: {fileID: 0}
   GFX: {fileID: 1823160039753782395}
   rb: {fileID: 6711160341759160937}
+  _collider: {fileID: 64980254955772296}
   shellType: High Explosive Anti Tank (HEAT)
   forceOnImpact: 10000
   centerOfMass: {fileID: 3952677336946714705}
+  Damage: 0
+  AbsoluteArmorPenetration: 0
+  RelativeArmorPenetration: 0
+  CriticalChance: 0
+  CriticalDamageMultiplier: 0
 --- !u!1 &1823160039753782395
 GameObject:
   m_ObjectHideFlags: 0

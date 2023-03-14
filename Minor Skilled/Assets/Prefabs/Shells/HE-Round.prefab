@@ -82,6 +82,7 @@ MonoBehaviour:
   explosion: {fileID: 5744542405290620739}
   GFX: {fileID: 6428007088455408325}
   rb: {fileID: 8452314821403775366}
+  _collider: {fileID: 64402201878541646}
   shellType: High Explosive (HE)
   forceOnImpact: 4000
   centerOfMass: {fileID: 1757428443129361425}

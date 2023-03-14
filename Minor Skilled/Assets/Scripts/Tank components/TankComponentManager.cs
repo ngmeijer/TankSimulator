@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteAlways]
 public class TankComponentManager : MonoBehaviour
 {
     public TankProperties Properties;

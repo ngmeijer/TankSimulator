@@ -13,14 +13,153 @@ MonoBehaviour:
   m_Name: PlayerProperties
   m_EditorClassIdentifier: 
   TankName: Player
-  Acceleration: 1000
-  ReverseAcceleration: 500
+  Acceleration: 1600
+  MotorTorque:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -1
+      value: -1
+      inSlope: 1.0254085
+      outSlope: 1.0254085
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: -0.009422366
+      value: 0.015746713
+      inSlope: 1.9858216
+      outSlope: 1.9858216
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.003469
+      value: 2.9999626
+      inSlope: 0.9698693
+      outSlope: 0.9698693
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 3.0089605
+      value: 0.9814433
+      inSlope: -0.32336712
+      outSlope: -0.32336712
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 3440.1873
+      value: 1237.547
+      inSlope: 0.23245057
+      outSlope: 0.23245057
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 9700.458
+      value: 1895.7474
+      inSlope: 0.013680632
+      outSlope: 0.013680632
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.13645838
+    - serializedVersion: 3
+      time: 19778.143
+      value: 1972.521
+      inSlope: -0.005841117
+      outSlope: -0.005841117
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.13733171
+      outWeight: 0.26704922
+    - serializedVersion: 3
+      time: 27019.486
+      value: 1752.7584
+      inSlope: -0.1222591
+      outSlope: -0.1222591
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.097096786
+      outWeight: 0.21576911
+    - serializedVersion: 3
+      time: 29878.049
+      value: 491.5254
+      inSlope: -0.44121233
+      outSlope: -0.44121233
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GearRatios:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -1
+      value: -1
+      inSlope: 1.0123402
+      outSlope: 1.0123402
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: -0.010123741
+      value: 0.0020915773
+      inSlope: 1.3471987
+      outSlope: 1.3471987
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.16841047
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.866025
+      value: 2.7289562
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 2.6888046
+      value: 1.6159115
+      inSlope: -0.62725675
+      outSlope: -0.62725675
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  FinalDriveRatio: 3.5
+  ReverseAcceleration: 800
   SingleTrackSpeed: 750
   SlowDownForce: 800
   MaxSpeed: 8
   HullRotateSpeed: 35
-  TurretRotateSpeed: 30
-  TurretTiltSpeed: 80
+  TurretRotateSpeed: 70
+  TurretTiltSpeed: 60
   TankMass: 1000
   FireForce: 90000
   ReloadTime: 2

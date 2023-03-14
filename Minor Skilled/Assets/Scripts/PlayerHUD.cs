@@ -10,6 +10,9 @@ public class PlayerHUD : BaseHUDManager
     [SerializeField] private Slider reloadIndicator;
     [SerializeField] private TextMeshProUGUI distanceIndicator;
     [SerializeField] private TextMeshProUGUI tankSpeedIndicator;
+    [SerializeField] private TextMeshProUGUI gearIndicator;
+    [SerializeField] private TextMeshProUGUI rpmIndicator;
+    [SerializeField] private TextMeshProUGUI torqueIndicator;
     [SerializeField] private TextMeshProUGUI ammoCountIndicator;
     [SerializeField] private TextMeshProUGUI shellTypeIndicator;
     [SerializeField] private GameObject turretRotationUI;
@@ -45,7 +48,14 @@ public class PlayerHUD : BaseHUDManager
 
     public override void UpdateSpeed(float speed)
     {
-        tankSpeedIndicator.SetText($"{speed}km/h");
+        tankSpeedIndicator.SetText($"{speed}");
+    }
+
+    public override void UpdateGearData(int gear, int rpm, int torque)
+    {
+        gearIndicator.SetText($"{gear}");
+        rpmIndicator.SetText($"{rpm}");
+        torqueIndicator.SetText($"{torque}");
     }
 
     public void UpdateCrosshairYPosition(float offsetY)

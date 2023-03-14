@@ -35,6 +35,10 @@ public abstract class BaseHUDManager : MonoBehaviour
     {
     }
 
+    public virtual void UpdateGearData(int gear, int rpm, int torque)
+    {
+    }
+
     public virtual void UpdateAmmoCountUI(int ammoCount)
     {
     }

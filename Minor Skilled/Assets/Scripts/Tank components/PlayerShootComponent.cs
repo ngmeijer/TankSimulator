@@ -16,7 +16,7 @@ public class PlayerShootComponent : BaseShootComponent
     
     protected void Update()
     {
-        _componentManager.EntityHUD.UpdateDistanceUI(TrackDistance());
+        //_componentManager.EntityHUD.UpdateDistanceUI(TrackDistance());
     }
     
     public override void FireShell()

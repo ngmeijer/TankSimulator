@@ -13,6 +13,9 @@ public class TankPropertyEditor : EditorWindow
     bool wheelsGroupEnabled;
 
     private string tankName;
+    private AnimationCurve motorTorque = AnimationCurve.Linear(0, 0, 10, 10);
+    private AnimationCurve gearRatios = AnimationCurve.Linear(0, 0, 10, 10);
+    private float finalDriveRatio;
     private float acceleration;
     private float reverseAcceleration;
     private float singleTrackAcceleration;
@@ -207,6 +210,8 @@ public class TankPropertyEditor : EditorWindow
         fireForce = _retrievedPropertyData.FireForce;
         maxHealth = _retrievedPropertyData.MaxHealth;
         maxArmor = _retrievedPropertyData.MaxArmor;
+        finalDriveRatio = _retrievedPropertyData.FinalDriveRatio;
+        
 
         //Wheel
         if (_selectedTank.GetLeftWheelColliders().Count == 0) return;
@@ -261,11 +266,14 @@ public class TankPropertyEditor : EditorWindow
                     _retrievedPropertyData, typeof(TankProperties), false) as TankProperties;
 
             //
-            _newPropertyData.Acceleration = EditorGUILayout.Slider("Acceleration", _newPropertyData.Acceleration, 0, 10000);
+            _newPropertyData.Acceleration = EditorGUILayout.Slider("Acceleration", _newPropertyData.Acceleration, 0, 50000);
+            _newPropertyData.MotorTorque = EditorGUILayout.CurveField("Motor torque", motorTorque, Color.green, new Rect(0,0, 30000, 10000));
+            _newPropertyData.GearRatios = EditorGUILayout.CurveField("Gear ratios", gearRatios, Color.green, new Rect(-1,-1, 6, 6));
+            _newPropertyData.FinalDriveRatio = EditorGUILayout.Slider("Final drive ratio", _newPropertyData.FinalDriveRatio, 0, 5);
             _newPropertyData.ReverseAcceleration = EditorGUILayout.Slider("Reverse acceleration", _newPropertyData.ReverseAcceleration, 0, 10000);
-            _newPropertyData.SingleTrackSpeed = EditorGUILayout.Slider("Single track acceleration", _newPropertyData.SingleTrackSpeed, 0, 10000);
+            _newPropertyData.SingleTrackSpeed = EditorGUILayout.Slider("Single track acceleration", _newPropertyData.SingleTrackSpeed, 0, 30000);
             _newPropertyData.MaxSpeed = EditorGUILayout.Slider("Max speed", _newPropertyData.MaxSpeed, 0, 50);
-            _newPropertyData.TankMass = EditorGUILayout.Slider("Tank mass", _newPropertyData.TankMass, 1, 10000);
+            _newPropertyData.TankMass = EditorGUILayout.Slider("Tank mass", _newPropertyData.TankMass, 1, 100000);
             _newPropertyData.ReloadTime = EditorGUILayout.Slider("Reload time", _newPropertyData.ReloadTime, 0.5f, 50f);
             _newPropertyData.FireForce = EditorGUILayout.Slider("Fire force", _newPropertyData.FireForce, 1, 100000);
             _newPropertyData.MaxHealth = EditorGUILayout.IntSlider("Max health", _newPropertyData.MaxHealth, 1, 1000);

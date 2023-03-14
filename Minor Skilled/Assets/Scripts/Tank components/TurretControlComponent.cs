@@ -19,35 +19,21 @@ public class TurretControlComponent : TankComponent
         Debug.Assert(_barrelTransform != null, $"BarrelTransform on '{gameObject.name}' is null.");
     }
 
-    private void Update()
-    {
-        HandleTurretRotation();
-        OffsetCannonRotationOnTankRotation();
-    }
-    
     private void LateUpdate()                                        
     {                                                                
         _barrelTransform.localEulerAngles  = _barrelEulerAngles;        
         _turretTransform.localEulerAngles = _turretEulerAngles;        
     }                                                                
 
-    private void HandleTurretRotation()
+    public void HandleTurretRotation(float turretRotationInput)
     {
-        float xRotateInput = Input.GetAxis("Mouse X");
-
-        _turretEulerAngles += new Vector3(0, xRotateInput, 0) * (Time.deltaTime * _componentManager.Properties.TurretRotateSpeed);
+        _turretEulerAngles += new Vector3(0, turretRotationInput, 0) * (Time.deltaTime * _componentManager.Properties.TurretRotateSpeed);
     }
 
-    private void OffsetCannonRotationOnTankRotation()
+    public void OffsetCannonRotationOnTankRotation(float hullRotateInput, float turretRotateInput)
     {
-        float moveInput = Input.GetAxis("Vertical");
-        float hullRotateInput = Input.GetAxis("Horizontal");
-        float xRotateInput = Input.GetAxis("Mouse X");
-
-        if (moveInput == 0 && hullRotateInput == 0) return;
-
         float offsetHullRotation = hullRotateInput * _componentManager.Properties.HullRotateSpeed;
-        float turretRotation = xRotateInput * _componentManager.Properties.TurretRotateSpeed;
+        float turretRotation = turretRotateInput * _componentManager.Properties.TurretRotateSpeed;
         _turretEulerAngles += new Vector3(0, turretRotation - offsetHullRotation) * Time.deltaTime;
     }
 

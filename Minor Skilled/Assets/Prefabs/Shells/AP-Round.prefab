@@ -81,9 +81,15 @@ MonoBehaviour:
   explosion: {fileID: 0}
   GFX: {fileID: 6094866727484375257}
   rb: {fileID: 8044805069707872532}
+  _collider: {fileID: 64930476549329894}
   shellType: Armor Piercing (AP)
   forceOnImpact: 10000
   centerOfMass: {fileID: 4400315637574945861}
+  Damage: 0
+  AbsoluteArmorPenetration: 0
+  RelativeArmorPenetration: 0
+  CriticalChance: 0
+  CriticalDamageMultiplier: 0
 --- !u!1 &5408039744922451758
 GameObject:
   m_ObjectHideFlags: 0

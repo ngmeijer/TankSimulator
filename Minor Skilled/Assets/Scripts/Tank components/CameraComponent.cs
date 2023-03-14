@@ -17,13 +17,17 @@ public class CameraComponent : TankComponent
 
     [Header("First person properties")] 
     [SerializeField] private Camera _firstPersonCam;
+    [SerializeField] private Transform _firstPersonPivot;
+    [SerializeField] private Transform _firstPersonCameraFocus;
 
     [Header("Third person properties")] 
     [SerializeField] private Camera _thirdPersonCam;
     [SerializeField] private Transform _thirdPersonPivot;
-    [SerializeField] private float _thirdPersonCamOffsetY;
-    [SerializeField] private Transform _cameraFocus;
+    [SerializeField] private Transform _thirdPersonCameraFocus;
+    [SerializeField] private Vector3 _cameraOffset;
+    [SerializeField] private float _distanceDamp = 10f;
 
+    private float _thirdPersonCamOffsetY;
     private Camera _currentCamera;
     private Transform _currentCameraPivot;
     private CameraMode _camMode;
@@ -41,8 +45,6 @@ public class CameraComponent : TankComponent
     private void LateUpdate()
     {
         CheckCameraSwitch();
-        HandleCameraTransform();
-        OffsetCameraOnCannonTilt();
     }
 
     public void ForceADSView()
@@ -106,31 +108,32 @@ public class CameraComponent : TankComponent
         _adsCam.gameObject.SetActive(false);
     }
 
-    public void UpdateCameraPosition(float inputValue)
+    public void UpdateCameraPosition()
     {
-        Vector3 delta = _lastTankPosition - _cameraFocus.position;
-        _currentCamera.transform.position -= delta;
-        
-        _lastTankPosition = _cameraFocus.position;
-    }
+        if (_camMode == CameraMode.FirstPerson)
+        {
+            Vector3 targetPosition = _firstPersonPivot.position;
+            Vector3 lerpedPosition = Vector3.Lerp(_currentCamera.transform.position, targetPosition, 100f * Time.deltaTime);
+            _currentCamera.transform.position = lerpedPosition;
 
-    private void HandleCameraTransform()
-    {
-        Vector3 barrelEuler = _componentManager.GetBarrelEuler();
+            _currentCamera.transform.LookAt(_firstPersonCameraFocus.position);
+        }
+        
         if (_camMode == CameraMode.ThirdPerson)
         {
-            //_currentCamera.transform.localPosition =
-            //_thirdPersonPivot.localPosition + new Vector3(0, _thirdPersonCamOffsetY, 0);
-            //_currentCamera.transform.localEulerAngles = new Vector3(barrelEuler.x, 0, 0);
+            Vector3 targetPosition = _thirdPersonPivot.position + (_thirdPersonCameraFocus.parent.rotation * _cameraOffset) + new Vector3(0, _thirdPersonCamOffsetY, 0);
+            Vector3 slerpedPosition =
+                Vector3.Slerp(_currentCamera.transform.position, targetPosition, _distanceDamp * Time.deltaTime);
+            _currentCamera.transform.position = slerpedPosition;
+
+            _currentCamera.transform.LookAt(_thirdPersonCameraFocus.position);
         }
     }
 
-    private void OffsetCameraOnCannonTilt()
+    public void OffsetCameraOnCannonTilt(float mouseTiltInput)
     {
-        float yRotateInput = Input.GetAxis("Mouse Y");
-        
         //Inverts the delta for the camera. Cannon moves up, camera moves down.
-        _thirdPersonCamOffsetY -= yRotateInput * _properties.TurretTiltSpeed * 0.1f * Time.deltaTime;
-        _thirdPersonCamOffsetY = Mathf.Clamp(_thirdPersonCamOffsetY, -2.5f, 2.5f);
+        _thirdPersonCamOffsetY -= mouseTiltInput * _properties.TurretTiltSpeed * 0.1f * Time.deltaTime;
+        _thirdPersonCamOffsetY = Mathf.Clamp(_thirdPersonCamOffsetY, -7f, 3f);
     }
 }

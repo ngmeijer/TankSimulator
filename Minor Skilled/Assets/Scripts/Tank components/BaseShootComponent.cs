@@ -47,6 +47,8 @@ public class BaseShootComponent : TankComponent
 
     private void HandleExplosionFX()
     {
+        if (_fireExplosion == null) return;
+        
         _fireExplosion.transform.position = _VFXPivot.position;
         _fireExplosion.transform.rotation = _VFXPivot.rotation;
         _fireExplosion.Play();
