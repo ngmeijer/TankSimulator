@@ -3,15 +3,14 @@ using UnityEngine;
 
 public class TurretControlComponent : TankComponent
 {
-    [SerializeField] private bool _lockTurret;
-    [SerializeField] private float barrelMinY;
-    [SerializeField] private float barrelMaxY;
-    private Vector3 currentLerpEuler;
-    
-    private Vector3 _barrelEulerAngles;      
-    private Vector3 _turretEulerAngles;    
     [SerializeField] private Transform _turretTransform;       
     [SerializeField] private Transform _barrelTransform;
+    [SerializeField] private bool _lockTurret;
+    [SerializeField] private float _barrelMinY;
+    [SerializeField] private float _barrelMaxY;
+    
+    private Vector3 _barrelEulerAngles;      
+    private Vector3 _turretEulerAngles;
 
     private void Start()
     {
@@ -43,7 +42,7 @@ public class TurretControlComponent : TankComponent
         float delta = inputValue * Time.deltaTime * _componentManager.Properties.TurretTiltSpeed;
         _barrelEulerAngles -= new Vector3(delta, 0, 0);
         _barrelEulerAngles.x =
-            Mathf.Clamp(_barrelEulerAngles.x, barrelMaxY, barrelMinY);
+            Mathf.Clamp(_barrelEulerAngles.x, _barrelMaxY, _barrelMinY);
 
         return delta;
     }

@@ -3,32 +3,32 @@ using UnityEngine.UI;
 
 public abstract class BaseHUDManager : MonoBehaviour
 {
-    [SerializeField] protected Slider healthIndicator;
-    [SerializeField] protected Slider armorIndicator;
+    [SerializeField] protected Slider _healthIndicator;
+    [SerializeField] protected Slider _armorIndicator;
 
     public abstract void UpdateName(string name);
 
     public virtual void SetMaxHealth(int maxHealth)
     {
-        healthIndicator.maxValue = maxHealth;
-        healthIndicator.value = maxHealth;
+        _healthIndicator.maxValue = maxHealth;
+        _healthIndicator.value = maxHealth;
     }
 
     public virtual void SetMaxArmor(int maxArmor)
     {
-        armorIndicator.maxValue = maxArmor;
-        armorIndicator.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, maxArmor);
-        armorIndicator.value = maxArmor;
+        _armorIndicator.maxValue = maxArmor;
+        _armorIndicator.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, maxArmor);
+        _armorIndicator.value = maxArmor;
     }
 
     public void UpdateHealth(int health)
     {
-        healthIndicator.value = health;
+        _healthIndicator.value = health;
     }
 
     public void UpdateArmor(int armor)
     {
-        armorIndicator.value = armor;
+        _armorIndicator.value = armor;
     }
 
     public virtual void UpdateSpeed(float speed)
@@ -39,6 +39,10 @@ public abstract class BaseHUDManager : MonoBehaviour
     {
     }
 
+    public virtual void UpdateCalculationText(string text)
+    {
+    }
+    
     public virtual void UpdateAmmoCountUI(int ammoCount)
     {
     }
@@ -48,6 +52,10 @@ public abstract class BaseHUDManager : MonoBehaviour
     }
 
     public virtual void UpdateDistanceUI(float targetDistance)
+    {
+    }
+
+    public virtual void UpdateWheelRPMCalculation(string text)
     {
     }
 }

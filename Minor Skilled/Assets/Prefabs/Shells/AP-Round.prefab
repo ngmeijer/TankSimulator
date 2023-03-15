@@ -78,18 +78,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5822cd63bf3a57499c9e00ff5deb776, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosion: {fileID: 0}
-  GFX: {fileID: 6094866727484375257}
-  rb: {fileID: 8044805069707872532}
+  _explosion: {fileID: 0}
+  _GFX: {fileID: 6094866727484375257}
+  _rb: {fileID: 8044805069707872532}
   _collider: {fileID: 64930476549329894}
-  shellType: Armor Piercing (AP)
-  forceOnImpact: 10000
-  centerOfMass: {fileID: 4400315637574945861}
-  Damage: 0
-  AbsoluteArmorPenetration: 0
-  RelativeArmorPenetration: 0
-  CriticalChance: 0
-  CriticalDamageMultiplier: 0
+  _shellType: AP (Armor Penetration)
+  _forceOnImpact: 10000
+  _centerOfMass: {fileID: 4400315637574945861}
 --- !u!1 &5408039744922451758
 GameObject:
   m_ObjectHideFlags: 0

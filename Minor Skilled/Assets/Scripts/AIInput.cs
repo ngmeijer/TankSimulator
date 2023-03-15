@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class AIInput : MonoBehaviour
 {
-    private TankComponentManager componentManager;
+    private TankComponentManager _componentManager;
     private BaseShootComponent _baseShootComponent;
 
     private void Awake()
     {
-        componentManager = GetComponent<TankComponentManager>();
+        _componentManager = GetComponent<TankComponentManager>();
         _baseShootComponent = GetComponent<BaseShootComponent>();
     }
 
@@ -21,11 +21,11 @@ public class AIInput : MonoBehaviour
 
     private IEnumerator testShoot()
     {
-        if(componentManager.HasDied) StopCoroutine(testShoot());
-        yield return new WaitForSeconds(componentManager.Properties.ReloadTime);
+        if(_componentManager.HasDied) StopCoroutine(testShoot());
+        yield return new WaitForSeconds(_componentManager.Properties.ReloadTime);
         
         _baseShootComponent.FireShell();
-        if (componentManager.HasDied) yield break;
+        if (_componentManager.HasDied) yield break;
         
         StartCoroutine(testShoot());
     }

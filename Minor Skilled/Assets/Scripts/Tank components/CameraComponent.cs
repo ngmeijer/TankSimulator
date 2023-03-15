@@ -32,7 +32,6 @@ public class CameraComponent : TankComponent
     private Transform _currentCameraPivot;
     private CameraMode _camMode;
     private CameraMode _previousCamMode;
-
     private float _lastMoveValue;
     private Vector3 _lastTankPosition;
 

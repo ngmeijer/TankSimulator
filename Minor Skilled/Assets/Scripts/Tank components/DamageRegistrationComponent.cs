@@ -38,7 +38,6 @@ public class DamageRegistrationComponent : TankComponent
         _armor = _maxArmor;
         
         _componentManager.EntityHUD.SetMaxHealth(_maxHealth);
-        //componentManager.entityHUD.SetMaxArmor(MaxArmor);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -48,7 +47,7 @@ public class DamageRegistrationComponent : TankComponent
         if (collision.collider.gameObject == _lastColliderHit) return;
         _lastColliderHit = collision.collider.gameObject;
 
-        UpdateHealth(shell.Damage);
+        UpdateHealth(shell.GetDamage());
     }
 
     private void UpdateHealth(int damage)

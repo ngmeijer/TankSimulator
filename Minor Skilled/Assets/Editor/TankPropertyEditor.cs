@@ -10,47 +10,43 @@ public class TankPropertyEditor : EditorWindow
 {
     private const int NO_TANK_SELECTED = -1;
     
-    bool wheelsGroupEnabled;
-
-    private string tankName;
-    private AnimationCurve motorTorque = AnimationCurve.Linear(0, 0, 10, 10);
-    private AnimationCurve gearRatios = AnimationCurve.Linear(0, 0, 10, 10);
-    private float finalDriveRatio;
-    private float acceleration;
-    private float reverseAcceleration;
-    private float singleTrackAcceleration;
-    private float maxSpeed;
-    private float rigidbodyMass;
-    private float reloadTime;
-    private float fireForce;
-    private float maxHealth;
-    private float maxArmor;
-    private float wheelMass;
-    private float wheelRadius;
-    private float wheelDampingRate;
-    private float wheelSuspDist;
-    private float wheelForceAppDist;
-    private Vector3 wheelCenter;
-    private bool suspSpringFoldout;
-    private float suspSpring;
-    private float suspDamper;
-    private float suspTargetPos;
-
-    private float forwFricExtrenSlip;
-    private float forwFricExtrenVal;
-    private float forwFricAsymSlip;
-    private float forwFricAsymVal;
-    private float forwFricStiff;
+    private bool _wheelsGroupEnabled;
+    private bool _forwFricFoldout;
+    private bool _sideFricFoldout;
+    private bool _suspSpringFoldout;
     
-    private float sideFricExtrenSlip;
-    private float sideFricExtrenVal;
-    private float sideFricAsymSlip;
-    private float sideFricAsymVal;
-    private float sideFricStiff;
-    
-    private List<WheelCollider> leftTrackWheels = new List<WheelCollider>();
-    private List<WheelCollider> rightTrackWheels = new List<WheelCollider>();
+    private string _tankName;
+    private AnimationCurve _motorTorque;
+    private AnimationCurve _gearRatios;
+    private int _maxGears;
+    private float _singleTrackTorqueMultiplier;
+    private float _tankMass;
+    private float _reloadTime;
+    private float _fireForce;
+    private float _maxHealth;
+    private float _maxArmor;
+    private float _wheelMass;
+    private float _wheelRadius;
+    private float _wheelDampingRate;
+    private float _wheelSuspDist;
+    private float _wheelForceAppDist;
+    private Vector3 _wheelCenter;
+    private float _suspSpring;
+    private float _suspDamper;
+    private float _suspTargetPos;
 
+    private float _forwFricExtrenSlip;
+    private float _forwFricExtrenVal;
+    private float _forwFricAsymSlip;
+    private float _forwFricAsymVal;
+    private float _forwFricStiff;
+    
+    private float _sideFricExtrenSlip;
+    private float _sideFricExtrenVal;
+    private float _sideFricAsymSlip;
+    private float _sideFricAsymVal;
+    private float _sideFricStiff;
+    
     private TankComponentManager _componentManager;
 
     private TankComponentManager[] _foundTanks = new TankComponentManager[] { };
@@ -63,11 +59,9 @@ public class TankPropertyEditor : EditorWindow
     private GUIStyle _header2Style;
     private GUIStyle _cursiveStyle;
     private GUIStyle _buttonStyle;
-    private bool forwFricFoldout;
-    private bool sideFricFoldout;
 
-    private WheelCollider tankWheelProps;
-    private Vector2 scrollPos;
+    private WheelCollider _tankWheelProperties;
+    private Vector2 _scrollPos;
 
     [MenuItem("Custom Editors/Tank editor")]
     static void Init()
@@ -86,13 +80,12 @@ public class TankPropertyEditor : EditorWindow
         _foundTanks = FindObjectsOfType<TankComponentManager>();
     }
     
-
     private void OnGUI()
     {
         InitializeStyles();
         
-        scrollPos =
-            EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Width(Screen.width), GUILayout.Height(Screen.height));
+        _scrollPos =
+            EditorGUILayout.BeginScrollView(_scrollPos, GUILayout.Width(Screen.width), GUILayout.Height(Screen.height));
         GUILayout.Label("Tank editor", _header1Style);
         DrawListOfTanks();
 
@@ -157,38 +150,38 @@ public class TankPropertyEditor : EditorWindow
 
     private void AssignValuesToWheel(WheelCollider wheel)
     {
-        wheel.mass = wheelMass;
-        wheel.radius = wheelRadius;
-        wheel.wheelDampingRate = wheelDampingRate;
-        wheel.suspensionDistance = wheelSuspDist;
-        wheel.forceAppPointDistance = wheelForceAppDist;
-        wheel.center = wheelCenter;
+        wheel.mass = _wheelMass;
+        wheel.radius = _wheelRadius;
+        wheel.wheelDampingRate = _wheelDampingRate;
+        wheel.suspensionDistance = _wheelSuspDist;
+        wheel.forceAppPointDistance = _wheelForceAppDist;
+        wheel.center = _wheelCenter;
 
         JointSpring suspSpringValues = new JointSpring
         {
-            spring = suspSpring,
-            damper = suspDamper,
-            targetPosition = suspTargetPos
+            spring = _suspSpring,
+            damper = _suspDamper,
+            targetPosition = _suspTargetPos
         };
         wheel.suspensionSpring = suspSpringValues;
 
         WheelFrictionCurve forwFricValues = new WheelFrictionCurve
         {
-            extremumSlip = forwFricExtrenSlip,
-            extremumValue = forwFricExtrenVal,
-            asymptoteSlip = forwFricAsymSlip,
-            asymptoteValue = forwFricAsymVal,
-            stiffness = forwFricStiff
+            extremumSlip = _forwFricExtrenSlip,
+            extremumValue = _forwFricExtrenVal,
+            asymptoteSlip = _forwFricAsymSlip,
+            asymptoteValue = _forwFricAsymVal,
+            stiffness = _forwFricStiff
         };
         wheel.forwardFriction = forwFricValues;
 
         WheelFrictionCurve sideFricValues = new WheelFrictionCurve
         {
-            extremumSlip = sideFricExtrenSlip,
-            extremumValue = sideFricExtrenVal,
-            asymptoteSlip = sideFricAsymSlip,
-            asymptoteValue = sideFricAsymVal,
-            stiffness = sideFricStiff
+            extremumSlip = _sideFricExtrenSlip,
+            extremumValue = _sideFricExtrenVal,
+            asymptoteSlip = _sideFricAsymSlip,
+            asymptoteValue = _sideFricAsymVal,
+            stiffness = _sideFricStiff
         };
         wheel.sidewaysFriction = sideFricValues;
     }
@@ -202,44 +195,40 @@ public class TankPropertyEditor : EditorWindow
 
         if (_retrievedPropertyData == null) return;
 
-        acceleration = _retrievedPropertyData.Acceleration;
-        singleTrackAcceleration = _retrievedPropertyData.SingleTrackSpeed;
-        maxSpeed = _retrievedPropertyData.MaxSpeed;
-        rigidbodyMass = _retrievedPropertyData.TankMass;
-        reloadTime = _retrievedPropertyData.ReloadTime;
-        fireForce = _retrievedPropertyData.FireForce;
-        maxHealth = _retrievedPropertyData.MaxHealth;
-        maxArmor = _retrievedPropertyData.MaxArmor;
-        finalDriveRatio = _retrievedPropertyData.FinalDriveRatio;
-        
+        _singleTrackTorqueMultiplier = _retrievedPropertyData.SingleTrackTorqueMultiplier;
+        _tankMass = _retrievedPropertyData.TankMass;
+        _reloadTime = _retrievedPropertyData.ReloadTime;
+        _fireForce = _retrievedPropertyData.FireForce;
+        _maxHealth = _retrievedPropertyData.MaxHealth;
+        _maxArmor = _retrievedPropertyData.MaxArmor;
 
         //Wheel
         if (_selectedTank.GetLeftWheelColliders().Count == 0) return;
-        tankWheelProps = _selectedTank.GetLeftWheelColliders()[0];
-        wheelMass = tankWheelProps.mass;
-        wheelRadius = tankWheelProps.radius;
-        wheelDampingRate = tankWheelProps.wheelDampingRate;
-        wheelSuspDist = tankWheelProps.suspensionDistance;
-        wheelForceAppDist = tankWheelProps.forceAppPointDistance;
-        wheelCenter = tankWheelProps.center;
+        _tankWheelProperties = _selectedTank.GetLeftWheelColliders()[0];
+        _wheelMass = _tankWheelProperties.mass;
+        _wheelRadius = _tankWheelProperties.radius;
+        _wheelDampingRate = _tankWheelProperties.wheelDampingRate;
+        _wheelSuspDist = _tankWheelProperties.suspensionDistance;
+        _wheelForceAppDist = _tankWheelProperties.forceAppPointDistance;
+        _wheelCenter = _tankWheelProperties.center;
 
-        suspSpring = tankWheelProps.suspensionSpring.spring;
-        suspDamper = tankWheelProps.suspensionSpring.damper;
-        suspTargetPos = tankWheelProps.suspensionSpring.targetPosition;
+        _suspSpring = _tankWheelProperties.suspensionSpring.spring;
+        _suspDamper = _tankWheelProperties.suspensionSpring.damper;
+        _suspTargetPos = _tankWheelProperties.suspensionSpring.targetPosition;
         
         //Forw fric
-        forwFricExtrenSlip = tankWheelProps.forwardFriction.extremumSlip;
-        forwFricExtrenVal = tankWheelProps.forwardFriction.extremumValue;
-        forwFricAsymSlip = tankWheelProps.forwardFriction.asymptoteSlip;
-        forwFricAsymVal = tankWheelProps.forwardFriction.asymptoteValue;
-        forwFricStiff = tankWheelProps.forwardFriction.stiffness;
+        _forwFricExtrenSlip = _tankWheelProperties.forwardFriction.extremumSlip;
+        _forwFricExtrenVal = _tankWheelProperties.forwardFriction.extremumValue;
+        _forwFricAsymSlip = _tankWheelProperties.forwardFriction.asymptoteSlip;
+        _forwFricAsymVal = _tankWheelProperties.forwardFriction.asymptoteValue;
+        _forwFricStiff = _tankWheelProperties.forwardFriction.stiffness;
         
         //Side
-        sideFricExtrenSlip = tankWheelProps.sidewaysFriction.extremumSlip;
-        sideFricExtrenVal = tankWheelProps.sidewaysFriction.extremumValue;
-        sideFricAsymSlip = tankWheelProps.sidewaysFriction.asymptoteSlip;
-        sideFricAsymVal = tankWheelProps.sidewaysFriction.asymptoteValue;
-        sideFricStiff = tankWheelProps.sidewaysFriction.stiffness;
+        _sideFricExtrenSlip = _tankWheelProperties.sidewaysFriction.extremumSlip;
+        _sideFricExtrenVal = _tankWheelProperties.sidewaysFriction.extremumValue;
+        _sideFricAsymSlip = _tankWheelProperties.sidewaysFriction.asymptoteSlip;
+        _sideFricAsymVal = _tankWheelProperties.sidewaysFriction.asymptoteValue;
+        _sideFricStiff = _tankWheelProperties.sidewaysFriction.stiffness;
     }
 
     private void DrawCurrentlySelectedTank()
@@ -249,9 +238,9 @@ public class TankPropertyEditor : EditorWindow
             GUILayout.Label("Currently selected tank:", _header2Style);
             
             //Tank name
-            tankName = _selectedTank.name;
-            tankName = EditorGUILayout.TextField("Scene name", tankName);
-            _selectedTank.name = tankName;
+            _tankName = _selectedTank.name;
+            _tankName = EditorGUILayout.TextField("Scene name", _tankName);
+            _selectedTank.name = _tankName;
             _newPropertyData = _selectedTank.Properties;
 
             if (_retrievedPropertyData == null)
@@ -266,13 +255,10 @@ public class TankPropertyEditor : EditorWindow
                     _retrievedPropertyData, typeof(TankProperties), false) as TankProperties;
 
             //
-            _newPropertyData.Acceleration = EditorGUILayout.Slider("Acceleration", _newPropertyData.Acceleration, 0, 50000);
-            _newPropertyData.MotorTorque = EditorGUILayout.CurveField("Motor torque", motorTorque, Color.green, new Rect(0,0, 30000, 10000));
-            _newPropertyData.GearRatios = EditorGUILayout.CurveField("Gear ratios", gearRatios, Color.green, new Rect(-1,-1, 6, 6));
-            _newPropertyData.FinalDriveRatio = EditorGUILayout.Slider("Final drive ratio", _newPropertyData.FinalDriveRatio, 0, 5);
-            _newPropertyData.ReverseAcceleration = EditorGUILayout.Slider("Reverse acceleration", _newPropertyData.ReverseAcceleration, 0, 10000);
-            _newPropertyData.SingleTrackSpeed = EditorGUILayout.Slider("Single track acceleration", _newPropertyData.SingleTrackSpeed, 0, 30000);
-            _newPropertyData.MaxSpeed = EditorGUILayout.Slider("Max speed", _newPropertyData.MaxSpeed, 0, 50);
+            _newPropertyData.MotorTorque = EditorGUILayout.CurveField("Motor torque", _newPropertyData.MotorTorque, Color.green, new Rect(0,0, 80000, 40000));
+            _newPropertyData.GearRatios = EditorGUILayout.CurveField("Gear ratios", _newPropertyData.GearRatios, Color.green, new Rect(-1,-5, _newPropertyData.MaxGears + 1, 25));
+            _newPropertyData.MaxGears = EditorGUILayout.IntSlider("Max gears", _newPropertyData.MaxGears, 0, 10);
+            _newPropertyData.SingleTrackTorqueMultiplier = EditorGUILayout.Slider("Single track torque multiplier", _newPropertyData.SingleTrackTorqueMultiplier, 0, 5);
             _newPropertyData.TankMass = EditorGUILayout.Slider("Tank mass", _newPropertyData.TankMass, 1, 100000);
             _newPropertyData.ReloadTime = EditorGUILayout.Slider("Reload time", _newPropertyData.ReloadTime, 0.5f, 50f);
             _newPropertyData.FireForce = EditorGUILayout.Slider("Fire force", _newPropertyData.FireForce, 1, 100000);
@@ -288,39 +274,39 @@ public class TankPropertyEditor : EditorWindow
     private void DrawWheelColliderProperties()
     {
             GUILayout.Label("Wheel collider properties:", _header2Style);
-            wheelMass = EditorGUILayout.FloatField("Mass", wheelMass);
-            wheelRadius = EditorGUILayout.FloatField("Radius", wheelRadius);
-            wheelDampingRate = EditorGUILayout.FloatField("Damping rate", wheelDampingRate);
-            wheelSuspDist = EditorGUILayout.FloatField("Suspension distance", wheelSuspDist);
-            wheelForceAppDist = EditorGUILayout.FloatField("Force app point distance", wheelForceAppDist);
-            wheelCenter = EditorGUILayout.Vector3Field("Center", wheelCenter);
+            _wheelMass = EditorGUILayout.FloatField("Mass", _wheelMass);
+            _wheelRadius = EditorGUILayout.FloatField("Radius", _wheelRadius);
+            _wheelDampingRate = EditorGUILayout.FloatField("Damping rate", _wheelDampingRate);
+            _wheelSuspDist = EditorGUILayout.FloatField("Suspension distance", _wheelSuspDist);
+            _wheelForceAppDist = EditorGUILayout.FloatField("Force app point distance", _wheelForceAppDist);
+            _wheelCenter = EditorGUILayout.Vector3Field("Center", _wheelCenter);
             
-            suspSpringFoldout = EditorGUILayout.Foldout(suspSpringFoldout, "Suspension spring");
-            if (suspSpringFoldout)
+            _suspSpringFoldout = EditorGUILayout.Foldout(_suspSpringFoldout, "Suspension spring");
+            if (_suspSpringFoldout)
             {
-                suspSpring = EditorGUILayout.FloatField("Spring", suspSpring);
-                suspDamper = EditorGUILayout.FloatField("Damper", suspDamper);
-                suspTargetPos = EditorGUILayout.FloatField("Target position", suspTargetPos);
+                _suspSpring = EditorGUILayout.FloatField("Spring", _suspSpring);
+                _suspDamper = EditorGUILayout.FloatField("Damper", _suspDamper);
+                _suspTargetPos = EditorGUILayout.FloatField("Target position", _suspTargetPos);
             }
             
-            forwFricFoldout = EditorGUILayout.Foldout(forwFricFoldout, "Forward friction");
-            if (forwFricFoldout)
+            _forwFricFoldout = EditorGUILayout.Foldout(_forwFricFoldout, "Forward friction");
+            if (_forwFricFoldout)
             {
-                forwFricExtrenSlip = EditorGUILayout.FloatField("Extrenum slip", forwFricExtrenSlip);
-                forwFricExtrenVal = EditorGUILayout.FloatField("Extrenum value", forwFricExtrenVal);
-                forwFricAsymSlip = EditorGUILayout.FloatField("Asymptote slip", forwFricAsymSlip);
-                forwFricAsymVal = EditorGUILayout.FloatField("Asymptote value", forwFricAsymVal);
-                forwFricStiff = EditorGUILayout.FloatField("Stiffness", forwFricStiff);
+                _forwFricExtrenSlip = EditorGUILayout.FloatField("Extrenum slip", _forwFricExtrenSlip);
+                _forwFricExtrenVal = EditorGUILayout.FloatField("Extrenum value", _forwFricExtrenVal);
+                _forwFricAsymSlip = EditorGUILayout.FloatField("Asymptote slip", _forwFricAsymSlip);
+                _forwFricAsymVal = EditorGUILayout.FloatField("Asymptote value", _forwFricAsymVal);
+                _forwFricStiff = EditorGUILayout.FloatField("Stiffness", _forwFricStiff);
             }
             
-            sideFricFoldout = EditorGUILayout.Foldout(sideFricFoldout, "Sideways friction");
-            if (sideFricFoldout)
+            _sideFricFoldout = EditorGUILayout.Foldout(_sideFricFoldout, "Sideways friction");
+            if (_sideFricFoldout)
             {
-                sideFricExtrenSlip = EditorGUILayout.FloatField("Extrenum slip", sideFricExtrenSlip);
-                sideFricExtrenVal = EditorGUILayout.FloatField("Extrenum value", sideFricExtrenVal);
-                sideFricAsymSlip = EditorGUILayout.FloatField("Asymptote slip", sideFricAsymSlip);
-                sideFricAsymVal = EditorGUILayout.FloatField("Asymptote value", sideFricAsymVal);
-                sideFricStiff = EditorGUILayout.FloatField("Stiffness", sideFricStiff);
+                _sideFricExtrenSlip = EditorGUILayout.FloatField("Extrenum slip", _sideFricExtrenSlip);
+                _sideFricExtrenVal = EditorGUILayout.FloatField("Extrenum value", _sideFricExtrenVal);
+                _sideFricAsymSlip = EditorGUILayout.FloatField("Asymptote slip", _sideFricAsymSlip);
+                _sideFricAsymVal = EditorGUILayout.FloatField("Asymptote value", _sideFricAsymVal);
+                _sideFricStiff = EditorGUILayout.FloatField("Stiffness", _sideFricStiff);
             }
     }
 

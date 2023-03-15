@@ -7,21 +7,23 @@ using UnityEngine.UI;
 
 public class PlayerHUD : BaseHUDManager
 {
-    [SerializeField] private Slider reloadIndicator;
-    [SerializeField] private TextMeshProUGUI distanceIndicator;
-    [SerializeField] private TextMeshProUGUI tankSpeedIndicator;
-    [SerializeField] private TextMeshProUGUI gearIndicator;
-    [SerializeField] private TextMeshProUGUI rpmIndicator;
-    [SerializeField] private TextMeshProUGUI torqueIndicator;
-    [SerializeField] private TextMeshProUGUI ammoCountIndicator;
-    [SerializeField] private TextMeshProUGUI shellTypeIndicator;
-    [SerializeField] private GameObject turretRotationUI;
-    [SerializeField] private GameObject crosshair;
-    [SerializeField] private float minYCrosshair;
-    [SerializeField] private float maxYCrosshair;
+    [SerializeField] private Slider _reloadIndicator;
+    [SerializeField] private TextMeshProUGUI _distanceIndicator;
+    [SerializeField] private TextMeshProUGUI _tankSpeedIndicator;
+    [SerializeField] private TextMeshProUGUI _gearIndicator;
+    [SerializeField] private TextMeshProUGUI _rpmIndicator;
+    [SerializeField] private TextMeshProUGUI _torqueIndicator;
+    [SerializeField] private TextMeshProUGUI _ammoCountIndicator;
+    [SerializeField] private TextMeshProUGUI _shellTypeIndicator;
+    [SerializeField] private GameObject _turretRotationUI;
+    [SerializeField] private GameObject _crosshair;
+    [SerializeField] private float _minYCrosshair;
+    [SerializeField] private float _maxYCrosshair;
 
-    [SerializeField] private GameObject HUDContainer;
-    [SerializeField] private GameObject gameOverScreen;
+    [SerializeField] private TextMeshProUGUI _rpmCalculationText;
+    [SerializeField] private TextMeshProUGUI _calculationText;
+    [SerializeField] private GameObject _HUDContainer;
+    [SerializeField] private GameObject _gameOverScreen;
 
     public IEnumerator UpdateReloadUI(float reloadTime)
     {
@@ -30,7 +32,7 @@ public class PlayerHUD : BaseHUDManager
         {
             currentTime += Time.deltaTime;
             float lerpValue = currentTime / reloadTime;
-            reloadIndicator.value = Mathf.Lerp(reloadIndicator.minValue, reloadIndicator.maxValue, lerpValue);
+            _reloadIndicator.value = Mathf.Lerp(_reloadIndicator.minValue, _reloadIndicator.maxValue, lerpValue);
             yield return null;
         }
     }
@@ -43,66 +45,76 @@ public class PlayerHUD : BaseHUDManager
     public override void SetMaxHealth(int maxHealth)
     {
         base.SetMaxHealth(maxHealth);
-        healthIndicator.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, maxHealth);
+        _healthIndicator.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, maxHealth);
     }
 
     public override void UpdateSpeed(float speed)
     {
-        tankSpeedIndicator.SetText($"{speed}");
+        _tankSpeedIndicator.SetText($"{speed}");
     }
 
     public override void UpdateGearData(int gear, int rpm, int torque)
     {
-        gearIndicator.SetText($"{gear}");
-        rpmIndicator.SetText($"{rpm}");
-        torqueIndicator.SetText($"{torque}");
+        _gearIndicator.SetText($"{gear}");
+        _rpmIndicator.SetText($"{rpm}");
+        _torqueIndicator.SetText($"{torque}");
+    }
+
+    public override void UpdateCalculationText(string text)
+    {
+        _calculationText.SetText(text);
+    }
+
+    public override void UpdateWheelRPMCalculation(string text)
+    {
+        _rpmCalculationText.SetText(text);
     }
 
     public void UpdateCrosshairYPosition(float offsetY)
     {
-        Vector3 tempPos = crosshair.transform.localPosition;
+        Vector3 tempPos = _crosshair.transform.localPosition;
         tempPos.y += offsetY;
         Debug.Log(tempPos.y);
-        tempPos.y = Mathf.Clamp(tempPos.y, minYCrosshair, maxYCrosshair);
-        crosshair.transform.localPosition = tempPos;
+        tempPos.y = Mathf.Clamp(tempPos.y, _minYCrosshair, _maxYCrosshair);
+        _crosshair.transform.localPosition = tempPos;
     }
 
     public override void UpdateDistanceUI(float trackDistance)
     {
         if (trackDistance == 0)
         {
-            distanceIndicator.SetText("");
+            _distanceIndicator.SetText("");
             return;
         }
-        distanceIndicator.SetText($"{trackDistance}m");
+        _distanceIndicator.SetText($"{trackDistance}m");
     }
 
     public void UpdateTankSpeedUI(float speed)
     {
-        tankSpeedIndicator.SetText($"{speed} km/h");
+        _tankSpeedIndicator.SetText($"{speed} km/h");
     }
 
     public override void UpdateAmmoCountUI(int ammoCount)
     {
-        ammoCountIndicator.SetText($"{ammoCount}");
+        _ammoCountIndicator.SetText($"{ammoCount}");
     }
 
     public override  void UpdateShellTypeUI(string type)
     {
-        shellTypeIndicator.SetText(type);
+        _shellTypeIndicator.SetText(type);
     }
 
     public void SetTurretRotationUI(Vector3 turretRot)
     {
-        Quaternion rot = turretRotationUI.transform.rotation;
+        Quaternion rot = _turretRotationUI.transform.rotation;
         rot.eulerAngles = new Vector3(0,0, -turretRot.y);
-        turretRotationUI.transform.rotation = rot;
+        _turretRotationUI.transform.rotation = rot;
     }
 
     public void OnPlayerKilled()
     {
         Cursor.lockState = CursorLockMode.Confined; 
-        HUDContainer.SetActive(false);
-        gameOverScreen.SetActive(true);
+        _HUDContainer.SetActive(false);
+        _gameOverScreen.SetActive(true);
     }
 }

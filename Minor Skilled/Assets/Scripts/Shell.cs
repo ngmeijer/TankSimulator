@@ -3,56 +3,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ShellType
-{
-    
-}
-
 public class Shell : MonoBehaviour
 {
-    [SerializeField] private ParticleSystem explosion;
-    [SerializeField] private GameObject GFX;
-    [SerializeField] private Rigidbody rb;
+    [SerializeField] private ParticleSystem _explosion;
+    [SerializeField] private GameObject _GFX;
+    [SerializeField] private Rigidbody _rb;
     [SerializeField] private Collider _collider;
-    [SerializeField] private string shellType;
-    [SerializeField] private float forceOnImpact = 10000;
-    [SerializeField] private Transform centerOfMass;
-    private bool vfxHasPlayed;
-    public int Damage;
-    public int AbsoluteArmorPenetration;
-    public int RelativeArmorPenetration;
-    public int CriticalChance;
-    
-    //if crit hit:
-    //  Total damage = damage * criticalDamageMultiplier;
-    public int CriticalDamageMultiplier;
+    [SerializeField] private string _shellType;
+    [SerializeField] private float _forceOnImpact = 10000;
+    [SerializeField] private Transform _centerOfMass;
+    private bool _vfxHasPlayed;
+    private int _damage;
     
     private void Start()
     {
-        rb.centerOfMass = centerOfMass.position;
+        _rb.centerOfMass = _centerOfMass.position;
     }
 
     private void OnCollisionEnter(Collision other)
     {
-        rb.velocity = Vector3.zero;
-        if (explosion != null)
+        _rb.velocity = Vector3.zero;
+        if (_explosion != null)
         {
-            if (explosion.isPlaying) return;
-            if (vfxHasPlayed) return;
-            explosion.transform.parent = null;
-            explosion.transform.up = other.contacts[0].normal;
-            explosion.transform.position = other.contacts[0].point;
-            explosion.Play();
-            vfxHasPlayed = true;
+            if (_explosion.isPlaying) return;
+            if (_vfxHasPlayed) return;
+            _explosion.transform.parent = null;
+            _explosion.transform.up = other.contacts[0].normal;
+            _explosion.transform.position = other.contacts[0].point;
+            _explosion.Play();
+            _vfxHasPlayed = true;
         }
-        rb.AddExplosionForce(forceOnImpact, transform.position, 12);
-        GFX.SetActive(false);
-        rb.isKinematic = true;
+        _rb.AddExplosionForce(_forceOnImpact, transform.position, 12);
+        _GFX.SetActive(false);
+        _rb.isKinematic = true;
         _collider.enabled = false;
         
-        GFX.transform.localPosition = Vector3.zero;
-        GFX.transform.localRotation = Quaternion.identity;
+        _GFX.transform.localPosition = Vector3.zero;
+        _GFX.transform.localRotation = Quaternion.identity;
     }
 
-    public string GetShellType() => shellType;
+    public string GetShellType() => _shellType;
+
+    public int GetDamage() => _damage;
 }

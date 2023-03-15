@@ -31,7 +31,7 @@ public class PlayerInput : TankComponent
         ShellTypeSwitch();
         IncreaseGear();
         DecreaseGear();
-        _componentManager.TurretControlComponent.OffsetCannonRotationOnTankRotation(_hullRotateInput, _turretRotateInput);
+        //_componentManager.TurretControlComponent.OffsetCannonRotationOnTankRotation(_hullRotateInput, _turretRotateInput);
         _componentManager.TurretControlComponent.HandleTurretRotation(_turretRotateInput);
         _componentManager.TurretControlComponent.TiltCannon(_tiltInput);
         _cameraComponent.OffsetCameraOnCannonTilt(_tiltInput);
@@ -46,7 +46,7 @@ public class PlayerInput : TankComponent
 
     private void FixedUpdate()
     {
-        TankTransformation();
+        TankMove();
 
         if (_moveInput == 0 && _hullRotateInput == 0 && _componentManager.MoveComponent.GetTankVelocity() > 0)
         {
@@ -62,13 +62,12 @@ public class PlayerInput : TankComponent
         _turretRotateInput = Input.GetAxis("Mouse X");
     }
 
-    private void TankTransformation()
+    private void TankMove()
     {
-        //_componentManager.MoveComponent.MoveTank(_moveInput);
-        _componentManager.MoveComponent.CalculateTorque(_moveInput);
-        
+        _componentManager.MoveComponent.MoveTank(_moveInput);
+
         if (_hullRotateInput < 0 || _hullRotateInput > 0)
-            _componentManager.MoveComponent.RotateTank(_hullRotateInput, _moveInput);
+            _componentManager.MoveComponent.RotateTank(_hullRotateInput);
     }
 
     private void TankFire()

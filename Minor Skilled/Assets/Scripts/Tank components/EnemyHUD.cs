@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class EnemyHUD : BaseHUDManager
 {
-    [SerializeField] private TextMeshProUGUI enemyName;
-    private Transform playerTransform;
-    [SerializeField] private GameObject canvas;    
+    [SerializeField] private TextMeshProUGUI _enemyName;
+    private Transform _playerTransform;
+    [SerializeField] private GameObject _canvas;    
     
     private void Start()
     {
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        _playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     private void Update()
     {
-        canvas.transform.LookAt(playerTransform.position);
+        _canvas.transform.LookAt(_playerTransform.position);
     }
 
     public override void UpdateName(string name)
     {
-        enemyName.SetText(name);
+        _enemyName.SetText(name);
     }
 
     public override void UpdateSpeed(float speed)
