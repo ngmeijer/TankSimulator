@@ -509,7 +509,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4711635311839923122}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.78, z: 0.36}
+  m_LocalPosition: {x: 0, y: 1.15, z: -0.09}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3401,7 +3401,8 @@ MonoBehaviour:
   _thirdPersonPivot: {fileID: 4711635311298423126}
   _thirdPersonCameraFocus: {fileID: 1113445358}
   _cameraOffset: {x: 0, y: 5, z: -10}
-  _distanceDamp: 10
+  _camLowestY: -7
+  _camHighestY: 3
 --- !u!114 &7817720855815354585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3414,10 +3415,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8385bf33ecade164887f077e7cc51a32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tankRB: {fileID: 7817720855815354584}
   _centerOfMass: {fileID: 4711635311839923123}
   _leftTrackRenderer: {fileID: 7794745515856452165}
   _rightTrackRenderer: {fileID: 7794260535265662005}
-  _kickbackForce: 20000
   LeftTrackWheelColliders:
   - {fileID: 4711635312201203253}
   - {fileID: 4711635311487096178}

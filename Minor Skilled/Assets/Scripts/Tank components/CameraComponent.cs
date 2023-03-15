@@ -12,6 +12,9 @@ public enum CameraMode
 
 public class CameraComponent : TankComponent
 {
+    private const float THIRD_PERSON_DIST_DAMP = 10f;
+    private const float FIRST_PERSON_DIST_DAMP = 100F;
+    
     [Header("ADS properties")] 
     [SerializeField] private Camera _adsCam;
 
@@ -25,15 +28,17 @@ public class CameraComponent : TankComponent
     [SerializeField] private Transform _thirdPersonPivot;
     [SerializeField] private Transform _thirdPersonCameraFocus;
     [SerializeField] private Vector3 _cameraOffset;
-    [SerializeField] private float _distanceDamp = 10f;
+    [SerializeField] private float _camLowestY = -7;
+    [SerializeField] private float _camHighestY = 3;
 
-    private float _thirdPersonCamOffsetY;
+    private Vector3 _thirdPersonCamOffset;
     private Camera _currentCamera;
     private Transform _currentCameraPivot;
     private CameraMode _camMode;
     private CameraMode _previousCamMode;
     private float _lastMoveValue;
     private Vector3 _lastTankPosition;
+    private float _cameraDampOnCannonTilt = 0.1f;
 
     private void Start()
     {
@@ -80,31 +85,27 @@ public class CameraComponent : TankComponent
     private void EnableADS()
     {
         _camMode = CameraMode.ADS;
-
-        _currentCamera = _adsCam;
-        _adsCam.gameObject.SetActive(true);
-        _firstPersonCam.gameObject.SetActive(false);
-        _thirdPersonCam.gameObject.SetActive(false);
+        ChangeCameraPerspective(_adsCam, true, false, false);
     }
 
     private void EnableFirstPerson()
     {
         _camMode = CameraMode.FirstPerson;
-
-        _currentCamera = _firstPersonCam;
-        _firstPersonCam.gameObject.SetActive(true);
-        _adsCam.gameObject.SetActive(false);
-        _thirdPersonCam.gameObject.SetActive(false);
+        ChangeCameraPerspective(_firstPersonCam, false, true, false);
     }
 
     private void EnableThirdPerson()
     {
         _camMode = CameraMode.ThirdPerson;
+        ChangeCameraPerspective(_thirdPersonCam, false, false, true);
+    }
 
-        _currentCamera = _thirdPersonCam;
-        _thirdPersonCam.gameObject.SetActive(true);
-        _firstPersonCam.gameObject.SetActive(false);
-        _adsCam.gameObject.SetActive(false);
+    private void ChangeCameraPerspective(Camera currentCamera, bool adsCamState, bool fpsCamState, bool tpCamState)
+    {
+        _currentCamera = currentCamera;
+        _adsCam.gameObject.SetActive(adsCamState);
+        _firstPersonCam.gameObject.SetActive(fpsCamState);
+        _thirdPersonCam.gameObject.SetActive(tpCamState);
     }
 
     public void UpdateCameraPosition()
@@ -112,7 +113,7 @@ public class CameraComponent : TankComponent
         if (_camMode == CameraMode.FirstPerson)
         {
             Vector3 targetPosition = _firstPersonPivot.position;
-            Vector3 lerpedPosition = Vector3.Lerp(_currentCamera.transform.position, targetPosition, 100f * Time.deltaTime);
+            Vector3 lerpedPosition = Vector3.Lerp(_currentCamera.transform.position, targetPosition, FIRST_PERSON_DIST_DAMP * Time.deltaTime);
             _currentCamera.transform.position = lerpedPosition;
 
             _currentCamera.transform.LookAt(_firstPersonCameraFocus.position);
@@ -120,9 +121,10 @@ public class CameraComponent : TankComponent
         
         if (_camMode == CameraMode.ThirdPerson)
         {
-            Vector3 targetPosition = _thirdPersonPivot.position + (_thirdPersonCameraFocus.parent.rotation * _cameraOffset) + new Vector3(0, _thirdPersonCamOffsetY, 0);
+            Vector3 targetPosition =
+                _thirdPersonPivot.position + (_thirdPersonCameraFocus.parent.rotation * _cameraOffset) + _thirdPersonCamOffset;
             Vector3 slerpedPosition =
-                Vector3.Slerp(_currentCamera.transform.position, targetPosition, _distanceDamp * Time.deltaTime);
+                Vector3.Slerp(_currentCamera.transform.position, targetPosition, THIRD_PERSON_DIST_DAMP * Time.deltaTime);
             _currentCamera.transform.position = slerpedPosition;
 
             _currentCamera.transform.LookAt(_thirdPersonCameraFocus.position);
@@ -132,7 +134,7 @@ public class CameraComponent : TankComponent
     public void OffsetCameraOnCannonTilt(float mouseTiltInput)
     {
         //Inverts the delta for the camera. Cannon moves up, camera moves down.
-        _thirdPersonCamOffsetY -= mouseTiltInput * _properties.TurretTiltSpeed * 0.1f * Time.deltaTime;
-        _thirdPersonCamOffsetY = Mathf.Clamp(_thirdPersonCamOffsetY, -7f, 3f);
+        _thirdPersonCamOffset.y -= mouseTiltInput * _properties.TurretTiltSpeed * _cameraDampOnCannonTilt * Time.deltaTime;
+        _thirdPersonCamOffset.y = Mathf.Clamp(_thirdPersonCamOffset.y, _camLowestY, _camHighestY);
     }
 }

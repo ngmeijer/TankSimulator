@@ -16,7 +16,6 @@ public class MoveComponent : TankComponent
     private const int MIN_RPM = 750;
     private const int FINAL_DRIVE_RATIO = 6;
     
-    private Rigidbody _tankRB;
     private MoveDirection _moveDirection;
     private float _hudCurrentUpdateTime;
     private float _hudMaxUpdateTime = 0.2f;
@@ -25,27 +24,30 @@ public class MoveComponent : TankComponent
     private int _wheelCount;
     private float _rpm;
     private float _motorTorque;
+    private Vector2 _textureOffset;
     
+    [SerializeField] private Rigidbody _tankRB;
     [SerializeField] private Transform _centerOfMass;
     [SerializeField] private MeshRenderer _leftTrackRenderer;    
     [SerializeField] private MeshRenderer _rightTrackRenderer;
-    [SerializeField] private float _kickbackForce = 9000f;
 
     public List<WheelCollider> LeftTrackWheelColliders = new List<WheelCollider>();  
     public List<WheelCollider> RightTrackWheelColliders = new List<WheelCollider>();
 
-    protected override void Awake()
-    {
-        base.Awake();
-        _tankRB = GetComponent<Rigidbody>();
-    }
-    
     private void Start()
     {
         _componentManager.EventManager.OnShellFired.AddListener((content) => TankKickbackOnShellFire());
         _tankRB.centerOfMass = _centerOfMass.localPosition;
         _tankRB.mass = _properties.TankMass;
         _wheelCount = LeftTrackWheelColliders.Count + RightTrackWheelColliders.Count;
+    }
+
+    private void OnValidate()
+    {
+        Debug.Assert(_tankRB != null, $"Tank rigidbody reference in MoveComponent ({gameObject.name}) is null. Drag into the inspector");
+        Debug.Assert(_centerOfMass != null, $"Center of mass reference in MoveComponent ({gameObject.name}) is null. Drag into the inspector");
+        Debug.Assert(_leftTrackRenderer != null, $"Left track renderer reference in MoveComponent ({gameObject.name}) is null. Drag into the inspector");
+        Debug.Assert(_rightTrackRenderer != null, $"Right track renderer reference in MoveComponent ({gameObject.name}) is null. Drag into the inspector");
     }
 
     private void Update()
@@ -90,20 +92,22 @@ public class MoveComponent : TankComponent
     private void AnimateTankTracks(float speed)
     {
         var offset = Time.time * speed;
-        _leftTrackRenderer.material.mainTextureOffset = new Vector2(0, offset);
-        _rightTrackRenderer.material.mainTextureOffset = new Vector2(0, offset);
+        _textureOffset.y = offset;
+        _leftTrackRenderer.material.mainTextureOffset = _textureOffset;
+        _rightTrackRenderer.material.mainTextureOffset = _textureOffset;
     }
 
     private void SetMotorTorque(float leftTrackTorque, float rightTrackTorque)
     {
-        foreach (var collider in LeftTrackWheelColliders)
+        SetTorqueForTracks(LeftTrackWheelColliders, leftTrackTorque);
+        SetTorqueForTracks(RightTrackWheelColliders, rightTrackTorque);
+    }
+
+    private void SetTorqueForTracks(List<WheelCollider> listToUpdate, float torqueValue)
+    {
+        foreach (WheelCollider wheel in listToUpdate)
         {
-            collider.motorTorque = leftTrackTorque;
-        }
-            
-        foreach (var collider in RightTrackWheelColliders)
-        {
-            collider.motorTorque = rightTrackTorque;
+            wheel.motorTorque = torqueValue;
         }
     }
 
@@ -138,7 +142,7 @@ public class MoveComponent : TankComponent
 
     private void TankKickbackOnShellFire()
     {
-        _tankRB.AddForce(0,0, -_componentManager.GetCurrentBarrelDirection().z * _kickbackForce,ForceMode.Impulse);
+        _tankRB.AddForce(0,0, -_componentManager.GetCurrentBarrelDirection().z * _properties.KickbackForce,ForceMode.Impulse);
     }
     
     public List<WheelCollider> GetLeftWheelColliders() => LeftTrackWheelColliders;       
@@ -152,7 +156,7 @@ public class MoveComponent : TankComponent
         float motorRPM = MIN_RPM + (Mathf.Abs(wheelRPM) * FINAL_DRIVE_RATIO * gearValue);
         
         //Debugging
-        _componentManager.EntityHUD.UpdateWheelRPMCalculation($"motorRPM = [minRPM]{MIN_RPM} + ([wheelRPM]{wheelRPM} * [FDR]{FINAL_DRIVE_RATIO} * [gear value]{gearValue} = {motorRPM})");
+        //_componentManager.EntityHUD.UpdateWheelRPMCalculation($"motorRPM = [minRPM]{MIN_RPM} + ([wheelRPM]{wheelRPM} * [FDR]{FINAL_DRIVE_RATIO} * [gear value]{gearValue} = {motorRPM})");
 
         return motorRPM;
     }
@@ -189,9 +193,9 @@ public class MoveComponent : TankComponent
 
         _rpm = Mathf.Abs(_rpm);
         _motorTorque = _properties.MotorTorque.Evaluate(_rpm) * _properties.GearRatios.Evaluate(_gearIndex) * FINAL_DRIVE_RATIO * inputValue;
-        _componentManager.EntityHUD.UpdateCalculationText($"Final torque: [torque graph - rpm {_rpm}]{_properties.MotorTorque.Evaluate(_rpm)} * " +
-                                                           $"[gear graph]{_properties.GearRatios.Evaluate(_gearIndex)} * [FDR]{FINAL_DRIVE_RATIO} * [input]{inputValue} = {_motorTorque}" +
-                                                           $"\nTPW: {_motorTorque} / {_wheelCount} = {_motorTorque / _wheelCount}");
+        // _componentManager.EntityHUD.UpdateCalculationText($"Final torque: [torque graph - rpm {_rpm}]{_properties.MotorTorque.Evaluate(_rpm)} * " +
+        //                                                    $"[gear graph]{_properties.GearRatios.Evaluate(_gearIndex)} * [FDR]{FINAL_DRIVE_RATIO} * [input]{inputValue} = {_motorTorque}" +
+        //                                                    $"\nTPW: {_motorTorque} / {_wheelCount} = {_motorTorque / _wheelCount}");
         float torquePerWheel = _motorTorque / _wheelCount;
 
         return torquePerWheel;
@@ -200,8 +204,8 @@ public class MoveComponent : TankComponent
     public void IncreaseGear()
     {
         _gearIndex++;
-        if (_gearIndex > 4)
-            _gearIndex = 4;
+        if (_gearIndex > _properties.MaxGears)
+            _gearIndex = _properties.MaxGears;
     }
 
     public void DecreaseGear()

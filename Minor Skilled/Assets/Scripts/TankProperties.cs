@@ -1,18 +1,19 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/Tank Properties")]
 public class TankProperties : ScriptableObject
 {
     public string TankName;
-    public float Acceleration = 1500f;
-    public float ReverseAcceleration = 500f;
-    public float SingleTrackSpeed = 2000f;
-    public float SlowDownForce;
-    public float MaxSpeed = 20f;
+    public AnimationCurve MotorTorque;
+    public AnimationCurve GearRatios;
+    public int MaxGears = 4;
+    public float SingleTrackTorqueMultiplier = 2000f;
     public float HullRotateSpeed = 15f;
     public float TurretRotateSpeed = 60f;
     public float TurretTiltSpeed = 80f;
     public float TankMass;
+    public float KickbackForce = 9000f;
 
     public float FireForce = 50f;
     public float ReloadTime = 4f;
