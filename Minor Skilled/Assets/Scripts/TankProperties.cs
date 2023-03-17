@@ -11,13 +11,16 @@ public class TankProperties : ScriptableObject
     public float SingleTrackTorqueMultiplier = 2000f;
     public float HullRotateSpeed = 15f;
     public float TurretRotateSpeed = 60f;
+    public float CameraRotateSpeed = 60f;
     public float TurretTiltSpeed = 80f;
     public float TankMass;
     public float KickbackForce = 9000f;
 
     public float FireForce = 50f;
     public float ReloadTime = 4f;
-    public int AmmoCount = 5;
+    public int APAmmo = 50;
+    public int HEATAmmo = 50;
+    public int HEAmmo = 50;
     public int MaxArmor = 100;
     public int MaxHealth = 50;
 

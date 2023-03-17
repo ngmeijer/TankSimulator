@@ -37,7 +37,8 @@ public class DamageRegistrationComponent : TankComponent
         _health = _maxHealth;
         _armor = _maxArmor;
         
-        _componentManager.EntityHUD.SetMaxHealth(_maxHealth);
+        HUDManager.Instance.UpdateMaxHealthForEntity(_componentManager.ID, _maxHealth);
+        HUDManager.Instance.UpdateCurrentHealthForEntity(_componentManager.ID, _health);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -53,9 +54,14 @@ public class DamageRegistrationComponent : TankComponent
     private void UpdateHealth(int damage)
     {
         _health -= damage;
-        _componentManager.EntityHUD.UpdateHealth(_health);
+        HUDManager.Instance.UpdateCurrentHealthForEntity(_componentManager.ID, _health);
         if (_health >= 0) return;
+        
+        OnDeathActions();
+    }
 
+    private void OnDeathActions()
+    {
         _componentManager.EventManager.OnTankComponentHit.Invoke(_properties.OnEntityDeath);
         _componentManager.HasDied = true;
         _functioningTankGFX.SetActive(false);

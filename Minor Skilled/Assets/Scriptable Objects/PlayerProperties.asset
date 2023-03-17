@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: PlayerProperties
   m_EditorClassIdentifier: 
   TankName: Player
-  Acceleration: 1600
   MotorTorque:
     serializedVersion: 2
     m_Curve:
@@ -119,12 +118,16 @@ MonoBehaviour:
   MaxGears: 4
   SingleTrackTorqueMultiplier: 1.8
   HullRotateSpeed: 35
-  TurretRotateSpeed: 20
+  TurretRotateSpeed: 10
+  CameraRotateSpeed: 50
   TurretTiltSpeed: 60
   TankMass: 60000
-  FireForce: 90000
-  ReloadTime: 2
-  AmmoCount: 3989
+  KickbackForce: 200000
+  FireForce: 9000
+  ReloadTime: 0.5
+  APAmmo: 50
+  HEATAmmo: 50
+  HEAmmo: 50
   MaxArmor: 100
   MaxHealth: 650
   OnShellFired: Shell fired! Reloading

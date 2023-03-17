@@ -22,26 +22,31 @@ public class PlayerInput : TankComponent
         _cameraComponent = GetComponent<CameraComponent>();
     }
 
+    private void Start()
+    {
+        HUDManager.Instance.UpdateAmmoCount(_componentManager.ShootComponent.GetCurrentAmmoCount());
+        HUDManager.Instance.UpdateShellTypeUI(_componentManager.ShootComponent.GetCurrentShellType());
+    }
+
     private void Update()
     {
         if (_componentManager.HasDied) return;
 
         GetInputValues();
         TankFire();
+        _componentManager.MoveComponent.AnimateTankTracks(_moveInput);
         ShellTypeSwitch();
         IncreaseGear();
         DecreaseGear();
-        //_componentManager.TurretControlComponent.OffsetCannonRotationOnTankRotation(_hullRotateInput, _turretRotateInput);
         _componentManager.TurretControlComponent.HandleTurretRotation(_turretRotateInput);
         _componentManager.TurretControlComponent.TiltCannon(_tiltInput);
         _cameraComponent.OffsetCameraOnCannonTilt(_tiltInput);
-        //componentManager.HUDManager.UpdateCrosshairYPosition(turretYDelta);
-        //playerHUD.SetTurretRotationUI(componentManager.TurretEulerAngles);
+        HUDManager.Instance.UpdateCrosshair(_cameraComponent.CamMode, _scrollInput);
     }
 
     private void LateUpdate()
     {
-        _cameraComponent.UpdateCameraPosition();
+        _cameraComponent.UpdateCameraPosition(_turretRotateInput);
     }
 
     private void FixedUpdate()
@@ -60,6 +65,7 @@ public class PlayerInput : TankComponent
         _hullRotateInput = Input.GetAxis("Horizontal");
         _tiltInput = Input.GetAxis("Mouse Y");
         _turretRotateInput = Input.GetAxis("Mouse X");
+        _scrollInput = Input.GetAxis("Mouse ScrollWheel");
     }
 
     private void TankMove()
@@ -68,6 +74,8 @@ public class PlayerInput : TankComponent
 
         if (_hullRotateInput < 0 || _hullRotateInput > 0)
             _componentManager.MoveComponent.RotateTank(_hullRotateInput);
+        
+        _componentManager.MoveComponent.UpdateHUD();
     }
 
     private void TankFire()
@@ -76,6 +84,9 @@ public class PlayerInput : TankComponent
         if (!_componentManager.ShootComponent.CanFire) return;
 
         _componentManager.ShootComponent.FireShell();
+        HUDManager.Instance.UpdateAmmoCount(_componentManager.ShootComponent.GetCurrentAmmoCount());
+        if (_componentManager.ShootComponent.GetCurrentAmmoCount() > 0)
+            StartCoroutine(HUDManager.Instance.UpdateReloadUI(_properties.ReloadTime));
     }
 
     private void ShellTypeSwitch()
@@ -83,6 +94,8 @@ public class PlayerInput : TankComponent
         if (!Input.GetKeyDown(KeyCode.Tab)) return;
 
         _componentManager.ShootComponent.SwitchShell();
+        HUDManager.Instance.UpdateShellTypeUI(_componentManager.ShootComponent.GetCurrentShellType());
+        HUDManager.Instance.UpdateAmmoCount(_componentManager.ShootComponent.GetCurrentAmmoCount());
     }
 
     private void IncreaseGear()

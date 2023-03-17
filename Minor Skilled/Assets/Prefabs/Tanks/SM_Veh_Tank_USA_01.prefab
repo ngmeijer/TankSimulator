@@ -2978,7 +2978,7 @@ GameObject:
   - component: {fileID: 562540592}
   - component: {fileID: 1629477346}
   - component: {fileID: 1629477347}
-  - component: {fileID: 1629477352}
+  - component: {fileID: 5875371255604841286}
   m_Layer: 0
   m_Name: SM_Veh_Tank_USA_01
   m_TagString: Untagged
@@ -3035,8 +3035,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Properties: {fileID: 11400000, guid: ce3145c9f7a5d3a49a0b2f4b5616eedf, type: 2}
-  EntityHUD: {fileID: 1629477352}
+  HUDUpdater: {fileID: 0}
   HasDied: 0
+  ID: 0
 --- !u!114 &1629477344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3105,7 +3106,7 @@ MonoBehaviour:
   _functioningTankGFX: {fileID: 3804405257550709643}
   _destroyedTankCamera: {fileID: 0}
   _deathVFX: {fileID: 3329834886063455794}
---- !u!114 &1629477352
+--- !u!114 &5875371255604841286
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3114,13 +3115,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6587442561008276303}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f840becc4ee4fff8281e42c6d778ffb, type: 3}
+  m_Script: {fileID: 11500000, guid: 3b2fae3470824a119b9cb27bc54d1ce2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthIndicator: {fileID: 667280418}
-  armorIndicator: {fileID: 0}
-  enemyName: {fileID: 1938497073}
-  canvas: {fileID: 4348929010808901992}
+  _canvas: {fileID: 4348929010808901992}
+  _healthBar: {fileID: 667280418}
+  _nameText: {fileID: 1938497073}
 --- !u!1 &6587632306946441639
 GameObject:
   m_ObjectHideFlags: 0

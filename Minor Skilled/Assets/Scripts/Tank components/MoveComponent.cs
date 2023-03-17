@@ -10,6 +10,13 @@ enum MoveDirection
     Backward
 };
 
+public struct MovementData
+{
+    public float Velocity;
+    public int GearIndex;
+    public int RPM;
+}
+
 public class MoveComponent : TankComponent
 {
     private const int REAR_DRIVE_GEAR = -1;
@@ -20,11 +27,10 @@ public class MoveComponent : TankComponent
     private float _hudCurrentUpdateTime;
     private float _hudMaxUpdateTime = 0.2f;
     private float _maxSpeed;
-    private int _gearIndex = 0;
-    private int _wheelCount;
-    private float _rpm;
-    private float _motorTorque;
+    private MovementData _movementData;
     private Vector2 _textureOffset;
+    private int _wheelCount;
+    private float _currentTorque;
     
     [SerializeField] private Rigidbody _tankRB;
     [SerializeField] private Transform _centerOfMass;
@@ -39,6 +45,8 @@ public class MoveComponent : TankComponent
         _componentManager.EventManager.OnShellFired.AddListener((content) => TankKickbackOnShellFire());
         _tankRB.centerOfMass = _centerOfMass.localPosition;
         _tankRB.mass = _properties.TankMass;
+
+        _movementData = new MovementData();
         _wheelCount = LeftTrackWheelColliders.Count + RightTrackWheelColliders.Count;
     }
 
@@ -50,19 +58,6 @@ public class MoveComponent : TankComponent
         Debug.Assert(_rightTrackRenderer != null, $"Right track renderer reference in MoveComponent ({gameObject.name}) is null. Drag into the inspector");
     }
 
-    private void Update()
-    {
-        AnimateTankTracks(GetTankVelocity());
-
-        _hudCurrentUpdateTime += Time.deltaTime;
-        if (_hudCurrentUpdateTime >= _hudMaxUpdateTime)
-        {
-            _hudCurrentUpdateTime = 0;
-            _componentManager.EntityHUD.UpdateSpeed((float)Math.Round(GetTankVelocity(), 1));
-            _componentManager.EntityHUD.UpdateGearData(_gearIndex, (int)_rpm, (int)_motorTorque);
-        }
-    }
-    
     private void OnDrawGizmos()
     {
         if (!Application.isPlaying) return;
@@ -84,14 +79,24 @@ public class MoveComponent : TankComponent
         }
     }
 
+    public void UpdateHUD()
+    {
+        _hudCurrentUpdateTime += Time.deltaTime;
+        if (_hudCurrentUpdateTime >= _hudMaxUpdateTime)
+        {
+            _hudCurrentUpdateTime = 0;
+            HUDManager.Instance.UpdateGearboxData(_movementData);
+        }
+    }
+
     public float GetTankVelocity()
     {
         return _tankRB.velocity.magnitude;
     }
 
-    private void AnimateTankTracks(float speed)
+    public void AnimateTankTracks(float inputValue)
     {
-        var offset = Time.time * speed;
+        var offset = Time.time * inputValue * GetTankVelocity();
         _textureOffset.y = offset;
         _leftTrackRenderer.material.mainTextureOffset = _textureOffset;
         _rightTrackRenderer.material.mainTextureOffset = _textureOffset;
@@ -116,6 +121,7 @@ public class MoveComponent : TankComponent
         //For the AI, input value can be generated as well so should be a reusable class.
         float torquePerWheel = CalculateTorque(inputValue);
         SetMotorTorque(torquePerWheel, torquePerWheel);
+        _movementData.Velocity = (float)Math.Round(GetTankVelocity(), 1);
     }
 
     public void RotateTank(float rotateInputValue)
@@ -152,12 +158,9 @@ public class MoveComponent : TankComponent
     private float CalculateRPM()
     {
         float wheelRPM = GetWheelRPM() / _wheelCount;
-        float gearValue = _properties.GearRatios.Evaluate(_gearIndex);
+        float gearValue = _properties.GearRatios.Evaluate(_movementData.GearIndex);
         float motorRPM = MIN_RPM + (Mathf.Abs(wheelRPM) * FINAL_DRIVE_RATIO * gearValue);
         
-        //Debugging
-        //_componentManager.EntityHUD.UpdateWheelRPMCalculation($"motorRPM = [minRPM]{MIN_RPM} + ([wheelRPM]{wheelRPM} * [FDR]{FINAL_DRIVE_RATIO} * [gear value]{gearValue} = {motorRPM})");
-
         return motorRPM;
     }
 
@@ -180,38 +183,35 @@ public class MoveComponent : TankComponent
 
     private float CalculateTorque(float inputValue)
     {
-        _rpm = CalculateRPM();
+        _movementData.RPM = (int)CalculateRPM();
 
         if (inputValue == 0) return 0;
         
         //Prevents moving forward when in rear gear
-        if (_gearIndex < 0)
+        if (_movementData.GearIndex < 0)
             inputValue = Mathf.Abs(inputValue);
         //Prevents moving backwards when in any gear above 0
-        else if (_gearIndex > 0 && inputValue < 0)
+        else if (_movementData.GearIndex > 0 && inputValue < 0)
             inputValue = Mathf.Abs(inputValue);
 
-        _rpm = Mathf.Abs(_rpm);
-        _motorTorque = _properties.MotorTorque.Evaluate(_rpm) * _properties.GearRatios.Evaluate(_gearIndex) * FINAL_DRIVE_RATIO * inputValue;
-        // _componentManager.EntityHUD.UpdateCalculationText($"Final torque: [torque graph - rpm {_rpm}]{_properties.MotorTorque.Evaluate(_rpm)} * " +
-        //                                                    $"[gear graph]{_properties.GearRatios.Evaluate(_gearIndex)} * [FDR]{FINAL_DRIVE_RATIO} * [input]{inputValue} = {_motorTorque}" +
-        //                                                    $"\nTPW: {_motorTorque} / {_wheelCount} = {_motorTorque / _wheelCount}");
-        float torquePerWheel = _motorTorque / _wheelCount;
+        _movementData.RPM = Mathf.Abs(_movementData.RPM);
+        _currentTorque = _properties.MotorTorque.Evaluate(_movementData.RPM) * _properties.GearRatios.Evaluate(_movementData.GearIndex) * FINAL_DRIVE_RATIO * inputValue;
+        float torquePerWheel = _currentTorque / _wheelCount;
 
         return torquePerWheel;
     }
 
     public void IncreaseGear()
     {
-        _gearIndex++;
-        if (_gearIndex > _properties.MaxGears)
-            _gearIndex = _properties.MaxGears;
+        _movementData.GearIndex++;
+        if (_movementData.GearIndex > _properties.MaxGears)
+            _movementData.GearIndex = _properties.MaxGears;
     }
 
     public void DecreaseGear()
     {
-        _gearIndex--;
-        if (_gearIndex < REAR_DRIVE_GEAR)
-            _gearIndex = REAR_DRIVE_GEAR;
+        _movementData.GearIndex--;
+        if (_movementData.GearIndex < REAR_DRIVE_GEAR)
+            _movementData.GearIndex = REAR_DRIVE_GEAR;
     }
 }

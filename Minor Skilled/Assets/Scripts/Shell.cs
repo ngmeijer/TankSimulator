@@ -20,8 +20,11 @@ public class Shell : MonoBehaviour
     private void Start()
     {
         _rb.centerOfMass = _centerOfMass.position;
-        if(_explosion != null)
+        if (_explosion != null)
+        {
             _explosionVFXTransform = _explosion.transform;
+            _explosionVFXTransform.parent = GameManager.Instance.GetVFXParent();
+        }
     }
 
     private void OnCollisionEnter(Collision other)

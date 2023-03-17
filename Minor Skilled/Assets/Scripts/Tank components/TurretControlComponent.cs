@@ -3,7 +3,9 @@ using UnityEngine;
 
 public class TurretControlComponent : TankComponent
 {
-    [SerializeField] private Transform _turretTransform;       
+    [SerializeField] private Transform _turretTransform;
+
+    [SerializeField] private Transform _rotationTarget;
     [SerializeField] private Transform _barrelTransform;
     [SerializeField] private bool _lockTurret;
     [SerializeField] private float _barrelMinY;
@@ -11,6 +13,9 @@ public class TurretControlComponent : TankComponent
     
     private Vector3 _barrelEulerAngles;      
     private Vector3 _turretEulerAngles;
+    
+    public int interpolationFramesCount = 45;
+    int elapsedFrames = 0;
 
     private void Start()
     {
@@ -20,12 +25,14 @@ public class TurretControlComponent : TankComponent
 
     private void LateUpdate()                                        
     {                                                                
-        _barrelTransform.localEulerAngles  = _barrelEulerAngles;        
-        _turretTransform.localEulerAngles = _turretEulerAngles;        
-    }                                                                
+        _barrelTransform.localEulerAngles = _barrelEulerAngles;
+        _turretTransform.localEulerAngles = _turretEulerAngles;
+    }
 
     public void HandleTurretRotation(float turretRotationInput)
     {
+        //Quaternion rotTarget = Quaternion.LookRotation(_rotationTarget.position - _turretTransform.position);
+        //_turretTransform.rotation = Quaternion.RotateTowards(_turretTransform.rotation, rotTarget, 10 * Time.deltaTime);
         _turretEulerAngles += new Vector3(0, turretRotationInput, 0) * (Time.deltaTime * _componentManager.Properties.TurretRotateSpeed);
     }
 

@@ -6,12 +6,12 @@ using UnityEngine;
 public class AIInput : MonoBehaviour
 {
     private TankComponentManager _componentManager;
-    private BaseShootComponent _baseShootComponent;
+    private ShootComponent _shootComponent;
 
     private void Awake()
     {
         _componentManager = GetComponent<TankComponentManager>();
-        _baseShootComponent = GetComponent<BaseShootComponent>();
+        _shootComponent = GetComponent<ShootComponent>();
     }
 
     private void Start()
@@ -24,7 +24,7 @@ public class AIInput : MonoBehaviour
         if(_componentManager.HasDied) StopCoroutine(testShoot());
         yield return new WaitForSeconds(_componentManager.Properties.ReloadTime);
         
-        _baseShootComponent.FireShell();
+        _shootComponent.FireShell();
         if (_componentManager.HasDied) yield break;
         
         StartCoroutine(testShoot());

@@ -7,26 +7,29 @@ using UnityEngine;
 public class TankComponentManager : MonoBehaviour
 {
     public TankProperties Properties;
-    public BaseHUDManager EntityHUD;
+    public HUDUpdater hudUpdater;
     public EventManager EventManager { get; private set; }
     public MoveComponent MoveComponent { get; private set; }
     public TurretControlComponent TurretControlComponent { get; private set; }
-    public BaseShootComponent ShootComponent { get; private set; }
+    public ShootComponent ShootComponent { get; private set; }
 
     public bool HasDied;
+    public int ID;
 
     private void Awake()
     {
         MoveComponent = GetComponent<MoveComponent>();
         TurretControlComponent = GetComponent<TurretControlComponent>();
-        ShootComponent = GetComponent<BaseShootComponent>();
+        ShootComponent = GetComponent<ShootComponent>();
         
         EventManager = GetComponent<EventManager>();
+
+        TryGetComponent(out hudUpdater);
     }
 
     private void Start()
     {
-        EntityHUD.UpdateName(Properties.TankName);
+        HUDManager.Instance.UpdateEntityName(ID, Properties.TankName);
     }
 
     public Vector3 GetCurrentBarrelDirection() => TurretControlComponent.GetCurrentBarrelDirection();
