@@ -14,6 +14,7 @@ public class PlayerInput : TankComponent
     private float _turretRotateInput;
 
     private CameraComponent _cameraComponent;
+    private ShootComponent _shootComponent;
 
     protected override void Awake()
     {
@@ -24,6 +25,7 @@ public class PlayerInput : TankComponent
 
     private void Start()
     {
+        _shootComponent = _componentManager.ShootComponent;
         HUDManager.Instance.UpdateAmmoCount(_componentManager.ShootComponent.GetCurrentAmmoCount());
         HUDManager.Instance.UpdateShellTypeUI(_componentManager.ShootComponent.GetCurrentShellType());
     }
@@ -34,14 +36,14 @@ public class PlayerInput : TankComponent
 
         GetInputValues();
         TankFire();
-        _componentManager.MoveComponent.AnimateTankTracks(_moveInput);
         ShellTypeSwitch();
         IncreaseGear();
         DecreaseGear();
-        _componentManager.TurretControlComponent.HandleTurretRotation(_turretRotateInput);
-        _componentManager.TurretControlComponent.TiltCannon(_tiltInput);
+        _componentManager.TurretControlComponent.HandleTurretRotation();
+        //_componentManager.TurretControlComponent.TiltCannon(_tiltInput);
         _cameraComponent.OffsetCameraOnCannonTilt(_tiltInput);
-        HUDManager.Instance.UpdateCrosshair(_cameraComponent.CamMode, _scrollInput);
+
+        HandleCrosshair();
     }
 
     private void LateUpdate()
@@ -68,13 +70,25 @@ public class PlayerInput : TankComponent
         _scrollInput = Input.GetAxis("Mouse ScrollWheel");
     }
 
+    private void HandleCrosshair()
+    {
+        HUDManager.Instance.UpdateCurrentRange(_componentManager.ShootComponent.CurrentRange);
+        
+        if (_componentManager.ShootComponent.CurrentRange < _componentManager.ShootComponent.MinRange) return;
+        if (_componentManager.ShootComponent.CurrentRange > _componentManager.ShootComponent.MaxRange) return;
+
+        _componentManager.TurretControlComponent.OffsetCannonOnRangeChange(_scrollInput);
+        _componentManager.ShootComponent.UpdateCurrentRange(_scrollInput);
+        HUDManager.Instance.UpdateCrosshair(_scrollInput, _shootComponent.CurrentDistanceToTarget, _shootComponent.CurrentRange);
+    }
+
     private void TankMove()
     {
         _componentManager.MoveComponent.MoveTank(_moveInput);
 
         if (_hullRotateInput < 0 || _hullRotateInput > 0)
             _componentManager.MoveComponent.RotateTank(_hullRotateInput);
-        
+
         _componentManager.MoveComponent.UpdateHUD();
     }
 
@@ -83,6 +97,7 @@ public class PlayerInput : TankComponent
         if (Input.GetAxis("Fire1") == 0) return;
         if (!_componentManager.ShootComponent.CanFire) return;
 
+        //_cameraComponent.ShakeCamera();
         _componentManager.ShootComponent.FireShell();
         HUDManager.Instance.UpdateAmmoCount(_componentManager.ShootComponent.GetCurrentAmmoCount());
         if (_componentManager.ShootComponent.GetCurrentAmmoCount() > 0)

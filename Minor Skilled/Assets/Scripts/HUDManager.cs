@@ -11,26 +11,31 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
     private Dictionary<int, HUDUpdater> _hudInstances = new Dictionary<int, HUDUpdater>();
     private Transform _player;
 
-    [Header("Movement")]
-    [SerializeField] private TextMeshProUGUI _tankSpeedText;
+    [Header("Movement")] [SerializeField] private TextMeshProUGUI _tankSpeedText;
     [SerializeField] private TextMeshProUGUI _gearIndexText;
     [SerializeField] private TextMeshProUGUI _rpmText;
-    
-    [Header("Shooting")]
-    [SerializeField] private Slider _reloadBar;
+
+    [Header("Shooting")] [SerializeField] private Slider _reloadBar;
     [SerializeField] private TextMeshProUGUI _readyText;
     [SerializeField] private TextMeshProUGUI _ammoCountText;
     [SerializeField] private TextMeshProUGUI _shellTypeText;
-    [SerializeField] private RectTransform _crosshair;
-    [SerializeField] private float _crosshairOffsetMultiplier = 1f;
+    [SerializeField] private float _crosshairOffsetMultiplier = 16.33f;
+    [SerializeField] private TextMeshProUGUI _currentRangeText;
+    [SerializeField] private TextMeshProUGUI _currentDistanceToTargetText;
+    [SerializeField] private RectTransform _crosshairParent;
+    [SerializeField] private RectTransform _mildotsContainer;
+    [SerializeField] private RectTransform _mildotsBounds;
     private Vector2 _crosshairPosition;
+    private Vector2 _mildotsPosition;
+    private Vector2 _mildotsDelta;
+    
 
     private void Start()
     {
         _entities = GameManager.Instance.GetEntities();
         _player = GameManager.Instance.GetPlayer();
-
-        _crosshairPosition = _crosshair.anchoredPosition;
+        _crosshairPosition = _crosshairParent.anchoredPosition;
+        _mildotsPosition = new Vector2(_mildotsContainer.anchoredPosition.x, 84);
 
         foreach (KeyValuePair<int, TankComponentManager> entity in _entities)
         {
@@ -73,12 +78,12 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
         _gearIndexText.SetText($"{data.GearIndex}");
         _rpmText.SetText($"{data.RPM}");
     }
-    
+
     public IEnumerator UpdateReloadUI(float reloadTime)
     {
         _reloadBar.gameObject.SetActive(true);
         _readyText.gameObject.SetActive(false);
-        
+
         float currentTime = 0f;
         while (currentTime < reloadTime)
         {
@@ -87,7 +92,7 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
             _reloadBar.value = Mathf.Lerp(_reloadBar.minValue, _reloadBar.maxValue, lerpValue);
             yield return null;
         }
-        
+
         _readyText.gameObject.SetActive(true);
         _reloadBar.gameObject.SetActive(false);
     }
@@ -102,21 +107,41 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
         _shellTypeText.SetText($"{shellType}");
     }
 
-    public void UpdateCrosshair(CameraMode camMode, float yOffset)
+    public void UpdateCrosshair(float scrollInput, float currentDistanceToTarget, float currentRange)
     {
-        switch (camMode)
+        //3rd person
+        if (GameManager.Instance.CamMode == CameraMode.ThirdPerson)
         {
-            case CameraMode.ADS:
-                break;
-            case CameraMode.FirstPerson:
-                _crosshairPosition.y += yOffset * _crosshairOffsetMultiplier;
-                _crosshairPosition.y = Mathf.Clamp(_crosshairPosition.y, -110f, 110f);
-                _crosshair.anchoredPosition = _crosshairPosition;
-                break;
-            case CameraMode.ThirdPerson:
-                break;
+            if (scrollInput > 0)
+                _crosshairPosition.y += 1 * _crosshairOffsetMultiplier;
+            else if (scrollInput < 0)
+                _crosshairPosition.y -= 1 * _crosshairOffsetMultiplier;
+
+            float minY = _mildotsBounds.anchoredPosition.y;
+            float maxY = minY + _mildotsBounds.sizeDelta.y;
+            _crosshairPosition.y = Mathf.Clamp(_crosshairPosition.y, minY, maxY);
+            _crosshairParent.anchoredPosition = _crosshairPosition;
         }
-        
-        _crosshair.anchoredPosition = _crosshairPosition;
+
+        // //ADS
+        // if (GameManager.Instance.CamMode == CameraMode.ADS)
+        // {
+        //     if (scrollInput > 0)
+        //         _mildotsPosition.y -= 1 * _crosshairOffsetMultiplier;
+        //     else if (scrollInput < 0)
+        //         _mildotsPosition.y += 1 * _crosshairOffsetMultiplier;
+        //     else return;
+        //     _mildotsPosition.y = Mathf.Clamp(_mildotsDelta.y, -430f, 180f);
+        //     _mildotsContainer.anchoredPosition = _mildotsPosition;
+        // }
+
+        //
+        _currentRangeText.SetText($"{currentRange}m");
+        _currentDistanceToTargetText.SetText(currentDistanceToTarget != 0 ? $"{currentDistanceToTarget}m" : $"∞");
+    }
+
+    public void UpdateCurrentRange(float currentRange)
+    {
+        _currentRangeText.SetText($"{currentRange}m");
     }
 }

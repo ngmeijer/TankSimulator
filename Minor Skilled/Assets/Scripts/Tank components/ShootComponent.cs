@@ -15,7 +15,13 @@ public class ShootComponent : TankComponent
     private int _maxShellTypes;
     private int _currentShellIndex;
 
+    public float CurrentDistanceToTarget;
+    public float CurrentRange { get; private set; } = 120f;
+    public float MinRange { get; } = 0f;
+
     public bool CanFire { get; private set; } = true;
+    public float MaxRange { get; private set; } = 1000f;
+
     private int _currentAmmoCountForShell;
     public int GetCurrentAmmoCount() => _currentAmmoCountForShell;
     
@@ -23,6 +29,7 @@ public class ShootComponent : TankComponent
     public string GetCurrentShellType() => _currentShellType;
 
     private Dictionary<string, int> _ammoCountsPerShellType = new Dictionary<string, int>();
+    private RaycastHit currentEstimatedHitpoint;
 
     protected override void Awake()
     {
@@ -51,6 +58,13 @@ public class ShootComponent : TankComponent
         }
 
         _ammoCountsPerShellType.TryGetValue(_currentShellType, out _currentAmmoCountForShell);
+
+        CurrentRange = MinRange;
+    }
+
+    private void Update()
+    {
+        CurrentDistanceToTarget = TrackDistance();
     }
 
     public virtual void FireShell()
@@ -95,15 +109,16 @@ public class ShootComponent : TankComponent
         CanFire = true;
     }
     
-    public float TrackDistance()
+    private float TrackDistance()
     {
         RaycastHit hit;
-        Debug.DrawRay(_shellSpawnpoint.position, _shellSpawnpoint.forward * 1000,
-            Color.red);
+        Debug.DrawRay(_shellSpawnpoint.position, _shellSpawnpoint.forward * MaxRange, Color.yellow);
+        Debug.DrawRay(_shellSpawnpoint.position, _shellSpawnpoint.forward * CurrentRange, Color.red);
         if (Physics.Raycast(_shellSpawnpoint.position, _shellSpawnpoint.forward,
-                out hit, Mathf.Infinity))
+                out hit, MaxRange))
         {
-            return (float)Math.Round(hit.distance, 2);
+            currentEstimatedHitpoint = hit;
+            return (float)Math.Round(hit.distance, 1);
         }
 
         return 0;
@@ -117,5 +132,18 @@ public class ShootComponent : TankComponent
         _currentShellType = _shellPrefabs[_currentShellIndex].GetShellType();
 
         _currentAmmoCountForShell = _ammoCountsPerShellType[_currentShellType];
+    }
+
+    public void UpdateCurrentRange(float inputValue)
+    {
+        CurrentRange += inputValue * _properties.RangeChangeSpeed;
+        CurrentRange = Mathf.Clamp(CurrentRange, MinRange, MaxRange);
+        CurrentRange = (float)Math.Round(CurrentRange, 2);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(currentEstimatedHitpoint.point, 0.75f);
     }
 }

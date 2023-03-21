@@ -6,25 +6,19 @@ using UnityEngine;
 public enum CameraMode
 {
     ADS,
-    FirstPerson,
     ThirdPerson
 }
 
 public class CameraComponent : TankComponent
 {
     private const float THIRD_PERSON_DIST_DAMP = 10f;
-    private const float FIRST_PERSON_DIST_DAMP = 100F;
-    
-    [Header("ADS properties")] 
-    [SerializeField] private Camera _adsCam;
 
-    [Header("First person properties")] 
-    [SerializeField] private Camera _firstPersonCam;
-    [SerializeField] private Transform _firstPersonPivot;
-    [SerializeField] private Transform _firstPersonCameraFocus;
+    [Header("ADS properties")] [SerializeField]
+    private Camera _adsCam;
 
-    [Header("Third person properties")] 
-    [SerializeField] private Camera _thirdPersonCam;
+    [Header("Third person properties")] [SerializeField]
+    private Camera _thirdPersonCam;
+
     [SerializeField] private Transform _thirdPersonTargetPos;
     [SerializeField] private Transform _thirdPersonCameraFocus;
     [SerializeField] private Transform _thirdPersonRotationAnchor;
@@ -41,8 +35,9 @@ public class CameraComponent : TankComponent
 
     private void Start()
     {
-        EnableFirstPerson();
+        EnableThirdPerson();
         Cursor.lockState = CursorLockMode.Locked;
+        _thirdPersonCam.transform.position = _thirdPersonTargetPos.position;
     }
 
     private void LateUpdate()
@@ -59,15 +54,7 @@ public class CameraComponent : TankComponent
         }
         else
         {
-            switch (_previousCamMode)
-            {
-                case CameraMode.FirstPerson:
-                    EnableFirstPerson();
-                    break;
-                case CameraMode.ThirdPerson:
-                    EnableThirdPerson();
-                    break;
-            }
+            EnableThirdPerson();
         }
     }
 
@@ -75,8 +62,6 @@ public class CameraComponent : TankComponent
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
             EnableADS();
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-            EnableFirstPerson();
         else if (Input.GetKeyDown(KeyCode.Alpha3))
             EnableThirdPerson();
     }
@@ -84,52 +69,65 @@ public class CameraComponent : TankComponent
     private void EnableADS()
     {
         CamMode = CameraMode.ADS;
-        ChangeCameraPerspective(_adsCam, true, false, false);
-    }
-
-    private void EnableFirstPerson()
-    {
-        CamMode = CameraMode.FirstPerson;
-        ChangeCameraPerspective(_firstPersonCam, false, true, false);
+        ChangeCameraPerspective(_adsCam, true, false);
     }
 
     private void EnableThirdPerson()
     {
         CamMode = CameraMode.ThirdPerson;
-        ChangeCameraPerspective(_thirdPersonCam, false, false, true);
+        ChangeCameraPerspective(_thirdPersonCam, false, true);
     }
 
-    private void ChangeCameraPerspective(Camera currentCamera, bool adsCamState, bool fpsCamState, bool tpCamState)
+    private void ChangeCameraPerspective(Camera currentCamera, bool adsCamState, bool tpCamState)
     {
+        _componentManager.EventManager.OnCameraChanged.Invoke(CamMode);
         _currentCameraTransform = currentCamera.transform;
         _adsCam.gameObject.SetActive(adsCamState);
-        _firstPersonCam.gameObject.SetActive(fpsCamState);
         _thirdPersonCam.gameObject.SetActive(tpCamState);
     }
 
     public void UpdateCameraPosition(float rotateInput)
     {
-        _thirdPersonRotationAnchor.Rotate(_thirdPersonRotationAnchor.up, rotateInput * _properties.TurretRotateSpeed * Time.deltaTime);
+        _thirdPersonRotationAnchor.Rotate(_thirdPersonRotationAnchor.up,
+            rotateInput * _properties.TurretRotateSpeed * Time.deltaTime);
 
-        switch (CamMode)
+        Vector3 positionDelta = Vector3.zero;
+        Vector3 slerpedPosition = Vector3.zero;
+
+        if (CamMode == CameraMode.ThirdPerson)
         {
-            case CameraMode.FirstPerson:
-            {
-                Vector3 lerpedPosition = Vector3.Slerp(_currentCameraTransform.position, _firstPersonPivot.position, FIRST_PERSON_DIST_DAMP * Time.deltaTime);
-                _currentCameraTransform.position = lerpedPosition;
-
-                _currentCameraTransform.LookAt(_firstPersonCameraFocus.position);
-                break;
-            }
-            case CameraMode.ThirdPerson:
-            {
-                Vector3 slerpedPosition =
-                    Vector3.Slerp(_currentCameraTransform.position, _thirdPersonTargetPos.position, THIRD_PERSON_DIST_DAMP * Time.deltaTime);
-                _currentCameraTransform.position = slerpedPosition;
-                _currentCameraTransform.LookAt(_thirdPersonCameraFocus.position);
-                break;
-            }
+            slerpedPosition =
+                Vector3.Slerp(_currentCameraTransform.position, _thirdPersonTargetPos.position,
+                    THIRD_PERSON_DIST_DAMP * Time.deltaTime);
+            positionDelta = slerpedPosition - _currentCameraTransform.position;
+            _currentCameraTransform.LookAt(_thirdPersonCameraFocus.position);
         }
+
+        _currentCameraTransform.position += positionDelta;
+    }
+
+    public void ShakeCamera()
+    {
+        float shakeIntensity = 50;
+        float shakeDuration = 0.42f;
+        float dropOffTime = 1.6f;
+        LTDescr shakeTweenVertical = LeanTween
+            .rotateAroundLocal(_currentCameraTransform.gameObject, Vector3.right, shakeIntensity, shakeDuration)
+            .setEase(LeanTweenType.easeShake)
+            .setLoopClamp();
+
+        LTDescr shakeTweenHorizontal = LeanTween
+            .rotateAroundLocal(_currentCameraTransform.gameObject, Vector3.up, shakeIntensity, shakeDuration)
+            .setEase(LeanTweenType.easeShake)
+            .setLoopClamp();
+
+        LeanTween.value(_currentCameraTransform.gameObject, shakeIntensity, 0f, dropOffTime).setOnUpdate(
+            (float val) => { shakeTweenVertical.setTo(Vector3.right * val); }
+        ).setEase(LeanTweenType.easeOutQuad);
+
+        LeanTween.value(_currentCameraTransform.gameObject, shakeIntensity, 0f, dropOffTime).setOnUpdate(
+            (float val) => { shakeTweenHorizontal.setTo(Vector3.right * val); }
+        ).setEase(LeanTweenType.easeOutQuad);
     }
 
     private void OnDrawGizmos()

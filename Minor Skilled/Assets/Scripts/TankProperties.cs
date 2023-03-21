@@ -18,6 +18,7 @@ public class TankProperties : ScriptableObject
 
     public float FireForce = 50f;
     public float ReloadTime = 4f;
+    public float RangeChangeSpeed = 1f;
     public int APAmmo = 50;
     public int HEATAmmo = 50;
     public int HEAmmo = 50;

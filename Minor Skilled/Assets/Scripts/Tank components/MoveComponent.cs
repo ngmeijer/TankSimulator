@@ -28,7 +28,8 @@ public class MoveComponent : TankComponent
     private float _hudMaxUpdateTime = 0.2f;
     private float _maxSpeed;
     private MovementData _movementData;
-    private Vector2 _textureOffset;
+    private Vector2 _textureOffsetLefTrack;
+    private Vector2 _textureOffsetRightTrack;
     private int _wheelCount;
     private float _currentTorque;
     
@@ -94,12 +95,14 @@ public class MoveComponent : TankComponent
         return _tankRB.velocity.magnitude;
     }
 
-    public void AnimateTankTracks(float inputValue)
+    private void AnimateTankTracks(float inputValueLeftTrack, float inputValueRightTrack)
     {
-        var offset = Time.time * inputValue * GetTankVelocity();
-        _textureOffset.y = offset;
-        _leftTrackRenderer.material.mainTextureOffset = _textureOffset;
-        _rightTrackRenderer.material.mainTextureOffset = _textureOffset;
+        var offsetLeft = Time.time * inputValueLeftTrack * GetTankVelocity();
+        var offsetRight = Time.time * inputValueRightTrack * GetTankVelocity();
+        _textureOffsetLefTrack.y = offsetLeft;
+        _textureOffsetRightTrack.y = offsetRight;
+        _leftTrackRenderer.material.mainTextureOffset = _textureOffsetLefTrack;
+        _rightTrackRenderer.material.mainTextureOffset = _textureOffsetRightTrack;
     }
 
     private void SetMotorTorque(float leftTrackTorque, float rightTrackTorque)
@@ -118,6 +121,7 @@ public class MoveComponent : TankComponent
 
     public void MoveTank(float inputValue)
     {
+        AnimateTankTracks(inputValue, inputValue);
         //For the AI, input value can be generated as well so should be a reusable class.
         float torquePerWheel = CalculateTorque(inputValue);
         SetMotorTorque(torquePerWheel, torquePerWheel);
@@ -132,10 +136,12 @@ public class MoveComponent : TankComponent
         {
             //Rotating to left
             case < 0:
+                AnimateTankTracks(-rotateInputValue, rotateInputValue);
                 SetMotorTorque(0, torquePerWheel * _properties.SingleTrackTorqueMultiplier);
                 break;
             //Rotating to right
             case > 0:
+                AnimateTankTracks(rotateInputValue, -rotateInputValue);
                 SetMotorTorque(torquePerWheel * _properties.SingleTrackTorqueMultiplier, 0);
                 break;
         }

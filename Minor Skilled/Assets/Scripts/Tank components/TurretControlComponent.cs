@@ -4,18 +4,14 @@ using UnityEngine;
 public class TurretControlComponent : TankComponent
 {
     [SerializeField] private Transform _turretTransform;
-
     [SerializeField] private Transform _rotationTarget;
     [SerializeField] private Transform _barrelTransform;
     [SerializeField] private bool _lockTurret;
-    [SerializeField] private float _barrelMinY;
-    [SerializeField] private float _barrelMaxY;
+    [SerializeField] private float _barrelHighestY;
+    public float BarrelLowestY = -30;
     
     private Vector3 _barrelEulerAngles;      
     private Vector3 _turretEulerAngles;
-    
-    public int interpolationFramesCount = 45;
-    int elapsedFrames = 0;
 
     private void Start()
     {
@@ -24,16 +20,15 @@ public class TurretControlComponent : TankComponent
     }
 
     private void LateUpdate()                                        
-    {                                                                
+    {                                                          
+        _barrelEulerAngles.x = Mathf.Clamp(_barrelEulerAngles.x, BarrelLowestY, _barrelHighestY);
         _barrelTransform.localEulerAngles = _barrelEulerAngles;
-        _turretTransform.localEulerAngles = _turretEulerAngles;
     }
 
-    public void HandleTurretRotation(float turretRotationInput)
+    public void HandleTurretRotation()
     {
-        //Quaternion rotTarget = Quaternion.LookRotation(_rotationTarget.position - _turretTransform.position);
-        //_turretTransform.rotation = Quaternion.RotateTowards(_turretTransform.rotation, rotTarget, 10 * Time.deltaTime);
-        _turretEulerAngles += new Vector3(0, turretRotationInput, 0) * (Time.deltaTime * _componentManager.Properties.TurretRotateSpeed);
+        _turretTransform.rotation =
+            Quaternion.RotateTowards(_turretTransform.rotation, _rotationTarget.rotation, _properties.TurretRotateSpeed * Time.deltaTime);
     }
 
     public void OffsetCannonRotationOnTankRotation(float hullRotateInput, float turretRotateInput)
@@ -43,17 +38,11 @@ public class TurretControlComponent : TankComponent
         _turretEulerAngles += new Vector3(0, turretRotation - offsetHullRotation) * Time.deltaTime;
     }
 
-    public float TiltCannon(float inputValue)
+    public void OffsetCannonOnRangeChange(float scrollInput)
     {
-        //Move cannon up and down
-        float delta = inputValue * Time.deltaTime * _componentManager.Properties.TurretTiltSpeed;
-        _barrelEulerAngles -= new Vector3(delta, 0, 0);
-        _barrelEulerAngles.x =
-            Mathf.Clamp(_barrelEulerAngles.x, _barrelMaxY, _barrelMinY);
-
-        return delta;
+        _barrelEulerAngles.x -= scrollInput * _componentManager.Properties.TurretTiltSpeed * Time.deltaTime;
     }
-    
+
     public Vector3 GetCurrentBarrelDirection()  
     {                                           
         return _barrelTransform.forward;         

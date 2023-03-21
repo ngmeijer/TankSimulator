@@ -10,15 +10,16 @@ public class GameEvent : UnityEvent<string>
     
 }
 
-public class PopupManager : MonoBehaviour
+public class PopupManager : SingletonMonobehaviour<PopupManager>
 {
     [SerializeField] private GameObject _popupPrefab;
     [SerializeField] private Transform _popupParent;
     
-    public void CreatePopup(string arg0)
+    public void CreatePopup(string arg0, Color popupColour)
     {
-        GameObject popupInstance = Instantiate(_popupPrefab, _popupParent);
-        Popup component = popupInstance.GetComponent<Popup>();
-        component.UpdateContent(arg0);
+        GameObject popupContainer = Instantiate(_popupPrefab, _popupParent);
+        Popup popupInstance = popupContainer.GetComponent<Popup>();
+        popupInstance.UpdateContent(arg0);
+        popupInstance.UpdateColor(popupColour);
     }
 }

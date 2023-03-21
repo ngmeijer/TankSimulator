@@ -118,16 +118,17 @@ MonoBehaviour:
   MaxGears: 4
   SingleTrackTorqueMultiplier: 1.8
   HullRotateSpeed: 35
-  TurretRotateSpeed: 10
-  CameraRotateSpeed: 50
-  TurretTiltSpeed: 60
+  TurretRotateSpeed: 15
+  CameraRotateSpeed: 15
+  TurretTiltSpeed: 480
   TankMass: 60000
-  KickbackForce: 200000
-  FireForce: 9000
+  KickbackForce: 0
+  FireForce: 170000
   ReloadTime: 0.5
+  RangeChangeSpeed: 133
   APAmmo: 50
   HEATAmmo: 50
-  HEAmmo: 50
+  HEAmmo: 763
   MaxArmor: 100
   MaxHealth: 650
   OnShellFired: Shell fired! Reloading
