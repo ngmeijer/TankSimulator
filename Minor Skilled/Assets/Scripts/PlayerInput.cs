@@ -72,7 +72,7 @@ public class PlayerInput : TankComponent
 
     private void HandleCrosshair()
     {
-        HUDManager.Instance.UpdateCurrentRange(_componentManager.ShootComponent.CurrentRange);
+        //HUDManager.Instance.UpdateCurrentRange(_componentManager.ShootComponent.CurrentRange);
         
         if (_componentManager.ShootComponent.CurrentRange < _componentManager.ShootComponent.MinRange) return;
         if (_componentManager.ShootComponent.CurrentRange > _componentManager.ShootComponent.MaxRange) return;
@@ -96,7 +96,7 @@ public class PlayerInput : TankComponent
     {
         if (Input.GetAxis("Fire1") == 0) return;
         if (!_componentManager.ShootComponent.CanFire) return;
-
+        
         //_cameraComponent.ShakeCamera();
         _componentManager.ShootComponent.FireShell();
         HUDManager.Instance.UpdateAmmoCount(_componentManager.ShootComponent.GetCurrentAmmoCount());

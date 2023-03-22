@@ -198,7 +198,7 @@ public class TankPropertyEditor : EditorWindow
         _singleTrackTorqueMultiplier = _retrievedPropertyData.SingleTrackTorqueMultiplier;
         _tankMass = _retrievedPropertyData.TankMass;
         _reloadTime = _retrievedPropertyData.ReloadTime;
-        _fireForce = _retrievedPropertyData.FireForce;
+        _fireForce = _retrievedPropertyData.ShellSpeed;
         _maxHealth = _retrievedPropertyData.MaxHealth;
         _maxArmor = _retrievedPropertyData.MaxArmor;
 
@@ -261,7 +261,7 @@ public class TankPropertyEditor : EditorWindow
             _newPropertyData.SingleTrackTorqueMultiplier = EditorGUILayout.Slider("Single track torque multiplier", _newPropertyData.SingleTrackTorqueMultiplier, 0, 5);
             _newPropertyData.TankMass = EditorGUILayout.Slider("Tank mass", _newPropertyData.TankMass, 1, 100000);
             _newPropertyData.ReloadTime = EditorGUILayout.Slider("Reload time", _newPropertyData.ReloadTime, 0.5f, 50f);
-            _newPropertyData.FireForce = EditorGUILayout.Slider("Fire force", _newPropertyData.FireForce, 1, 100000);
+            _newPropertyData.ShellSpeed = EditorGUILayout.Slider("Fire force", _newPropertyData.ShellSpeed, 1, 100000);
             _newPropertyData.MaxHealth = EditorGUILayout.IntSlider("Max health", _newPropertyData.MaxHealth, 1, 1000);
             _newPropertyData.MaxArmor = EditorGUILayout.IntSlider("Max armor", _newPropertyData.MaxArmor, 1, 1000);
 

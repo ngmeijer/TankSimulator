@@ -11,7 +11,7 @@ public enum CameraMode
 
 public class CameraComponent : TankComponent
 {
-    private const float THIRD_PERSON_DIST_DAMP = 10f;
+    private const float THIRD_PERSON_DIST_DAMP = 4f;
 
     [Header("ADS properties")] [SerializeField]
     private Camera _adsCam;
@@ -20,13 +20,14 @@ public class CameraComponent : TankComponent
     private Camera _thirdPersonCam;
 
     [SerializeField] private Transform _thirdPersonTargetPos;
+    [SerializeField] private Transform _thirdPersonOppositeTargetPos;
     [SerializeField] private Transform _thirdPersonCameraFocus;
     [SerializeField] private Transform _thirdPersonRotationAnchor;
     [SerializeField] private float _camLowestY = -7;
     [SerializeField] private float _camHighestY = 3;
 
     private Vector3 _offsetOnTilt;
-    private Transform _currentCameraTransform;
+    private Camera _currentCamera;
     public CameraMode CamMode { get; private set; }
     private CameraMode _previousCamMode;
     private float _lastMoveValue;
@@ -42,6 +43,7 @@ public class CameraComponent : TankComponent
 
     private void LateUpdate()
     {
+        GameManager.Instance.RotationCrosshairPosition = GetScreenpointRotationCrosshair();
         CheckCameraSwitch();
     }
 
@@ -66,6 +68,11 @@ public class CameraComponent : TankComponent
             EnableThirdPerson();
     }
 
+    private Vector3 GetScreenpointRotationCrosshair()
+    {
+        return _currentCamera.WorldToScreenPoint(_thirdPersonOppositeTargetPos.position);
+    }
+
     private void EnableADS()
     {
         CamMode = CameraMode.ADS;
@@ -81,7 +88,7 @@ public class CameraComponent : TankComponent
     private void ChangeCameraPerspective(Camera currentCamera, bool adsCamState, bool tpCamState)
     {
         _componentManager.EventManager.OnCameraChanged.Invoke(CamMode);
-        _currentCameraTransform = currentCamera.transform;
+        _currentCamera = currentCamera;
         _adsCam.gameObject.SetActive(adsCamState);
         _thirdPersonCam.gameObject.SetActive(tpCamState);
     }
@@ -97,13 +104,13 @@ public class CameraComponent : TankComponent
         if (CamMode == CameraMode.ThirdPerson)
         {
             slerpedPosition =
-                Vector3.Slerp(_currentCameraTransform.position, _thirdPersonTargetPos.position,
+                Vector3.Slerp(_currentCamera.transform.position, _thirdPersonTargetPos.position,
                     THIRD_PERSON_DIST_DAMP * Time.deltaTime);
-            positionDelta = slerpedPosition - _currentCameraTransform.position;
-            _currentCameraTransform.LookAt(_thirdPersonCameraFocus.position);
+            positionDelta = slerpedPosition - _currentCamera.transform.position;
+            _currentCamera.transform.LookAt(_thirdPersonCameraFocus.position);
         }
 
-        _currentCameraTransform.position += positionDelta;
+        _currentCamera.transform.position += positionDelta;
     }
 
     public void ShakeCamera()
@@ -112,20 +119,20 @@ public class CameraComponent : TankComponent
         float shakeDuration = 0.42f;
         float dropOffTime = 1.6f;
         LTDescr shakeTweenVertical = LeanTween
-            .rotateAroundLocal(_currentCameraTransform.gameObject, Vector3.right, shakeIntensity, shakeDuration)
+            .rotateAroundLocal(_currentCamera.gameObject, Vector3.right, shakeIntensity, shakeDuration)
             .setEase(LeanTweenType.easeShake)
             .setLoopClamp();
 
         LTDescr shakeTweenHorizontal = LeanTween
-            .rotateAroundLocal(_currentCameraTransform.gameObject, Vector3.up, shakeIntensity, shakeDuration)
+            .rotateAroundLocal(_currentCamera.gameObject, Vector3.up, shakeIntensity, shakeDuration)
             .setEase(LeanTweenType.easeShake)
             .setLoopClamp();
 
-        LeanTween.value(_currentCameraTransform.gameObject, shakeIntensity, 0f, dropOffTime).setOnUpdate(
+        LeanTween.value(_currentCamera.gameObject, shakeIntensity, 0f, dropOffTime).setOnUpdate(
             (float val) => { shakeTweenVertical.setTo(Vector3.right * val); }
         ).setEase(LeanTweenType.easeOutQuad);
 
-        LeanTween.value(_currentCameraTransform.gameObject, shakeIntensity, 0f, dropOffTime).setOnUpdate(
+        LeanTween.value(_currentCamera.gameObject, shakeIntensity, 0f, dropOffTime).setOnUpdate(
             (float val) => { shakeTweenHorizontal.setTo(Vector3.right * val); }
         ).setEase(LeanTweenType.easeOutQuad);
     }
@@ -138,13 +145,16 @@ public class CameraComponent : TankComponent
         Gizmos.color = Color.yellow;
         Gizmos.DrawSphere(_thirdPersonTargetPos.position, 0.2f);
 
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawSphere(_thirdPersonOppositeTargetPos.position, 0.2f);
+
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(_thirdPersonRotationAnchor.position, 0.2f);
 
-        if (_currentCameraTransform != null)
+        if (_currentCamera != null)
         {
             Gizmos.color = Color.blue;
-            Gizmos.DrawSphere(_currentCameraTransform.position, 0.2f);
+            Gizmos.DrawSphere(_currentCamera.transform.position, 0.2f);
         }
     }
 

@@ -12,11 +12,12 @@ public class ShootComponent : TankComponent
     [SerializeField] protected Transform _VFXPivot;
     [SerializeField] protected ParticleSystem _fireExplosion;
     [SerializeField] protected List<Shell> _shellPrefabs;
+    [SerializeField] private AudioSource _audioSource;
     private int _maxShellTypes;
     private int _currentShellIndex;
 
     public float CurrentDistanceToTarget;
-    public float CurrentRange { get; private set; } = 120f;
+    public float CurrentRange { get; private set; } = 100f;
     public float MinRange { get; } = 0f;
 
     public bool CanFire { get; private set; } = true;
@@ -58,8 +59,6 @@ public class ShootComponent : TankComponent
         }
 
         _ammoCountsPerShellType.TryGetValue(_currentShellType, out _currentAmmoCountForShell);
-
-        CurrentRange = MinRange;
     }
 
     private void Update()
@@ -80,16 +79,23 @@ public class ShootComponent : TankComponent
     {
         GameObject shellInstance = Instantiate(_shellPrefabs[_currentShellIndex].gameObject,
             _shellSpawnpoint.position, _shellSpawnpoint.rotation, GameManager.Instance.GetShellParent());
-        Rigidbody rb = shellInstance.GetComponent<Rigidbody>();
-        rb.AddForce(rb.transform.forward * _componentManager.Properties.FireForce);
+        Shell shell = shellInstance.GetComponent<Shell>();
+        shell.Initialize(_properties.ShellSpeed, _shellSpawnpoint);
+        //rb.AddForce(rb.transform.forward * _componentManager.Properties.FireForce);
     }
 
     private void HandleExplosionFX()
     {
-        if (_fireExplosion == null) return;
-        
-        _fireExplosion.transform.SetPositionAndRotation(_VFXPivot.position, _VFXPivot.rotation);
-        _fireExplosion.Play();
+        if (_fireExplosion != null)
+        {
+            _fireExplosion.transform.SetPositionAndRotation(_VFXPivot.position, _VFXPivot.rotation);
+            _fireExplosion.Play();
+        }
+
+        if (_audioSource != null)
+        {
+            _audioSource.Play();
+        }
     }
 
     private void InitiateReloadSequence()

@@ -16,7 +16,7 @@ public class TankProperties : ScriptableObject
     public float TankMass;
     public float KickbackForce = 9000f;
 
-    public float FireForce = 50f;
+    public float ShellSpeed = 50f;
     public float ReloadTime = 4f;
     public float RangeChangeSpeed = 1f;
     public int APAmmo = 50;
