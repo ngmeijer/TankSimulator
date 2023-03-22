@@ -19,47 +19,56 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0.24286662
-      outSlope: 0.24286662
-      tangentMode: 0
+      inSlope: 0
+      outSlope: 2.348274
+      tangentMode: 69
       weightedMode: 0
-      inWeight: 0.18322562
-      outWeight: 0.06103205
+      inWeight: 0
+      outWeight: 0
     - serializedVersion: 3
-      time: 28826.027
-      value: 5782.166
-      inSlope: 0.2053952
-      outSlope: 0.2053952
-      tangentMode: 0
+      time: 319.19403
+      value: 749.55505
+      inSlope: 1.5754857
+      outSlope: 1.5754857
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 65809.86
-      value: 8676.285
-      inSlope: 0.041209467
-      outSlope: 0.041209467
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.036758784
-      outWeight: 0.24216272
-    - serializedVersion: 3
-      time: 116883.6
-      value: 9938.837
-      inSlope: 0.038606092
-      outSlope: 0.038606092
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.1933969
-      outWeight: 0.30753222
-    - serializedVersion: 3
-      time: 152060.45
-      value: 10629.885
-      inSlope: 0.01964496
-      outSlope: 0.01964496
+      time: 1116.3767
+      value: 1389.4514
+      inSlope: 0.7719692
+      outSlope: 0.7719692
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1747.2543
+      value: 1857.0837
+      inSlope: 0.6199776
+      outSlope: 0.6199776
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.5759978
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 3000
+      value: 2600
+      inSlope: 0.035879295
+      outSlope: -2.1
+      tangentMode: 65
+      weightedMode: 0
+      inWeight: 0.1189043
+      outWeight: 0
+    - serializedVersion: 3
+      time: 4000
+      value: 500
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -69,48 +78,57 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: -1
-      value: -6
-      inSlope: 6
-      outSlope: 6
-      tangentMode: 34
+      value: -9
+      inSlope: 0
+      outSlope: 9
+      tangentMode: 69
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.33333334
+      outWeight: 0
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 5.5
-      outSlope: 5.5
-      tangentMode: 34
+      inSlope: 9
+      outSlope: 2
+      tangentMode: 69
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 5
-      inSlope: 2.9969497
-      outSlope: 2.9969497
-      tangentMode: 34
-      weightedMode: 0
+      value: 2
+      inSlope: 2
+      outSlope: 4
+      tangentMode: 69
+      weightedMode: 2
       inWeight: 0.33333334
-      outWeight: 0.33333334
+      outWeight: 0.34348816
     - serializedVersion: 3
-      time: 2.7007751
-      value: 6.690399
-      inSlope: 1.3857876
-      outSlope: 1.3857876
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      time: 2
+      value: 6
+      inSlope: 4
+      outSlope: 4
+      tangentMode: 69
+      weightedMode: 3
+      inWeight: 0.32845256
+      outWeight: 0.3275734
+    - serializedVersion: 3
+      time: 3
+      value: 10
+      inSlope: 4
+      outSlope: 3
+      tangentMode: 69
+      weightedMode: 3
+      inWeight: 0.34445712
+      outWeight: 0.3155965
     - serializedVersion: 3
       time: 4
-      value: 9
-      inSlope: 1.777676
-      outSlope: 1.777676
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
+      value: 13
+      inSlope: 3
+      outSlope: Infinity
+      tangentMode: 69
+      weightedMode: 3
+      inWeight: 0.35511026
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -118,12 +136,12 @@ MonoBehaviour:
   MaxGears: 4
   SingleTrackTorqueMultiplier: 2.2
   HullRotateSpeed: 35
-  TurretRotateSpeed: 15
+  TurretRotateSpeed: 18
   CameraRotateSpeed: 15
   TurretTiltSpeed: 480
   TankMass: 60000
-  KickbackForce: 0
-  ShellSpeed: 300
+  KickbackForce: 70000
+  ShellSpeed: 147
   ReloadTime: 0.5
   RangeChangeSpeed: 125
   APAmmo: 50

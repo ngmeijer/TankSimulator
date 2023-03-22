@@ -21,7 +21,7 @@ public class MoveComponent : TankComponent
 {
     private const int REAR_DRIVE_GEAR = -1;
     private const int MIN_RPM = 750;
-    private const int FINAL_DRIVE_RATIO = 6;
+    private const int FINAL_DRIVE_RATIO = 14;
     
     private MoveDirection _moveDirection;
     private float _hudCurrentUpdateTime;
@@ -37,6 +37,7 @@ public class MoveComponent : TankComponent
     [SerializeField] private Transform _centerOfMass;
     [SerializeField] private MeshRenderer _leftTrackRenderer;    
     [SerializeField] private MeshRenderer _rightTrackRenderer;
+    [SerializeField] private float _comMultiplier;
 
     public List<WheelCollider> LeftTrackWheelColliders = new List<WheelCollider>();  
     public List<WheelCollider> RightTrackWheelColliders = new List<WheelCollider>();
@@ -111,11 +112,11 @@ public class MoveComponent : TankComponent
         SetTorqueForTracks(RightTrackWheelColliders, rightTrackTorque);
     }
 
-    private void SetTorqueForTracks(List<WheelCollider> listToUpdate, float torqueValue)
+    private void SetTorqueForTracks(List<WheelCollider> listToUpdate, float torqueNewtonMeters)
     {
         foreach (WheelCollider wheel in listToUpdate)
         {
-            wheel.motorTorque = torqueValue;
+            wheel.motorTorque = torqueNewtonMeters;
         }
     }
 
@@ -163,14 +164,16 @@ public class MoveComponent : TankComponent
 
     private float CalculateRPM()
     {
-        float wheelRPM = GetWheelRPM() / _wheelCount;
+        float totalRPM = GetTotalRPM();
+        float wheelRPM = totalRPM / _wheelCount;
+        _movementData.RPM = (int)totalRPM;
         float gearValue = _properties.GearRatios.Evaluate(_movementData.GearIndex);
         float motorRPM = MIN_RPM + (Mathf.Abs(wheelRPM) * FINAL_DRIVE_RATIO * gearValue);
         
         return motorRPM;
     }
 
-    private float GetWheelRPM()
+    private float GetTotalRPM()
     {
         float totalRPM = 0;
         

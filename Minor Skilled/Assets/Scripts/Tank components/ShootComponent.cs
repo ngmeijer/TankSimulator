@@ -9,6 +9,7 @@ using UnityEngine.Events;
 public class ShootComponent : TankComponent
 {
     [SerializeField] protected Transform _shellSpawnpoint;
+    [SerializeField] private Transform _laserRangeFinder;
     [SerializeField] protected Transform _VFXPivot;
     [SerializeField] protected ParticleSystem _fireExplosion;
     [SerializeField] protected List<Shell> _shellPrefabs;
@@ -117,10 +118,12 @@ public class ShootComponent : TankComponent
     
     private float TrackDistance()
     {
+        if (_laserRangeFinder == null) return 0;
+        
         RaycastHit hit;
-        Debug.DrawRay(_shellSpawnpoint.position, _shellSpawnpoint.forward * MaxRange, Color.yellow);
-        Debug.DrawRay(_shellSpawnpoint.position, _shellSpawnpoint.forward * CurrentRange, Color.red);
-        if (Physics.Raycast(_shellSpawnpoint.position, _shellSpawnpoint.forward,
+        Debug.DrawRay(_laserRangeFinder.position, _laserRangeFinder.forward * MaxRange, Color.yellow);
+        Debug.DrawRay(_laserRangeFinder.position, _laserRangeFinder.forward * CurrentRange, Color.red);
+        if (Physics.Raycast(_laserRangeFinder.position, _laserRangeFinder.forward,
                 out hit, MaxRange))
         {
             currentEstimatedHitpoint = hit;

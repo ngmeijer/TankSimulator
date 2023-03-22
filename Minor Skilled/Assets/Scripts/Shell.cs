@@ -46,7 +46,6 @@ public class Shell : MonoBehaviour
 
         if (CastRayBetweenCurrentPoints(currentPoint, nextPoint, out RaycastHit hit))
         {
-            Debug.Log("hit wall");
             OnHitCollider(hit);
         }
     }

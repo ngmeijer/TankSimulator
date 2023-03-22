@@ -30,7 +30,7 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
     private Vector2 _rangeBarPosition;
     private Vector2 _mildotsPosition;
     private Vector2 _mildotsDelta;
-    
+
     private void Start()
     {
         _entities = GameManager.Instance.GetEntities();
@@ -114,18 +114,19 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
         if (GameManager.Instance.CamMode == CameraMode.ThirdPerson)
         {
             HandleStateRotationCrosshair(true);
-            _targetRotationCrosshair.position = GameManager.Instance.RotationCrosshairPosition;
-            
-            // if (scrollInput > 0)
-            //     _rangeBarPosition.y += 1 * _crosshairOffsetMultiplier;
-            // else if (scrollInput < 0)
-            //     _rangeBarPosition.y -= 1 * _crosshairOffsetMultiplier;
-            //
-            // float minY = _mildotsBounds.anchoredPosition.y;
-            // float maxY = minY + _mildotsBounds.sizeDelta.y;
-            // _rangeBarPosition.y = Mathf.Clamp(_rangeBarPosition.y, minY, maxY);
-            // _currentRangeBar.anchoredPosition = _rangeBarPosition;
         }
+
+        _targetRotationCrosshair.position = GameManager.Instance.RotationCrosshairPosition;
+
+        if (scrollInput > 0)
+            _rangeBarPosition.y += 1 * _crosshairOffsetMultiplier;
+        else if (scrollInput < 0)
+            _rangeBarPosition.y -= 1 * _crosshairOffsetMultiplier;
+
+        float minY = _mildotsBounds.rect.y;
+        float maxY = minY + _mildotsBounds.rect.height;
+        _rangeBarPosition.y = Mathf.Clamp(_rangeBarPosition.y, minY, maxY);
+        _currentRangeBar.anchoredPosition = _rangeBarPosition;
 
         if (GameManager.Instance.CamMode == CameraMode.ADS)
         {

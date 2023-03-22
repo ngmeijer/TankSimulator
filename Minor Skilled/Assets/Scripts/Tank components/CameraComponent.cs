@@ -11,7 +11,7 @@ public enum CameraMode
 
 public class CameraComponent : TankComponent
 {
-    private const float THIRD_PERSON_DIST_DAMP = 4f;
+    private const float THIRD_PERSON_DIST_DAMP = 60f;
 
     [Header("ADS properties")] [SerializeField]
     private Camera _adsCam;
