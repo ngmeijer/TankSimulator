@@ -15,23 +15,13 @@ public class Shell : MonoBehaviour
     [SerializeField] private float _explosionRadius;
     [SerializeField] private AudioSource _audioSource;
     private bool _vfxHasPlayed;
-    private int _damage;
-    private Transform _explosionVFXTransform;
+    public int Damage { get; private set; } = 50;
 
     private float _speed;
     private Vector3 _startPos;
     private Vector3 _startForward;
     private bool _isInitialized;
     private float _time = -1;
-    
-    private void Start()
-    {
-        if (_explosion != null)
-        {
-            _explosionVFXTransform = _explosion.transform;
-            _explosionVFXTransform.parent = GameManager.Instance.GetVFXParent();
-        }
-    }
 
     private void FixedUpdate()
     {
@@ -82,14 +72,13 @@ public class Shell : MonoBehaviour
 
     private void OnHitCollider(RaycastHit hitData)
     {
-        //_rb.velocity = Vector3.zero;
         if (_explosion != null)
         {
             if (_explosion.isPlaying) return;
             if (_vfxHasPlayed) return;
             _explosion.transform.parent = null;
-            _explosionVFXTransform.up = hitData.normal;
-            _explosionVFXTransform.position = hitData.point;
+            _explosion.transform.up = hitData.normal;
+            _explosion.transform.position = hitData.point;
             _explosion.Play();
             _vfxHasPlayed = true;
         }
@@ -99,9 +88,7 @@ public class Shell : MonoBehaviour
             _audioSource.Play();
         }
         
-        //_rb.AddExplosionForce(_forceOnImpact, transform.position, _explosionRadius);
         _GFX.SetActive(false);
-        //_rb.isKinematic = true;
         _collider.enabled = false;
         
         _GFX.transform.localPosition = Vector3.zero;
@@ -109,6 +96,4 @@ public class Shell : MonoBehaviour
     }
 
     public string GetShellType() => _shellType;
-
-    public int GetDamage() => _damage;
 }

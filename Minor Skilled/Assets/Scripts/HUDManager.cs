@@ -19,24 +19,22 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
     [SerializeField] private TextMeshProUGUI _readyText;
     [SerializeField] private TextMeshProUGUI _ammoCountText;
     [SerializeField] private TextMeshProUGUI _shellTypeText;
-    [SerializeField] private float _crosshairOffsetMultiplier = 16.33f;
+    
+    [Header("Mildots")]
     [SerializeField] private TextMeshProUGUI _currentRangeText;
     [SerializeField] private TextMeshProUGUI _currentDistanceToTargetText;
     [SerializeField] private RectTransform _crosshairParent;
     [SerializeField] private RectTransform _currentRangeBar;
     [SerializeField] private RectTransform _mildotsContainer;
-    [SerializeField] private RectTransform _mildotsBounds;
     [SerializeField] private RectTransform _targetRotationCrosshair;
-    private Vector2 _rangeBarPosition;
-    private Vector2 _mildotsPosition;
-    private Vector2 _mildotsDelta;
+    [SerializeField] private RectTransform _adsUIPosition;
+    [SerializeField] private RectTransform _tpUIPosition;
+    private CameraMode currentCamMode;
 
     private void Start()
     {
         _entities = GameManager.Instance.GetEntities();
         _player = GameManager.Instance.GetPlayer();
-        _rangeBarPosition = _currentRangeBar.anchoredPosition;
-        _mildotsPosition = new Vector2(_mildotsContainer.anchoredPosition.x, 84);
 
         foreach (KeyValuePair<int, TankComponentManager> entity in _entities)
         {
@@ -51,6 +49,7 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
     {
         if (_hudInstances.TryGetValue(id, out HUDUpdater hud))
         {
+            Debug.Log($"Updating health. ");
             hud.UpdateHealth(newHealth);
         }
     }
@@ -108,56 +107,34 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
         _shellTypeText.SetText($"{shellType}");
     }
 
-    public void UpdateCrosshair(float scrollInput, float currentDistanceToTarget, float currentRange)
+    public void UpdateCrosshair(float currentDistanceToTarget, float currentRange, float rangePercent)
     {
-        //3rd person
-        if (GameManager.Instance.CamMode == CameraMode.ThirdPerson)
-        {
-            HandleStateRotationCrosshair(true);
-        }
-
         _targetRotationCrosshair.position = GameManager.Instance.RotationCrosshairPosition;
+        _currentRangeBar.anchoredPosition = CalculateRangeBarPosition(rangePercent);
 
-        if (scrollInput > 0)
-            _rangeBarPosition.y += 1 * _crosshairOffsetMultiplier;
-        else if (scrollInput < 0)
-            _rangeBarPosition.y -= 1 * _crosshairOffsetMultiplier;
-
-        float minY = _mildotsBounds.rect.y;
-        float maxY = minY + _mildotsBounds.rect.height;
-        _rangeBarPosition.y = Mathf.Clamp(_rangeBarPosition.y, minY, maxY);
-        _currentRangeBar.anchoredPosition = _rangeBarPosition;
-
-        if (GameManager.Instance.CamMode == CameraMode.ADS)
-        {
-            HandleStateRotationCrosshair(false);
-        }
-
-        // //ADS
-        // if (GameManager.Instance.CamMode == CameraMode.ADS)
-        // {
-        //     if (scrollInput > 0)
-        //         _mildotsPosition.y -= 1 * _crosshairOffsetMultiplier;
-        //     else if (scrollInput < 0)
-        //         _mildotsPosition.y += 1 * _crosshairOffsetMultiplier;
-        //     else return;
-        //     _mildotsPosition.y = Mathf.Clamp(_mildotsDelta.y, -430f, 180f);
-        //     _mildotsContainer.anchoredPosition = _mildotsPosition;
-        // }
-
-        //
         _currentRangeText.SetText($"{currentRange}m");
         _currentDistanceToTargetText.SetText(currentDistanceToTarget != 0 ? $"{currentDistanceToTarget}m" : $"∞");
     }
 
-    private void HandleStateRotationCrosshair(bool enabled)
+    public void HandleCamModeUI(CameraMode camMode)
     {
-        if (_targetRotationCrosshair.gameObject.activeInHierarchy != enabled)
-            _targetRotationCrosshair.gameObject.SetActive(enabled);
+        currentCamMode = camMode;
+        switch (camMode)
+        {
+            case CameraMode.ADS:
+                _mildotsContainer.gameObject.SetActive(true);
+                _crosshairParent.anchoredPosition = _adsUIPosition.anchoredPosition;
+                break;
+            case CameraMode.ThirdPerson:
+                _mildotsContainer.gameObject.SetActive(false);
+                _crosshairParent.anchoredPosition = _tpUIPosition.anchoredPosition;
+                break;
+        }
     }
 
-    public void UpdateCurrentRange(float currentRange)
+    private Vector2 CalculateRangeBarPosition(float rangePercent)
     {
-        _currentRangeText.SetText($"{currentRange}m");
+        float rangeBarPosY = rangePercent * _mildotsContainer.rect.height;
+        return new Vector2(0, rangeBarPosY);
     }
 }

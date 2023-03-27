@@ -17,9 +17,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     private Dictionary<int, TankComponentManager> _entities = new();
     public Dictionary<int, TankComponentManager> GetEntities() => _entities;
     [SerializeField] private EventManager _eventManager;
-    public CameraMode CamMode;
     public Vector3 RotationCrosshairPosition;
-
+    
     private void OnValidate()
     {
         Debug.Assert(_player != null,
@@ -36,7 +35,10 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     {
         base.Awake();
         
-        _eventManager.OnCameraChanged.AddListener((newMode) => CamMode = newMode);
+        _eventManager.OnCameraChanged.AddListener((newMode) =>
+        {
+            HUDManager.Instance.HandleCamModeUI(newMode);
+        });
     }
 
     private void Start()

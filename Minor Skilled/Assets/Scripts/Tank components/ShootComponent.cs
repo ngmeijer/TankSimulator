@@ -18,7 +18,8 @@ public class ShootComponent : TankComponent
     private int _currentShellIndex;
 
     public float CurrentDistanceToTarget;
-    public float CurrentRange { get; private set; } = 100f;
+    public float CurrentRange;
+    public float RangePercent { get; private set; }
     public float MinRange { get; } = 0f;
 
     public bool CanFire { get; private set; } = true;
@@ -36,6 +37,8 @@ public class ShootComponent : TankComponent
     protected override void Awake()
     {
         base.Awake();
+
+        CurrentRange = 100f;
         
         _maxShellTypes = _shellPrefabs.Count;
         _currentShellType = _shellPrefabs[_currentShellIndex].GetShellType();
@@ -64,6 +67,7 @@ public class ShootComponent : TankComponent
 
     private void Update()
     {
+        RangePercent = CurrentRange / MaxRange;
         CurrentDistanceToTarget = TrackDistance();
     }
 
@@ -89,8 +93,8 @@ public class ShootComponent : TankComponent
     {
         if (_fireExplosion != null)
         {
-            _fireExplosion.transform.SetPositionAndRotation(_VFXPivot.position, _VFXPivot.rotation);
-            _fireExplosion.Play();
+            //_fireExplosion.transform.SetPositionAndRotation(_VFXPivot.position, _VFXPivot.rotation);
+            //_fireExplosion.Play();
         }
 
         if (_audioSource != null)
@@ -122,7 +126,7 @@ public class ShootComponent : TankComponent
         
         RaycastHit hit;
         Debug.DrawRay(_laserRangeFinder.position, _laserRangeFinder.forward * MaxRange, Color.yellow);
-        Debug.DrawRay(_laserRangeFinder.position, _laserRangeFinder.forward * CurrentRange, Color.red);
+        Debug.DrawRay(_shellSpawnpoint.position, _shellSpawnpoint.forward * CurrentRange, Color.red);
         if (Physics.Raycast(_laserRangeFinder.position, _laserRangeFinder.forward,
                 out hit, MaxRange))
         {
@@ -143,9 +147,10 @@ public class ShootComponent : TankComponent
         _currentAmmoCountForShell = _ammoCountsPerShellType[_currentShellType];
     }
 
-    public void UpdateCurrentRange(float inputValue)
+    public void UpdateCurrentRange(float inputValue, float multiplier)
     {
-        CurrentRange += inputValue * _properties.RangeChangeSpeed;
+        inputValue = Mathf.Clamp(inputValue, -1, 1);
+        CurrentRange += inputValue * multiplier;
         CurrentRange = Mathf.Clamp(CurrentRange, MinRange, MaxRange);
         CurrentRange = (float)Math.Round(CurrentRange, 2);
     }

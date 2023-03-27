@@ -9,9 +9,9 @@ public class PlayerInput : TankComponent
 {
     private float _moveInput;
     private float _hullRotateInput;
-    private float _tiltInput;
     private float _scrollInput;
     private float _turretRotateInput;
+    private float _cannonTiltInput;
 
     private CameraComponent _cameraComponent;
     private ShootComponent _shootComponent;
@@ -39,16 +39,14 @@ public class PlayerInput : TankComponent
         ShellTypeSwitch();
         IncreaseGear();
         DecreaseGear();
-        _componentManager.TurretControlComponent.HandleTurretRotation();
-        //_componentManager.TurretControlComponent.TiltCannon(_tiltInput);
-        _cameraComponent.OffsetCameraOnCannonTilt(_tiltInput);
-
+        HandleADSZoom();
         HandleCrosshair();
     }
 
     private void LateUpdate()
     {
-        _cameraComponent.UpdateCameraPosition(_turretRotateInput);
+        _componentManager.TurretControlComponent.HandleTurretRotation(_turretRotateInput);
+        _cameraComponent.UpdateCameraPosition();
     }
 
     private void FixedUpdate()
@@ -65,21 +63,23 @@ public class PlayerInput : TankComponent
     {
         _moveInput = Input.GetAxis("Vertical");
         _hullRotateInput = Input.GetAxis("Horizontal");
-        _tiltInput = Input.GetAxis("Mouse Y");
         _turretRotateInput = Input.GetAxis("Mouse X");
+        _cannonTiltInput = Input.GetAxis("Mouse Y");
         _scrollInput = Input.GetAxis("Mouse ScrollWheel");
     }
 
     private void HandleCrosshair()
     {
-        //HUDManager.Instance.UpdateCurrentRange(_componentManager.ShootComponent.CurrentRange);
-        
         if (_componentManager.ShootComponent.CurrentRange < _componentManager.ShootComponent.MinRange) return;
         if (_componentManager.ShootComponent.CurrentRange > _componentManager.ShootComponent.MaxRange) return;
 
-        _componentManager.TurretControlComponent.OffsetCannonOnRangeChange(_scrollInput);
-        _componentManager.ShootComponent.UpdateCurrentRange(_scrollInput);
-        HUDManager.Instance.UpdateCrosshair(_scrollInput, _shootComponent.CurrentDistanceToTarget, _shootComponent.CurrentRange);
+        float barrelRotationInput = _cameraComponent.CamMode == CameraMode.ThirdPerson ? _cannonTiltInput : _scrollInput;
+        float multiplier = _cameraComponent.CamMode == CameraMode.ThirdPerson ? _properties.VerticalCrosshairSpeed : _properties.TurretTiltSpeed;
+        _componentManager.ShootComponent.UpdateCurrentRange(barrelRotationInput, multiplier);
+        
+        _componentManager.TurretControlComponent.OffsetCannonOnRangeChange(_shootComponent.RangePercent);
+        HUDManager.Instance.UpdateCrosshair(_shootComponent.CurrentDistanceToTarget, _shootComponent.CurrentRange,
+            _shootComponent.RangePercent);
     }
 
     private void TankMove()
@@ -96,7 +96,7 @@ public class PlayerInput : TankComponent
     {
         if (Input.GetAxis("Fire1") == 0) return;
         if (!_componentManager.ShootComponent.CanFire) return;
-        
+
         //_cameraComponent.ShakeCamera();
         _componentManager.ShootComponent.FireShell();
         HUDManager.Instance.UpdateAmmoCount(_componentManager.ShootComponent.GetCurrentAmmoCount());
@@ -125,5 +125,12 @@ public class PlayerInput : TankComponent
         if (!Input.GetKeyDown(KeyCode.LeftAlt)) return;
 
         _componentManager.MoveComponent.DecreaseGear();
+    }
+
+    private void HandleADSZoom()
+    {
+        if (!Input.GetMouseButtonDown(1)) return;
+
+        _cameraComponent.ZoomADS();
     }
 }

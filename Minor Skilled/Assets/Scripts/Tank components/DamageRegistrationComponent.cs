@@ -48,7 +48,7 @@ public class DamageRegistrationComponent : TankComponent
         if (collision.collider.gameObject == _lastColliderHit) return;
         _lastColliderHit = collision.collider.gameObject;
 
-        UpdateHealth(shell.GetDamage());
+        UpdateHealth(shell.Damage);
     }
 
     private void UpdateHealth(int damage)

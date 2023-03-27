@@ -15,6 +15,7 @@ public class CameraComponent : TankComponent
 
     [Header("ADS properties")] [SerializeField]
     private Camera _adsCam;
+    [SerializeField] private Transform _adsTargetPos;
 
     [Header("Third person properties")] [SerializeField]
     private Camera _thirdPersonCam;
@@ -25,6 +26,7 @@ public class CameraComponent : TankComponent
     [SerializeField] private Transform _thirdPersonRotationAnchor;
     [SerializeField] private float _camLowestY = -7;
     [SerializeField] private float _camHighestY = 3;
+    [SerializeField] private Transform _barrelTargetPosition;
 
     private Vector3 _offsetOnTilt;
     private Camera _currentCamera;
@@ -33,6 +35,16 @@ public class CameraComponent : TankComponent
     private float _lastMoveValue;
     private Vector3 _lastTankPosition;
     private float _cameraDampOnCannonTilt = 0.1f;
+    private int _currentCameraFOVLevel = 0;
+    [SerializeField] private int _maxCameraZoomLevel = 3;
+
+    private int[] _FovRanges = new int[4]
+    {
+        60,
+        20,
+        10,
+        5
+    };
 
     private void Start()
     {
@@ -70,7 +82,17 @@ public class CameraComponent : TankComponent
 
     private Vector3 GetScreenpointRotationCrosshair()
     {
-        return _currentCamera.WorldToScreenPoint(_thirdPersonOppositeTargetPos.position);
+        switch (CamMode)
+        {
+            case CameraMode.ADS:
+                return _currentCamera.WorldToScreenPoint(_adsTargetPos.position);
+            case CameraMode.ThirdPerson:
+                Vector3 posToConvert = new Vector3(_thirdPersonOppositeTargetPos.position.x, _barrelTargetPosition.position.y,
+                    _thirdPersonOppositeTargetPos.position.z);
+                return _currentCamera.WorldToScreenPoint(posToConvert);
+        }
+
+        return Vector3.zero;
     }
 
     private void EnableADS()
@@ -93,24 +115,20 @@ public class CameraComponent : TankComponent
         _thirdPersonCam.gameObject.SetActive(tpCamState);
     }
 
-    public void UpdateCameraPosition(float rotateInput)
+    public void UpdateCameraPosition()
     {
-        _thirdPersonRotationAnchor.Rotate(_thirdPersonRotationAnchor.up,
-            rotateInput * _properties.TurretRotateSpeed * Time.deltaTime);
-
         Vector3 positionDelta = Vector3.zero;
         Vector3 slerpedPosition = Vector3.zero;
 
         if (CamMode == CameraMode.ThirdPerson)
         {
             slerpedPosition =
-                Vector3.Slerp(_currentCamera.transform.position, _thirdPersonTargetPos.position,
+                Vector3.Slerp(_currentCamera.transform.position, _thirdPersonTargetPos.position + _offsetOnTilt,
                     THIRD_PERSON_DIST_DAMP * Time.deltaTime);
             positionDelta = slerpedPosition - _currentCamera.transform.position;
+            _currentCamera.transform.position += positionDelta;
             _currentCamera.transform.LookAt(_thirdPersonCameraFocus.position);
         }
-
-        _currentCamera.transform.position += positionDelta;
     }
 
     public void ShakeCamera()
@@ -158,10 +176,15 @@ public class CameraComponent : TankComponent
         }
     }
 
-    public void OffsetCameraOnCannonTilt(float mouseTiltInput)
+    public void ZoomADS()
     {
-        //Inverts the delta for the camera. Cannon moves up, camera moves down.
-        _offsetOnTilt.y -= mouseTiltInput * _properties.TurretTiltSpeed * _cameraDampOnCannonTilt * Time.deltaTime;
-        _offsetOnTilt.y = Mathf.Clamp(_offsetOnTilt.y, _camLowestY, _camHighestY);
+        if (CamMode != CameraMode.ADS) return;
+
+        if (_currentCameraFOVLevel >= _maxCameraZoomLevel)
+            _currentCameraFOVLevel = 0;
+        else _currentCameraFOVLevel++;
+
+        float newFOV = _FovRanges[_currentCameraFOVLevel];
+        _adsCam.fieldOfView = newFOV;
     }
 }

@@ -37,7 +37,6 @@ public class MoveComponent : TankComponent
     [SerializeField] private Transform _centerOfMass;
     [SerializeField] private MeshRenderer _leftTrackRenderer;    
     [SerializeField] private MeshRenderer _rightTrackRenderer;
-    [SerializeField] private float _comMultiplier;
 
     public List<WheelCollider> LeftTrackWheelColliders = new List<WheelCollider>();  
     public List<WheelCollider> RightTrackWheelColliders = new List<WheelCollider>();
@@ -138,12 +137,12 @@ public class MoveComponent : TankComponent
             //Rotating to left
             case < 0:
                 AnimateTankTracks(-rotateInputValue, rotateInputValue);
-                SetMotorTorque(0, torquePerWheel * _properties.SingleTrackTorqueMultiplier);
+                SetMotorTorque(-torquePerWheel * _properties.SingleTrackTorqueMultiplier, torquePerWheel * _properties.SingleTrackTorqueMultiplier);
                 break;
             //Rotating to right
             case > 0:
                 AnimateTankTracks(rotateInputValue, -rotateInputValue);
-                SetMotorTorque(torquePerWheel * _properties.SingleTrackTorqueMultiplier, 0);
+                SetMotorTorque(torquePerWheel * _properties.SingleTrackTorqueMultiplier, -torquePerWheel * _properties.SingleTrackTorqueMultiplier);
                 break;
         }
     }
