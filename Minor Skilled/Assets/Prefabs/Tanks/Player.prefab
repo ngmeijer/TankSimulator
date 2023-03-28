@@ -3756,6 +3756,7 @@ MonoBehaviour:
   - {fileID: 7496617927495930269, guid: d1b96fcc729323c408a29b018f8687d7, type: 3}
   - {fileID: 4122469408070507833, guid: 15dd83de937c37546a369107f4ed431a, type: 3}
   _audioSource: {fileID: 1181831519}
+  _caluclationText: {fileID: 0}
   CurrentDistanceToTarget: 0
   CurrentRange: 0
 --- !u!114 &4711635310943932853

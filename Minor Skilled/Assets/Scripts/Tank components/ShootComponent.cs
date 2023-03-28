@@ -3,17 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class ShootComponent : TankComponent
 {
+    private const float AIR_DENSITY = 1.2f;
+    private const float SHELL_FRONTAL_AREA = 3.15f;
+    private const float DRAG_COEFFICIENT = 0.1f;
+    
     [SerializeField] protected Transform _shellSpawnpoint;
     [SerializeField] private Transform _laserRangeFinder;
     [SerializeField] protected Transform _VFXPivot;
     [SerializeField] protected ParticleSystem _fireExplosion;
     [SerializeField] protected List<Shell> _shellPrefabs;
     [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private TextMeshProUGUI _caluclationText;
+    private List<Shell> _firedShells = new List<Shell>();
     private int _maxShellTypes;
     private int _currentShellIndex;
 
@@ -69,10 +76,13 @@ public class ShootComponent : TankComponent
     {
         RangePercent = CurrentRange / MaxRange;
         CurrentDistanceToTarget = TrackDistance();
+        
+        UpdateShellsVelocity();
     }
 
     public virtual void FireShell()
     {
+        _firedShells.Clear();
         InstantiateShell();
         HandleExplosionFX();
         InitiateReloadSequence();
@@ -80,13 +90,46 @@ public class ShootComponent : TankComponent
         _componentManager.EventManager.OnShellFired.Invoke(_properties.OnShellFired);
     }
 
+    private void UpdateShellsVelocity()
+    {
+        foreach (Shell currentShell in _firedShells)
+        {
+            double deceleration = GetDeceleration(currentShell.RB) * Time.deltaTime;
+            currentShell.RB.velocity -= currentShell.RB.velocity.normalized * (float)deceleration;
+        }
+    }
+
+    private double CalculateDragForce(Rigidbody rb)
+    {
+        double drag = DRAG_COEFFICIENT * 0.5f * AIR_DENSITY *
+                      Mathf.Pow(rb.velocity.magnitude, 2) * SHELL_FRONTAL_AREA;
+
+        _caluclationText.SetText($"Drag {drag} = (DragCoef) {DRAG_COEFFICIENT} * 0.5f * (AirDens) {AIR_DENSITY} * (vel^2) {Mathf.Pow(rb.velocity.magnitude, 2)} * (FrontalArea){SHELL_FRONTAL_AREA}");
+        
+        return drag;
+    }
+
+    private double GetDeceleration(Rigidbody rb)
+    {
+        double dragForce = CalculateDragForce(rb);
+        Debug.Log(dragForce);
+        Vector3 currentVelocity = rb.velocity;
+        Vector3 inverseVelocity = currentVelocity.normalized * -1 * (float)dragForce;
+        double deceleration = currentVelocity.magnitude - inverseVelocity.magnitude;
+
+        deceleration /= rb.mass;
+        
+        return deceleration;
+    }
+
+
     private void InstantiateShell()
     {
         GameObject shellInstance = Instantiate(_shellPrefabs[_currentShellIndex].gameObject,
             _shellSpawnpoint.position, _shellSpawnpoint.rotation, GameManager.Instance.GetShellParent());
         Shell shell = shellInstance.GetComponent<Shell>();
-        shell.Initialize(_properties.ShellSpeed, _shellSpawnpoint);
-        //rb.AddForce(rb.transform.forward * _componentManager.Properties.FireForce);
+        _firedShells.Add(shell);
+        shell.RB.velocity = shell.transform.forward * _properties.ShellSpeed;
     }
 
     private void HandleExplosionFX()

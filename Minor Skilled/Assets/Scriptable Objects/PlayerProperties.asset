@@ -140,7 +140,7 @@ MonoBehaviour:
   TurretTiltSpeed: 50
   TankMass: 60000
   KickbackForce: 70000
-  ShellSpeed: 220
+  ShellSpeed: 50
   ReloadTime: 0.5
   VerticalCrosshairSpeed: 1.5
   APAmmo: 50
