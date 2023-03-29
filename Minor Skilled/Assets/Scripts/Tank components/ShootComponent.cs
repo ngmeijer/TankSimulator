@@ -10,16 +10,15 @@ using UnityEngine.Events;
 public class ShootComponent : TankComponent
 {
     private const float AIR_DENSITY = 1.2f;
-    private const float SHELL_FRONTAL_AREA = 3.15f;
+    private const float SHELL_FRONTAL_AREA = 0.035f;
     private const float DRAG_COEFFICIENT = 0.1f;
-    
+
     [SerializeField] protected Transform _shellSpawnpoint;
     [SerializeField] private Transform _laserRangeFinder;
     [SerializeField] protected Transform _VFXPivot;
     [SerializeField] protected ParticleSystem _fireExplosion;
     [SerializeField] protected List<Shell> _shellPrefabs;
     [SerializeField] private AudioSource _audioSource;
-    [SerializeField] private TextMeshProUGUI _caluclationText;
     private List<Shell> _firedShells = new List<Shell>();
     private int _maxShellTypes;
     private int _currentShellIndex;
@@ -34,7 +33,7 @@ public class ShootComponent : TankComponent
 
     private int _currentAmmoCountForShell;
     public int GetCurrentAmmoCount() => _currentAmmoCountForShell;
-    
+
     private string _currentShellType;
     public string GetCurrentShellType() => _currentShellType;
 
@@ -46,7 +45,7 @@ public class ShootComponent : TankComponent
         base.Awake();
 
         CurrentRange = 100f;
-        
+
         _maxShellTypes = _shellPrefabs.Count;
         _currentShellType = _shellPrefabs[_currentShellIndex].GetShellType();
 
@@ -66,7 +65,8 @@ public class ShootComponent : TankComponent
                     ammoCount = _properties.HEATAmmo;
                     break;
             }
-            _ammoCountsPerShellType.Add(shell.GetShellType(), ammoCount);   
+
+            _ammoCountsPerShellType.Add(shell.GetShellType(), ammoCount);
         }
 
         _ammoCountsPerShellType.TryGetValue(_currentShellType, out _currentAmmoCountForShell);
@@ -76,7 +76,7 @@ public class ShootComponent : TankComponent
     {
         RangePercent = CurrentRange / MaxRange;
         CurrentDistanceToTarget = TrackDistance();
-        
+
         UpdateShellsVelocity();
     }
 
@@ -86,7 +86,7 @@ public class ShootComponent : TankComponent
         InstantiateShell();
         HandleExplosionFX();
         InitiateReloadSequence();
-        
+
         _componentManager.EventManager.OnShellFired.Invoke(_properties.OnShellFired);
     }
 
@@ -99,15 +99,7 @@ public class ShootComponent : TankComponent
         }
     }
 
-    private double CalculateDragForce(Rigidbody rb)
-    {
-        double drag = DRAG_COEFFICIENT * 0.5f * AIR_DENSITY *
-                      Mathf.Pow(rb.velocity.magnitude, 2) * SHELL_FRONTAL_AREA;
-
-        _caluclationText.SetText($"Drag {drag} = (DragCoef) {DRAG_COEFFICIENT} * 0.5f * (AirDens) {AIR_DENSITY} * (vel^2) {Mathf.Pow(rb.velocity.magnitude, 2)} * (FrontalArea){SHELL_FRONTAL_AREA}");
-        
-        return drag;
-    }
+    private static double CalculateDragForce(Rigidbody rb) => DRAG_COEFFICIENT * 0.5f * AIR_DENSITY * Mathf.Pow(rb.velocity.magnitude, 2) * SHELL_FRONTAL_AREA;
 
     private double GetDeceleration(Rigidbody rb)
     {
@@ -118,7 +110,7 @@ public class ShootComponent : TankComponent
         double deceleration = currentVelocity.magnitude - inverseVelocity.magnitude;
 
         deceleration /= rb.mass;
-        
+
         return deceleration;
     }
 
@@ -162,11 +154,11 @@ public class ShootComponent : TankComponent
 
         CanFire = true;
     }
-    
+
     private float TrackDistance()
     {
         if (_laserRangeFinder == null) return 0;
-        
+
         RaycastHit hit;
         Debug.DrawRay(_laserRangeFinder.position, _laserRangeFinder.forward * MaxRange, Color.yellow);
         Debug.DrawRay(_shellSpawnpoint.position, _shellSpawnpoint.forward * CurrentRange, Color.red);
@@ -196,11 +188,16 @@ public class ShootComponent : TankComponent
         CurrentRange += inputValue * multiplier;
         CurrentRange = Mathf.Clamp(CurrentRange, MinRange, MaxRange);
         CurrentRange = (float)Math.Round(CurrentRange, 2);
+
+        _componentManager.RotationValue = CurrentRange / MaxRange;
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(currentEstimatedHitpoint.point, 0.75f);
+        if (currentEstimatedHitpoint.point != Vector3.zero)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawSphere(currentEstimatedHitpoint.point, 0.75f);
+        }
     }
 }

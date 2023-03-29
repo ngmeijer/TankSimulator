@@ -13,6 +13,8 @@ public class TankComponentManager : MonoBehaviour
     public TurretControlComponent TurretControlComponent { get; private set; }
     public ShootComponent ShootComponent { get; private set; }
 
+    public float RotationValue;
+
     public bool HasDied;
     public int ID;
 
