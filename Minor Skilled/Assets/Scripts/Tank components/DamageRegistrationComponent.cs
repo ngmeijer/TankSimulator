@@ -16,11 +16,10 @@ public enum TankParts
 
 public class DamageRegistrationComponent : TankComponent
 {
-    private int _health;
-    private int _armor;
-
     private int _maxArmor;
     private int _maxHealth;
+
+    public TankData CurrentData = new TankData();
 
     private GameObject _lastColliderHit;
 
@@ -34,11 +33,10 @@ public class DamageRegistrationComponent : TankComponent
         _maxHealth = _componentManager.Properties.MaxHealth;
         _maxArmor = _componentManager.Properties.MaxArmor;
         
-        _health = _maxHealth;
-        _armor = _maxArmor;
-        
+        CurrentData.OverallHealth = _maxHealth;
+
         HUDManager.Instance.UpdateMaxHealthForEntity(_componentManager.ID, _maxHealth);
-        HUDManager.Instance.UpdateCurrentHealthForEntity(_componentManager.ID, _health);
+        HUDManager.Instance.UpdateCurrentHealthForEntity(_componentManager.ID, CurrentData.OverallHealth);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -53,9 +51,9 @@ public class DamageRegistrationComponent : TankComponent
 
     private void UpdateHealth(int damage)
     {
-        _health -= damage;
-        HUDManager.Instance.UpdateCurrentHealthForEntity(_componentManager.ID, _health);
-        if (_health >= 0) return;
+        CurrentData.OverallHealth -= damage;
+        HUDManager.Instance.UpdateCurrentHealthForEntity(_componentManager.ID, CurrentData.OverallHealth);
+        if (CurrentData.OverallHealth >= 0) return;
         
         OnDeathActions();
     }
@@ -71,4 +69,22 @@ public class DamageRegistrationComponent : TankComponent
         _deathVFX.SetActive(true);
         _componentManager.EventManager.OnEntityDeath?.Invoke(_componentManager);
     }
+}
+
+public class TankData
+{
+    //Health cannot be regained! (Besides some kind of upgrade/powerup etc?)
+    //Armor will first be degraded. Once armor is depleted, damage starts affecting the health
+    //If any of the components gets destroyed, you die.
+    
+    public TankProperties Properties;
+    
+    //The average of all components health.
+    public int OverallHealth;
+    
+    
+    public float TurretHealth;
+    
+    //
+    public float TurretArmor;
 }

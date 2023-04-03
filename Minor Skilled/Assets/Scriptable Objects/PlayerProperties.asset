@@ -137,12 +137,12 @@ MonoBehaviour:
   SingleTrackTorqueMultiplier: 5
   HullRotateSpeed: 35
   TurretRotateSpeed: 18
-  TurretTiltSpeed: 50
+  TurretTiltSpeed: 100
   TankMass: 60000
   KickbackForce: 70000
-  ShellSpeed: 130
-  ReloadTime: 0.5
-  VerticalCrosshairSpeed: 5
+  ShellSpeed: 500
+  ReloadTime: 1.5
+  VerticalCrosshairSpeed: 7
   APAmmo: 500
   HEATAmmo: 500
   HEAmmo: 500

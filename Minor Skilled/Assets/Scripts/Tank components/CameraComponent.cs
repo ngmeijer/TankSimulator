@@ -1,164 +1,177 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
 
 public enum CameraMode
 {
     ADS,
-    ThirdPerson
+    ThirdPerson,
+    InspectMode
 }
 
 public class CameraComponent : TankComponent
 {
-    [Tooltip("The lower the value, the lower the move speed!")][SerializeField] private float _cameraRotationDamp = 1f;
+    [Header("ADS properties")] [SerializeField]
+    private Camera _adsCam;
 
-    [Header("ADS properties")] 
-    [SerializeField] private Camera _adsCam;
     [SerializeField] private Transform _adsTargetPos;
 
-    [Header("Third person properties")] 
-    [SerializeField] private Camera _thirdPersonCam;
-    [SerializeField] private Transform _cameraTargetDestination;
-    [SerializeField] private Transform _lookAtPosition;
-    [SerializeField] private Transform _thirdPersonRotationAnchor;
-
-    [Header("Y Ranges")]
-    [SerializeField] private Transform _cameraLowerBound;
-    [SerializeField] private Transform _cameraUpperBound;
+    [Header("Targets")] [SerializeField] private Transform _raycaster;
+    [SerializeField] private Transform _currentBarrelCrosshair;
+    [SerializeField] private Transform _estimatedTargetCrosshair;
 
     private Vector3 _offsetOnTilt;
-    private Camera _currentCamera;
+    public Camera CurrentCamera { get; private set; }
     public CameraMode CamMode { get; private set; }
     private CameraMode _previousCamMode;
     private float _lastMoveValue;
     private Vector3 _lastTankPosition;
     private float _cameraDampOnCannonTilt = 0.1f;
-    private int _currentCameraFOVLevel = 0;
-    private Vector3 _handlesOffset = new Vector3(0.5f, 0.5f, 0);
+    private RaycastHit _currentHitData;
+    private string _colliderTag;
 
-    private int[] _fovRanges = new int[4]
-    {
-        60,
-        20,
-        10,
-        5
-    };
+    [SerializeField] private ThirdPersonView _tpView;
+    [SerializeField] private AdsView _adsView;
+    [SerializeField] private TankInspectorView _inspectorView;
 
     private void Start()
     {
         EnableThirdPerson();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        _thirdPersonCam.transform.position = _cameraTargetDestination.position;
+        
+        Debug.Assert(_tpView != null, "ThirdPersonView reference is null. Drag it into the inspector slot.");
+        Debug.Assert(_adsView != null, "ADSView reference is null. Drag it into the inspector slot.");
+        Debug.Assert(_inspectorView != null, "InspectorView reference is null. Drag it into the inspector slot.");
     }
 
     private void LateUpdate()
     {
-        GameManager.Instance.RotationCrosshairPosition = GetScreenpointRotationCrosshair();
-        CheckCameraSwitch();
-    }
+        if (CamMode == CameraMode.InspectMode) return;
+        
+        GameManager.Instance.CurrentBarrelCrosshairPos = ConvertCurrentBarrelCrosshair();
+        GameManager.Instance.TargetBarrelCrosshairPos = ConvertTargetBarrelCrosshair();
 
-    private void CheckCameraSwitch()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            EnableADS();
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-            EnableThirdPerson();
-    }
-
-    private Vector3 GetScreenpointRotationCrosshair()
-    {
-        switch (CamMode)
+        if (GetEstimatedHitPoint())
         {
-            case CameraMode.ADS:
-                return _currentCamera.WorldToScreenPoint(_adsTargetPos.position);
-            case CameraMode.ThirdPerson:
-                Vector3 posToConvert = new Vector3(_adsTargetPos.position.x, _lookAtPosition.position.y,
-                    _adsTargetPos.position.z);
-                return _currentCamera.WorldToScreenPoint(posToConvert);
+            _currentBarrelCrosshair.position = _currentHitData.point;
+            Debug.DrawLine(_raycaster.position, _currentHitData.point, Color.green);
         }
-
-        return Vector3.zero;
-    }
-
-    private void EnableADS()
-    {
-        CamMode = CameraMode.ADS;
-        ChangeCameraPerspective(_adsCam, true, false);
-    }
-
-    private void EnableThirdPerson()
-    {
-        CamMode = CameraMode.ThirdPerson;
-        ChangeCameraPerspective(_thirdPersonCam, false, true);
-    }
-
-    private void ChangeCameraPerspective(Camera currentCamera, bool adsCamState, bool tpCamState)
-    {
-        _componentManager.EventManager.OnCameraChanged.Invoke(CamMode);
-        _currentCamera = currentCamera;
-        _adsCam.gameObject.SetActive(adsCamState);
-        _thirdPersonCam.gameObject.SetActive(tpCamState);
-    }
-
-    public void UpdateCameraPosition()
-    {
-        if (CamMode != CameraMode.ThirdPerson) return;
+        else Debug.DrawLine(_raycaster.position, _raycaster.forward * 1000f, Color.red);
         
-        //Getting min & max values & total moving range
-        Vector3 minY = _cameraLowerBound.position;
-        Vector3 maxY = _cameraUpperBound.position;
-        Vector3 maxLength = maxY - minY;
-        
-        //Calculate current Y Position
-        float inverseValue = 1 - _componentManager.RotationValue;
-        Vector3 yDelta = inverseValue * maxLength;
-        Vector3 newPosition = minY + yDelta;
-        
-        Vector3 currentPosition = _currentCamera.transform.position;
-        _cameraTargetDestination.position = newPosition;
-        _currentCamera.transform.position = Vector3.MoveTowards(currentPosition, _cameraTargetDestination.position, _cameraRotationDamp * Time.deltaTime);
-        _currentCamera.transform.LookAt(_lookAtPosition.position);
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(_lookAtPosition.position, 0.2f);
-
-        Gizmos.color = Color.white;
-        Gizmos.DrawSphere(_thirdPersonRotationAnchor.position, 0.2f);
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(_cameraLowerBound.position, 0.25f);
-        Handles.Label(_cameraLowerBound.position + _handlesOffset, _cameraLowerBound.name);
-        Gizmos.DrawSphere(_cameraUpperBound.position, 0.25f);
-        Handles.Label(_cameraUpperBound.position + _handlesOffset, _cameraUpperBound.name);
-        Gizmos.DrawLine(_cameraLowerBound.position, _cameraUpperBound.position);
-        
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(_cameraTargetDestination.position, 0.2f);
-        Handles.Label(_cameraTargetDestination.position + _handlesOffset, _cameraTargetDestination.name);
-
-        if (_currentCamera != null)
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawSphere(_currentCamera.transform.position, 0.15f);
-            Handles.Label(_currentCamera.transform.position + _handlesOffset, _currentCamera.name);
-        }
     }
 
     public void ZoomADS()
     {
-        if (CamMode != CameraMode.ADS) return;
+        _adsView.ZoomADS();
+    }
 
-        if (_currentCameraFOVLevel >= _fovRanges.Length - 1)
-            _currentCameraFOVLevel = 0;
-        else _currentCameraFOVLevel++;
+    public void RotateAroundTank(float mouseInput, float scrollInput)
+    {
+        _inspectorView.RotateAroundTank(mouseInput);
+        _inspectorView.ZoomInspectView(scrollInput);
+    }
 
-        float newFOV = _fovRanges[_currentCameraFOVLevel];
-        _adsCam.fieldOfView = newFOV;
+    public void UpdateThirdPersonCameraPosition()
+    {
+        _tpView.UpdateThirdPersonCameraPosition();
+    }
+
+    private Vector3 ConvertCurrentBarrelCrosshair()
+    {
+        Vector3 posToConvert = _currentHitData.point == Vector3.zero || _colliderTag == "Shell"
+            ? _currentBarrelCrosshair.position
+            : _currentHitData.point;
+        
+        return CurrentCamera.WorldToScreenPoint(posToConvert);
+    }
+
+    private Vector3 ConvertTargetBarrelCrosshair()
+    {
+        Vector3 currentPos = _estimatedTargetCrosshair.position;
+        currentPos.x = _currentBarrelCrosshair.position.x;
+        currentPos.y = _currentBarrelCrosshair.position.y;
+        currentPos.z = _currentBarrelCrosshair.position.z;
+        _estimatedTargetCrosshair.position = currentPos;
+        Vector3 currentLocalPos = _estimatedTargetCrosshair.localPosition;
+        currentLocalPos.x = 0;
+        _estimatedTargetCrosshair.localPosition = currentLocalPos;
+        
+        Vector3 convertedPos = CurrentCamera.WorldToScreenPoint(_estimatedTargetCrosshair.position);
+        convertedPos.y = GameManager.Instance.CurrentBarrelCrosshairPos.y;
+        return convertedPos;
+    }
+
+    public void EnableADS()
+    {
+        CamMode = CameraMode.ADS;
+        
+        HUDManager.Instance.EnableCombatUI(true);
+        HUDManager.Instance.EnableDamageUI(false, null);
+        ChangeCameraPerspective(_adsView, true, false, false);
+    }
+
+    public void EnableThirdPerson()
+    {
+        CamMode = CameraMode.ThirdPerson;
+        
+        HUDManager.Instance.EnableCombatUI(true);
+        HUDManager.Instance.EnableDamageUI(false, null);
+        ChangeCameraPerspective(_tpView, false, true,false);
+    }
+    
+    public void EnableInspectCamera()
+    {
+        CamMode = CameraMode.InspectMode;
+        
+        ChangeCameraPerspective(_inspectorView, false, false, true);
+    }
+
+    private void ChangeCameraPerspective(CameraView currentView, bool adsCamState, bool tpCamState, bool inspectCamState)
+    {
+        _componentManager.EventManager.OnCameraChanged.Invoke(CamMode);
+        CurrentCamera = currentView.ViewCam;
+        _adsCam.gameObject.SetActive(adsCamState);
+
+        _adsView.SetView(adsCamState);
+        _tpView.SetView(tpCamState);
+        _inspectorView.SetView(inspectCamState);
+    }
+
+    private bool GetEstimatedHitPoint()
+    {
+        bool data = Physics.Raycast(_raycaster.position, _raycaster.forward,
+            out _currentHitData, Mathf.Infinity);
+
+        if (_currentHitData.collider != null)
+            _colliderTag = _currentHitData.collider.tag;
+        else _colliderTag = "No collision detected";
+
+        return data && !_currentHitData.collider.CompareTag("Shell");
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (_currentHitData.point != Vector3.zero && !_currentHitData.collider.CompareTag("Shell"))
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawSphere(_currentHitData.point, 0.3f);
+            Handles.Label(_currentHitData.point + GameManager.HandlesOffset, "Hitpoint");
+        }
+
+        Handles.Label(_raycaster.position, $"Collider hit: {_colliderTag}");
+
+        Gizmos.color = Color.white;
+        Gizmos.DrawSphere(_currentBarrelCrosshair.position, 0.2f);
+        Handles.Label(_currentBarrelCrosshair.position + GameManager.HandlesOffset,
+            _currentBarrelCrosshair.name);
+
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawSphere(_estimatedTargetCrosshair.position, 0.2f);
+        Handles.Label(_estimatedTargetCrosshair.position + GameManager.HandlesOffset,
+            _estimatedTargetCrosshair.name);
     }
 }

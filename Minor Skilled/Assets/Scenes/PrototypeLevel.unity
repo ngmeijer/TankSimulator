@@ -11497,7 +11497,8 @@ MonoBehaviour:
   _spawnedShellsParent: {fileID: 1611767956}
   _vfxParent: {fileID: 663671585}
   _eventManager: {fileID: 568774435}
-  RotationCrosshairPosition: {x: 0, y: 0, z: 0}
+  CurrentBarrelCrosshairPos: {x: 0, y: 0, z: 0}
+  TargetBarrelCrosshairPos: {x: 0, y: 0, z: 0}
 --- !u!4 &825982002
 Transform:
   m_ObjectHideFlags: 0
@@ -35732,6 +35733,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 177829039, guid: e59f4aebd82e84a44bf06f5fb3d29fd9, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 177829039, guid: e59f4aebd82e84a44bf06f5fb3d29fd9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5863969568749900707, guid: e59f4aebd82e84a44bf06f5fb3d29fd9, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -47990,11 +47999,11 @@ PrefabInstance:
       objectReference: {fileID: 1629477342}
     - target: {fileID: 2111052572, guid: 6b28676b20975a04088d280372b47bc6, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2111052572, guid: 6b28676b20975a04088d280372b47bc6, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5875371255604841286, guid: 6b28676b20975a04088d280372b47bc6, type: 3}
       propertyPath: _canvas
@@ -48047,6 +48056,10 @@ PrefabInstance:
     - target: {fileID: 6587442561008276303, guid: 6b28676b20975a04088d280372b47bc6, type: 3}
       propertyPath: m_Name
       value: USA Tank
+      objectReference: {fileID: 0}
+    - target: {fileID: 6587442561008276303, guid: 6b28676b20975a04088d280372b47bc6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6b28676b20975a04088d280372b47bc6, type: 3}
@@ -49514,7 +49527,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7817720855815354587, guid: 9dbf6185f3020c543bb385d5ac47b215, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 60.5
+      value: 67.74
       objectReference: {fileID: 0}
     - target: {fileID: 7817720855815354587, guid: 9dbf6185f3020c543bb385d5ac47b215, type: 3}
       propertyPath: m_LocalPosition.y
@@ -49522,7 +49535,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7817720855815354587, guid: 9dbf6185f3020c543bb385d5ac47b215, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -303
+      value: -297.87
       objectReference: {fileID: 0}
     - target: {fileID: 7817720855815354587, guid: 9dbf6185f3020c543bb385d5ac47b215, type: 3}
       propertyPath: m_LocalRotation.w
@@ -66940,8 +66953,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3250764301826546253}
-  m_LocalRotation: {x: 0.11900012, y: 0.000000014795277, z: -0.00000000177324, w: 0.99289423}
-  m_LocalPosition: {x: 5.3599997, y: 9.245302, z: -15.649995}
+  m_LocalRotation: {x: 0.09585917, y: -0.70016617, z: 0.095744126, w: 0.7010075}
+  m_LocalPosition: {x: 70.196, y: 7.877001, z: -303.00003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

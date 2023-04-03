@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class Shell : MonoBehaviour
 {
-    private const float GRAVITY = 9.81f;
-    
     [SerializeField] private ParticleSystem _explosion;
     [SerializeField] private GameObject _GFX;
     [SerializeField] private Collider _collider;
@@ -17,21 +15,20 @@ public class Shell : MonoBehaviour
     public Rigidbody RB;
     private bool _vfxHasPlayed;
     public int Damage { get; private set; } = 50;
-
-    private float _speed;
-    private Vector3 _startPos;
-    private Vector3 _startForward;
-    private bool _isInitialized;
-    private float _time = -1;
-
+    
     private void OnCollisionEnter(Collision collision)
     {
         if (_explosion != null)
         {
             if (_explosion.isPlaying) return;
             if (_vfxHasPlayed) return;
-            _explosion.transform.parent = null;
             _explosion.Play();
+            ContactPoint contactData = collision.GetContact(0);
+            _explosion.transform.parent = null;
+            _explosion.transform.up = contactData.normal;
+            _explosion.transform.position = contactData.point;
+            
+            RB.AddExplosionForce(_forceOnImpact, transform.position, _explosionRadius);
             _vfxHasPlayed = true;
         }
 
@@ -45,11 +42,6 @@ public class Shell : MonoBehaviour
         
         _GFX.transform.localPosition = Vector3.zero;
         _GFX.transform.localRotation = Quaternion.identity;
-    }
-
-    private void OnHitCollider(RaycastHit hitData)
-    {
-        
     }
 
     public string GetShellType() => _shellType;

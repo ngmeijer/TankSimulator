@@ -7,6 +7,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
 {
     private const int PLAYER_ID = 0;
     [SerializeField] private Transform _player;
+
     public Transform GetPlayer() => _player;
 
     [SerializeField] private Transform _spawnedShellsParent;
@@ -17,8 +18,11 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     private Dictionary<int, TankComponentManager> _entities = new();
     public Dictionary<int, TankComponentManager> GetEntities() => _entities;
     [SerializeField] private EventManager _eventManager;
-    public Vector3 RotationCrosshairPosition;
+    public Vector3 CurrentBarrelCrosshairPos;
+    public Vector3 TargetBarrelCrosshairPos;
     
+    public static Vector3 HandlesOffset = new Vector3(0.5f, 0.5f, 0);
+
     private void OnValidate()
     {
         Debug.Assert(_player != null,

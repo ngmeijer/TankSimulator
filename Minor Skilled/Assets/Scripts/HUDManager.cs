@@ -11,26 +11,30 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
     private Dictionary<int, HUDUpdater> _hudInstances = new Dictionary<int, HUDUpdater>();
     private Transform _player;
 
-    [Header("Movement")] [SerializeField] private TextMeshProUGUI _tankSpeedText;
+    [Header("Movement")] [SerializeField] private GameObject _moveContainer;
+    [SerializeField] private TextMeshProUGUI _tankSpeedText;
     [SerializeField] private TextMeshProUGUI _gearIndexText;
     [SerializeField] private TextMeshProUGUI _rpmText;
 
-    [Header("Shooting")] [SerializeField] private Slider _reloadBar;
+    [Header("Shooting")] [SerializeField] private GameObject _shootContainer;
+    [SerializeField] private Slider _reloadBar;
     [SerializeField] private TextMeshProUGUI _readyText;
     [SerializeField] private TextMeshProUGUI _ammoCountText;
     [SerializeField] private TextMeshProUGUI _shellTypeText;
+    [SerializeField] private TextMeshProUGUI _zoomLevelText;
     
     [Header("Mildots")]
-    [SerializeField] private TextMeshProUGUI _currentRangeText;
     [SerializeField] private TextMeshProUGUI _currentDistanceToTargetText;
     [SerializeField] private RectTransform _crosshairParent;
-    [SerializeField] private RectTransform _currentRangeBar;
-    [SerializeField] private RectTransform _mildotsContainer;
-    [SerializeField] private RectTransform _targetRotationCrosshair;
+    [SerializeField] private RectTransform _currentBarrelCrosshair;
+    [SerializeField] private RectTransform _targetBarrelCrosshair;
     [SerializeField] private RectTransform _adsUIPosition;
     [SerializeField] private RectTransform _tpUIPosition;
-    private CameraMode currentCamMode;
 
+    [Header("Damage")] 
+    [SerializeField] private GameObject _repairUI;
+    [SerializeField] private HealthStatsUpdater _healthStatsUpdater;
+    
     private void Start()
     {
         _entities = GameManager.Instance.GetEntities();
@@ -43,6 +47,9 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
 
             _hudInstances.Add(entity.Key, entity.Value.hudUpdater);
         }
+        
+        EnableDamageUI(false, null);
+        EnableCombatUI(true);
     }
 
     public void UpdateCurrentHealthForEntity(int id, int newHealth)
@@ -107,34 +114,42 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
         _shellTypeText.SetText($"{shellType}");
     }
 
-    public void UpdateCrosshair(float currentDistanceToTarget, float currentRange, float rangePercent)
+    public void UpdateCrosshair()
     {
-        _targetRotationCrosshair.position = GameManager.Instance.RotationCrosshairPosition;
-        _currentRangeBar.anchoredPosition = CalculateRangeBarPosition(rangePercent);
-
-        _currentRangeText.SetText($"{currentRange}m");
-        _currentDistanceToTargetText.SetText(currentDistanceToTarget != 0 ? $"{currentDistanceToTarget}m" : $"∞");
+        _currentBarrelCrosshair.position = GameManager.Instance.CurrentBarrelCrosshairPos;
+        _targetBarrelCrosshair.position = GameManager.Instance.TargetBarrelCrosshairPos;
     }
 
     public void HandleCamModeUI(CameraMode camMode)
     {
-        currentCamMode = camMode;
         switch (camMode)
         {
             case CameraMode.ADS:
-                _mildotsContainer.gameObject.SetActive(true);
                 _crosshairParent.anchoredPosition = _adsUIPosition.anchoredPosition;
+                _zoomLevelText.gameObject.SetActive(true);
                 break;
             case CameraMode.ThirdPerson:
-                _mildotsContainer.gameObject.SetActive(false);
                 _crosshairParent.anchoredPosition = _tpUIPosition.anchoredPosition;
+                _zoomLevelText.gameObject.SetActive(false);
                 break;
         }
     }
 
-    private Vector2 CalculateRangeBarPosition(float rangePercent)
+    public void SetZoomLevelText(int currentCameraFOVLevel)
     {
-        float rangeBarPosY = rangePercent * _mildotsContainer.rect.height;
-        return new Vector2(0, rangeBarPosY);
+        _zoomLevelText.SetText($"{currentCameraFOVLevel}x");
+    }
+
+    public void EnableDamageUI(bool enabled, TankData newData)
+    {
+        _repairUI.SetActive(enabled);
+        _healthStatsUpdater.ShowUI(enabled);
+        _healthStatsUpdater.UpdateValues(newData);
+    }
+
+    public void EnableCombatUI(bool enabled)
+    {
+        _moveContainer.SetActive(enabled);
+        _shootContainer.SetActive(enabled);
     }
 }

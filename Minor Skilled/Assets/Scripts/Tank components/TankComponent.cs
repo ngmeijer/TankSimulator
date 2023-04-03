@@ -7,7 +7,7 @@ public class TankComponent : MonoBehaviour
     
     protected virtual void Awake()
     {
-        _componentManager = GetComponent<TankComponentManager>();
+        _componentManager = GetComponentInParent<TankComponentManager>();
         _properties = _componentManager.Properties;
     }
 }

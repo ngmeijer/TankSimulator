@@ -12,6 +12,7 @@ public class TankComponentManager : MonoBehaviour
     public MoveComponent MoveComponent { get; private set; }
     public TurretControlComponent TurretControlComponent { get; private set; }
     public ShootComponent ShootComponent { get; private set; }
+    public DamageRegistrationComponent DamageComponent { get; private set; }
 
     public float RotationValue;
 
@@ -20,9 +21,10 @@ public class TankComponentManager : MonoBehaviour
 
     private void Awake()
     {
-        MoveComponent = GetComponent<MoveComponent>();
-        TurretControlComponent = GetComponent<TurretControlComponent>();
-        ShootComponent = GetComponent<ShootComponent>();
+        MoveComponent = GetComponentInChildren<MoveComponent>();
+        TurretControlComponent = GetComponentInChildren<TurretControlComponent>();
+        ShootComponent = GetComponentInChildren<ShootComponent>();
+        DamageComponent = GetComponentInChildren<DamageRegistrationComponent>();
         
         EventManager = GetComponent<EventManager>();
 
@@ -53,5 +55,10 @@ public class TankComponentManager : MonoBehaviour
         
         Debug.LogError($"There is no MoveComponent attached to {this.gameObject.name}. Cannot retrieve wheels");
         return null;
+    }
+
+    private void OnValidate()
+    {
+        
     }
 }

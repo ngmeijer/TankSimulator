@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -14,7 +15,6 @@ public class ShootComponent : TankComponent
     private const float DRAG_COEFFICIENT = 0.1f;
 
     [SerializeField] protected Transform _shellSpawnpoint;
-    [SerializeField] private Transform _laserRangeFinder;
     [SerializeField] protected Transform _VFXPivot;
     [SerializeField] protected ParticleSystem _fireExplosion;
     [SerializeField] protected List<Shell> _shellPrefabs;
@@ -38,7 +38,6 @@ public class ShootComponent : TankComponent
     public string GetCurrentShellType() => _currentShellType;
 
     private Dictionary<string, int> _ammoCountsPerShellType = new Dictionary<string, int>();
-    private RaycastHit currentEstimatedHitpoint;
 
     protected override void Awake()
     {
@@ -75,8 +74,7 @@ public class ShootComponent : TankComponent
     private void Update()
     {
         RangePercent = CurrentRange / MaxRange;
-        CurrentDistanceToTarget = TrackDistance();
-
+        
         UpdateShellsVelocity();
     }
 
@@ -84,7 +82,7 @@ public class ShootComponent : TankComponent
     {
         _firedShells.Clear();
         InstantiateShell();
-        HandleExplosionFX();
+        HandleCannonFireFX();
         InitiateReloadSequence();
 
         _componentManager.EventManager.OnShellFired.Invoke(_properties.OnShellFired);
@@ -104,7 +102,6 @@ public class ShootComponent : TankComponent
     private double GetDeceleration(Rigidbody rb)
     {
         double dragForce = CalculateDragForce(rb);
-        Debug.Log(dragForce);
         Vector3 currentVelocity = rb.velocity;
         Vector3 inverseVelocity = currentVelocity.normalized * -1 * (float)dragForce;
         double deceleration = currentVelocity.magnitude - inverseVelocity.magnitude;
@@ -124,7 +121,7 @@ public class ShootComponent : TankComponent
         shell.RB.velocity = shell.transform.forward * _properties.ShellSpeed;
     }
 
-    private void HandleExplosionFX()
+    private void HandleCannonFireFX()
     {
         if (_fireExplosion != null)
         {
@@ -155,23 +152,6 @@ public class ShootComponent : TankComponent
         CanFire = true;
     }
 
-    private float TrackDistance()
-    {
-        if (_laserRangeFinder == null) return 0;
-
-        RaycastHit hit;
-        Debug.DrawRay(_laserRangeFinder.position, _laserRangeFinder.forward * MaxRange, Color.yellow);
-        Debug.DrawRay(_shellSpawnpoint.position, _shellSpawnpoint.forward * CurrentRange, Color.red);
-        if (Physics.Raycast(_laserRangeFinder.position, _laserRangeFinder.forward,
-                out hit, MaxRange))
-        {
-            currentEstimatedHitpoint = hit;
-            return (float)Math.Round(hit.distance, 1);
-        }
-
-        return 0;
-    }
-
     public virtual void SwitchShell()
     {
         _currentShellIndex++;
@@ -190,14 +170,5 @@ public class ShootComponent : TankComponent
         CurrentRange = (float)Math.Round(CurrentRange, 2);
 
         _componentManager.RotationValue = CurrentRange / MaxRange;
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (currentEstimatedHitpoint.point != Vector3.zero)
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawSphere(currentEstimatedHitpoint.point, 0.75f);
-        }
     }
 }

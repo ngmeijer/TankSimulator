@@ -13,13 +13,11 @@ public class TurretControlComponent : TankComponent
     [Header("Barrel rotation")] 
     [SerializeField] private Transform _barrelLowerBound;
     [SerializeField] private Transform _barrelUpperBound;
-    [SerializeField] private Transform _barrelTargetDestination;
+    [SerializeField] private Transform _barrelLookAt;
 
     private Vector3 _turretEulerAngles;
     private float _currentXRotation;
-
-    private Vector3 _handlesOffset = new Vector3(0.5f, 0.5f, 0);
-
+    
     private void Start()
     {
         Debug.Assert(_turretTransform != null, $"TurretTransform on '{gameObject.name}' is null.");
@@ -38,18 +36,19 @@ public class TurretControlComponent : TankComponent
 
     public void OffsetCannonOnRangeChange(float rangePercent)
     {
-        float minY = _barrelLowerBound.localPosition.y;
-        float maxY = _barrelUpperBound.localPosition.y;
+        float minY = _barrelLowerBound.position.y;
+        float maxY = _barrelUpperBound.position.y;
         float maxLength = maxY - minY;
-        float newY = rangePercent * maxLength;
-        float yBarrelClamp = Mathf.Clamp(newY, minY, maxY);
+        float yDelta = rangePercent * maxLength;
 
-        Vector3 currentPosition = _barrelTargetDestination.transform.localPosition;
+        Vector3 currentPosition = _barrelLookAt.transform.position;
         Vector3 newPosition = currentPosition;
-        newPosition.y = yBarrelClamp;
-        _barrelTargetDestination.transform.localPosition = Vector3.MoveTowards(currentPosition,
+        newPosition.y = minY + yDelta;
+        _barrelLookAt.transform.position = Vector3.MoveTowards(currentPosition,
             newPosition, _properties.TurretTiltSpeed * Time.deltaTime);
-        _barrelTransform.LookAt(_barrelTargetDestination);
+
+        Vector3 lookatPosition = new Vector3(_barrelLowerBound.position.x, _barrelLookAt.position.y, _barrelLowerBound.position.z);
+        _barrelTransform.LookAt(lookatPosition);
     }
 
     public Vector3 GetCurrentBarrelDirection()
@@ -66,13 +65,17 @@ public class TurretControlComponent : TankComponent
     {
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(_barrelLowerBound.position, 0.25f);
-        Handles.Label(_barrelLowerBound.position + _handlesOffset, _barrelLowerBound.name);
+        Handles.Label(_barrelLowerBound.position + GameManager.HandlesOffset, _barrelLowerBound.name);
         Gizmos.DrawSphere(_barrelUpperBound.position, 0.25f);
-        Handles.Label(_barrelUpperBound.position + _handlesOffset, _barrelUpperBound.name);
+        Handles.Label(_barrelUpperBound.position + GameManager.HandlesOffset, _barrelUpperBound.name);
         Gizmos.DrawLine(_barrelLowerBound.position, _barrelUpperBound.position);
 
         Gizmos.color = Color.green;
-        Gizmos.DrawSphere(_barrelTargetDestination.position, 0.2f);
-        Handles.Label(_barrelTargetDestination.position + _handlesOffset, _barrelTargetDestination.name);
+        Gizmos.DrawSphere(_barrelLookAt.position, 0.2f);
+        Handles.Label(_barrelLookAt.position + GameManager.HandlesOffset, _barrelLookAt.name);
+
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawSphere(_rotationTargetParent.position,  0.2f);
+        Handles.Label(_rotationTargetParent.position + GameManager.HandlesOffset, _rotationTargetParent.name);
     }
 }
