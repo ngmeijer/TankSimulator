@@ -9,15 +9,14 @@ public class TankProperties : ScriptableObject
     public AnimationCurve GearRatios;
     public int MaxGears = 4;
     public float SingleTrackTorqueMultiplier = 2000f;
-    public float HullRotateSpeed = 15f;
     public float TurretRotateSpeed = 60f;
-    public float TurretTiltSpeed = 0.75f;
     public float TankMass;
     public float KickbackForce = 9000f;
 
     public float ShellSpeed = 50f;
     public float ReloadTime = 4f;
-    public float VerticalCrosshairSpeed = 1f;
+    public float TP_VerticalSensitivity = 1f;
+    public float ADS_VerticalSensitivity = 0.75f;
     public int APAmmo = 50;
     public int HEATAmmo = 50;
     public int HEAmmo = 50;

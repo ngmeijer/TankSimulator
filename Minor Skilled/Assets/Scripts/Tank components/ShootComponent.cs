@@ -28,7 +28,7 @@ public class ShootComponent : TankComponent
     public float RangePercent { get; private set; }
     public float MinRange { get; } = 0f;
 
-    public bool CanFire { get; private set; } = true;
+    public bool CanFire = true;
     public float MaxRange { get; private set; } = 1000f;
 
     private int _currentAmmoCountForShell;
@@ -168,7 +168,7 @@ public class ShootComponent : TankComponent
         CurrentRange += inputValue * multiplier;
         CurrentRange = Mathf.Clamp(CurrentRange, MinRange, MaxRange);
         CurrentRange = (float)Math.Round(CurrentRange, 2);
-
+        
         _componentManager.RotationValue = CurrentRange / MaxRange;
     }
 }

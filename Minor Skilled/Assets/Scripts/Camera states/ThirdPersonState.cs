@@ -1,12 +1,11 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-public class ThirdPersonView : CameraView
+public class ThirdPersonState : CameraState
 {
     [SerializeField] private float _cameraRotationDamp = 1f;
     [SerializeField] private Transform _cameraTargetDestination;
     [SerializeField] private Transform _lookAtPosition;
-    [SerializeField] private Transform _thirdPersonRotationAnchor;
 
     [Header("Y Ranges")] [SerializeField] private Transform _cameraLowerBound;
     [SerializeField] private Transform _cameraUpperBound;
@@ -17,10 +16,28 @@ public class ThirdPersonView : CameraView
     {
         transform.position = _cameraTargetDestination.position;
     }
+    
+    public override void EnterState()
+    {
+        base.EnterState();
 
-    private void Update()
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    public override void UpdateState()
     {
         UpdateThirdPersonCameraPosition();
+    }
+
+    public override void LateUpdateState()
+    {
+        
+    }
+
+    protected override void GetInputValues()
+    {
+        
     }
 
     public void UpdateThirdPersonCameraPosition()

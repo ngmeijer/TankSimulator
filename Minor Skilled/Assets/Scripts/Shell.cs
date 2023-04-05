@@ -15,6 +15,8 @@ public class Shell : MonoBehaviour
     public Rigidbody RB;
     private bool _vfxHasPlayed;
     public int Damage { get; private set; } = 50;
+
+    private Vector3 _hitPoint;
     
     private void OnCollisionEnter(Collision collision)
     {
@@ -24,6 +26,11 @@ public class Shell : MonoBehaviour
             if (_vfxHasPlayed) return;
             _explosion.Play();
             ContactPoint contactData = collision.GetContact(0);
+            if (collision.collider.transform.TryGetComponent(out TankPart tankPart))
+            {
+                tankPart.ReceiveCollisionData(this);
+            }
+            _hitPoint = contactData.point;
             _explosion.transform.parent = null;
             _explosion.transform.up = contactData.normal;
             _explosion.transform.position = contactData.point;
@@ -37,12 +44,17 @@ public class Shell : MonoBehaviour
             _audioSource.Play();
         }
         
-        _GFX.SetActive(false);
-        _collider.enabled = false;
+        //_GFX.SetActive(false);
         
         _GFX.transform.localPosition = Vector3.zero;
         _GFX.transform.localRotation = Quaternion.identity;
     }
 
     public string GetShellType() => _shellType;
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(_hitPoint, 0.2f);
+    }
 }

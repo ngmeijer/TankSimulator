@@ -22,10 +22,11 @@ public class AIInput : MonoBehaviour
     private IEnumerator testShoot()
     {
         if (_componentManager.HasDied) yield break;
-        if (!_componentManager.ShootComponent.CanFire) yield break;
         yield return new WaitForSeconds(_componentManager.Properties.ReloadTime);
+        if (!_componentManager.ShootComponent.CanFire) yield break;
         
         _shootComponent.FireShell();
+
         StartCoroutine(testShoot());
     }
 }

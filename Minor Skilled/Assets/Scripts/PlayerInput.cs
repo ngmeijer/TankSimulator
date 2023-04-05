@@ -51,31 +51,29 @@ public class PlayerInput : TankComponent
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            _combatState.CameraComponent.EnableADS();
             SwitchToState(_combatState);
+            _currentState.CameraComponent.SwitchToState(CameraMode.ADS);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             SwitchToState(_combatState);
-            _combatState.CameraComponent.EnableThirdPerson();
+            _currentState.CameraComponent.SwitchToState(CameraMode.ThirdPerson);
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
             SwitchToState(_inspectState);
-            _combatState.CameraComponent.EnableInspectCamera();
+            _currentState.CameraComponent.SwitchToState(CameraMode.InspectMode);
         }
     }
 
     private void SwitchToState(TankState newState)
     {
-        if (newState == _currentState)
-        {
-            Debug.Log($"NewState: {newState}. CurrentState: {_currentState}");
-            return;
-        }
+        if (newState == _currentState) return;
         
-        _currentState?.ExitState();
+        if(_currentState != null)
+            _currentState.ExitState();
+        
         _currentState = newState;
-        _currentState?.EnterState();
+        _currentState.EnterState();
     }
 }

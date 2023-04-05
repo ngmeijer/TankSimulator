@@ -27,18 +27,16 @@ MonoBehaviour:
     m_RotationOrder: 4
   MaxGears: 4
   SingleTrackTorqueMultiplier: 5
-  HullRotateSpeed: 20
   TurretRotateSpeed: 60
-  CameraRotateSpeed: 60
-  TurretTiltSpeed: 240
   TankMass: 1000
   KickbackForce: 9000
-  FireForce: 90000
-  ReloadTime: 5
-  RangeChangeSpeed: 1
-  APAmmo: 0
-  HEATAmmo: 0
-  HEAmmo: 0
+  ShellSpeed: 500
+  ReloadTime: 2
+  TP_VerticalSensitivity: 1
+  ADS_VerticalSensitivity: 0.75
+  APAmmo: 100
+  HEATAmmo: 100
+  HEAmmo: 100
   MaxArmor: 100
   MaxHealth: 500
   OnShellFired: The enemy is targeting us!

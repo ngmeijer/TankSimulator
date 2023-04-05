@@ -1,17 +1,14 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public enum TankParts
 {
     Turret,
     LeftTrack,
     RightTrack,
-    HullLeft,
-    HullRight,
-    HullFront,
-    HullBack
+    Hull
 }
 
 public class DamageRegistrationComponent : TankComponent
@@ -20,7 +17,7 @@ public class DamageRegistrationComponent : TankComponent
     private int _maxHealth;
 
     public TankData CurrentData = new TankData();
-
+    
     private GameObject _lastColliderHit;
 
     [SerializeField] private GameObject _destroyedTankGFX;
@@ -33,27 +30,21 @@ public class DamageRegistrationComponent : TankComponent
         _maxHealth = _componentManager.Properties.MaxHealth;
         _maxArmor = _componentManager.Properties.MaxArmor;
         
-        CurrentData.OverallHealth = _maxHealth;
-
         HUDManager.Instance.UpdateMaxHealthForEntity(_componentManager.ID, _maxHealth);
-        HUDManager.Instance.UpdateCurrentHealthForEntity(_componentManager.ID, CurrentData.OverallHealth);
+        HUDManager.Instance.UpdateCurrentHealthForEntity(_componentManager.ID, CurrentData.GetCurrentTotalHealth(), CurrentData.GetMaxTotalHealth());
+
+        Debug.Assert(CurrentData.TankParts.Count != 0, $"Tank parts have not been added in DamageRegistrationComponent, GameObject '{gameObject.name}' ");
+        foreach (var part in CurrentData.TankParts)
+        {
+            part.OnDamageRegistered.AddListener(UpdateGeneralStats);
+        }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void UpdateGeneralStats()
     {
-        if (!collision.collider.CompareTag("Shell")) return;
-        if (!collision.collider.TryGetComponent(out Shell shell)) return;
-        if (collision.collider.gameObject == _lastColliderHit) return;
-        _lastColliderHit = collision.collider.gameObject;
-
-        UpdateHealth(shell.Damage);
-    }
-
-    private void UpdateHealth(int damage)
-    {
-        CurrentData.OverallHealth -= damage;
-        HUDManager.Instance.UpdateCurrentHealthForEntity(_componentManager.ID, CurrentData.OverallHealth);
-        if (CurrentData.OverallHealth >= 0) return;
+        HUDManager.Instance.UpdateCurrentHealthForEntity(_componentManager.ID, CurrentData.GetCurrentTotalHealth(), CurrentData.GetMaxTotalHealth());
+        HUDManager.Instance.UpdateCurrentArmorForEntity(_componentManager.ID, CurrentData.GetCurrentTotalArmor(), CurrentData.GetMaxTotalArmor());
+        if (CurrentData.GetCurrentTotalHealth() > 0) return;
         
         OnDeathActions();
     }
@@ -69,22 +60,12 @@ public class DamageRegistrationComponent : TankComponent
         _deathVFX.SetActive(true);
         _componentManager.EventManager.OnEntityDeath?.Invoke(_componentManager);
     }
-}
 
-public class TankData
-{
-    //Health cannot be regained! (Besides some kind of upgrade/powerup etc?)
-    //Armor will first be degraded. Once armor is depleted, damage starts affecting the health
-    //If any of the components gets destroyed, you die.
-    
-    public TankProperties Properties;
-    
-    //The average of all components health.
-    public int OverallHealth;
-    
-    
-    public float TurretHealth;
-    
-    //
-    public float TurretArmor;
+    public void ShowUI(bool enabled)
+    {
+        foreach (var part in CurrentData.TankParts)
+        {
+            part.EnableCanvas(enabled);
+        }
+    }
 }

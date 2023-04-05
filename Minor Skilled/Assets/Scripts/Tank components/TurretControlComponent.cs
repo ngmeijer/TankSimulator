@@ -40,12 +40,12 @@ public class TurretControlComponent : TankComponent
         float maxY = _barrelUpperBound.position.y;
         float maxLength = maxY - minY;
         float yDelta = rangePercent * maxLength;
-
+        
         Vector3 currentPosition = _barrelLookAt.transform.position;
         Vector3 newPosition = currentPosition;
         newPosition.y = minY + yDelta;
         _barrelLookAt.transform.position = Vector3.MoveTowards(currentPosition,
-            newPosition, _properties.TurretTiltSpeed * Time.deltaTime);
+            newPosition, _properties.ADS_VerticalSensitivity * Time.deltaTime);
 
         Vector3 lookatPosition = new Vector3(_barrelLowerBound.position.x, _barrelLookAt.position.y, _barrelLowerBound.position.z);
         _barrelTransform.LookAt(lookatPosition);

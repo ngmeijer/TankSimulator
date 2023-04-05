@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class HUDManager : SingletonMonobehaviour<HUDManager>
 {
+    public const int PLAYER_ID = 0;
+    
     private Dictionary<int, TankComponentManager> _entities;
     private Dictionary<int, HUDUpdater> _hudInstances = new Dictionary<int, HUDUpdater>();
     private Transform _player;
@@ -23,17 +25,17 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
     [SerializeField] private TextMeshProUGUI _shellTypeText;
     [SerializeField] private TextMeshProUGUI _zoomLevelText;
     
-    [Header("Mildots")]
-    [SerializeField] private TextMeshProUGUI _currentDistanceToTargetText;
+    [Header("Crosshair")]
     [SerializeField] private RectTransform _crosshairParent;
     [SerializeField] private RectTransform _currentBarrelCrosshair;
     [SerializeField] private RectTransform _targetBarrelCrosshair;
     [SerializeField] private RectTransform _adsUIPosition;
     [SerializeField] private RectTransform _tpUIPosition;
 
-    [Header("Damage")] 
-    [SerializeField] private GameObject _repairUI;
+    [Header("Health properties")] 
     [SerializeField] private HealthStatsUpdater _healthStatsUpdater;
+    [SerializeField] private Slider _generalHealth;
+    [SerializeField] private Slider _generalArmor;
     
     private void Start()
     {
@@ -48,16 +50,34 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
             _hudInstances.Add(entity.Key, entity.Value.hudUpdater);
         }
         
-        EnableDamageUI(false, null);
         EnableCombatUI(true);
     }
 
-    public void UpdateCurrentHealthForEntity(int id, int newHealth)
+    public void UpdateCurrentHealthForEntity(int id, float currentHealth, float maxHealth)
     {
+        if (id == PLAYER_ID)
+        {
+            _generalHealth.value = currentHealth / maxHealth;
+            return;
+        }
+        
         if (_hudInstances.TryGetValue(id, out HUDUpdater hud))
         {
-            Debug.Log($"Updating health. ");
-            hud.UpdateHealth(newHealth);
+            hud.UpdateHealth((int)currentHealth);
+        }
+    }
+    
+    public void UpdateCurrentArmorForEntity(int id, float currentArmor, float maxArmor)
+    {
+        if (id == PLAYER_ID)
+        {
+            _generalArmor.value = currentArmor / maxArmor;
+            return;
+        }
+        
+        if (_hudInstances.TryGetValue(id, out HUDUpdater hud))
+        {
+            
         }
     }
 
@@ -138,13 +158,6 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
     public void SetZoomLevelText(int currentCameraFOVLevel)
     {
         _zoomLevelText.SetText($"{currentCameraFOVLevel}x");
-    }
-
-    public void EnableDamageUI(bool enabled, TankData newData)
-    {
-        _repairUI.SetActive(enabled);
-        _healthStatsUpdater.ShowUI(enabled);
-        _healthStatsUpdater.UpdateValues(newData);
     }
 
     public void EnableCombatUI(bool enabled)

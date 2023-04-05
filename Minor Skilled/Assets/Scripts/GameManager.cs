@@ -7,7 +7,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>
 {
     private const int PLAYER_ID = 0;
     [SerializeField] private Transform _player;
-
     public Transform GetPlayer() => _player;
 
     [SerializeField] private Transform _spawnedShellsParent;
@@ -20,6 +19,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     [SerializeField] private EventManager _eventManager;
     public Vector3 CurrentBarrelCrosshairPos;
     public Vector3 TargetBarrelCrosshairPos;
+
+    public Vector3 InspectCameraPosition;
     
     public static Vector3 HandlesOffset = new Vector3(0.5f, 0.5f, 0);
 

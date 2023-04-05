@@ -1,4 +1,6 @@
-﻿public class AdsView : CameraView
+﻿using UnityEngine;
+
+public class AdsState : CameraState
 {
     private float[] _fovRanges = {
         60f,
@@ -8,13 +10,36 @@
         2.5f
     };
     
-    private int _currentCameraFOVLevel = 0;
+    private int _currentCameraFOVLevel;
 
     private void Start()
     {
         HUDManager.Instance.SetZoomLevelText(_currentCameraFOVLevel + 1);
     }
+    
+    public override void EnterState()
+    {
+        base.EnterState();
 
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    public override void UpdateState()
+    {
+        
+    }
+
+    public override void LateUpdateState()
+    {
+        
+    }
+
+    protected override void GetInputValues()
+    {
+        
+    }
+    
     public void ZoomADS()
     {
         if (_currentCameraFOVLevel >= _fovRanges.Length - 1)

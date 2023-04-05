@@ -2,8 +2,7 @@
 
 public class CombatState : TankState
 {
-    private float _cannonTiltInput;
-    private float _scrollInput;
+    private float _mouseVerticalInput;
     private float _moveInput;
     private float _hullRotateInput;
     private float _mouseHorizontalInput;
@@ -45,13 +44,11 @@ public class CombatState : TankState
     public override void LateUpdateState()
     {
         ComponentManager.TurretControlComponent.HandleTurretRotation(_mouseHorizontalInput);
-        CameraComponent.UpdateThirdPersonCameraPosition();
     }
 
     protected override void GetInputValues()
     {
-        _cannonTiltInput = Input.GetAxis("Mouse Y");
-        _scrollInput = Input.GetAxis("Mouse ScrollWheel");
+        _mouseVerticalInput = Input.GetAxis("Mouse Y");
         _moveInput = Input.GetAxis("Vertical");
         _hullRotateInput = Input.GetAxis("Horizontal");
         _mouseHorizontalInput = Input.GetAxis("Mouse X");
@@ -113,12 +110,14 @@ public class CombatState : TankState
         if (ComponentManager.ShootComponent.CurrentRange < ComponentManager.ShootComponent.MinRange) return;
         if (ComponentManager.ShootComponent.CurrentRange > ComponentManager.ShootComponent.MaxRange) return;
         
-        float barrelRotationInput =
-            CameraComponent.CamMode == CameraMode.ThirdPerson ? _cannonTiltInput : _scrollInput;
-        float multiplier = CameraComponent.CamMode == CameraMode.ThirdPerson
-            ? Properties.VerticalCrosshairSpeed
-            : Properties.TurretTiltSpeed;
-        ComponentManager.ShootComponent.UpdateCurrentRange(barrelRotationInput, multiplier);
+        float multiplier = 0;
+
+        if (CameraComponent.CamMode == CameraMode.ThirdPerson)
+            multiplier = Properties.TP_VerticalSensitivity;
+        else if (CameraComponent.CamMode == CameraMode.ADS)
+            multiplier = Properties.ADS_VerticalSensitivity;
+        
+        ComponentManager.ShootComponent.UpdateCurrentRange(_mouseVerticalInput, multiplier);
 
         ComponentManager.TurretControlComponent.OffsetCannonOnRangeChange(ComponentManager.ShootComponent.RangePercent);
         HUDManager.Instance.UpdateCrosshair();
