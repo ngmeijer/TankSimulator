@@ -30,6 +30,11 @@ public class ThirdPersonState : CameraState
         UpdateThirdPersonCameraPosition();
     }
 
+    public override void FixedUpdateState()
+    {
+        
+    }
+
     public override void LateUpdateState()
     {
         
@@ -46,7 +51,7 @@ public class ThirdPersonState : CameraState
         Vector3 maxY = _cameraUpperBound.position;
         Vector3 maxLength = maxY - minY;
 
-        float inverseValue = 1 - RotationValue;
+        float inverseValue = 1 - GameManager.Instance.RotationValue;
         Vector3 yDelta = inverseValue * maxLength;
         Vector3 newPosition = minY + yDelta;
 

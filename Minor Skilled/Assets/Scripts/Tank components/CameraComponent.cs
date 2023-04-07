@@ -5,7 +5,7 @@ using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
 
-public enum CameraMode
+public enum E_CameraState
 {
     None,
     ADS,
@@ -15,46 +15,25 @@ public enum CameraMode
 
 public class CameraComponent : TankComponent
 {
-    [Header("Targets")] [SerializeField] private Transform _raycaster;
+    [Header("Targets")] 
+    [SerializeField] private Transform _raycaster;
     [SerializeField] private Transform _currentBarrelCrosshair;
     [SerializeField] private Transform _estimatedTargetCrosshair;
 
-    public CameraMode CamMode { get; private set; } = CameraMode.None;
     private RaycastHit _currentHitData;
     private string _colliderTag;
     private bool _inTransition;
     [SerializeField] private float _transitionDuration = 1f;
-
-    [SerializeField] private ThirdPersonState _tpState;
-    [SerializeField] private AdsState _adsState;
-    [SerializeField] private InspectorCamState _inspectorCamState;
-    private CameraState _currentState;
-
+    
     private void Start()
     {
-        _inspectorCamState.ExitState();
-        _adsState.ExitState();
-        SwitchToState(CameraMode.ThirdPerson);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        Debug.Assert(_tpState != null, "ThirdPersonView reference is null. Drag it into the inspector slot.");
-        Debug.Assert(_adsState != null, "ADSView reference is null. Drag it into the inspector slot.");
-        Debug.Assert(_inspectorCamState != null, "InspectorView reference is null. Drag it into the inspector slot.");
-    }
-
-    private void Update()
-    {
-        _currentState.UpdateState();
-
-        _tpState.RotationValue = _componentManager.RotationValue;
     }
 
     private void LateUpdate()
     {
-        _currentState.LateUpdateState();
-
-        if (CamMode == CameraMode.InspectMode) return;
+        if (_componentManager.StateSwitcher.CurrentCameraState.ThisState == E_CameraState.InspectMode) return;
 
         GameManager.Instance.CurrentBarrelCrosshairPos = ConvertCurrentBarrelCrosshair();
         GameManager.Instance.TargetBarrelCrosshairPos = ConvertTargetBarrelCrosshair();
@@ -66,19 +45,14 @@ public class CameraComponent : TankComponent
         }
         else Debug.DrawLine(_raycaster.position, _raycaster.forward * 1000f, Color.red);
     }
-
-    public void ZoomADS()
-    {
-        _adsState.ZoomADS();
-    }
-
+    
     private Vector3 ConvertCurrentBarrelCrosshair()
     {
         Vector3 posToConvert = _currentHitData.point == Vector3.zero || _colliderTag == "Shell"
             ? _currentBarrelCrosshair.position
             : _currentHitData.point;
 
-        return _currentState.ViewCam.WorldToScreenPoint(posToConvert);
+        return _componentManager.StateSwitcher.CurrentCameraState.ViewCam.WorldToScreenPoint(posToConvert);
     }
 
     private Vector3 ConvertTargetBarrelCrosshair()
@@ -92,45 +66,9 @@ public class CameraComponent : TankComponent
         currentLocalPos.x = 0;
         _estimatedTargetCrosshair.localPosition = currentLocalPos;
 
-        Vector3 convertedPos = _currentState.ViewCam.WorldToScreenPoint(_estimatedTargetCrosshair.position);
+        Vector3 convertedPos = _componentManager.StateSwitcher.CurrentCameraState.ViewCam.WorldToScreenPoint(_estimatedTargetCrosshair.position);
         convertedPos.y = GameManager.Instance.CurrentBarrelCrosshairPos.y;
         return convertedPos;
-    }
-
-    private void AnimateCamera(CameraState newState)
-    {
-        _currentState.ViewCam.transform.DOMove(newState.ViewCam.transform.position, _transitionDuration);
-        _currentState.ViewCam.transform.DORotate(newState.ViewCam.transform.rotation.eulerAngles, _transitionDuration);
-        _currentState.ViewCam.transform.DOLookAt(newState.StateLookAt.position, _transitionDuration);
-    }
-
-    public void SwitchToState(CameraMode newMode)
-    {
-        if (CamMode == newMode) return;
-
-        if (_currentState != null)
-            _currentState.ExitState();
-
-        CameraState newState = null;
-        switch (newMode)
-        {
-            case CameraMode.ADS:
-                newState = _adsState;
-                break;
-            case CameraMode.ThirdPerson:
-                newState = _tpState;
-                break;
-            case CameraMode.InspectMode:
-                newState = _inspectorCamState;
-                break;
-        }
-
-        _componentManager.EventManager.OnCameraChanged.Invoke(newMode);
-
-        _currentState = newState;
-        CamMode = newMode;
-        _currentState.EnterState();
-        //AnimateCamera(newState);
     }
 
     private bool GetEstimatedHitPoint()

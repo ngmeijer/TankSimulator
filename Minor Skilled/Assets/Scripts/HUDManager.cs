@@ -140,15 +140,15 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
         _targetBarrelCrosshair.position = GameManager.Instance.TargetBarrelCrosshairPos;
     }
 
-    public void HandleCamModeUI(CameraMode camMode)
+    public void HandleCamModeUI(E_CameraState camState)
     {
-        switch (camMode)
+        switch (camState)
         {
-            case CameraMode.ADS:
+            case E_CameraState.ADS:
                 _crosshairParent.anchoredPosition = _adsUIPosition.anchoredPosition;
                 _zoomLevelText.gameObject.SetActive(true);
                 break;
-            case CameraMode.ThirdPerson:
+            case E_CameraState.ThirdPerson:
                 _crosshairParent.anchoredPosition = _tpUIPosition.anchoredPosition;
                 _zoomLevelText.gameObject.SetActive(false);
                 break;

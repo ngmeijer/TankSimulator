@@ -169,6 +169,6 @@ public class ShootComponent : TankComponent
         CurrentRange = Mathf.Clamp(CurrentRange, MinRange, MaxRange);
         CurrentRange = (float)Math.Round(CurrentRange, 2);
         
-        _componentManager.RotationValue = CurrentRange / MaxRange;
+        GameManager.Instance.RotationValue = CurrentRange / MaxRange;
     }
 }

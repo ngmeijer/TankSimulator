@@ -88,6 +88,7 @@ MonoBehaviour:
   _explosionRadius: 0
   _audioSource: {fileID: 0}
   RB: {fileID: 8452314821403775366}
+  Hitpoint: {x: 0, y: 0, z: 0}
 --- !u!82 &1720688559512906105
 AudioSource:
   m_ObjectHideFlags: 0
@@ -323,19 +324,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4325717242527976, guid: 8baff3207836e304f95274c39c8d572c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.00000044703472
       objectReference: {fileID: 0}
     - target: {fileID: 4325717242527976, guid: 8baff3207836e304f95274c39c8d572c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.9999981
       objectReference: {fileID: 0}
     - target: {fileID: 4325717242527976, guid: 8baff3207836e304f95274c39c8d572c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071072
       objectReference: {fileID: 0}
     - target: {fileID: 4325717242527976, guid: 8baff3207836e304f95274c39c8d572c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: -0.7071065
       objectReference: {fileID: 0}
     - target: {fileID: 4325717242527976, guid: 8baff3207836e304f95274c39c8d572c, type: 3}
       propertyPath: m_LocalRotation.y
@@ -347,7 +348,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4325717242527976, guid: 8baff3207836e304f95274c39c8d572c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 4325717242527976, guid: 8baff3207836e304f95274c39c8d572c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y

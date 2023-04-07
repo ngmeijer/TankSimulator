@@ -1431,6 +1431,7 @@ GameObject:
   - component: {fileID: 1655900801}
   - component: {fileID: 2553447339076532598}
   - component: {fileID: 7069830959994818512}
+  - component: {fileID: 414376520}
   m_Layer: 0
   m_Name: States
   m_TagString: Untagged
@@ -1467,7 +1468,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ComponentManager: {fileID: 4711635311828248818}
   CameraComponent: {fileID: 7090261991069830890}
-  StateActive: 0
 --- !u!114 &7069830959994818512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1482,7 +1482,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ComponentManager: {fileID: 4711635311828248818}
   CameraComponent: {fileID: 7090261991069830890}
-  StateActive: 0
+--- !u!114 &414376520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655900800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f84a35b48e246bc9b83558e5e342e3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ComponentManager: {fileID: 4711635311828248818}
+  CameraComponent: {fileID: 7090261991069830890}
+  _functioningTankGFX: {fileID: 7817554744197927519}
+  _destroyedTankGFX: {fileID: 4712586073713347565}
+  _deathVFX: {fileID: 4711635311610703500}
 --- !u!1 &1778753370
 GameObject:
   m_ObjectHideFlags: 0
@@ -7398,6 +7414,7 @@ GameObject:
   - component: {fileID: 4711635311828248818}
   - component: {fileID: 4711635310943932853}
   - component: {fileID: 1181831519}
+  - component: {fileID: 1054301939}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -7455,8 +7472,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2295e803caa551241bd7673b656de4e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inspectState: {fileID: 0}
-  _combatState: {fileID: 0}
+  _stateSwitcher: {fileID: 0}
 --- !u!114 &4711635311828248818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7469,6 +7485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37508d91b5ccbad43961143a66b21b5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StateSwitcher: {fileID: 1054301939}
   Properties: {fileID: 11400000, guid: 32aea0547c8a75340a7337b45656dbfa, type: 2}
   hudUpdater: {fileID: 0}
   RotationValue: 0
@@ -7492,22 +7509,10 @@ MonoBehaviour:
   OnTankComponentHit:
     m_PersistentCalls:
       m_Calls: []
-  OnEntityDeath:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: HUDManager, Assembly-CSharp
-        m_MethodName: OnPlayerKilled
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   OnCameraChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTankDestruction:
     m_PersistentCalls:
       m_Calls: []
 --- !u!82 &1181831519
@@ -7606,6 +7611,24 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1054301939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7817720855815354588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c685505b9a7d412e8f2c69310a5744a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inspectionState: {fileID: 7069830959994818512}
+  _combatState: {fileID: 2553447339076532598}
+  _deathState: {fileID: 414376520}
+  _tpState: {fileID: 0}
+  _adsState: {fileID: 454472434}
+  _inspectorCamState: {fileID: 550209003}
 --- !u!1 &7817720856352731542
 GameObject:
   m_ObjectHideFlags: 0
@@ -8554,9 +8577,6 @@ MonoBehaviour:
   _currentBarrelCrosshair: {fileID: 34388345}
   _estimatedTargetCrosshair: {fileID: 1481984251597974469}
   _transitionDuration: 1
-  _tpState: {fileID: 0}
-  _adsState: {fileID: 454472434}
-  _inspectorCamState: {fileID: 550209003}
 --- !u!114 &8117995908048637600
 MonoBehaviour:
   m_ObjectHideFlags: 0

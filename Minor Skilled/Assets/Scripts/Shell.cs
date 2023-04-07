@@ -14,9 +14,9 @@ public class Shell : MonoBehaviour
     [SerializeField] private AudioSource _audioSource;
     public Rigidbody RB;
     private bool _vfxHasPlayed;
-    public int Damage { get; private set; } = 50;
+    public int Damage { get; private set; } = 120;
 
-    private Vector3 _hitPoint;
+    public Vector3 Hitpoint;
     
     private void OnCollisionEnter(Collision collision)
     {
@@ -26,14 +26,12 @@ public class Shell : MonoBehaviour
             if (_vfxHasPlayed) return;
             _explosion.Play();
             ContactPoint contactData = collision.GetContact(0);
+            Hitpoint = contactData.point;
             if (collision.collider.transform.TryGetComponent(out TankPart tankPart))
             {
                 tankPart.ReceiveCollisionData(this);
             }
-            _hitPoint = contactData.point;
             _explosion.transform.parent = null;
-            _explosion.transform.up = contactData.normal;
-            _explosion.transform.position = contactData.point;
             
             RB.AddExplosionForce(_forceOnImpact, transform.position, _explosionRadius);
             _vfxHasPlayed = true;
@@ -51,10 +49,4 @@ public class Shell : MonoBehaviour
     }
 
     public string GetShellType() => _shellType;
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(_hitPoint, 0.2f);
-    }
 }

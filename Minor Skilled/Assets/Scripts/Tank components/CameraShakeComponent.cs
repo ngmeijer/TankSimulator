@@ -13,16 +13,16 @@ public class CameraShakeComponent : TankComponent
     [SerializeField] private Vector3 _tpPositionShakeStrength;
     [SerializeField] private Vector3 _tpRotationShakeStrength;
 
-    public void CameraShake(Transform currentCamera, CameraMode camMode)
+    public void CameraShake(Transform currentCamera, E_CameraState camState)
     {
         currentCamera.DOComplete();
-        switch (camMode)
+        switch (camState)
         {
-            case CameraMode.ADS:
+            case E_CameraState.ADS:
                 currentCamera.DOShakePosition(_shakeDuration, _adsPositionShakeStrength);
                 currentCamera.DOShakeRotation(_shakeDuration, _adsRotationShakeStrength);
                 break;
-            case CameraMode.ThirdPerson:
+            case E_CameraState.ThirdPerson:
                 currentCamera.DOShakePosition(_shakeDuration, _tpPositionShakeStrength);
                 currentCamera.DOShakeRotation(_shakeDuration, _tpRotationShakeStrength);
                 break;

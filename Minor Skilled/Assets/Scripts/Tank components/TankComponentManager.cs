@@ -6,6 +6,7 @@ using UnityEngine;
 [ExecuteAlways]
 public class TankComponentManager : MonoBehaviour
 {
+    public StateSwitcher StateSwitcher;
     public TankProperties Properties;
     public HUDUpdater hudUpdater;
     public EventManager EventManager { get; private set; }
@@ -13,14 +14,13 @@ public class TankComponentManager : MonoBehaviour
     public TurretControlComponent TurretControlComponent { get; private set; }
     public ShootComponent ShootComponent { get; private set; }
     public DamageRegistrationComponent DamageComponent { get; private set; }
-
-    public float RotationValue;
-
+    
     public bool HasDied;
     public int ID;
 
     private void Awake()
     {
+        StateSwitcher = GetComponent<StateSwitcher>();
         MoveComponent = GetComponentInChildren<MoveComponent>();
         TurretControlComponent = GetComponentInChildren<TurretControlComponent>();
         ShootComponent = GetComponentInChildren<ShootComponent>();
@@ -34,6 +34,12 @@ public class TankComponentManager : MonoBehaviour
     private void Start()
     {
         HUDManager.Instance.UpdateEntityName(ID, Properties.TankName);
+        EventManager.OnTankDestruction.AddListener(OnTankDeath);
+    }
+
+    private void OnTankDeath()
+    {
+        HasDied = true;
     }
 
     public Vector3 GetCurrentBarrelDirection() => TurretControlComponent.GetCurrentBarrelDirection();
@@ -55,10 +61,5 @@ public class TankComponentManager : MonoBehaviour
         
         Debug.LogError($"There is no MoveComponent attached to {this.gameObject.name}. Cannot retrieve wheels");
         return null;
-    }
-
-    private void OnValidate()
-    {
-        
     }
 }

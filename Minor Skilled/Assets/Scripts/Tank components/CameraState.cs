@@ -1,21 +1,22 @@
 ﻿using UnityEngine;
 
-public abstract class CameraState : MonoBehaviour
+public abstract class CameraState : FSMState
 {
     public Camera ViewCam;
     public Transform StateLookAt;
+    public E_CameraState ThisState;
 
-    public virtual void EnterState()
+    public override void EnterState()
     {
+        base.EnterState();
+        
         ViewCam.gameObject.SetActive(true);
     }
 
-    public abstract void UpdateState();
-    public abstract void LateUpdateState();
-    protected abstract void GetInputValues();
-
-    public virtual void ExitState()
+    public override void ExitState()
     {
+        base.ExitState();
+        
         ViewCam.gameObject.SetActive(false);
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 [Serializable]
 public enum TankParts
@@ -24,7 +25,7 @@ public class DamageRegistrationComponent : TankComponent
     [SerializeField] private GameObject _functioningTankGFX;
     [SerializeField] private Camera _destroyedTankCamera;
     [SerializeField] private GameObject _deathVFX;
-
+    
     private void Start()
     {
         _maxHealth = _componentManager.Properties.MaxHealth;
@@ -46,19 +47,7 @@ public class DamageRegistrationComponent : TankComponent
         HUDManager.Instance.UpdateCurrentArmorForEntity(_componentManager.ID, CurrentData.GetCurrentTotalArmor(), CurrentData.GetMaxTotalArmor());
         if (CurrentData.GetCurrentTotalHealth() > 0) return;
         
-        OnDeathActions();
-    }
-
-    private void OnDeathActions()
-    {
-        _componentManager.EventManager.OnTankComponentHit.Invoke(_properties.OnEntityDeath);
-        _componentManager.HasDied = true;
-        _functioningTankGFX.SetActive(false);
-        _destroyedTankGFX.SetActive(true);
-        if(_destroyedTankCamera != null)
-            _destroyedTankCamera.gameObject.SetActive(true);
-        _deathVFX.SetActive(true);
-        _componentManager.EventManager.OnEntityDeath?.Invoke(_componentManager);
+        _componentManager.EventManager.OnTankDestruction.Invoke();
     }
 
     public void ShowUI(bool enabled)

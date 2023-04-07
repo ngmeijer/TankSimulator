@@ -31,6 +31,8 @@ public class TankPart : MonoBehaviour
 
     public List<GameObject> _vfxLevels;
 
+    private Vector3 _hitpoint;
+
     private void Awake()
     {
         CurrentHealth = MaxHealth;
@@ -43,6 +45,7 @@ public class TankPart : MonoBehaviour
 
     public void ReceiveCollisionData(Shell shellData)
     {
+        _hitpoint = shellData.Hitpoint;
         if (CurrentArmor > 0)
         {
             int newArmor = CurrentArmor - shellData.Damage;
@@ -70,7 +73,7 @@ public class TankPart : MonoBehaviour
         float healthPercentage = currentHealth / maxHealth;
         float vfxActivationInterval = 1f / _vfxLevels.Count;
 
-        for (float i = _vfxLevels.Count; i == 0; i--)
+        for (float i = _vfxLevels.Count; i > 0; i--)
         {
             float totalVFXInterval = i * vfxActivationInterval;
             if (healthPercentage <= totalVFXInterval)
@@ -78,5 +81,11 @@ public class TankPart : MonoBehaviour
                 _vfxLevels[(int)i - 1].SetActive(true);
             }
         }
+    }
+    
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawSphere(_hitpoint, 0.2f);
     }
 }

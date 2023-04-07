@@ -28,7 +28,7 @@ public class CombatState : TankState
         ShellTypeSwitch();
         IncreaseGear();
         DecreaseGear();
-        HandleADSZoom();
+        Debug.Log("Update state combat");
         HandleCrosshair();
     }
 
@@ -43,6 +43,7 @@ public class CombatState : TankState
 
     public override void LateUpdateState()
     {
+        Debug.Log("Late update combat state");
         ComponentManager.TurretControlComponent.HandleTurretRotation(_mouseHorizontalInput);
     }
 
@@ -98,29 +99,29 @@ public class CombatState : TankState
         ComponentManager.MoveComponent.DecreaseGear();
     }
 
-    private void HandleADSZoom()
-    {
-        if (!Input.GetMouseButtonDown(1)) return;
-
-        CameraComponent.ZoomADS();
-    }
-    
     private void HandleCrosshair()
     {
         if (ComponentManager.ShootComponent.CurrentRange < ComponentManager.ShootComponent.MinRange) return;
         if (ComponentManager.ShootComponent.CurrentRange > ComponentManager.ShootComponent.MaxRange) return;
-        
-        float multiplier = 0;
 
-        if (CameraComponent.CamMode == CameraMode.ThirdPerson)
-            multiplier = Properties.TP_VerticalSensitivity;
-        else if (CameraComponent.CamMode == CameraMode.ADS)
-            multiplier = Properties.ADS_VerticalSensitivity;
-        
-        ComponentManager.ShootComponent.UpdateCurrentRange(_mouseVerticalInput, multiplier);
-
+        ComponentManager.ShootComponent.UpdateCurrentRange(_mouseVerticalInput, GetSensitivityMultiplier());
         ComponentManager.TurretControlComponent.OffsetCannonOnRangeChange(ComponentManager.ShootComponent.RangePercent);
         HUDManager.Instance.UpdateCrosshair();
+    }
+
+    private float GetSensitivityMultiplier()
+    {
+        float multiplier = 0;
+
+        E_CameraState camState = ComponentManager.StateSwitcher.CurrentCameraState.ThisState;
+        if (camState == E_CameraState.ThirdPerson)
+            multiplier = Properties.TP_VerticalSensitivity;
+        else if (camState == E_CameraState.ADS)
+            multiplier = Properties.ADS_VerticalSensitivity;
+
+        Debug.Assert(multiplier != 0, "Sensitivity multiplier is 0. Check Properties SO and if the CamState is ThirdPerson or ADS.");
+        
+        return multiplier;
     }
     
     private void HandleCombatUI(bool enabled)

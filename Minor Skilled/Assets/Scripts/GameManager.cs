@@ -7,6 +7,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>
 {
     private const int PLAYER_ID = 0;
     [SerializeField] private Transform _player;
+    public float RotationValue;
+
     public Transform GetPlayer() => _player;
 
     [SerializeField] private Transform _spawnedShellsParent;

@@ -9,71 +9,37 @@ public class PlayerInput : TankComponent
     private float _mouseHorizontalInput;
     private float _cannonTiltInput;
 
-    [SerializeField] private InspectState _inspectState;
-    [SerializeField] private CombatState _combatState;
-    private TankState _currentState;
-
-    protected override void Awake()
-    {
-        base.Awake();
-        
-        _inspectState = GetComponentInChildren<InspectState>();
-        _combatState = GetComponentInChildren<CombatState>();
-    }
-
+    [SerializeField] private StateSwitcher _stateSwitcher;
+    
     private void Start()
     {
+        Debug.Assert(_stateSwitcher != null, $"StateSwitcher in PlayerInput is null. Assign in the inspector.");
         HUDManager.Instance.UpdateAmmoCount(_componentManager.ShootComponent.GetCurrentAmmoCount());
         HUDManager.Instance.UpdateShellTypeUI(_componentManager.ShootComponent.GetCurrentShellType());
-
-        SwitchToState(_combatState);
     }
 
     private void Update()
     {
         if (_componentManager.HasDied) return;
         CheckStateSwitch();
-        
-        _currentState.UpdateState();
-    }
-
-    private void FixedUpdate()
-    {
-        _currentState.FixedUpdateState();
-    }
-
-    private void LateUpdate()
-    {
-        _currentState.LateUpdateState();
     }
 
     private void CheckStateSwitch()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            SwitchToState(_combatState);
-            _currentState.CameraComponent.SwitchToState(CameraMode.ADS);
+            _stateSwitcher.SwitchToTankState(E_TankState.Combat);
+            _stateSwitcher.SwitchToCamState(E_CameraState.ADS);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            SwitchToState(_combatState);
-            _currentState.CameraComponent.SwitchToState(CameraMode.ThirdPerson);
+            _stateSwitcher.SwitchToTankState(E_TankState.Combat);
+            _stateSwitcher.SwitchToCamState(E_CameraState.ThirdPerson);
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
-            SwitchToState(_inspectState);
-            _currentState.CameraComponent.SwitchToState(CameraMode.InspectMode);
+            _stateSwitcher.SwitchToTankState(E_TankState.Inspection);
+            _stateSwitcher.SwitchToCamState(E_CameraState.InspectMode);
         }
-    }
-
-    private void SwitchToState(TankState newState)
-    {
-        if (newState == _currentState) return;
-        
-        if(_currentState != null)
-            _currentState.ExitState();
-        
-        _currentState = newState;
-        _currentState.EnterState();
     }
 }

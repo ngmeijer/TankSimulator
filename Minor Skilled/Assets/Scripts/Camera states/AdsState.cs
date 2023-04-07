@@ -27,6 +27,13 @@ public class AdsState : CameraState
 
     public override void UpdateState()
     {
+        if (!Input.GetMouseButtonDown(1)) return;
+        
+        ZoomADS();
+    }
+
+    public override void FixedUpdateState()
+    {
         
     }
 

@@ -52,6 +52,11 @@ public class InspectorCamState : CameraState
         _tempCamPos.z = Mathf.Clamp(_tempCamPos.z, _innerBorder.position.z, _outerBorder.position.z);
     }
 
+    public override void FixedUpdateState()
+    {
+        
+    }
+
     public override void LateUpdateState()
     {
         if (!_inTransition)
