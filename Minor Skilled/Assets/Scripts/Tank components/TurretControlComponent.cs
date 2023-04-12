@@ -14,24 +14,35 @@ public class TurretControlComponent : TankComponent
     [SerializeField] private Transform _barrelLowerBound;
     [SerializeField] private Transform _barrelUpperBound;
     [SerializeField] private Transform _barrelLookAt;
-
-    private Vector3 _turretEulerAngles;
+    
     private float _currentXRotation;
     
-    private void Start()
+    private PlayerStateSwitcher _playerStateSwitcher;
+
+    protected void Start()
     {
+        _playerStateSwitcher = _componentManager.StateSwitcher as PlayerStateSwitcher;
         Debug.Assert(_turretTransform != null, $"TurretTransform on '{gameObject.name}' is null.");
         Debug.Assert(_barrelTransform != null, $"BarrelTransform on '{gameObject.name}' is null.");
     }
 
     public void HandleTurretRotation(float rotateInput)
     {
+        float multiplier = 0;
+        E_CameraState camState = _playerStateSwitcher.CurrentCameraState.ThisState;
+        if (camState == E_CameraState.ThirdPerson)
+            multiplier = _properties.TP_HorizontalSensitivity;
+        else if (camState == E_CameraState.ADS)
+        {
+            int currentFOV = _playerStateSwitcher.CurrentCameraState.GetFOVLevel();
+            multiplier = _properties.ADS_HorizontalSensitivity[currentFOV];
+        }
         Vector3 newRotation = new Vector3(0,
-            _rotationTargetParent.localEulerAngles.y + (rotateInput * _properties.TurretRotateSpeed * Time.deltaTime), 0);
+            _rotationTargetParent.localEulerAngles.y + (rotateInput * multiplier * Time.deltaTime), 0);
         _rotationTargetParent.localEulerAngles = newRotation;
         
         _turretTransform.rotation = Quaternion.RotateTowards(_turretTransform.rotation, _rotationTargetParent.rotation,
-                _properties.TurretRotateSpeed * Time.deltaTime);
+                multiplier * Time.deltaTime);
     }
 
     public void OffsetCannonOnRangeChange(float rangePercent)

@@ -8,12 +8,13 @@ public class TankComponentManager : MonoBehaviour
 {
     public StateSwitcher StateSwitcher;
     public TankProperties Properties;
-    public HUDUpdater hudUpdater;
     public EventManager EventManager { get; private set; }
     public MoveComponent MoveComponent { get; private set; }
     public TurretControlComponent TurretControlComponent { get; private set; }
     public ShootComponent ShootComponent { get; private set; }
     public DamageRegistrationComponent DamageComponent { get; private set; }
+
+    public Transform EntityOrigin;
     
     public bool HasDied;
     public int ID;
@@ -27,17 +28,16 @@ public class TankComponentManager : MonoBehaviour
         DamageComponent = GetComponentInChildren<DamageRegistrationComponent>();
         
         EventManager = GetComponent<EventManager>();
-
-        TryGetComponent(out hudUpdater);
     }
 
     private void Start()
     {
-        HUDManager.Instance.UpdateEntityName(ID, Properties.TankName);
+        if(HUDManager.Instance != null)
+            HUDManager.Instance.UpdateEntityName(ID, Properties.TankName);
         EventManager.OnTankDestruction.AddListener(OnTankDeath);
     }
 
-    private void OnTankDeath()
+    private void OnTankDeath(int entityID)
     {
         HasDied = true;
     }

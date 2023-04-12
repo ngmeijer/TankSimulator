@@ -8,6 +8,7 @@ using UnityEngine;
 [ExecuteAlways]
 public class TankPropertyEditor : EditorWindow
 {
+    private const int DEFAULT_SPACING = 20;
     private const int NO_TANK_SELECTED = -1;
     
     private bool _wheelsGroupEnabled;
@@ -19,10 +20,6 @@ public class TankPropertyEditor : EditorWindow
     private AnimationCurve _motorTorque;
     private AnimationCurve _gearRatios;
     private int _maxGears;
-    private float _singleTrackTorqueMultiplier;
-    private float _tankMass;
-    private float _reloadTime;
-    private float _fireForce;
     private float _maxHealth;
     private float _maxArmor;
     private float _wheelMass;
@@ -89,8 +86,8 @@ public class TankPropertyEditor : EditorWindow
         GUILayout.Label("Tank editor", _header1Style);
         DrawListOfTanks();
 
-        GUILayout.Space(10);
         GUILayout.Label("Select a tank to edit properties (cannot save values in playmode!)", _cursiveStyle);
+        GUILayout.Space(DEFAULT_SPACING);
         DrawCurrentlySelectedTank();
 
         if (_currentlySelectedTankIndex != NO_TANK_SELECTED)
@@ -194,14 +191,7 @@ public class TankPropertyEditor : EditorWindow
         _newPropertyData = _selectedTank.Properties;
 
         if (_retrievedPropertyData == null) return;
-
-        _singleTrackTorqueMultiplier = _retrievedPropertyData.SingleTrackTorqueMultiplier;
-        _tankMass = _retrievedPropertyData.TankMass;
-        _reloadTime = _retrievedPropertyData.ReloadTime;
-        _fireForce = _retrievedPropertyData.ShellSpeed;
-        _maxHealth = _retrievedPropertyData.MaxHealth;
-        _maxArmor = _retrievedPropertyData.MaxArmor;
-
+        
         //Wheel
         if (_selectedTank.GetLeftWheelColliders().Count == 0) return;
         _tankWheelProperties = _selectedTank.GetLeftWheelColliders()[0];
@@ -258,15 +248,11 @@ public class TankPropertyEditor : EditorWindow
             _newPropertyData.MotorTorque = EditorGUILayout.CurveField("Motor torque", _newPropertyData.MotorTorque, Color.green, new Rect(0,0, 80000, 40000));
             _newPropertyData.GearRatios = EditorGUILayout.CurveField("Gear ratios", _newPropertyData.GearRatios, Color.green, new Rect(-1,-5, _newPropertyData.MaxGears + 1, 25));
             _newPropertyData.MaxGears = EditorGUILayout.IntSlider("Max gears", _newPropertyData.MaxGears, 0, 10);
-            _newPropertyData.SingleTrackTorqueMultiplier = EditorGUILayout.Slider("Single track torque multiplier", _newPropertyData.SingleTrackTorqueMultiplier, 0, 5);
             _newPropertyData.TankMass = EditorGUILayout.Slider("Tank mass", _newPropertyData.TankMass, 1, 100000);
             _newPropertyData.ReloadTime = EditorGUILayout.Slider("Reload time", _newPropertyData.ReloadTime, 0.5f, 50f);
-            _newPropertyData.ShellSpeed = EditorGUILayout.Slider("Fire force", _newPropertyData.ShellSpeed, 1, 100000);
-            _newPropertyData.MaxHealth = EditorGUILayout.IntSlider("Max health", _newPropertyData.MaxHealth, 1, 1000);
-            _newPropertyData.MaxArmor = EditorGUILayout.IntSlider("Max armor", _newPropertyData.MaxArmor, 1, 1000);
 
             //
-            GUILayout.Space(20);
+            GUILayout.Space(DEFAULT_SPACING);
             DrawWheelColliderProperties();
         }
     }

@@ -19,4 +19,9 @@ public abstract class CameraState : FSMState
         
         ViewCam.gameObject.SetActive(false);
     }
+
+    public virtual int GetFOVLevel()
+    {
+        return -1;
+    }
 }

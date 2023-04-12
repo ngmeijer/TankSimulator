@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class HUDManager : SingletonMonobehaviour<HUDManager>
 {
-    public const int PLAYER_ID = 0;
-    
     private Dictionary<int, TankComponentManager> _entities;
     private Dictionary<int, HUDUpdater> _hudInstances = new Dictionary<int, HUDUpdater>();
     private Transform _player;
+
+    [SerializeField] private GameObject _combatHUD;
+    [SerializeField] private GameObject _menuHUD;
+    [SerializeField] private Transform _targetsIndicatorParent;
+    [SerializeField] private TextMeshProUGUI _inspectHostileText;
 
     [Header("Movement")] [SerializeField] private GameObject _moveContainer;
     [SerializeField] private TextMeshProUGUI _tankSpeedText;
@@ -36,26 +40,32 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
     [SerializeField] private HealthStatsUpdater _healthStatsUpdater;
     [SerializeField] private Slider _generalHealth;
     [SerializeField] private Slider _generalArmor;
-    
+
+    [SerializeField] private GameObject _enemyIndicatorPrefab;
+    private Dictionary<int, GameObject> _enemyIndicators = new Dictionary<int, GameObject>();
+
     private void Start()
     {
         _entities = GameManager.Instance.GetEntities();
         _player = GameManager.Instance.GetPlayer();
+        
+        EnableCombatUI(true);
+        EnableMenuUI(false);
+        EnableInspectHostileText(false);
+        SetZoomLevelText(0, false);
 
         foreach (KeyValuePair<int, TankComponentManager> entity in _entities)
         {
-            if (CheckIfEntityIsPlayer(entity.Value.transform))
-                continue;
-
-            _hudInstances.Add(entity.Key, entity.Value.hudUpdater);
+            if (entity.Key == GameManager.PLAYER_ID) continue;
+            
+            GameObject indicator = Instantiate(_enemyIndicatorPrefab, _targetsIndicatorParent);
+            _enemyIndicators.Add(entity.Key, indicator);
         }
-        
-        EnableCombatUI(true);
     }
 
     public void UpdateCurrentHealthForEntity(int id, float currentHealth, float maxHealth)
     {
-        if (id == PLAYER_ID)
+        if (id == GameManager.PLAYER_ID)
         {
             _generalHealth.value = currentHealth / maxHealth;
             return;
@@ -69,16 +79,11 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
     
     public void UpdateCurrentArmorForEntity(int id, float currentArmor, float maxArmor)
     {
-        if (id == PLAYER_ID)
+        if (id == GameManager.PLAYER_ID)
         {
             _generalArmor.value = currentArmor / maxArmor;
             return;
-        }
-        
-        if (_hudInstances.TryGetValue(id, out HUDUpdater hud))
-        {
-            
-        }
+        } 
     }
 
     public void UpdateMaxHealthForEntity(int id, int maxHealth)
@@ -96,9 +101,7 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
             hud.SetName(tankName);
         }
     }
-
-    private bool CheckIfEntityIsPlayer(Transform entity) => entity == _player;
-
+    
     public void UpdateGearboxData(MovementData data)
     {
         _tankSpeedText.SetText($"{data.Velocity}");
@@ -140,29 +143,60 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
         _targetBarrelCrosshair.position = GameManager.Instance.TargetBarrelCrosshairPos;
     }
 
+    public void SetEnemyIndicator(int enemyIndex, Vector2 enemyPosition, bool inSight)
+    {
+        _enemyIndicators.TryGetValue(enemyIndex, out GameObject indicator);
+        if (indicator == null) return;
+        
+        indicator.transform.position = enemyPosition;
+        if (inSight)
+        {
+            if (indicator.activeInHierarchy) return;
+            indicator.SetActive(true);
+        }
+        else indicator.SetActive(false);
+    }
+
     public void HandleCamModeUI(E_CameraState camState)
     {
         switch (camState)
         {
             case E_CameraState.ADS:
                 _crosshairParent.anchoredPosition = _adsUIPosition.anchoredPosition;
-                _zoomLevelText.gameObject.SetActive(true);
                 break;
             case E_CameraState.ThirdPerson:
                 _crosshairParent.anchoredPosition = _tpUIPosition.anchoredPosition;
-                _zoomLevelText.gameObject.SetActive(false);
                 break;
         }
     }
 
-    public void SetZoomLevelText(int currentCameraFOVLevel)
+    public void SetZoomLevelText(int currentCameraFOVLevel, bool enabled)
     {
         _zoomLevelText.SetText($"{currentCameraFOVLevel}x");
+        _zoomLevelText.gameObject.SetActive(enabled);
     }
 
     public void EnableCombatUI(bool enabled)
     {
-        _moveContainer.SetActive(enabled);
-        _shootContainer.SetActive(enabled);
+        _combatHUD.SetActive(enabled); 
+    }
+
+    public void EnableMenuUI(bool enabled)
+    {
+        _menuHUD.SetActive(enabled);
+    }
+
+    public void DestroyEntityIndicator(int entityID)
+    {
+        _enemyIndicators.TryGetValue(entityID, out GameObject indicator);
+        _enemyIndicators.Remove(entityID);
+        Destroy(indicator);
+    }
+
+    public void EnableInspectHostileText(bool enabled)
+    {
+        if (_inspectHostileText.gameObject.activeInHierarchy == enabled) return;
+        
+        _inspectHostileText.gameObject.SetActive(enabled);
     }
 }

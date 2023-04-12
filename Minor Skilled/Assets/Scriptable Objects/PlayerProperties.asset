@@ -135,17 +135,21 @@ MonoBehaviour:
     m_RotationOrder: 4
   MaxGears: 4
   SingleTrackTorqueMultiplier: 5
-  TurretRotateSpeed: 18
+  TP_HorizontalSensitivity: 30
+  ADS_HorizontalSensitivity:
+  - 25
+  - 12
+  - 8
+  - 4
+  - 2
   TankMass: 60000
   KickbackForce: 70000
   ShellSpeed: 500
-  ReloadTime: 1.5
-  TP_VerticalSensitivity: 14
-  ADS_VerticalSensitivity: 18
+  ReloadTime: 3
+  TP_VerticalSensitivity: 20
+  ADS_VerticalSensitivity: 3
   APAmmo: 500
   HEATAmmo: 500
   HEAmmo: 500
-  MaxArmor: 100
-  MaxHealth: 650
   OnShellFired: Shell fired! Reloading
   OnEntityDeath: Mission failed.

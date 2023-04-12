@@ -35,6 +35,8 @@ public class Shell : MonoBehaviour
             
             RB.AddExplosionForce(_forceOnImpact, transform.position, _explosionRadius);
             _vfxHasPlayed = true;
+            _GFX.SetActive(false);
+            _collider.enabled = false;
         }
 
         if (_audioSource != null)

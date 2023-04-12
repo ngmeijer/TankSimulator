@@ -11,7 +11,7 @@ public class AIInput : MonoBehaviour
     private void Awake()
     {
         _componentManager = GetComponent<TankComponentManager>();
-        _shootComponent = GetComponent<ShootComponent>();
+        _shootComponent = GetComponentInChildren<ShootComponent>();
     }
 
     private void Start()

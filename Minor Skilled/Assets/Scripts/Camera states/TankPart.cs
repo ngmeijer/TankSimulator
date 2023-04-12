@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -17,9 +18,15 @@ public class TankPart : MonoBehaviour
     public TankParts ThisPart;
     public PartState PartState;
 
-    public GameObject Canvas;
-    public Slider HealthSlider;
-    public Slider ArmorSlider;
+    [SerializeField] private GameObject Canvas;
+    [SerializeField] private  Slider HealthSlider;
+    [SerializeField] private  Slider ArmorSlider;
+
+    [SerializeField] private TextMeshProUGUI _currentArmorText;
+    [SerializeField] private TextMeshProUGUI _maxArmorText;
+    
+    [SerializeField] private TextMeshProUGUI _currentHealthText;
+    [SerializeField] private TextMeshProUGUI _maxHealthText;
 
     public int MaxHealth;
     public int MaxArmor;
@@ -27,7 +34,8 @@ public class TankPart : MonoBehaviour
     public int CurrentHealth;
     public int CurrentArmor;
 
-    public UnityEvent OnDamageRegistered = new UnityEvent();
+    [HideInInspector] public UnityEvent OnDamageRegistered = new UnityEvent();
+    [HideInInspector] public UnityEvent OnZeroHealthReached = new UnityEvent();
 
     public List<GameObject> _vfxLevels;
 
@@ -39,6 +47,7 @@ public class TankPart : MonoBehaviour
         CurrentArmor = MaxArmor;
         PartState = PartState.Good;
         EnableCanvas(false);
+        UpdateUI();
     }
 
     public void EnableCanvas(bool enabled) => Canvas.SetActive(enabled);
@@ -46,40 +55,61 @@ public class TankPart : MonoBehaviour
     public void ReceiveCollisionData(Shell shellData)
     {
         _hitpoint = shellData.Hitpoint;
+        CalculateNewStats(shellData);
+
+        if (CurrentHealth <= 0)
+        {
+            OnZeroHealthReached.Invoke();
+            EnableCanvas(false);
+        }
+
+        UpdateUI();
+        
+        CheckVFXRequirement(CurrentHealth, MaxHealth);
+        OnDamageRegistered.Invoke();
+    }
+
+    private void UpdateUI()
+    {
+        HealthSlider.value = (float)CurrentHealth / MaxHealth;
+        ArmorSlider.value = (float)CurrentArmor / MaxArmor;
+        
+        _currentHealthText.SetText(CurrentHealth.ToString());
+        _maxHealthText.SetText(MaxHealth.ToString());
+        
+        _currentArmorText.SetText(CurrentArmor.ToString());
+        _maxArmorText.SetText(MaxArmor.ToString());
+    }
+
+        private void CalculateNewStats(Shell shellData)
+    {
         if (CurrentArmor > 0)
         {
             int newArmor = CurrentArmor - shellData.Damage;
             CurrentArmor = newArmor;
-            if (newArmor < 0)
+            if (newArmor <= 0)
             {
                 CurrentArmor = 0;
-                CurrentHealth -= newArmor;
+                CurrentHealth -= Mathf.Abs(newArmor);
             }
         }
         else
         {
             CurrentHealth -= shellData.Damage;
         }
-
-        HealthSlider.value = (float)CurrentHealth / MaxHealth;
-        ArmorSlider.value = (float)CurrentArmor / MaxArmor;
-        
-        CheckVFXRequirement(CurrentHealth, MaxHealth);
-        OnDamageRegistered.Invoke();
     }
 
     private void CheckVFXRequirement(float currentHealth, float maxHealth)
     {
-        float healthPercentage = currentHealth / maxHealth;
-        float vfxActivationInterval = 1f / _vfxLevels.Count;
+        float inverseHP = 1 - (currentHealth / maxHealth);
+        if (inverseHP == 0) return;
+        
+        float selectedVFX = inverseHP * (_vfxLevels.Count - 1);
+        selectedVFX = Mathf.Floor(selectedVFX);
 
-        for (float i = _vfxLevels.Count; i > 0; i--)
+        for (int i = 0; i < selectedVFX; i++) 
         {
-            float totalVFXInterval = i * vfxActivationInterval;
-            if (healthPercentage <= totalVFXInterval)
-            {
-                _vfxLevels[(int)i - 1].SetActive(true);
-            }
+            _vfxLevels[i].SetActive(true);
         }
     }
     

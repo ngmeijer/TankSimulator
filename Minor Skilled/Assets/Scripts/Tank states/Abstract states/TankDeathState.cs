@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 
-public class TankDeathState : TankState
+public abstract class TankDeathState : TankState
 {
     [SerializeField] private GameObject _functioningTankGFX;
     [SerializeField] private GameObject _destroyedTankGFX;
@@ -13,27 +14,12 @@ public class TankDeathState : TankState
         OnDeathActions();
     }
     
-    public override void UpdateState()
+    protected virtual void OnDeathActions()
     {
-        
-    }
-    public override void FixedUpdateState()
-    {
-        
-    }
-    public override void LateUpdateState()
-    {
-        
-    }
-    protected override void GetInputValues()
-    {
-        
-    }
-    
-    private void OnDeathActions()
-    {
+        _componentManager.EventManager.OnTankDestruction.Invoke(_componentManager.ID);
         _functioningTankGFX.SetActive(false);
         _destroyedTankGFX.SetActive(true);
         _deathVFX.SetActive(true);
+        _componentManager.HasDied = true;
     }
 }

@@ -7,7 +7,7 @@ public class EventManager : MonoBehaviour
     public GameEvent OnShellFired = new GameEvent();
     public GameEvent OnTankComponentHit = new GameEvent();
     public UnityEvent<E_CameraState> OnCameraChanged = new UnityEvent<E_CameraState>();
-    public UnityEvent OnTankDestruction = new UnityEvent();
+    public UnityEvent<int> OnTankDestruction = new UnityEvent<int>();
 
     private void Start()
     {

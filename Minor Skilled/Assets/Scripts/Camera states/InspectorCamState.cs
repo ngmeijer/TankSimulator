@@ -2,27 +2,25 @@
 using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 
 public class InspectorCamState : CameraState
 {
-    [SerializeField] private Transform _inspectModePivot;
-    [SerializeField] private Transform _rotationTarget;
     [SerializeField] private float _horizontalSpeed = 50f;
     [SerializeField] private float _verticalSpeed = 25f;
     [SerializeField] private float _zoomSpeed = 50f;
     [SerializeField] private Transform _innerBorder;
     [SerializeField] private Transform _outerBorder;
-    private float _scrollInput;
-    private float _mouseHorizontalInput;
-    private float _mouseVerticalInput;
+    private Vector2 _scrollInput;
+    private Vector2 _mouseInput;
     private float _zoomLevel;
     private float _zoomPosition;
 
-    private bool _inTransition;
     private Vector3 _posDelta;
-    private Vector3 _tempCamRot;
     private Vector3 _tempCamPos;
+    
+    private PlayerInputActions _inputActions;
+    protected bool _canRotateAround;
 
     public override void EnterState()
     {
@@ -30,10 +28,11 @@ public class InspectorCamState : CameraState
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
-
-        _tempCamRot = ViewCam.transform.eulerAngles;
-
-        StateLookAt = _inspectModePivot;
+        
+        _inputActions = new PlayerInputActions();
+        _inputActions.Tankinspection.AllowInspection.started += EnableRotate;
+        _inputActions.Tankinspection.AllowInspection.canceled += DisableRotate;
+        _inputActions.Tankinspection.Enable();
     }
 
     public override void UpdateState()
@@ -41,53 +40,47 @@ public class InspectorCamState : CameraState
         _posDelta = Vector3.zero;
         _tempCamPos = ViewCam.transform.position;
 
-        GameManager.Instance.InspectCameraPosition = ViewCam.transform.position;
         GetInputValues();
-        RotateAroundTank(_mouseHorizontalInput);
-        MoveVertically(_mouseVerticalInput);
-        ZoomInspectView(_scrollInput);
+        RotateAroundTank();
+        MoveVertically();
+        ZoomInspectView(_scrollInput.y);
         
         _tempCamPos += _posDelta;
         _tempCamPos.y = Mathf.Clamp(_tempCamPos.y, _innerBorder.position.y, _outerBorder.position.y);
         _tempCamPos.z = Mathf.Clamp(_tempCamPos.z, _innerBorder.position.z, _outerBorder.position.z);
     }
 
-    public override void FixedUpdateState()
-    {
-        
-    }
-
-    public override void LateUpdateState()
-    {
-        if (!_inTransition)
-        {
-            //ViewCam.transform.position = _tempCamPos;
-            //ViewCam.transform.eulerAngles = _tempCamRot;
-        }
-    }
-    
     protected override void GetInputValues()
     {
-        _scrollInput = Input.GetAxis("Mouse ScrollWheel");
-        _mouseHorizontalInput = Input.GetAxis("Mouse X");
-        _mouseVerticalInput = Input.GetAxis("Mouse Y");
+        _scrollInput = _inputActions.Tankinspection.Zoom.ReadValue<Vector2>();
+        _mouseInput = _inputActions.Tankinspection.InspectTank.ReadValue<Vector2>();
     }
 
-    private void RotateAroundTank(float xMouseInput)
+    private void EnableRotate(InputAction.CallbackContext cb)
+    {
+        _canRotateAround = true;
+    }
+
+    private void DisableRotate(InputAction.CallbackContext cb)
+    {
+        _canRotateAround = false;
+    }
+
+    private void RotateAroundTank()
     {
         ViewCam.transform.LookAt(StateLookAt);
 
-        if (Input.GetMouseButton(1))
+        if (_canRotateAround)
         {
-            _rotationTarget.eulerAngles += new Vector3(0, xMouseInput * _horizontalSpeed * Time.deltaTime, 0);
+            StateLookAt.eulerAngles += new Vector3(0, _mouseInput.x * _horizontalSpeed * Time.deltaTime, 0);
         }
     }
 
-    private void MoveVertically(float yMouseInput)
+    private void MoveVertically()
     {
-        if (Input.GetMouseButton(1))
+        if (_canRotateAround)
         {
-            float yDelta = yMouseInput * _verticalSpeed * Time.deltaTime;
+            float yDelta = _mouseInput.y * _verticalSpeed * Time.deltaTime;
             _posDelta.y -= yDelta;
         }
     }
@@ -98,22 +91,6 @@ public class InspectorCamState : CameraState
         _posDelta += zoomDelta;
     }
 
-    //OnClick function
-    public void LerpToClickedCanvas(TankPart data)
-    {
-        _inTransition = true;
-
-        // ViewCam.transform.DOLookAt(data.RotationTarget.position, 1f).OnComplete(() =>
-        // {
-        //     _tempCamRot = ViewCam.transform.eulerAngles;
-        // });
-        // ViewCam.transform.DOMove(data.PositionTarget.position, 1f).OnComplete(() =>
-        // {
-        //     _inTransition = false;
-        //     //_posDelta = ViewCam.transform.position;
-        // });
-    }
-    
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;

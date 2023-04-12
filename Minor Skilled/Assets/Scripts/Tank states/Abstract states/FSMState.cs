@@ -7,10 +7,10 @@ public abstract class FSMState : MonoBehaviour
     public virtual void EnterState() => StateActive = true;
     
     
-    public abstract void UpdateState();
-    public abstract void FixedUpdateState();
-    public abstract void LateUpdateState();
-    protected abstract void GetInputValues();
+    public virtual void UpdateState() {}
+    public virtual void FixedUpdateState() {}
+    public virtual void LateUpdateState() {}
+    protected virtual void GetInputValues() {}
     
     public virtual void ExitState() => StateActive = false;
 }

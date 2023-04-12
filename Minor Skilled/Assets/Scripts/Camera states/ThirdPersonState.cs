@@ -30,21 +30,6 @@ public class ThirdPersonState : CameraState
         UpdateThirdPersonCameraPosition();
     }
 
-    public override void FixedUpdateState()
-    {
-        
-    }
-
-    public override void LateUpdateState()
-    {
-        
-    }
-
-    protected override void GetInputValues()
-    {
-        
-    }
-
     public void UpdateThirdPersonCameraPosition()
     {
         Vector3 minY = _cameraLowerBound.position;

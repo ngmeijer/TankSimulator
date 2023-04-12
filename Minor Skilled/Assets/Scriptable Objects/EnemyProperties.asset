@@ -27,17 +27,16 @@ MonoBehaviour:
     m_RotationOrder: 4
   MaxGears: 4
   SingleTrackTorqueMultiplier: 5
-  TurretRotateSpeed: 60
+  TP_HorizontalSensitivity: 30
+  ADS_HorizontalSensitivity: []
   TankMass: 1000
   KickbackForce: 9000
   ShellSpeed: 500
   ReloadTime: 2
   TP_VerticalSensitivity: 1
   ADS_VerticalSensitivity: 0.75
-  APAmmo: 100
-  HEATAmmo: 100
-  HEAmmo: 100
-  MaxArmor: 100
-  MaxHealth: 500
+  APAmmo: 243
+  HEATAmmo: 91
+  HEAmmo: 147
   OnShellFired: The enemy is targeting us!
   OnEntityDeath: One enemy less.

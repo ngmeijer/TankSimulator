@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class InspectState : TankState
+public class PlayerInspectState : TankInspectState
 {
     public override void EnterState()
     {
@@ -21,23 +21,8 @@ public class InspectState : TankState
         GetInputValues();
     }
 
-    public override void FixedUpdateState()
-    {
-        
-    }
-
-    public override void LateUpdateState()
-    {
-        
-    }
-
-    protected override void GetInputValues()
-    {
-        
-    }
-    
     private void HandleDamageRegistrationUI(bool enabled)
     {
-        ComponentManager.DamageComponent.ShowUI(enabled);
+        _componentManager.DamageComponent.ShowUI(enabled);
     }
 }

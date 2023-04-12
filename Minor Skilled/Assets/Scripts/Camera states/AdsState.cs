@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class AdsState : CameraState
 {
@@ -11,10 +12,18 @@ public class AdsState : CameraState
     };
     
     private int _currentCameraFOVLevel;
+    public int CurrentFOV
+    {
+        get { return _currentCameraFOVLevel; }
+    }
+
+    private PlayerInputActions _inputActions;
 
     private void Start()
     {
-        HUDManager.Instance.SetZoomLevelText(_currentCameraFOVLevel + 1);
+        _inputActions = new PlayerInputActions();
+        _inputActions.Tankmovement.ZoomADS.started += ZoomADS;
+        _inputActions.Enable();
     }
     
     public override void EnterState()
@@ -23,31 +32,15 @@ public class AdsState : CameraState
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        HUDManager.Instance.SetZoomLevelText(_currentCameraFOVLevel + 1, true);
     }
 
-    public override void UpdateState()
+    public override int GetFOVLevel()
     {
-        if (!Input.GetMouseButtonDown(1)) return;
-        
-        ZoomADS();
-    }
-
-    public override void FixedUpdateState()
-    {
-        
-    }
-
-    public override void LateUpdateState()
-    {
-        
-    }
-
-    protected override void GetInputValues()
-    {
-        
+        return CurrentFOV;
     }
     
-    public void ZoomADS()
+    public void ZoomADS(InputAction.CallbackContext cb)
     {
         if (_currentCameraFOVLevel >= _fovRanges.Length - 1)
             _currentCameraFOVLevel = 0;
@@ -56,6 +49,13 @@ public class AdsState : CameraState
         float newFOV = _fovRanges[_currentCameraFOVLevel];
         ViewCam.fieldOfView = newFOV;
 
-        HUDManager.Instance.SetZoomLevelText(_currentCameraFOVLevel + 1);
+        HUDManager.Instance.SetZoomLevelText(_currentCameraFOVLevel + 1, true);
+    }
+
+    public override void ExitState()
+    {
+        base.ExitState();
+        
+        HUDManager.Instance.SetZoomLevelText(_currentCameraFOVLevel + 1, false);
     }
 }
