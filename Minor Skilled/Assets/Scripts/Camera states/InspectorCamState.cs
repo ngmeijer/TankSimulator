@@ -20,7 +20,7 @@ public class InspectorCamState : CameraState
     private Vector3 _tempCamPos;
     
     private PlayerInputActions _inputActions;
-    protected bool _canRotateAround;
+    protected bool _canUpdate;
 
     public override void EnterState()
     {
@@ -35,8 +35,10 @@ public class InspectorCamState : CameraState
         _inputActions.Tankinspection.Enable();
     }
 
-    public override void UpdateState()
+    public override void LateUpdateState()
     {
+        if (!_canUpdate) return;
+            
         _posDelta = Vector3.zero;
         _tempCamPos = ViewCam.transform.position;
 
@@ -58,19 +60,19 @@ public class InspectorCamState : CameraState
 
     private void EnableRotate(InputAction.CallbackContext cb)
     {
-        _canRotateAround = true;
+        _canUpdate = true;
     }
 
     private void DisableRotate(InputAction.CallbackContext cb)
     {
-        _canRotateAround = false;
+        _canUpdate = false;
     }
 
     private void RotateAroundTank()
     {
         ViewCam.transform.LookAt(StateLookAt);
 
-        if (_canRotateAround)
+        if (_canUpdate)
         {
             StateLookAt.eulerAngles += new Vector3(0, _mouseInput.x * _horizontalSpeed * Time.deltaTime, 0);
         }
@@ -78,7 +80,7 @@ public class InspectorCamState : CameraState
 
     private void MoveVertically()
     {
-        if (_canRotateAround)
+        if (_canUpdate)
         {
             float yDelta = _mouseInput.y * _verticalSpeed * Time.deltaTime;
             _posDelta.y -= yDelta;

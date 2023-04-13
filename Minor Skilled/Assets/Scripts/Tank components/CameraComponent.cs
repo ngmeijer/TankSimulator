@@ -77,15 +77,21 @@ public class CameraComponent : TankComponent
         foreach (var entity in entityPositions)
         {
             Camera currentCam = _playerStateSwitcher.CurrentCameraState.ViewCam;
-            Vector2 screenPos = currentCam.WorldToScreenPoint(entity.Value);
+            
+            //Bugfix for double screenpoints (indicator would appear on the mirrored position of enemy as well)
+            Vector3 inversePos = currentCam.transform.InverseTransformPoint(entity.Value);
+            inversePos.z = Mathf.Max(inversePos.z, 1.0f);
+            Vector2 screenPos = currentCam.WorldToScreenPoint(currentCam.transform.TransformPoint(inversePos));
             Vector3 direction = entity.Value - currentCam.transform.position;
-            if (Physics.Raycast(currentCam.transform.position, direction, out RaycastHit hitInfo))
+
+            bool rayCollision = Physics.Raycast(currentCam.transform.position, direction, out RaycastHit hitInfo);
+            bool enemyCollision = hitInfo.collider.CompareTag("Enemy");
+            bool enemyOnScreen = CheckIfVectorIsOnScreen(screenPos);
+            
+            if(rayCollision && enemyCollision && enemyOnScreen)
             {
-                if (hitInfo.collider.CompareTag("Enemy"))
-                {
-                    HUDManager.Instance.SetEnemyIndicator(entity.Key, screenPos, true);
-                    Debug.DrawLine(currentCam.transform.position, entity.Value, Color.green);
-                }
+                HUDManager.Instance.SetEnemyIndicator(entity.Key, screenPos, true);
+                Debug.DrawLine(currentCam.transform.position, entity.Value, Color.green);
             }
             else
             {
@@ -93,6 +99,14 @@ public class CameraComponent : TankComponent
                 Debug.DrawLine(currentCam.transform.position, entity.Value, Color.red);
             }
         }
+    }
+
+    private bool CheckIfVectorIsOnScreen(Vector2 screenPos)
+    {
+        bool xOnScreen = (screenPos.x >= 0 && screenPos.x <= Screen.width);
+        bool yOnScreen = (screenPos.y >= 0 && screenPos.y <= Screen.height);
+
+        return xOnScreen && yOnScreen;
     }
     
     private Vector3 ConvertCurrentBarrelCrosshair()
@@ -120,16 +134,9 @@ public class CameraComponent : TankComponent
         return convertedPos;
     }
 
-    private Vector3 ConvertEnemyPosition(Vector3 worldPos)
-    {
-        return _playerStateSwitcher.CurrentCameraState.ViewCam.WorldToScreenPoint(worldPos);
-    }
-
     private void SelectEnemyToInspect(InputAction.CallbackContext cb)
     {
-        _hostileInspectPivot.parent = _currentHitData.collider.transform.root;
-        _hostileInspectPivot.localPosition = Vector3.zero;
-        GameManager.Instance.HostileTargetTransform = _hostileInspectPivot;
+        GameManager.Instance.HostileTargetTransform = _currentHitData.collider.transform.root;
     }
 
     private bool RaycastForwardFromBarrelTip()

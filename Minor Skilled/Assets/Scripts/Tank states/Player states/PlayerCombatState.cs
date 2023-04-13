@@ -25,6 +25,7 @@ public class PlayerCombatState : TankCombatState
     {
         base.EnterState();
         
+        _inputActions.Tankmovement.Enable();
         HandleCombatUI(true);
     }
 
@@ -32,6 +33,7 @@ public class PlayerCombatState : TankCombatState
     {
         base.ExitState();
         
+        _inputActions.Tankmovement.Disable();
         HandleCombatUI(false);
     }
 

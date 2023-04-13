@@ -60,8 +60,13 @@ public class PlayerStateSwitcher : StateSwitcher
 
     public void SwitchToCamState(E_CameraState newStateEnum)
     {
-        if(_currentCameraState != null)
+        if (_currentCameraState != null)
+        {
+            if (_currentCameraState.ThisState == newStateEnum)
+                return;
+            
             _currentCameraState.ExitState();
+        }
 
         CameraState newState = null;
         
@@ -80,7 +85,9 @@ public class PlayerStateSwitcher : StateSwitcher
                 newState = _hostileInspectorCamState;
                 break;
         }
-        
+
+        if (_currentCameraState != null)
+            _currentCameraState.NextCameraTrans = newState.ViewCam.transform;
         newState.EnterState();
         _currentCameraState = newState;
     }
