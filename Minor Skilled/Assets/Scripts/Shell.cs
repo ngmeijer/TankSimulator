@@ -15,8 +15,6 @@ public class Shell : MonoBehaviour
     public Rigidbody RB;
     private bool _vfxHasPlayed;
     public int Damage { get; private set; } = 120;
-
-    public Vector3 Hitpoint;
     
     private void OnCollisionEnter(Collision collision)
     {
@@ -25,8 +23,6 @@ public class Shell : MonoBehaviour
             if (_explosion.isPlaying) return;
             if (_vfxHasPlayed) return;
             _explosion.Play();
-            ContactPoint contactData = collision.GetContact(0);
-            Hitpoint = contactData.point;
             if (collision.collider.transform.TryGetComponent(out TankPart tankPart))
             {
                 tankPart.ReceiveCollisionData(this);

@@ -21,15 +21,15 @@ public class CameraComponent : TankComponent
     [SerializeField] private Transform _raycaster;
     [SerializeField] private Transform _currentBarrelCrosshair;
     [SerializeField] private Transform _estimatedTargetCrosshair;
-    [SerializeField] private Transform _hostileInspectPivot;
     
     private RaycastHit _currentHitData;
     private string _colliderTag;
     private bool _inTransition;
-    [SerializeField] private float _transitionDuration = 1f;
 
     private PlayerStateSwitcher _playerStateSwitcher;
     private PlayerInputActions _inputActions;
+
+    private Camera _currentCamera;
     
     private void Start()
     {
@@ -45,6 +45,7 @@ public class CameraComponent : TankComponent
     private void LateUpdate()
     {
         CameraState camState = _playerStateSwitcher.CurrentCameraState;
+        _currentCamera = camState.ViewCam;
         if (camState.ThisState == E_CameraState.InspectMode) return;
 
         GameManager.Instance.CurrentBarrelCrosshairPos = ConvertCurrentBarrelCrosshair();
@@ -76,39 +77,39 @@ public class CameraComponent : TankComponent
         Dictionary<int, Vector3> entityPositions = GameManager.Instance.EntityWorldPositions;
         foreach (var entity in entityPositions)
         {
-            Camera currentCam = _playerStateSwitcher.CurrentCameraState.ViewCam;
-            
-            //Bugfix for double screenpoints (indicator would appear on the mirrored position of enemy as well)
-            Vector3 inversePos = currentCam.transform.InverseTransformPoint(entity.Value);
-            inversePos.z = Mathf.Max(inversePos.z, 1.0f);
-            Vector2 screenPos = currentCam.WorldToScreenPoint(currentCam.transform.TransformPoint(inversePos));
-            Vector3 direction = entity.Value - currentCam.transform.position;
+            Vector3 direction = entity.Value - _currentCamera.transform.position;
+            Vector3 screenPos = ConvertWorldIntoScreenPos(entity.Value);
 
-            bool rayCollision = Physics.Raycast(currentCam.transform.position, direction, out RaycastHit hitInfo);
-            bool enemyCollision = hitInfo.collider.CompareTag("Enemy");
-            bool enemyOnScreen = CheckIfVectorIsOnScreen(screenPos);
+            if (!Physics.Raycast(_currentCamera.transform.position, direction, out RaycastHit hitInfo))
+            {
+                HandleEnemyIndicator(entity, false, screenPos);
+                return;
+            }
+
+            if (!hitInfo.collider.CompareTag("Enemy"))
+            {
+                HandleEnemyIndicator(entity, false, screenPos);
+                return;
+            }
             
-            if(rayCollision && enemyCollision && enemyOnScreen)
-            {
-                HUDManager.Instance.SetEnemyIndicator(entity.Key, screenPos, true);
-                Debug.DrawLine(currentCam.transform.position, entity.Value, Color.green);
-            }
-            else
-            {
-                HUDManager.Instance.SetEnemyIndicator(entity.Key, screenPos, false); 
-                Debug.DrawLine(currentCam.transform.position, entity.Value, Color.red);
-            }
+            HandleEnemyIndicator(entity, true, screenPos);
         }
     }
 
-    private bool CheckIfVectorIsOnScreen(Vector2 screenPos)
+    private void HandleEnemyIndicator(KeyValuePair<int, Vector3> entity, bool canSeeTarget, Vector2 screenPos)
     {
-        bool xOnScreen = (screenPos.x >= 0 && screenPos.x <= Screen.width);
-        bool yOnScreen = (screenPos.y >= 0 && screenPos.y <= Screen.height);
-
-        return xOnScreen && yOnScreen;
+        HUDManager.Instance.SetEnemyIndicator(entity.Key, screenPos, canSeeTarget);
+        Debug.DrawLine(_currentCamera.transform.position, entity.Value, canSeeTarget ? Color.green : Color.red);
     }
-    
+
+    private Vector3 ConvertWorldIntoScreenPos(Vector3 worldPos)
+    {
+        //Bugfix for double screenpoints (indicator would appear on the mirrored position of enemy as well)
+        Vector3 inversePos = _currentCamera.transform.InverseTransformPoint(worldPos);
+        inversePos.z = Mathf.Max(inversePos.z, 1.0f);
+        return _currentCamera.WorldToScreenPoint(_currentCamera.transform.TransformPoint(inversePos));
+    }
+
     private Vector3 ConvertCurrentBarrelCrosshair()
     {
         Vector3 posToConvert = _currentHitData.point == Vector3.zero || _colliderTag == "Shell"
@@ -120,15 +121,6 @@ public class CameraComponent : TankComponent
 
     private Vector3 ConvertTargetBarrelCrosshair()
     {
-        Vector3 currentPos = _estimatedTargetCrosshair.position;
-        currentPos.x = _currentBarrelCrosshair.position.x;
-        currentPos.y = _currentBarrelCrosshair.position.y;
-        currentPos.z = _currentBarrelCrosshair.position.z;
-        _estimatedTargetCrosshair.position = currentPos;
-        Vector3 currentLocalPos = _estimatedTargetCrosshair.localPosition;
-        currentLocalPos.x = 0;
-        _estimatedTargetCrosshair.localPosition = currentLocalPos;
-
         Vector3 convertedPos = _playerStateSwitcher.CurrentCameraState.ViewCam.WorldToScreenPoint(_estimatedTargetCrosshair.position);
         convertedPos.y = GameManager.Instance.CurrentBarrelCrosshairPos.y;
         return convertedPos;
@@ -141,14 +133,14 @@ public class CameraComponent : TankComponent
 
     private bool RaycastForwardFromBarrelTip()
     {
-        bool data = Physics.Raycast(_raycaster.position, _raycaster.forward,
+        bool hasCollision = Physics.Raycast(_raycaster.position, _raycaster.forward,
             out _currentHitData, Mathf.Infinity);
 
         if (_currentHitData.collider != null)
             _colliderTag = _currentHitData.collider.tag;
         else _colliderTag = "No collision detected";
 
-        return data && !_currentHitData.collider.CompareTag("Shell");
+        return hasCollision && !_currentHitData.collider.CompareTag("Shell");
     }
 
     private void OnDrawGizmos()

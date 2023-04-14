@@ -15,12 +15,10 @@ public class InspectorCamState : CameraState
     private Vector2 _mouseInput;
     private float _zoomLevel;
     private float _zoomPosition;
-
     private Vector3 _posDelta;
-    private Vector3 _tempCamPos;
     
     private PlayerInputActions _inputActions;
-    protected bool _canUpdate;
+    protected bool _canMove;
 
     public override void EnterState()
     {
@@ -35,21 +33,24 @@ public class InspectorCamState : CameraState
         _inputActions.Tankinspection.Enable();
     }
 
-    public override void LateUpdateState()
+    public override void UpdateState()
     {
-        if (!_canUpdate) return;
-            
         _posDelta = Vector3.zero;
-        _tempCamPos = ViewCam.transform.position;
 
+        ZoomInspectView(_scrollInput.y);
+
+        if (!_canMove) return;
+        
         GetInputValues();
         RotateAroundTank();
         MoveVertically();
-        ZoomInspectView(_scrollInput.y);
-        
-        _tempCamPos += _posDelta;
-        _tempCamPos.y = Mathf.Clamp(_tempCamPos.y, _innerBorder.position.y, _outerBorder.position.y);
-        _tempCamPos.z = Mathf.Clamp(_tempCamPos.z, _innerBorder.position.z, _outerBorder.position.z);
+    }
+
+    public override void LateUpdateState()
+    {
+        Vector3 newPos = ViewCam.transform.position + _posDelta;
+        newPos.y = Mathf.Clamp(newPos.y, _innerBorder.position.y, _outerBorder.position.y);
+        ViewCam.transform.position = newPos;
     }
 
     protected override void GetInputValues()
@@ -60,31 +61,24 @@ public class InspectorCamState : CameraState
 
     private void EnableRotate(InputAction.CallbackContext cb)
     {
-        _canUpdate = true;
+        _canMove = true;
     }
 
     private void DisableRotate(InputAction.CallbackContext cb)
     {
-        _canUpdate = false;
+        _canMove = false;
     }
 
     private void RotateAroundTank()
     {
         ViewCam.transform.LookAt(StateLookAt);
-
-        if (_canUpdate)
-        {
-            StateLookAt.eulerAngles += new Vector3(0, _mouseInput.x * _horizontalSpeed * Time.deltaTime, 0);
-        }
+        StateLookAt.eulerAngles += new Vector3(0, _mouseInput.x * _horizontalSpeed * Time.deltaTime, 0);
     }
 
     private void MoveVertically()
     {
-        if (_canUpdate)
-        {
-            float yDelta = _mouseInput.y * _verticalSpeed * Time.deltaTime;
-            _posDelta.y -= yDelta;
-        }
+        Vector3 yDelta = transform.up * (_mouseInput.y * _verticalSpeed * Time.deltaTime);
+        _posDelta += yDelta;
     }
 
     private void ZoomInspectView(float scrollInput)

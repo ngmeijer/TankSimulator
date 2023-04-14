@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -15,10 +16,9 @@ public enum PartState
 
 public class TankPart : MonoBehaviour
 {
-    public TankParts ThisPart;
     public PartState PartState;
 
-    [SerializeField] private GameObject Canvas;
+    [SerializeField] private GameObject _propertiesCanvas;
     [SerializeField] private  Slider HealthSlider;
     [SerializeField] private  Slider ArmorSlider;
 
@@ -28,6 +28,10 @@ public class TankPart : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _currentHealthText;
     [SerializeField] private TextMeshProUGUI _maxHealthText;
 
+    [SerializeField] private List<GameObject> _vfxLevels;
+    [SerializeField] private float _canvasTweenY = 2f;
+    [SerializeField] private float _tweenSpeed = 1f;
+    
     public int MaxHealth;
     public int MaxArmor;
 
@@ -36,25 +40,44 @@ public class TankPart : MonoBehaviour
 
     [HideInInspector] public UnityEvent OnDamageRegistered = new UnityEvent();
     [HideInInspector] public UnityEvent OnZeroHealthReached = new UnityEvent();
-
-    public List<GameObject> _vfxLevels;
-
-    private Vector3 _hitpoint;
-
+    
+    private Vector3 _canvasStartPos;
+    private Vector3 _canvasHidePos;
+    private Vector3 _canvasStartScale;
+    
     private void Awake()
     {
         CurrentHealth = MaxHealth;
         CurrentArmor = MaxArmor;
         PartState = PartState.Good;
+        _canvasStartPos = _propertiesCanvas.transform.position;
+        _canvasHidePos = _canvasStartPos;
+        _canvasHidePos.y -= _canvasTweenY;
+        _canvasStartScale = _propertiesCanvas.transform.localScale;
+        
+        _propertiesCanvas.SetActive(false);
         EnableCanvas(false);
         UpdateUI();
     }
 
-    public void EnableCanvas(bool enabled) => Canvas.SetActive(enabled);
+    public void EnableCanvas(bool enabled)
+    {
+        if (enabled)
+        {
+            _propertiesCanvas.SetActive(true);
+            _propertiesCanvas.transform.DOScale(_canvasStartScale, _tweenSpeed);
+            _propertiesCanvas.transform.DOMoveY(_propertiesCanvas.transform.position.y + _canvasTweenY, _tweenSpeed);
+        }
+        else
+        {
+            _propertiesCanvas.transform.DOScale(Vector3.zero, _tweenSpeed);
+            _propertiesCanvas.transform.DOMoveY(_canvasHidePos.y, _tweenSpeed)
+            .OnComplete(() => _propertiesCanvas.SetActive(false));
+        }
+    }
 
     public void ReceiveCollisionData(Shell shellData)
     {
-        _hitpoint = shellData.Hitpoint;
         CalculateNewStats(shellData);
 
         if (CurrentHealth <= 0)
@@ -65,7 +88,7 @@ public class TankPart : MonoBehaviour
 
         UpdateUI();
         
-        CheckVFXRequirement(CurrentHealth, MaxHealth);
+        ActivateNewVFX(CurrentHealth, MaxHealth);
         OnDamageRegistered.Invoke();
     }
 
@@ -81,17 +104,16 @@ public class TankPart : MonoBehaviour
         _maxArmorText.SetText(MaxArmor.ToString());
     }
 
-        private void CalculateNewStats(Shell shellData)
+    private void CalculateNewStats(Shell shellData)
     {
         if (CurrentArmor > 0)
         {
             int newArmor = CurrentArmor - shellData.Damage;
             CurrentArmor = newArmor;
-            if (newArmor <= 0)
-            {
-                CurrentArmor = 0;
-                CurrentHealth -= Mathf.Abs(newArmor);
-            }
+            
+            if (newArmor > 0) return;
+            CurrentArmor = 0;
+            CurrentHealth -= Mathf.Abs(newArmor);
         }
         else
         {
@@ -99,8 +121,9 @@ public class TankPart : MonoBehaviour
         }
     }
 
-    private void CheckVFXRequirement(float currentHealth, float maxHealth)
+    private void ActivateNewVFX(float currentHealth, float maxHealth)
     {
+        //Still working on this
         float inverseHP = 1 - (currentHealth / maxHealth);
         if (inverseHP == 0) return;
         
@@ -111,11 +134,5 @@ public class TankPart : MonoBehaviour
         {
             _vfxLevels[i].SetActive(true);
         }
-    }
-    
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawSphere(_hitpoint, 0.2f);
     }
 }

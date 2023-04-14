@@ -7,11 +7,10 @@ public class ThirdPersonState : CameraState
     [SerializeField] private Transform _cameraTargetDestination;
     [SerializeField] private Transform _lookAtPosition;
 
-    [Header("Y Ranges")] [SerializeField] private Transform _cameraLowerBound;
+    [Header("Y Ranges")] 
+    [SerializeField] private Transform _cameraLowerBound;
     [SerializeField] private Transform _cameraUpperBound;
-
-    public float RotationValue;
-
+    
     private void Start()
     {
         transform.position = _cameraTargetDestination.position;
@@ -30,13 +29,13 @@ public class ThirdPersonState : CameraState
         UpdateThirdPersonCameraPosition();
     }
 
-    public void UpdateThirdPersonCameraPosition()
+    private void UpdateThirdPersonCameraPosition()
     {
         Vector3 minY = _cameraLowerBound.position;
         Vector3 maxY = _cameraUpperBound.position;
         Vector3 maxLength = maxY - minY;
 
-        float inverseValue = 1 - GameManager.Instance.RotationValue;
+        float inverseValue = 1 - GameManager.Instance.BarrelRotationValue;
         Vector3 yDelta = inverseValue * maxLength;
         Vector3 newPosition = minY + yDelta;
 

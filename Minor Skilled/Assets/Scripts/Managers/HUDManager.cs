@@ -9,20 +9,18 @@ using UnityEngine.UI;
 public class HUDManager : SingletonMonobehaviour<HUDManager>
 {
     private Dictionary<int, TankComponentManager> _entities;
-    private Dictionary<int, HUDUpdater> _hudInstances = new Dictionary<int, HUDUpdater>();
-    private Transform _player;
 
     [SerializeField] private GameObject _combatHUD;
     [SerializeField] private GameObject _menuHUD;
     [SerializeField] private Transform _targetsIndicatorParent;
     [SerializeField] private TextMeshProUGUI _inspectHostileText;
 
-    [Header("Movement")] [SerializeField] private GameObject _moveContainer;
+    [Header("Movement")] 
     [SerializeField] private TextMeshProUGUI _tankSpeedText;
     [SerializeField] private TextMeshProUGUI _gearIndexText;
     [SerializeField] private TextMeshProUGUI _rpmText;
 
-    [Header("Shooting")] [SerializeField] private GameObject _shootContainer;
+    [Header("Shooting")]
     [SerializeField] private Slider _reloadBar;
     [SerializeField] private TextMeshProUGUI _readyText;
     [SerializeField] private TextMeshProUGUI _ammoCountText;
@@ -37,23 +35,25 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
     [SerializeField] private RectTransform _tpUIPosition;
 
     [Header("Health properties")] 
-    [SerializeField] private HealthStatsUpdater _healthStatsUpdater;
     [SerializeField] private Slider _generalHealth;
     [SerializeField] private Slider _generalArmor;
 
     [SerializeField] private GameObject _enemyIndicatorPrefab;
-    private Dictionary<int, GameObject> _enemyIndicators = new Dictionary<int, GameObject>();
+    private Dictionary<int, GameObject> _enemyIndicators = new();
 
     private void Start()
     {
         _entities = GameManager.Instance.GetEntities();
-        _player = GameManager.Instance.GetPlayer();
         
         EnableCombatUI(true);
         EnableMenuUI(false);
         EnableInspectHostileText(false);
         SetZoomLevelText(0, false);
+        CreateEnemyIndicators();
+    }
 
+    private void CreateEnemyIndicators()
+    {
         foreach (KeyValuePair<int, TankComponentManager> entity in _entities)
         {
             if (entity.Key == GameManager.PLAYER_ID) continue;
@@ -63,45 +63,6 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
         }
     }
 
-    public void UpdateCurrentHealthForEntity(int id, float currentHealth, float maxHealth)
-    {
-        if (id == GameManager.PLAYER_ID)
-        {
-            _generalHealth.value = currentHealth / maxHealth;
-            return;
-        }
-        
-        if (_hudInstances.TryGetValue(id, out HUDUpdater hud))
-        {
-            hud.UpdateHealth((int)currentHealth);
-        }
-    }
-    
-    public void UpdateCurrentArmorForEntity(int id, float currentArmor, float maxArmor)
-    {
-        if (id == GameManager.PLAYER_ID)
-        {
-            _generalArmor.value = currentArmor / maxArmor;
-            return;
-        } 
-    }
-
-    public void UpdateMaxHealthForEntity(int id, int maxHealth)
-    {
-        if (_hudInstances.TryGetValue(id, out HUDUpdater hud))
-        {
-            hud.SetMaxHealth(maxHealth);
-        }
-    }
-
-    public void UpdateEntityName(int id, string tankName)
-    {
-        if (_hudInstances.TryGetValue(id, out HUDUpdater hud))
-        {
-            hud.SetName(tankName);
-        }
-    }
-    
     public void UpdateGearboxData(MovementData data)
     {
         _tankSpeedText.SetText($"{data.Velocity}");

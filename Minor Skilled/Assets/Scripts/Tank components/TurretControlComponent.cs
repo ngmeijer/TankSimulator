@@ -67,11 +67,6 @@ public class TurretControlComponent : TankComponent
         return _barrelTransform.forward;
     }
 
-    public Vector3 GetBarrelEuler()
-    {
-        return _barrelTransform.rotation.eulerAngles;
-    }
-
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

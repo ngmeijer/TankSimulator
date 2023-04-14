@@ -8,14 +8,9 @@ public class StateSwitcher : MonoBehaviour
     [SerializeField] private TankState _combatState;
     [SerializeField] private TankState _deathState;
     [SerializeField] private TankState _hostileInspectionState;
-    
-    public TankState CurrentTankState
-    {
-        get => _currentTankState;
-        set => _currentTankState = value;
-    }
+
     private TankState _currentTankState;
-    
+
     protected virtual void Update()
     {
         if (_currentTankState == null) return;
@@ -36,27 +31,22 @@ public class StateSwitcher : MonoBehaviour
     
     public void SwitchToTankState(E_TankState newStateEnum)
     {
-        if(_currentTankState != null)
-            _currentTankState.ExitState();
-
-        TankState newState = null;
-        
-        switch (newStateEnum)
+        if (_currentTankState != null)
         {
-            case E_TankState.Inspection:
-                newState = _inspectionState;
-                break;
-            case E_TankState.Combat:
-                newState = _combatState;
-                break;
-            case E_TankState.Death:
-                newState = _deathState;
-                break;
-            case E_TankState.HostileInspection:
-                newState = _hostileInspectionState;
-                break;
+            if (_currentTankState.ThisState == newStateEnum)
+                return;
+            
+            _currentTankState.ExitState();
         }
-        
+
+        TankState newState = newStateEnum switch
+        {
+            E_TankState.Inspection => _inspectionState,
+            E_TankState.Combat => _combatState,
+            E_TankState.Death => _deathState,
+            E_TankState.HostileInspection => _hostileInspectionState,
+        };
+
         newState.EnterState();
         _currentTankState = newState;
     }

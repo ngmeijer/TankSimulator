@@ -5,27 +5,24 @@ using UnityEngine;
 
 public class GameManager : SingletonMonobehaviour<GameManager>
 {
-    public const int PLAYER_ID = 0;
-    [SerializeField] private Transform _player;
-    public float RotationValue;
-    public bool ValidTargetInSight;
-    public Transform HostileTargetTransform;
-
-    public Transform GetPlayer() => _player;
-
-    [SerializeField] private Transform _spawnedShellsParent;
-    public Transform GetShellParent() => _spawnedShellsParent;
-
-    [SerializeField] private List<TankComponentManager> _entitiesList;
-    private Dictionary<int, TankComponentManager> _entities = new();
-    public Dictionary<int, TankComponentManager> GetEntities() => _entities;
-    public Dictionary<int, Vector3> EntityWorldPositions = new Dictionary<int, Vector3>();
-    [SerializeField] private EventManager _eventManager;
-    public Vector3 CurrentBarrelCrosshairPos;
-    public Vector3 TargetBarrelCrosshairPos;
-    
     public static Vector3 HandlesOffset = new Vector3(0.5f, 0.5f, 0);
+    public const int PLAYER_ID = 0;
+    
+    [HideInInspector] public float BarrelRotationValue;
+    [HideInInspector] public bool ValidTargetInSight;
+    [HideInInspector] public Transform HostileTargetTransform;
+    [HideInInspector] public Vector3 CurrentBarrelCrosshairPos;
+    [HideInInspector] public Vector3 TargetBarrelCrosshairPos;
 
+    [SerializeField] private Transform _player;
+    public Transform GetShellParent() => _spawnedShellsParent;
+    [SerializeField] private Transform _spawnedShellsParent;
+    [SerializeField] private EventManager _eventManager;
+    [SerializeField] private List<TankComponentManager> _entitiesList;
+    private readonly Dictionary<int, TankComponentManager> _entities = new();
+    public Dictionary<int, TankComponentManager> GetEntities() => _entities;
+    public readonly Dictionary<int, Vector3> EntityWorldPositions = new();
+    
     private void OnValidate()
     {
         Debug.Assert(_player != null,

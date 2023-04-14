@@ -8,8 +8,6 @@ public class TankData
     //Armor will first be degraded. Once armor is depleted, damage starts affecting the health
     //If any of the components get destroyed, you die.
     
-    public TankProperties Properties;
-
     public List<TankPart> TankParts = new List<TankPart>();
 
     public int GetMaxTotalHealth()

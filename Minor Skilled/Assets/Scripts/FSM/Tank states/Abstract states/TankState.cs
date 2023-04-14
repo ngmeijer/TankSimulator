@@ -12,7 +12,8 @@ public enum E_TankState
 public abstract class TankState : FSMState
 {
     protected TankComponentManager _componentManager;
-    public TankProperties Properties { get; private set; }
+    protected TankProperties Properties { get; private set; }
+    public E_TankState ThisState;
     
     protected void Awake()
     {

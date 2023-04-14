@@ -10,12 +10,7 @@ public class AdsState : CameraState
         5f,
         2.5f
     };
-    
-    private int _currentCameraFOVLevel;
-    public int CurrentFOV
-    {
-        get { return _currentCameraFOVLevel; }
-    }
+    private int _currentFOVIndex;
 
     private PlayerInputActions _inputActions;
 
@@ -32,30 +27,32 @@ public class AdsState : CameraState
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        HUDManager.Instance.SetZoomLevelText(_currentCameraFOVLevel + 1, true);
+        _currentFOVIndex = 0;
+        ViewCam.fieldOfView = _fovRanges[_currentFOVIndex];
+        HUDManager.Instance.SetZoomLevelText(_currentFOVIndex + 1, true);
     }
 
     public override int GetFOVLevel()
     {
-        return CurrentFOV;
+        return _currentFOVIndex;
     }
     
-    public void ZoomADS(InputAction.CallbackContext cb)
+    private void ZoomADS(InputAction.CallbackContext cb)
     {
-        if (_currentCameraFOVLevel >= _fovRanges.Length - 1)
-            _currentCameraFOVLevel = 0;
-        else _currentCameraFOVLevel++;
-
-        float newFOV = _fovRanges[_currentCameraFOVLevel];
+        if (_currentFOVIndex >= _fovRanges.Length - 1)
+            _currentFOVIndex = 0;
+        else _currentFOVIndex++;
+        
+        float newFOV = _fovRanges[_currentFOVIndex];
         ViewCam.fieldOfView = newFOV;
 
-        HUDManager.Instance.SetZoomLevelText(_currentCameraFOVLevel + 1, true);
+        HUDManager.Instance.SetZoomLevelText(_currentFOVIndex + 1, true);
     }
 
     public override void ExitState()
     {
         base.ExitState();
         
-        HUDManager.Instance.SetZoomLevelText(_currentCameraFOVLevel + 1, false);
+        HUDManager.Instance.SetZoomLevelText(_currentFOVIndex + 1, false);
     }
 }

@@ -18,8 +18,8 @@ public class DamageRegistrationComponent : TankComponent
     
     private void Start()
     {
-        HUDManager.Instance.UpdateMaxHealthForEntity(_componentManager.ID, CurrentData.GetMaxTotalHealth());
-        HUDManager.Instance.UpdateCurrentHealthForEntity(_componentManager.ID, CurrentData.GetCurrentTotalHealth(), CurrentData.GetMaxTotalHealth());
+        //HUDManager.Instance.UpdateMaxHealthForEntity(_componentManager.ID, CurrentData.GetMaxTotalHealth());
+        //HUDManager.Instance.UpdateCurrentHealthForEntity(_componentManager.ID, CurrentData.GetCurrentTotalHealth(), CurrentData.GetMaxTotalHealth());
 
         Debug.Assert(CurrentData.TankParts.Count != 0, $"Tank parts have not been added in DamageRegistrationComponent, GameObject '{gameObject.name}' ");
         foreach (var part in CurrentData.TankParts)

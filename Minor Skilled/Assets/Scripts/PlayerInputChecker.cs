@@ -16,8 +16,6 @@ public class PlayerInputChecker : TankComponent
     private void Start()
     {
         Debug.Assert(_playerStateSwitcher != null, $"StateSwitcher in PlayerInput is null. Assign in the inspector.");
-        HUDManager.Instance.UpdateAmmoCount(_componentManager.ShootComponent.GetCurrentAmmoCount());
-        HUDManager.Instance.UpdateShellTypeUI(_componentManager.ShootComponent.GetCurrentShellType());
 
         _inputActions = new PlayerInputActions();
         _inputActions.StateSwitcher.EnableInspectionView.started += EnableInspection;

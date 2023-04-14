@@ -26,14 +26,11 @@ public class TankComponentManager : MonoBehaviour
         TurretControlComponent = GetComponentInChildren<TurretControlComponent>();
         ShootComponent = GetComponentInChildren<ShootComponent>();
         DamageComponent = GetComponentInChildren<DamageRegistrationComponent>();
-        
         EventManager = GetComponent<EventManager>();
     }
 
     private void Start()
     {
-        if(HUDManager.Instance != null)
-            HUDManager.Instance.UpdateEntityName(ID, Properties.TankName);
         EventManager.OnTankDestruction.AddListener(OnTankDeath);
     }
 
@@ -43,7 +40,6 @@ public class TankComponentManager : MonoBehaviour
     }
 
     public Vector3 GetCurrentBarrelDirection() => TurretControlComponent.GetCurrentBarrelDirection();
-    public Vector3 GetBarrelEuler() => TurretControlComponent.GetBarrelEuler();
     
     public List<WheelCollider> GetLeftWheelColliders()
     {

@@ -3712,6 +3712,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _vfxLevels: []
+  _yDelta: 2
+  _tweenSpeed: 1
 --- !u!1 &2759384860087283821
 GameObject:
   m_ObjectHideFlags: 0
@@ -5277,6 +5279,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _vfxLevels: []
+  _yDelta: 2
+  _tweenSpeed: 1
 --- !u!1 &3961851096564043066
 GameObject:
   m_ObjectHideFlags: 0
@@ -7290,6 +7294,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _vfxLevels: []
+  _yDelta: 2
+  _tweenSpeed: 1
 --- !u!1 &5859202917915787274
 GameObject:
   m_ObjectHideFlags: 0
@@ -7411,6 +7417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58ac1eb149e34754b75a1ba9386ec5e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ThisState: 1
 --- !u!114 &2300530068981873399
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7423,6 +7430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71b68829a67b43e1b7c1b49860ba1f14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ThisState: 2
   _functioningTankGFX: {fileID: 3804405257550709643}
   _destroyedTankGFX: {fileID: 5598812001515690012}
   _deathVFX: {fileID: 3329834886063455794}
@@ -10631,6 +10639,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _vfxLevels: []
+  _yDelta: 2
+  _tweenSpeed: 1
 --- !u!1 &6588220171029348201
 GameObject:
   m_ObjectHideFlags: 0

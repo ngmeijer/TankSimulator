@@ -10,13 +10,8 @@ public class PlayerStateSwitcher : StateSwitcher
     [SerializeField] private CameraState _inspectorCamState;
     [SerializeField] private CameraState _hostileInspectorCamState;
     
-    public CameraState CurrentCameraState
-    {
-        get => _currentCameraState;
-        set => _currentCameraState = value;
-    }
-    private CameraState _currentCameraState;
-    
+    public CameraState CurrentCameraState { get; private set; }
+
     private void Awake()
     {
         _inspectorCamState.ExitState();
@@ -38,34 +33,34 @@ public class PlayerStateSwitcher : StateSwitcher
     {
         base.Update();
 
-        if (_currentCameraState == null) return;
-        _currentCameraState.UpdateState();
+        if (CurrentCameraState == null) return;
+        CurrentCameraState.UpdateState();
     }
 
     private void FixedUpdate()
     {
         base.FixedUpdate();
         
-        if (_currentCameraState == null) return;
-        _currentCameraState.FixedUpdateState();
+        if (CurrentCameraState == null) return;
+        CurrentCameraState.FixedUpdateState();
     }
 
     private void LateUpdate()
     {
         base.LateUpdate();
         
-        if (_currentCameraState == null) return;
-        _currentCameraState.LateUpdateState();
+        if (CurrentCameraState == null) return;
+        CurrentCameraState.LateUpdateState();
     }
 
     public void SwitchToCamState(E_CameraState newStateEnum)
     {
-        if (_currentCameraState != null)
+        if (CurrentCameraState != null)
         {
-            if (_currentCameraState.ThisState == newStateEnum)
+            if (CurrentCameraState.ThisState == newStateEnum)
                 return;
             
-            _currentCameraState.ExitState();
+            CurrentCameraState.ExitState();
         }
 
         CameraState newState = null;
@@ -85,10 +80,8 @@ public class PlayerStateSwitcher : StateSwitcher
                 newState = _hostileInspectorCamState;
                 break;
         }
-
-        if (_currentCameraState != null)
-            _currentCameraState.NextCameraTrans = newState.ViewCam.transform;
+        
         newState.EnterState();
-        _currentCameraState = newState;
+        CurrentCameraState = newState;
     }
 }

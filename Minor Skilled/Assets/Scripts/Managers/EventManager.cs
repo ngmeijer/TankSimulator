@@ -11,7 +11,7 @@ public class EventManager : MonoBehaviour
 
     private void Start()
     {
-        OnShellFired.AddListener((content) => PopupManager.Instance.CreatePopup(content, Color.red));
-        OnTankComponentHit.AddListener((content) => PopupManager.Instance.CreatePopup(content, Color.red));
+        //OnShellFired.AddListener((content) => PopupManager.Instance.CreatePopup(content, Color.red));
+        //OnTankComponentHit.AddListener((content) => PopupManager.Instance.CreatePopup(content, Color.red));
     }
 }

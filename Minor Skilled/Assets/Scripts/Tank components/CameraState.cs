@@ -7,16 +7,7 @@ public abstract class CameraState : FSMState
     public Camera ViewCam;
     public Transform StateLookAt;
     public E_CameraState ThisState;
-    protected Vector3 _defaultCamPos;
-    public Vector3 PreviousCameraPos;
-    public Transform NextCameraTrans;
     [SerializeField] protected float _lerpSpeed = 1f;
-
-
-    private void Start()
-    {
-        _defaultCamPos = ViewCam.transform.position;
-    }
 
     public override void EnterState()
     {
@@ -37,7 +28,7 @@ public abstract class CameraState : FSMState
         return -1;
     }
 
-    protected void SetCameraEnable(bool enable)
+    private void SetCameraEnable(bool enable)
     {
         ViewCam.gameObject.SetActive(enable);
     }

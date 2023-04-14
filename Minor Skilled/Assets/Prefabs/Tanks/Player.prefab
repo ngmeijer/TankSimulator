@@ -424,9 +424,9 @@ MonoBehaviour:
   PreviousCameraPos: {x: 0, y: 0, z: 0}
   NextCameraTrans: {fileID: 0}
   _lerpSpeed: 1
-  _horizontalSpeed: 50
-  _verticalSpeed: 25
-  _zoomSpeed: 100
+  _horizontalSpeed: 15
+  _verticalSpeed: 8
+  _zoomSpeed: 0.5
   _innerBorder: {fileID: 302901566}
   _outerBorder: {fileID: 1210385837}
 --- !u!1 &571490275
@@ -1015,6 +1015,7 @@ MonoBehaviour:
   _zoomSpeed: 50
   _innerBorder: {fileID: 484842250}
   _outerBorder: {fileID: 162361235}
+  _hostileComponent: {fileID: 0}
 --- !u!1 &1172141202
 GameObject:
   m_ObjectHideFlags: 0
@@ -1286,6 +1287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f84a35b48e246bc9b83558e5e342e3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ThisState: 2
   _functioningTankGFX: {fileID: 7817554744197927519}
   _destroyedTankGFX: {fileID: 4712586073713347565}
   _deathVFX: {fileID: 4711635311610703500}
@@ -1301,6 +1303,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0afd418dbf084131899adb2a9eccb922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ThisState: 1
 --- !u!114 &249388064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1313,6 +1316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c49cb4f1f0d142ab9d2a25e66115b251, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ThisState: 0
 --- !u!114 &249388065
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1325,6 +1329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78dece329d7b409b8d5a464d3016a12a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ThisState: 3
 --- !u!1 &1778753370
 GameObject:
   m_ObjectHideFlags: 0
@@ -7077,7 +7082,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ThisPart: 2
   PartState: 0
-  Canvas: {fileID: 3082382653375820929}
+  _propertiesCanvas: {fileID: 1408221587257356561}
   HealthSlider: {fileID: 5234876797718980981}
   ArmorSlider: {fileID: 5671942057182157332}
   _currentArmorText: {fileID: 4010638527312302432}
@@ -7095,6 +7100,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _vfxLevels: []
+  _yDelta: 2
+  _tweenSpeed: 1
 --- !u!1 &4844819778160475348
 GameObject:
   m_ObjectHideFlags: 0
@@ -11313,7 +11320,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ThisPart: 0
   PartState: 0
-  Canvas: {fileID: 1236352287762439686}
+  _propertiesCanvas: {fileID: 835374776328285584}
   HealthSlider: {fileID: 1961600210741326246}
   ArmorSlider: {fileID: 1798203284199269619}
   _currentArmorText: {fileID: 3765253805935734763}
@@ -11334,6 +11341,8 @@ MonoBehaviour:
   - {fileID: 511410421}
   - {fileID: 1860858691}
   - {fileID: 695699233}
+  _yDelta: 2
+  _tweenSpeed: 1
 --- !u!64 &3671921856344075959
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -12225,7 +12234,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ThisPart: 0
   PartState: 0
-  Canvas: {fileID: 700273183}
+  _propertiesCanvas: {fileID: 8159610065256298733}
   HealthSlider: {fileID: 855454889569282436}
   ArmorSlider: {fileID: 276158115225031731}
   _currentArmorText: {fileID: 7263083551046320153}
@@ -12246,6 +12255,8 @@ MonoBehaviour:
   - {fileID: 1821707982}
   - {fileID: 466971557}
   - {fileID: 1041065627}
+  _yDelta: 2
+  _tweenSpeed: 1
 --- !u!64 &3587140658847870698
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -13438,7 +13449,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ThisPart: 1
   PartState: 0
-  Canvas: {fileID: 1820334303926042328}
+  _propertiesCanvas: {fileID: 1988710657940742685}
   HealthSlider: {fileID: 8906890474600352227}
   ArmorSlider: {fileID: 6548616521002714800}
   _currentArmorText: {fileID: 2408381131811357659}
@@ -13456,6 +13467,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _vfxLevels: []
+  _yDelta: 2
+  _tweenSpeed: 1
 --- !u!64 &1256501673
 MeshCollider:
   m_ObjectHideFlags: 0

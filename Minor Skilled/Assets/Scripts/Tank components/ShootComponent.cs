@@ -15,15 +15,13 @@ public class ShootComponent : TankComponent
     private const float DRAG_COEFFICIENT = 0.1f;
 
     [SerializeField] protected Transform _shellSpawnpoint;
-    [SerializeField] protected Transform _VFXPivot;
     [SerializeField] protected ParticleSystem _fireExplosion;
     [SerializeField] protected List<Shell> _shellPrefabs;
     [SerializeField] private AudioSource _audioSource;
-    private List<Shell> _firedShells = new List<Shell>();
+    private List<Shell> _firedShells = new();
     private int _maxShellTypes;
     private int _currentShellIndex;
 
-    public float CurrentDistanceToTarget;
     public float CurrentRange;
     public float RangePercent { get; private set; }
     public float MinRange { get; } = 0f;
@@ -69,6 +67,12 @@ public class ShootComponent : TankComponent
         }
 
         _ammoCountsPerShellType.TryGetValue(_currentShellType, out _currentAmmoCountForShell);
+    }
+
+    private void Start()
+    {
+        HUDManager.Instance.UpdateAmmoCount(GetCurrentAmmoCount());
+        HUDManager.Instance.UpdateShellTypeUI(GetCurrentShellType());
     }
 
     private void Update()
@@ -169,6 +173,6 @@ public class ShootComponent : TankComponent
         CurrentRange = Mathf.Clamp(CurrentRange, MinRange, MaxRange);
         CurrentRange = (float)Math.Round(CurrentRange, 2);
         
-        GameManager.Instance.RotationValue = CurrentRange / MaxRange;
+        GameManager.Instance.BarrelRotationValue = CurrentRange / MaxRange;
     }
 }
