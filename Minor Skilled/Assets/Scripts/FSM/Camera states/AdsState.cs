@@ -14,11 +14,15 @@ public class AdsState : CameraState
 
     private PlayerInputActions _inputActions;
 
+    private HUDCombatState _hudCombatState;
+
     private void Start()
     {
         _inputActions = new PlayerInputActions();
         _inputActions.Tankmovement.ZoomADS.started += ZoomADS;
         _inputActions.Enable();
+        
+        _hudCombatState = HUDStateSwitcher.Instance.HUDCombatState as HUDCombatState;
     }
     
     public override void EnterState()
@@ -29,7 +33,7 @@ public class AdsState : CameraState
         Cursor.lockState = CursorLockMode.Locked;
         _currentFOVIndex = 0;
         ViewCam.fieldOfView = _fovRanges[_currentFOVIndex];
-        HUDManager.Instance.SetZoomLevelText(_currentFOVIndex + 1, true);
+        _hudCombatState.SetZoomLevelText(_currentFOVIndex + 1, true);
     }
 
     public override int GetFOVLevel()
@@ -46,13 +50,13 @@ public class AdsState : CameraState
         float newFOV = _fovRanges[_currentFOVIndex];
         ViewCam.fieldOfView = newFOV;
 
-        HUDManager.Instance.SetZoomLevelText(_currentFOVIndex + 1, true);
+        _hudCombatState.SetZoomLevelText(_currentFOVIndex + 1, true);
     }
 
     public override void ExitState()
     {
         base.ExitState();
         
-        HUDManager.Instance.SetZoomLevelText(_currentFOVIndex + 1, false);
+        _hudCombatState.SetZoomLevelText(_currentFOVIndex + 1, false);
     }
 }

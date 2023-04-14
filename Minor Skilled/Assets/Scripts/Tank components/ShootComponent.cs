@@ -21,6 +21,7 @@ public class ShootComponent : TankComponent
     private List<Shell> _firedShells = new();
     private int _maxShellTypes;
     private int _currentShellIndex;
+    private HUDCombatState _hudCombatState;
 
     public float CurrentRange;
     public float RangePercent { get; private set; }
@@ -28,13 +29,12 @@ public class ShootComponent : TankComponent
 
     public bool CanFire = true;
     public float MaxRange { get; private set; } = 1000f;
-
     private int _currentAmmoCountForShell;
     public int GetCurrentAmmoCount() => _currentAmmoCountForShell;
 
     private string _currentShellType;
     public string GetCurrentShellType() => _currentShellType;
-
+    
     private Dictionary<string, int> _ammoCountsPerShellType = new Dictionary<string, int>();
 
     protected override void Awake()
@@ -71,8 +71,10 @@ public class ShootComponent : TankComponent
 
     private void Start()
     {
-        HUDManager.Instance.UpdateAmmoCount(GetCurrentAmmoCount());
-        HUDManager.Instance.UpdateShellTypeUI(GetCurrentShellType());
+        _hudCombatState = HUDStateSwitcher.Instance.HUDCombatState as HUDCombatState;
+        
+        _hudCombatState.UpdateAmmoCount(GetCurrentAmmoCount());
+        _hudCombatState.UpdateShellTypeUI(GetCurrentShellType());
     }
 
     private void Update()

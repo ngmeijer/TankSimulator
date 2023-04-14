@@ -32,6 +32,7 @@ public class MoveComponent : TankComponent
     private Vector2 _textureOffsetRightTrack;
     private int _wheelCount;
     private float _currentTorque;
+    private HUDCombatState _hudCombatState;
     
     [SerializeField] private Rigidbody _tankRB;
     [SerializeField] private Transform _centerOfMass;
@@ -43,6 +44,8 @@ public class MoveComponent : TankComponent
 
     private void Start()
     {
+        _hudCombatState = HUDStateSwitcher.Instance.HUDCombatState as HUDCombatState;
+        
         _componentManager.EventManager.OnShellFired.AddListener((content) => TankKickbackOnShellFire());
         _tankRB.centerOfMass = _centerOfMass.localPosition;
         _tankRB.mass = _properties.TankMass;
@@ -86,7 +89,7 @@ public class MoveComponent : TankComponent
         if (_hudCurrentUpdateTime >= _hudMaxUpdateTime)
         {
             _hudCurrentUpdateTime = 0;
-            HUDManager.Instance.UpdateGearboxData(_movementData);
+            _hudCombatState.UpdateGearboxData(_movementData);
         }
     }
 

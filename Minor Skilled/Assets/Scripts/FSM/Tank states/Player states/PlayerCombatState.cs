@@ -9,10 +9,12 @@ public class PlayerCombatState : TankCombatState
 
     private PlayerInputActions _inputActions;
     private PlayerStateSwitcher _playerStateSwitcher;
+    private HUDCombatState _hudCombatState;
 
     protected override void Start()
     {
         _playerStateSwitcher = _componentManager.StateSwitcher as PlayerStateSwitcher;
+        _hudCombatState = HUDStateSwitcher.Instance.HUDCombatState as HUDCombatState;
 
         _inputActions = new PlayerInputActions();
         _inputActions.Tankmovement.Shoot.started += TankFire;
@@ -27,7 +29,6 @@ public class PlayerCombatState : TankCombatState
         base.EnterState();
         
         _inputActions.Tankmovement.Enable();
-        HandleCombatUI(true);
     }
 
     public override void ExitState()
@@ -35,7 +36,6 @@ public class PlayerCombatState : TankCombatState
         base.ExitState();
         
         _inputActions.Tankmovement.Disable();
-        HandleCombatUI(false);
     }
 
     public override void UpdateState()
@@ -78,16 +78,16 @@ public class PlayerCombatState : TankCombatState
         if (!_componentManager.ShootComponent.CanFire) return;
 
         _componentManager.ShootComponent.FireShell();
-        HUDManager.Instance.UpdateAmmoCount(_componentManager.ShootComponent.GetCurrentAmmoCount());
+        _hudCombatState.UpdateAmmoCount(_componentManager.ShootComponent.GetCurrentAmmoCount());
         if (_componentManager.ShootComponent.GetCurrentAmmoCount() > 0)
-            StartCoroutine(HUDManager.Instance.UpdateReloadUI(Properties.ReloadTime));
+            StartCoroutine(_hudCombatState.UpdateReloadUI(Properties.ReloadTime));
     }
 
     private void ShellTypeSwitch(InputAction.CallbackContext cb)
     {
         _componentManager.ShootComponent.SwitchShell();
-        HUDManager.Instance.UpdateShellTypeUI(_componentManager.ShootComponent.GetCurrentShellType());
-        HUDManager.Instance.UpdateAmmoCount(_componentManager.ShootComponent.GetCurrentAmmoCount());
+        _hudCombatState.UpdateShellTypeUI(_componentManager.ShootComponent.GetCurrentShellType());
+        _hudCombatState.UpdateAmmoCount(_componentManager.ShootComponent.GetCurrentAmmoCount());
     }
 
     private void IncreaseGear(InputAction.CallbackContext cb)
@@ -107,7 +107,7 @@ public class PlayerCombatState : TankCombatState
 
         _componentManager.ShootComponent.UpdateCurrentRange(_mouseInput.y, GetSensitivityMultiplier());
         _componentManager.TurretControlComponent.OffsetCannonOnRangeChange(_componentManager.ShootComponent.RangePercent);
-        HUDManager.Instance.UpdateCrosshair();
+        _hudCombatState.UpdateCrosshair();
     }
     
     private float GetSensitivityMultiplier()
@@ -123,10 +123,5 @@ public class PlayerCombatState : TankCombatState
         Debug.Assert(multiplier != 0, "Sensitivity multiplier is 0. Check Properties SO and if the CamState is ThirdPerson or ADS.");
         
         return multiplier;
-    }
-    
-    private void HandleCombatUI(bool enabled)
-    {
-        HUDManager.Instance.EnableCombatUI(enabled);
     }
 }

@@ -29,18 +29,21 @@ public class PlayerInputChecker : TankComponent
     {
         _playerStateSwitcher.SwitchToTankState(E_TankState.Combat);
         _playerStateSwitcher.SwitchToCamState(E_CameraState.ADS);
+        HUDStateSwitcher.Instance.SwitchToHUDState(E_TankState.Combat);
     }
 
     private void EnableTP(InputAction.CallbackContext cb)
     {
         _playerStateSwitcher.SwitchToTankState(E_TankState.Combat);
         _playerStateSwitcher.SwitchToCamState(E_CameraState.ThirdPerson);
+        HUDStateSwitcher.Instance.SwitchToHUDState(E_TankState.Combat);
     }
 
     private void EnableInspection(InputAction.CallbackContext cb)
     {
         _playerStateSwitcher.SwitchToTankState(E_TankState.Inspection);
         _playerStateSwitcher.SwitchToCamState(E_CameraState.InspectMode);
+        HUDStateSwitcher.Instance.SwitchToHUDState(E_TankState.Inspection);
     }
 
     private void EnableHostileInspection(InputAction.CallbackContext cb)
@@ -48,5 +51,6 @@ public class PlayerInputChecker : TankComponent
         if (!GameManager.Instance.ValidTargetInSight) return;
         _playerStateSwitcher.SwitchToTankState(E_TankState.HostileInspection);
         _playerStateSwitcher.SwitchToCamState(E_CameraState.HostileInspection);
+        HUDStateSwitcher.Instance.SwitchToHUDState(E_TankState.HostileInspection);
     }
 }

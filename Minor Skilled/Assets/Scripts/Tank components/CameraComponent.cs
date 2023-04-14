@@ -27,6 +27,7 @@ public class CameraComponent : TankComponent
     private bool _inTransition;
 
     private PlayerStateSwitcher _playerStateSwitcher;
+    private HUDCombatState _hudCombatState;
     private PlayerInputActions _inputActions;
 
     private Camera _currentCamera;
@@ -37,6 +38,9 @@ public class CameraComponent : TankComponent
         Cursor.visible = false;
         
         _playerStateSwitcher = _componentManager.StateSwitcher as PlayerStateSwitcher;
+
+        _hudCombatState = HUDStateSwitcher.Instance.HUDCombatState as HUDCombatState;
+        
         _inputActions = new PlayerInputActions();
         _inputActions.StateSwitcher.EnableHostileInspectionView.started += SelectEnemyToInspect;
         _inputActions.Enable();
@@ -58,12 +62,12 @@ public class CameraComponent : TankComponent
             if (_currentHitData.collider.CompareTag("Enemy"))
             {
                 GameManager.Instance.ValidTargetInSight = true;
-                HUDManager.Instance.EnableInspectHostileText(true);
+                _hudCombatState.EnableInspectHostileText(true);
             }
             else
             {
                 GameManager.Instance.ValidTargetInSight = false;
-                HUDManager.Instance.EnableInspectHostileText(false);
+                _hudCombatState.EnableInspectHostileText(false);
             }
             
             _currentBarrelCrosshair.position = _currentHitData.point;
@@ -98,7 +102,7 @@ public class CameraComponent : TankComponent
 
     private void HandleEnemyIndicator(KeyValuePair<int, Vector3> entity, bool canSeeTarget, Vector2 screenPos)
     {
-        HUDManager.Instance.SetEnemyIndicator(entity.Key, screenPos, canSeeTarget);
+        _hudCombatState.SetEnemyIndicator(entity.Key, screenPos, canSeeTarget);
         Debug.DrawLine(_currentCamera.transform.position, entity.Value, canSeeTarget ? Color.green : Color.red);
     }
 

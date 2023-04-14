@@ -6,7 +6,6 @@ public class PlayerDeathState : TankDeathState
     {
         base.OnDeathActions();
         
-        HUDManager.Instance.EnableCombatUI(false);
-        HUDManager.Instance.EnableMenuUI(true);
+        //
     }
 }

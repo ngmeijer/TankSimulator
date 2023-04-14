@@ -931,6 +931,57 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &765522893
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 765522894}
+  - component: {fileID: 765522895}
+  m_Layer: 5
+  m_Name: HostileInspectHUD
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &765522894
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 765522893}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5863969568749900707}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &765522895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 765522893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a1a8947c13b442b80eaf00a64527ff8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ThisState: 3
+  HUDContainer: {fileID: 0}
 --- !u!1 &790671666
 GameObject:
   m_ObjectHideFlags: 0
@@ -1375,6 +1426,57 @@ RectTransform:
   m_AnchoredPosition: {x: 170.77063, y: 418.3717}
   m_SizeDelta: {x: 331.0291, y: 231.1862}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1153780177
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1153780178}
+  - component: {fileID: 1153780179}
+  m_Layer: 5
+  m_Name: InspectHUD
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1153780178
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153780177}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5863969568749900707}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1153780179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153780177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad63effe95aa4b9985944b00d6fea1d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ThisState: 0
+  HUDContainer: {fileID: 0}
 --- !u!1 &1165343574
 GameObject:
   m_ObjectHideFlags: 0
@@ -1384,13 +1486,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1165343575}
+  - component: {fileID: 958370574}
   m_Layer: 5
-  m_Name: GameOver
+  m_Name: DeathHUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1165343575
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1414,6 +1517,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &958370574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165343574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 972f3f966bc940bea88dc96196578a76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ThisState: 2
+  HUDContainer: {fileID: 0}
 --- !u!1 &1406407879
 GameObject:
   m_ObjectHideFlags: 0
@@ -2833,6 +2950,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2398327775540468043}
+  - component: {fileID: 1357729908}
   m_Layer: 5
   m_Name: CombatHUD
   m_TagString: Untagged
@@ -2866,6 +2984,36 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1357729908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4300217894387805515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70396ceb9d9846bc8a0268c9951e7f78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ThisState: 1
+  HUDContainer: {fileID: 0}
+  _tankSpeedText: {fileID: 5863969568670002634}
+  _gearIndexText: {fileID: 1825941995}
+  _rpmText: {fileID: 1093277712}
+  _reloadBar: {fileID: 5863969570380929598}
+  _readyText: {fileID: 406846314}
+  _ammoCountText: {fileID: 5863969569361417783}
+  _shellTypeText: {fileID: 1970371646}
+  _zoomLevelText: {fileID: 760715067}
+  _crosshairParent: {fileID: 8785885755910968007}
+  _currentBarrelCrosshair: {fileID: 412665484}
+  _targetBarrelCrosshair: {fileID: 5863969569614289130}
+  _adsUIPosition: {fileID: 510056275}
+  _tpUIPosition: {fileID: 434495659}
+  _inspectHostileText: {fileID: 1065401899}
+  _targetsIndicatorParent: {fileID: 838257281221194067}
+  _enemyIndicatorPrefab: {fileID: 58592426774128083, guid: b396f04ebf477a9448ab6211b362c71c, type: 3}
 --- !u!1 &4397242176888337459
 GameObject:
   m_ObjectHideFlags: 0
@@ -3111,6 +3259,8 @@ RectTransform:
   m_Children:
   - {fileID: 2398327775540468043}
   - {fileID: 1165343575}
+  - {fileID: 1153780178}
+  - {fileID: 765522894}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3206,29 +3356,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e9f91b1c96943679f95c6929777ef1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _combatHUD: {fileID: 4300217894387805515}
-  _menuHUD: {fileID: 1165343574}
-  _targetsIndicatorParent: {fileID: 838257281221194067}
-  _inspectHostileText: {fileID: 1065401899}
-  _moveContainer: {fileID: 4397242176888337459}
-  _tankSpeedText: {fileID: 5863969568670002634}
-  _gearIndexText: {fileID: 1825941995}
-  _rpmText: {fileID: 1093277712}
-  _shootContainer: {fileID: 4246267414598807889}
-  _reloadBar: {fileID: 5863969570380929598}
-  _readyText: {fileID: 406846314}
-  _ammoCountText: {fileID: 5863969569361417783}
-  _shellTypeText: {fileID: 1970371646}
-  _zoomLevelText: {fileID: 760715067}
-  _crosshairParent: {fileID: 8785885755910968007}
-  _currentBarrelCrosshair: {fileID: 412665484}
-  _targetBarrelCrosshair: {fileID: 5863969569614289130}
-  _adsUIPosition: {fileID: 510056275}
-  _tpUIPosition: {fileID: 434495659}
-  _healthStatsUpdater: {fileID: 0}
   _generalHealth: {fileID: 195847567}
   _generalArmor: {fileID: 8345592371868071539}
-  _enemyIndicatorPrefab: {fileID: 58592426774128083, guid: b396f04ebf477a9448ab6211b362c71c, type: 3}
+  HUDCombatState: {fileID: 1357729908}
+  HUDDeathState: {fileID: 958370574}
+  HUDInspectState: {fileID: 1153780179}
+  HUDHostileInspectState: {fileID: 765522895}
 --- !u!1 &5863969568763544125
 GameObject:
   m_ObjectHideFlags: 0

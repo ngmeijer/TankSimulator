@@ -9,15 +9,7 @@ public class PlayerStateSwitcher : StateSwitcher
     [SerializeField] private CameraState _adsState;
     [SerializeField] private CameraState _inspectorCamState;
     [SerializeField] private CameraState _hostileInspectorCamState;
-    
     public CameraState CurrentCameraState { get; private set; }
-
-    private void Awake()
-    {
-        _inspectorCamState.ExitState();
-        _adsState.ExitState();
-        _hostileInspectorCamState.ExitState();
-    }
 
     private void Start()
     {
@@ -25,14 +17,20 @@ public class PlayerStateSwitcher : StateSwitcher
         Debug.Assert(_adsState != null, "ADSView reference is null. Drag it into the inspector slot.");
         Debug.Assert(_inspectorCamState != null, "InspectorView reference is null. Drag it into the inspector slot.");
         
+        _tpState.ExitState();
+        _inspectorCamState.ExitState();
+        _adsState.ExitState();
+        _hostileInspectorCamState.ExitState();
+        
         SwitchToTankState(DefaultTankState);
         SwitchToCamState(DefaultCamState);
+        HUDStateSwitcher.Instance.SwitchToHUDState(DefaultTankState);
     }
 
     private void Update()
     {
         base.Update();
-
+        
         if (CurrentCameraState == null) return;
         CurrentCameraState.UpdateState();
     }

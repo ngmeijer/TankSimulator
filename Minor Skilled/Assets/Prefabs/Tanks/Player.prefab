@@ -421,8 +421,6 @@ MonoBehaviour:
   ViewCam: {fileID: 550209002}
   StateLookAt: {fileID: 502710295}
   ThisState: 3
-  PreviousCameraPos: {x: 0, y: 0, z: 0}
-  NextCameraTrans: {fileID: 0}
   _lerpSpeed: 1
   _horizontalSpeed: 15
   _verticalSpeed: 8
@@ -1007,8 +1005,6 @@ MonoBehaviour:
   ViewCam: {fileID: 1165444872}
   StateLookAt: {fileID: 1172141203}
   ThisState: 4
-  PreviousCameraPos: {x: 0, y: 0, z: 0}
-  NextCameraTrans: {fileID: 0}
   _lerpSpeed: 1
   _horizontalSpeed: 50
   _verticalSpeed: 25
@@ -1291,6 +1287,7 @@ MonoBehaviour:
   _functioningTankGFX: {fileID: 7817554744197927519}
   _destroyedTankGFX: {fileID: 4712586073713347565}
   _deathVFX: {fileID: 4711635311610703500}
+  _bigassExplosionDetonator: {fileID: 0}
 --- !u!114 &249388063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7080,7 +7077,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 651308463a1f4c3dbfca5f3c950d986f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ThisPart: 2
   PartState: 0
   _propertiesCanvas: {fileID: 1408221587257356561}
   HealthSlider: {fileID: 5234876797718980981}
@@ -7089,6 +7085,9 @@ MonoBehaviour:
   _maxArmorText: {fileID: 7941501798300136561}
   _currentHealthText: {fileID: 4628781280817146534}
   _maxHealthText: {fileID: 2504005311468846589}
+  _vfxLevels: []
+  _canvasTweenY: 1
+  _tweenSpeed: 0.5
   MaxHealth: 120
   MaxArmor: 200
   CurrentHealth: 0
@@ -7099,9 +7098,6 @@ MonoBehaviour:
   OnZeroHealthReached:
     m_PersistentCalls:
       m_Calls: []
-  _vfxLevels: []
-  _yDelta: 2
-  _tweenSpeed: 1
 --- !u!1 &4844819778160475348
 GameObject:
   m_ObjectHideFlags: 0
@@ -7246,7 +7242,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8821566503783772158}
-  - component: {fileID: 5500793868947146524}
   m_Layer: 0
   m_Name: WorldCanvases
   m_TagString: Untagged
@@ -7273,26 +7268,6 @@ Transform:
   m_Father: {fileID: 7817720855815354587}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5500793868947146524
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5019013419921191507}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab37730338d858c459d3c237de1d0d6e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _worldCanvases:
-  - {fileID: 8159610065256298733}
-  - {fileID: 835374776328285584}
-  _hullHealth: {fileID: 855454889569282436}
-  _hullArmor: {fileID: 276158115225031731}
-  _stateText: {fileID: 8170085329059535272}
-  _turretHealth: {fileID: 0}
-  _turretArmor: {fileID: 0}
 --- !u!1 &5090367761229142032
 GameObject:
   m_ObjectHideFlags: 0
@@ -11318,7 +11293,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 651308463a1f4c3dbfca5f3c950d986f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ThisPart: 0
   PartState: 0
   _propertiesCanvas: {fileID: 835374776328285584}
   HealthSlider: {fileID: 1961600210741326246}
@@ -11327,6 +11301,12 @@ MonoBehaviour:
   _maxArmorText: {fileID: 2883514566747488961}
   _currentHealthText: {fileID: 7673847202668652516}
   _maxHealthText: {fileID: 6237355270222555080}
+  _vfxLevels:
+  - {fileID: 511410421}
+  - {fileID: 1860858691}
+  - {fileID: 695699233}
+  _canvasTweenY: 1
+  _tweenSpeed: 0.5
   MaxHealth: 180
   MaxArmor: 350
   CurrentHealth: 0
@@ -11337,12 +11317,6 @@ MonoBehaviour:
   OnZeroHealthReached:
     m_PersistentCalls:
       m_Calls: []
-  _vfxLevels:
-  - {fileID: 511410421}
-  - {fileID: 1860858691}
-  - {fileID: 695699233}
-  _yDelta: 2
-  _tweenSpeed: 1
 --- !u!64 &3671921856344075959
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -12232,7 +12206,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 651308463a1f4c3dbfca5f3c950d986f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ThisPart: 0
   PartState: 0
   _propertiesCanvas: {fileID: 8159610065256298733}
   HealthSlider: {fileID: 855454889569282436}
@@ -12241,6 +12214,12 @@ MonoBehaviour:
   _maxArmorText: {fileID: 8446913616281691991}
   _currentHealthText: {fileID: 1343138910263109364}
   _maxHealthText: {fileID: 3630562481112415066}
+  _vfxLevels:
+  - {fileID: 1821707982}
+  - {fileID: 466971557}
+  - {fileID: 1041065627}
+  _canvasTweenY: 1
+  _tweenSpeed: 0.5
   MaxHealth: 150
   MaxArmor: 320
   CurrentHealth: 0
@@ -12251,12 +12230,6 @@ MonoBehaviour:
   OnZeroHealthReached:
     m_PersistentCalls:
       m_Calls: []
-  _vfxLevels:
-  - {fileID: 1821707982}
-  - {fileID: 466971557}
-  - {fileID: 1041065627}
-  _yDelta: 2
-  _tweenSpeed: 1
 --- !u!64 &3587140658847870698
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -12788,9 +12761,6 @@ MonoBehaviour:
   OnTankComponentHit:
     m_PersistentCalls:
       m_Calls: []
-  OnCameraChanged:
-    m_PersistentCalls:
-      m_Calls: []
   OnTankDestruction:
     m_PersistentCalls:
       m_Calls: []
@@ -13081,8 +13051,6 @@ MonoBehaviour:
   ViewCam: {fileID: 7817720856352731540}
   StateLookAt: {fileID: 0}
   ThisState: 1
-  PreviousCameraPos: {x: 0, y: 0, z: 0}
-  NextCameraTrans: {fileID: 0}
   _lerpSpeed: 1
 --- !u!1 &7819528173760386814
 GameObject:
@@ -13447,7 +13415,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 651308463a1f4c3dbfca5f3c950d986f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ThisPart: 1
   PartState: 0
   _propertiesCanvas: {fileID: 1988710657940742685}
   HealthSlider: {fileID: 8906890474600352227}
@@ -13456,6 +13423,9 @@ MonoBehaviour:
   _maxArmorText: {fileID: 4962047152701319778}
   _currentHealthText: {fileID: 250845942309126407}
   _maxHealthText: {fileID: 1951320756035382728}
+  _vfxLevels: []
+  _canvasTweenY: 1
+  _tweenSpeed: 0.5
   MaxHealth: 120
   MaxArmor: 200
   CurrentHealth: 0
@@ -13466,9 +13436,6 @@ MonoBehaviour:
   OnZeroHealthReached:
     m_PersistentCalls:
       m_Calls: []
-  _vfxLevels: []
-  _yDelta: 2
-  _tweenSpeed: 1
 --- !u!64 &1256501673
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -14664,8 +14631,6 @@ MonoBehaviour:
   _raycaster: {fileID: 2141285872}
   _currentBarrelCrosshair: {fileID: 34388345}
   _estimatedTargetCrosshair: {fileID: 1481984251597974469}
-  _hostileInspectPivot: {fileID: 1172141203}
-  _transitionDuration: 1
 --- !u!114 &8117995908048637600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14733,7 +14698,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentData:
-    Properties: {fileID: 11400000, guid: 32aea0547c8a75340a7337b45656dbfa, type: 2}
     TankParts:
     - {fileID: 5467324642285115390}
     - {fileID: 417122198513469069}
@@ -14752,14 +14716,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _shellSpawnpoint: {fileID: 4711635310986559023}
-  _VFXPivot: {fileID: 4711635311947325199}
   _fireExplosion: {fileID: 0}
   _shellPrefabs:
   - {fileID: 7587118454724400453, guid: 5cd1a1d4e085d424eb7253c22f61ae02, type: 3}
   - {fileID: 7496617927495930269, guid: d1b96fcc729323c408a29b018f8687d7, type: 3}
   - {fileID: 4122469408070507833, guid: 15dd83de937c37546a369107f4ed431a, type: 3}
   _audioSource: {fileID: 1181831519}
-  CurrentDistanceToTarget: 0
   CurrentRange: 0
   CanFire: 1
 --- !u!1 &8724624689040798470

@@ -1,20 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HUDManager : SingletonMonobehaviour<HUDManager>
+public class HUDCombatState : HUDState
 {
-    private Dictionary<int, TankComponentManager> _entities;
-
-    [SerializeField] private GameObject _combatHUD;
-    [SerializeField] private GameObject _menuHUD;
-    [SerializeField] private Transform _targetsIndicatorParent;
-    [SerializeField] private TextMeshProUGUI _inspectHostileText;
-
     [Header("Movement")] 
     [SerializeField] private TextMeshProUGUI _tankSpeedText;
     [SerializeField] private TextMeshProUGUI _gearIndexText;
@@ -34,42 +26,40 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
     [SerializeField] private RectTransform _adsUIPosition;
     [SerializeField] private RectTransform _tpUIPosition;
 
-    [Header("Health properties")] 
-    [SerializeField] private Slider _generalHealth;
-    [SerializeField] private Slider _generalArmor;
+    [SerializeField] private TextMeshProUGUI _inspectHostileText;
+    [SerializeField] private Transform _targetsIndicatorParent;
 
     [SerializeField] private GameObject _enemyIndicatorPrefab;
     private Dictionary<int, GameObject> _enemyIndicators = new();
+    private Dictionary<int, TankComponentManager> _entities;
 
-    private void Start()
+    protected void Start()
     {
         _entities = GameManager.Instance.GetEntities();
-        
-        EnableCombatUI(true);
-        EnableMenuUI(false);
-        EnableInspectHostileText(false);
-        SetZoomLevelText(0, false);
         CreateEnemyIndicators();
     }
 
-    private void CreateEnemyIndicators()
+    public override void EnterState()
     {
-        foreach (KeyValuePair<int, TankComponentManager> entity in _entities)
-        {
-            if (entity.Key == GameManager.PLAYER_ID) continue;
-            
-            GameObject indicator = Instantiate(_enemyIndicatorPrefab, _targetsIndicatorParent);
-            _enemyIndicators.Add(entity.Key, indicator);
-        }
+        base.EnterState();
+        
+        SetZoomLevelText(0, false);
+        EnableInspectHostileText(false);
     }
-
+    
+    public override void ExitState()
+    {
+        base.ExitState();
+        
+    }
+    
     public void UpdateGearboxData(MovementData data)
     {
         _tankSpeedText.SetText($"{data.Velocity}");
         _gearIndexText.SetText($"{data.GearIndex}");
         _rpmText.SetText($"{data.RPM}");
     }
-
+    
     public IEnumerator UpdateReloadUI(float reloadTime)
     {
         _reloadBar.gameObject.SetActive(true);
@@ -103,21 +93,7 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
         _currentBarrelCrosshair.position = GameManager.Instance.CurrentBarrelCrosshairPos;
         _targetBarrelCrosshair.position = GameManager.Instance.TargetBarrelCrosshairPos;
     }
-
-    public void SetEnemyIndicator(int enemyIndex, Vector2 enemyPosition, bool inSight)
-    {
-        _enemyIndicators.TryGetValue(enemyIndex, out GameObject indicator);
-        if (indicator == null) return;
-        
-        indicator.transform.position = enemyPosition;
-        if (inSight)
-        {
-            if (indicator.activeInHierarchy) return;
-            indicator.SetActive(true);
-        }
-        else indicator.SetActive(false);
-    }
-
+    
     public void HandleCamModeUI(E_CameraState camState)
     {
         switch (camState)
@@ -136,28 +112,43 @@ public class HUDManager : SingletonMonobehaviour<HUDManager>
         _zoomLevelText.SetText($"{currentCameraFOVLevel}x");
         _zoomLevelText.gameObject.SetActive(enabled);
     }
-
-    public void EnableCombatUI(bool enabled)
-    {
-        _combatHUD.SetActive(enabled); 
-    }
-
-    public void EnableMenuUI(bool enabled)
-    {
-        _menuHUD.SetActive(enabled);
-    }
-
-    public void DestroyEntityIndicator(int entityID)
-    {
-        _enemyIndicators.TryGetValue(entityID, out GameObject indicator);
-        _enemyIndicators.Remove(entityID);
-        Destroy(indicator);
-    }
-
+    
     public void EnableInspectHostileText(bool enabled)
     {
         if (_inspectHostileText.gameObject.activeInHierarchy == enabled) return;
         
         _inspectHostileText.gameObject.SetActive(enabled);
+    }
+    
+    public void DestroyEnemyIndicator(int entityID)
+    {
+        _enemyIndicators.TryGetValue(entityID, out GameObject indicator);
+        _enemyIndicators.Remove(entityID);
+        Destroy(indicator);
+    }
+    
+    private void CreateEnemyIndicators()
+    {
+        foreach (KeyValuePair<int, TankComponentManager> entity in _entities)
+        {
+            if (entity.Key == GameManager.PLAYER_ID) continue;
+            
+            GameObject indicator = Instantiate(_enemyIndicatorPrefab, _targetsIndicatorParent);
+            _enemyIndicators.Add(entity.Key, indicator);
+        }
+    }
+    
+    public void SetEnemyIndicator(int enemyIndex, Vector2 enemyPosition, bool inSight)
+    {
+        _enemyIndicators.TryGetValue(enemyIndex, out GameObject indicator);
+        if (indicator == null) return;
+        
+        indicator.transform.position = enemyPosition;
+        if (inSight)
+        {
+            if (indicator.activeInHierarchy) return;
+            indicator.SetActive(true);
+        }
+        else indicator.SetActive(false);
     }
 }

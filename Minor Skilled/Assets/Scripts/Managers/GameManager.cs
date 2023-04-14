@@ -22,7 +22,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     private readonly Dictionary<int, TankComponentManager> _entities = new();
     public Dictionary<int, TankComponentManager> GetEntities() => _entities;
     public readonly Dictionary<int, Vector3> EntityWorldPositions = new();
-    
+    private HUDCombatState _hudCombatState;
+
     private void OnValidate()
     {
         Debug.Assert(_player != null,
@@ -36,12 +37,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     protected override void Awake()
     {
         base.Awake();
-        
-        _eventManager.OnCameraChanged.AddListener((newMode) =>
-        {
-            HUDManager.Instance.HandleCamModeUI(newMode);
-        });
-        
+
         foreach (var entity in _entitiesList)
         {
             if (!entity.TryGetComponent(out TankComponentManager tankManager)) continue;
@@ -57,6 +53,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         {
             EntityWorldPositions.Add(entity.Key, Vector2.zero);
         }
+        
+        _hudCombatState = HUDStateSwitcher.Instance.HUDCombatState as HUDCombatState;
     }
 
     private void Update()
@@ -71,6 +69,5 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     {
         EntityWorldPositions.Remove(entityID);
         _entities.Remove(entityID);
-        HUDManager.Instance.DestroyEntityIndicator(entityID);
     }
 }
