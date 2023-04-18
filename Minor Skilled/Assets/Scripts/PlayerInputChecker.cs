@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerInputChecker : TankComponent
+public class PlayerInputChecker : SingletonMonobehaviour<PlayerInputChecker>
 {
     private float _moveInput;
     private float _hullRotateInput;
@@ -22,6 +22,7 @@ public class PlayerInputChecker : TankComponent
         _inputActions.StateSwitcher.EnableADSView.started += EnableADS;
         _inputActions.StateSwitcher.EnableThirdPersonView.started += EnableTP;
         _inputActions.StateSwitcher.EnableHostileInspectionView.started += EnableHostileInspection;
+        _inputActions.StateSwitcher.ExitState.started += DisableInspection;
         _inputActions.Enable();
     }
 
@@ -48,9 +49,23 @@ public class PlayerInputChecker : TankComponent
 
     private void EnableHostileInspection(InputAction.CallbackContext cb)
     {
-        if (!GameManager.Instance.ValidTargetInSight) return;
+        if (GameManager.Instance.HostileTargetTransform == null) return;
         _playerStateSwitcher.SwitchToTankState(E_TankState.HostileInspection);
         _playerStateSwitcher.SwitchToCamState(E_CameraState.HostileInspection);
         HUDStateSwitcher.Instance.SwitchToHUDState(E_TankState.HostileInspection);
+    }
+
+    private void DisableInspection(InputAction.CallbackContext cb)
+    {
+        E_TankState currentState = _playerStateSwitcher.CurrentTankState.ThisState;
+        
+        TankState lastTankState = _playerStateSwitcher.LastTankState;
+        CameraState lastCamState = _playerStateSwitcher.LastCameraState;
+        if (currentState is E_TankState.Inspection or E_TankState.HostileInspection)
+        {
+            _playerStateSwitcher.SwitchToTankState(lastTankState.ThisState);
+            HUDStateSwitcher.Instance.SwitchToHUDState(lastTankState.ThisState);
+            _playerStateSwitcher.SwitchToCamState(lastCamState.ThisState);
+        }
     }
 }

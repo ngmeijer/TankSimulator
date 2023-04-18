@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class StateSwitcher : MonoBehaviour
 {
@@ -9,34 +10,37 @@ public class StateSwitcher : MonoBehaviour
     [SerializeField] private TankState _deathState;
     [SerializeField] private TankState _hostileInspectionState;
 
-    private TankState _currentTankState;
+    public TankState CurrentTankState { get; private set; }
+    public E_TankState TankStateEnum;
+    public TankState LastTankState { get; private set; }
 
     protected virtual void Update()
     {
-        if (_currentTankState == null) return;
-        _currentTankState.UpdateState();
+        if (CurrentTankState == null) return;
+        CurrentTankState.UpdateState();
     }
 
     protected virtual void FixedUpdate()
     {
-        if (_currentTankState == null) return;
-        _currentTankState.FixedUpdateState();
+        if (CurrentTankState == null) return;
+        CurrentTankState.FixedUpdateState();
     }
 
     protected virtual void LateUpdate()
     {
-        if (_currentTankState == null) return;
-        _currentTankState.LateUpdateState();
+        if (CurrentTankState == null) return;
+        CurrentTankState.LateUpdateState();
     }
     
     public void SwitchToTankState(E_TankState newStateEnum)
     {
-        if (_currentTankState != null)
+        if (CurrentTankState != null)
         {
-            if (_currentTankState.ThisState == newStateEnum)
+            if (CurrentTankState.ThisState == newStateEnum)
                 return;
             
-            _currentTankState.ExitState();
+            CurrentTankState.ExitState();
+            LastTankState = CurrentTankState;
         }
 
         TankState newState = newStateEnum switch
@@ -48,6 +52,7 @@ public class StateSwitcher : MonoBehaviour
         };
 
         newState.EnterState();
-        _currentTankState = newState;
+        CurrentTankState = newState;
+        TankStateEnum = CurrentTankState.ThisState;
     }
 }

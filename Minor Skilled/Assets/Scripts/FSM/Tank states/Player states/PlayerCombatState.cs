@@ -17,25 +17,25 @@ public class PlayerCombatState : TankCombatState
         _hudCombatState = HUDStateSwitcher.Instance.HUDCombatState as HUDCombatState;
 
         _inputActions = new PlayerInputActions();
-        _inputActions.Tankmovement.Shoot.started += TankFire;
-        _inputActions.Tankmovement.IncreaseGear.started += IncreaseGear;
-        _inputActions.Tankmovement.DecreaseGear.started += DecreaseGear;
-        _inputActions.Tankmovement.ShellSwitch.started += ShellTypeSwitch;
-        _inputActions.Tankmovement.Enable();
+        _inputActions.TankMovement.Shoot.started += TankFire;
+        _inputActions.TankMovement.IncreaseGear.started += IncreaseGear;
+        _inputActions.TankMovement.DecreaseGear.started += DecreaseGear;
+        _inputActions.TankMovement.ShellSwitch.started += ShellTypeSwitch;
+        _inputActions.TankMovement.Enable();
     }
     
     public override void EnterState()
     {
         base.EnterState();
         
-        _inputActions.Tankmovement.Enable();
+        _inputActions.TankMovement.Enable();
     }
 
     public override void ExitState()
     {
         base.ExitState();
         
-        _inputActions.Tankmovement.Disable();
+        _inputActions.TankMovement.Disable();
     }
 
     public override void UpdateState()
@@ -61,8 +61,8 @@ public class PlayerCombatState : TankCombatState
 
     protected override void GetInputValues()
     {
-        _moveInput = _inputActions.Tankmovement.Move.ReadValue<Vector2>();
-        _mouseInput = _inputActions.Tankmovement.TurretRotate.ReadValue<Vector2>();
+        _moveInput = _inputActions.TankMovement.Move.ReadValue<Vector2>();
+        _mouseInput = _inputActions.TankMovement.TurretRotate.ReadValue<Vector2>();
     }
     
     private void TankMove()

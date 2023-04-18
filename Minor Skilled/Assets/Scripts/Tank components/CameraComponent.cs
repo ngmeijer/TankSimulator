@@ -6,13 +6,15 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[Serializable]
 public enum E_CameraState
 {
     None,
     ADS,
     ThirdPerson,
     InspectMode,
-    HostileInspection
+    HostileInspection,
+    Death,
 }
 
 public class CameraComponent : TankComponent
@@ -59,17 +61,7 @@ public class CameraComponent : TankComponent
 
         if (RaycastForwardFromBarrelTip())
         {
-            if (_currentHitData.collider.CompareTag("Enemy"))
-            {
-                GameManager.Instance.ValidTargetInSight = true;
-                _hudCombatState.EnableInspectHostileText(true);
-            }
-            else
-            {
-                GameManager.Instance.ValidTargetInSight = false;
-                _hudCombatState.EnableInspectHostileText(false);
-            }
-            
+            _hudCombatState.EnableInspectHostileText(_currentHitData.collider.CompareTag("Enemy"));
             _currentBarrelCrosshair.position = _currentHitData.point;
             Debug.DrawLine(_raycaster.position, _currentHitData.point, Color.green);
         }

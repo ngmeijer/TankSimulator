@@ -19,7 +19,7 @@ public class AdsState : CameraState
     private void Start()
     {
         _inputActions = new PlayerInputActions();
-        _inputActions.Tankmovement.ZoomADS.started += ZoomADS;
+        _inputActions.TankMovement.ZoomADS.started += ZoomADS;
         _inputActions.Enable();
         
         _hudCombatState = HUDStateSwitcher.Instance.HUDCombatState as HUDCombatState;

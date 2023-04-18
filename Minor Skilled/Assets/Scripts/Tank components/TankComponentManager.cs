@@ -18,7 +18,7 @@ public class TankComponentManager : MonoBehaviour
     
     public bool HasDied;
     public int ID;
-
+    
     private void Awake()
     {
         StateSwitcher = GetComponent<StateSwitcher>();

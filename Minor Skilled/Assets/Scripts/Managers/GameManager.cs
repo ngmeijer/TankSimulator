@@ -9,16 +9,14 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     public const int PLAYER_ID = 0;
     
     [HideInInspector] public float BarrelRotationValue;
-    [HideInInspector] public bool ValidTargetInSight;
     [HideInInspector] public Transform HostileTargetTransform;
     [HideInInspector] public Vector3 CurrentBarrelCrosshairPos;
     [HideInInspector] public Vector3 TargetBarrelCrosshairPos;
 
-    [SerializeField] private Transform _player;
+    public TankComponentManager Player;
     public Transform GetShellParent() => _spawnedShellsParent;
     [SerializeField] private Transform _spawnedShellsParent;
     [SerializeField] private EventManager _eventManager;
-    [SerializeField] private List<TankComponentManager> _entitiesList;
     private readonly Dictionary<int, TankComponentManager> _entities = new();
     public Dictionary<int, TankComponentManager> GetEntities() => _entities;
     public readonly Dictionary<int, Vector3> EntityWorldPositions = new();
@@ -26,7 +24,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
 
     private void OnValidate()
     {
-        Debug.Assert(_player != null,
+        Debug.Assert(Player != null,
             $"Player reference in GameManager ({gameObject.name}) is null. Drag into the inspector");
         Debug.Assert(_spawnedShellsParent != null,
             $"SpawnedShellsParent reference in GameManager ({gameObject.name}) is null. Drag into the inspector");
@@ -38,9 +36,9 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     {
         base.Awake();
 
-        foreach (var entity in _entitiesList)
+        foreach (var entity in _entities)
         {
-            if (!entity.TryGetComponent(out TankComponentManager tankManager)) continue;
+            if (!entity.Value.TryGetComponent(out TankComponentManager tankManager)) continue;
             if (tankManager.ID == PLAYER_ID) continue;
             _entities.Add(tankManager.ID, tankManager);
             tankManager.EventManager.OnTankDestruction.AddListener(RemoveEntityFromWorld);

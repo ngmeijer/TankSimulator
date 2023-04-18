@@ -24,7 +24,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     ""name"": ""PlayerInputActions"",
     ""maps"": [
         {
-            ""name"": ""Tank movement"",
+            ""name"": ""TankMovement"",
             ""id"": ""5b3aecbc-2dc5-4276-8545-caad1a667647"",
             ""actions"": [
                 {
@@ -216,7 +216,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""Tank inspection"",
+            ""name"": ""TankInspection"",
             ""id"": ""9fdae027-3088-448a-b802-ae71285b08c4"",
             ""actions"": [
                 {
@@ -224,7 +224,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""type"": ""Value"",
                     ""id"": ""247a3333-d24b-451f-b96e-9fa4782e989f"",
                     ""expectedControlType"": ""Delta"",
-                    ""processors"": """",
+                    ""processors"": ""InvertVector2(invertX=false)"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 },
@@ -233,7 +233,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""type"": ""Value"",
                     ""id"": ""1bdee200-bcc0-4c1d-b364-e2075823e52d"",
                     ""expectedControlType"": ""Vector2"",
-                    ""processors"": ""NormalizeVector2,ScaleVector2(x=2,y=2)"",
+                    ""processors"": ""NormalizeVector2,ScaleVector2(x=2,y=2),InvertVector2(invertX=false)"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 },
@@ -241,6 +241,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": ""AllowInspection"",
                     ""type"": ""Button"",
                     ""id"": ""50ac47e4-ab7a-4fc3-aaf2-19fb2ff13a3f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RepairTank"",
+                    ""type"": ""Button"",
+                    ""id"": ""08e1c2db-5908-4abf-97c7-b702c83c2f59"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -278,6 +287,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""AllowInspection"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""51ee57de-2bdb-4cc2-8691-15d7b87f2819"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RepairTank"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -322,6 +342,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ExitState"",
+                    ""type"": ""Button"",
+                    ""id"": ""7a68b1a9-7b34-4f89-b27c-874425f9d36f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -350,7 +379,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""33e5edeb-082c-4da5-b6d6-3bf99482c283"",
-                    ""path"": ""<Keyboard>/escape"",
+                    ""path"": ""<Keyboard>/i"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -368,32 +397,45 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""EnableHostileInspectionView"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1f778525-3985-4b53-96c6-08022dcc9685"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExitState"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
     ],
     ""controlSchemes"": []
 }");
-        // Tank movement
-        m_Tankmovement = asset.FindActionMap("Tank movement", throwIfNotFound: true);
-        m_Tankmovement_Move = m_Tankmovement.FindAction("Move", throwIfNotFound: true);
-        m_Tankmovement_Shoot = m_Tankmovement.FindAction("Shoot", throwIfNotFound: true);
-        m_Tankmovement_IncreaseGear = m_Tankmovement.FindAction("IncreaseGear", throwIfNotFound: true);
-        m_Tankmovement_DecreaseGear = m_Tankmovement.FindAction("DecreaseGear", throwIfNotFound: true);
-        m_Tankmovement_TurretRotate = m_Tankmovement.FindAction("TurretRotate", throwIfNotFound: true);
-        m_Tankmovement_ShellSwitch = m_Tankmovement.FindAction("ShellSwitch", throwIfNotFound: true);
-        m_Tankmovement_ZoomADS = m_Tankmovement.FindAction("ZoomADS", throwIfNotFound: true);
-        // Tank inspection
-        m_Tankinspection = asset.FindActionMap("Tank inspection", throwIfNotFound: true);
-        m_Tankinspection_Zoom = m_Tankinspection.FindAction("Zoom", throwIfNotFound: true);
-        m_Tankinspection_InspectTank = m_Tankinspection.FindAction("InspectTank", throwIfNotFound: true);
-        m_Tankinspection_AllowInspection = m_Tankinspection.FindAction("AllowInspection", throwIfNotFound: true);
+        // TankMovement
+        m_TankMovement = asset.FindActionMap("TankMovement", throwIfNotFound: true);
+        m_TankMovement_Move = m_TankMovement.FindAction("Move", throwIfNotFound: true);
+        m_TankMovement_Shoot = m_TankMovement.FindAction("Shoot", throwIfNotFound: true);
+        m_TankMovement_IncreaseGear = m_TankMovement.FindAction("IncreaseGear", throwIfNotFound: true);
+        m_TankMovement_DecreaseGear = m_TankMovement.FindAction("DecreaseGear", throwIfNotFound: true);
+        m_TankMovement_TurretRotate = m_TankMovement.FindAction("TurretRotate", throwIfNotFound: true);
+        m_TankMovement_ShellSwitch = m_TankMovement.FindAction("ShellSwitch", throwIfNotFound: true);
+        m_TankMovement_ZoomADS = m_TankMovement.FindAction("ZoomADS", throwIfNotFound: true);
+        // TankInspection
+        m_TankInspection = asset.FindActionMap("TankInspection", throwIfNotFound: true);
+        m_TankInspection_Zoom = m_TankInspection.FindAction("Zoom", throwIfNotFound: true);
+        m_TankInspection_InspectTank = m_TankInspection.FindAction("InspectTank", throwIfNotFound: true);
+        m_TankInspection_AllowInspection = m_TankInspection.FindAction("AllowInspection", throwIfNotFound: true);
+        m_TankInspection_RepairTank = m_TankInspection.FindAction("RepairTank", throwIfNotFound: true);
         // StateSwitcher
         m_StateSwitcher = asset.FindActionMap("StateSwitcher", throwIfNotFound: true);
         m_StateSwitcher_EnableADSView = m_StateSwitcher.FindAction("EnableADSView", throwIfNotFound: true);
         m_StateSwitcher_EnableThirdPersonView = m_StateSwitcher.FindAction("EnableThirdPersonView", throwIfNotFound: true);
         m_StateSwitcher_EnableInspectionView = m_StateSwitcher.FindAction("EnableInspectionView", throwIfNotFound: true);
         m_StateSwitcher_EnableHostileInspectionView = m_StateSwitcher.FindAction("EnableHostileInspectionView", throwIfNotFound: true);
+        m_StateSwitcher_ExitState = m_StateSwitcher.FindAction("ExitState", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -452,36 +494,36 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // Tank movement
-    private readonly InputActionMap m_Tankmovement;
-    private List<ITankmovementActions> m_TankmovementActionsCallbackInterfaces = new List<ITankmovementActions>();
-    private readonly InputAction m_Tankmovement_Move;
-    private readonly InputAction m_Tankmovement_Shoot;
-    private readonly InputAction m_Tankmovement_IncreaseGear;
-    private readonly InputAction m_Tankmovement_DecreaseGear;
-    private readonly InputAction m_Tankmovement_TurretRotate;
-    private readonly InputAction m_Tankmovement_ShellSwitch;
-    private readonly InputAction m_Tankmovement_ZoomADS;
-    public struct TankmovementActions
+    // TankMovement
+    private readonly InputActionMap m_TankMovement;
+    private List<ITankMovementActions> m_TankMovementActionsCallbackInterfaces = new List<ITankMovementActions>();
+    private readonly InputAction m_TankMovement_Move;
+    private readonly InputAction m_TankMovement_Shoot;
+    private readonly InputAction m_TankMovement_IncreaseGear;
+    private readonly InputAction m_TankMovement_DecreaseGear;
+    private readonly InputAction m_TankMovement_TurretRotate;
+    private readonly InputAction m_TankMovement_ShellSwitch;
+    private readonly InputAction m_TankMovement_ZoomADS;
+    public struct TankMovementActions
     {
         private @PlayerInputActions m_Wrapper;
-        public TankmovementActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_Tankmovement_Move;
-        public InputAction @Shoot => m_Wrapper.m_Tankmovement_Shoot;
-        public InputAction @IncreaseGear => m_Wrapper.m_Tankmovement_IncreaseGear;
-        public InputAction @DecreaseGear => m_Wrapper.m_Tankmovement_DecreaseGear;
-        public InputAction @TurretRotate => m_Wrapper.m_Tankmovement_TurretRotate;
-        public InputAction @ShellSwitch => m_Wrapper.m_Tankmovement_ShellSwitch;
-        public InputAction @ZoomADS => m_Wrapper.m_Tankmovement_ZoomADS;
-        public InputActionMap Get() { return m_Wrapper.m_Tankmovement; }
+        public TankMovementActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_TankMovement_Move;
+        public InputAction @Shoot => m_Wrapper.m_TankMovement_Shoot;
+        public InputAction @IncreaseGear => m_Wrapper.m_TankMovement_IncreaseGear;
+        public InputAction @DecreaseGear => m_Wrapper.m_TankMovement_DecreaseGear;
+        public InputAction @TurretRotate => m_Wrapper.m_TankMovement_TurretRotate;
+        public InputAction @ShellSwitch => m_Wrapper.m_TankMovement_ShellSwitch;
+        public InputAction @ZoomADS => m_Wrapper.m_TankMovement_ZoomADS;
+        public InputActionMap Get() { return m_Wrapper.m_TankMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(TankmovementActions set) { return set.Get(); }
-        public void AddCallbacks(ITankmovementActions instance)
+        public static implicit operator InputActionMap(TankMovementActions set) { return set.Get(); }
+        public void AddCallbacks(ITankMovementActions instance)
         {
-            if (instance == null || m_Wrapper.m_TankmovementActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_TankmovementActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_TankMovementActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_TankMovementActionsCallbackInterfaces.Add(instance);
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
@@ -505,7 +547,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ZoomADS.canceled += instance.OnZoomADS;
         }
 
-        private void UnregisterCallbacks(ITankmovementActions instance)
+        private void UnregisterCallbacks(ITankMovementActions instance)
         {
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
@@ -530,44 +572,46 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ZoomADS.canceled -= instance.OnZoomADS;
         }
 
-        public void RemoveCallbacks(ITankmovementActions instance)
+        public void RemoveCallbacks(ITankMovementActions instance)
         {
-            if (m_Wrapper.m_TankmovementActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_TankMovementActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(ITankmovementActions instance)
+        public void SetCallbacks(ITankMovementActions instance)
         {
-            foreach (var item in m_Wrapper.m_TankmovementActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_TankMovementActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_TankmovementActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_TankMovementActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public TankmovementActions @Tankmovement => new TankmovementActions(this);
+    public TankMovementActions @TankMovement => new TankMovementActions(this);
 
-    // Tank inspection
-    private readonly InputActionMap m_Tankinspection;
-    private List<ITankinspectionActions> m_TankinspectionActionsCallbackInterfaces = new List<ITankinspectionActions>();
-    private readonly InputAction m_Tankinspection_Zoom;
-    private readonly InputAction m_Tankinspection_InspectTank;
-    private readonly InputAction m_Tankinspection_AllowInspection;
-    public struct TankinspectionActions
+    // TankInspection
+    private readonly InputActionMap m_TankInspection;
+    private List<ITankInspectionActions> m_TankInspectionActionsCallbackInterfaces = new List<ITankInspectionActions>();
+    private readonly InputAction m_TankInspection_Zoom;
+    private readonly InputAction m_TankInspection_InspectTank;
+    private readonly InputAction m_TankInspection_AllowInspection;
+    private readonly InputAction m_TankInspection_RepairTank;
+    public struct TankInspectionActions
     {
         private @PlayerInputActions m_Wrapper;
-        public TankinspectionActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Zoom => m_Wrapper.m_Tankinspection_Zoom;
-        public InputAction @InspectTank => m_Wrapper.m_Tankinspection_InspectTank;
-        public InputAction @AllowInspection => m_Wrapper.m_Tankinspection_AllowInspection;
-        public InputActionMap Get() { return m_Wrapper.m_Tankinspection; }
+        public TankInspectionActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Zoom => m_Wrapper.m_TankInspection_Zoom;
+        public InputAction @InspectTank => m_Wrapper.m_TankInspection_InspectTank;
+        public InputAction @AllowInspection => m_Wrapper.m_TankInspection_AllowInspection;
+        public InputAction @RepairTank => m_Wrapper.m_TankInspection_RepairTank;
+        public InputActionMap Get() { return m_Wrapper.m_TankInspection; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(TankinspectionActions set) { return set.Get(); }
-        public void AddCallbacks(ITankinspectionActions instance)
+        public static implicit operator InputActionMap(TankInspectionActions set) { return set.Get(); }
+        public void AddCallbacks(ITankInspectionActions instance)
         {
-            if (instance == null || m_Wrapper.m_TankinspectionActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_TankinspectionActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_TankInspectionActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_TankInspectionActionsCallbackInterfaces.Add(instance);
             @Zoom.started += instance.OnZoom;
             @Zoom.performed += instance.OnZoom;
             @Zoom.canceled += instance.OnZoom;
@@ -577,9 +621,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @AllowInspection.started += instance.OnAllowInspection;
             @AllowInspection.performed += instance.OnAllowInspection;
             @AllowInspection.canceled += instance.OnAllowInspection;
+            @RepairTank.started += instance.OnRepairTank;
+            @RepairTank.performed += instance.OnRepairTank;
+            @RepairTank.canceled += instance.OnRepairTank;
         }
 
-        private void UnregisterCallbacks(ITankinspectionActions instance)
+        private void UnregisterCallbacks(ITankInspectionActions instance)
         {
             @Zoom.started -= instance.OnZoom;
             @Zoom.performed -= instance.OnZoom;
@@ -590,23 +637,26 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @AllowInspection.started -= instance.OnAllowInspection;
             @AllowInspection.performed -= instance.OnAllowInspection;
             @AllowInspection.canceled -= instance.OnAllowInspection;
+            @RepairTank.started -= instance.OnRepairTank;
+            @RepairTank.performed -= instance.OnRepairTank;
+            @RepairTank.canceled -= instance.OnRepairTank;
         }
 
-        public void RemoveCallbacks(ITankinspectionActions instance)
+        public void RemoveCallbacks(ITankInspectionActions instance)
         {
-            if (m_Wrapper.m_TankinspectionActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_TankInspectionActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(ITankinspectionActions instance)
+        public void SetCallbacks(ITankInspectionActions instance)
         {
-            foreach (var item in m_Wrapper.m_TankinspectionActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_TankInspectionActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_TankinspectionActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_TankInspectionActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public TankinspectionActions @Tankinspection => new TankinspectionActions(this);
+    public TankInspectionActions @TankInspection => new TankInspectionActions(this);
 
     // StateSwitcher
     private readonly InputActionMap m_StateSwitcher;
@@ -615,6 +665,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_StateSwitcher_EnableThirdPersonView;
     private readonly InputAction m_StateSwitcher_EnableInspectionView;
     private readonly InputAction m_StateSwitcher_EnableHostileInspectionView;
+    private readonly InputAction m_StateSwitcher_ExitState;
     public struct StateSwitcherActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -623,6 +674,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @EnableThirdPersonView => m_Wrapper.m_StateSwitcher_EnableThirdPersonView;
         public InputAction @EnableInspectionView => m_Wrapper.m_StateSwitcher_EnableInspectionView;
         public InputAction @EnableHostileInspectionView => m_Wrapper.m_StateSwitcher_EnableHostileInspectionView;
+        public InputAction @ExitState => m_Wrapper.m_StateSwitcher_ExitState;
         public InputActionMap Get() { return m_Wrapper.m_StateSwitcher; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -644,6 +696,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @EnableHostileInspectionView.started += instance.OnEnableHostileInspectionView;
             @EnableHostileInspectionView.performed += instance.OnEnableHostileInspectionView;
             @EnableHostileInspectionView.canceled += instance.OnEnableHostileInspectionView;
+            @ExitState.started += instance.OnExitState;
+            @ExitState.performed += instance.OnExitState;
+            @ExitState.canceled += instance.OnExitState;
         }
 
         private void UnregisterCallbacks(IStateSwitcherActions instance)
@@ -660,6 +715,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @EnableHostileInspectionView.started -= instance.OnEnableHostileInspectionView;
             @EnableHostileInspectionView.performed -= instance.OnEnableHostileInspectionView;
             @EnableHostileInspectionView.canceled -= instance.OnEnableHostileInspectionView;
+            @ExitState.started -= instance.OnExitState;
+            @ExitState.performed -= instance.OnExitState;
+            @ExitState.canceled -= instance.OnExitState;
         }
 
         public void RemoveCallbacks(IStateSwitcherActions instance)
@@ -677,7 +735,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         }
     }
     public StateSwitcherActions @StateSwitcher => new StateSwitcherActions(this);
-    public interface ITankmovementActions
+    public interface ITankMovementActions
     {
         void OnMove(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
@@ -687,11 +745,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnShellSwitch(InputAction.CallbackContext context);
         void OnZoomADS(InputAction.CallbackContext context);
     }
-    public interface ITankinspectionActions
+    public interface ITankInspectionActions
     {
         void OnZoom(InputAction.CallbackContext context);
         void OnInspectTank(InputAction.CallbackContext context);
         void OnAllowInspection(InputAction.CallbackContext context);
+        void OnRepairTank(InputAction.CallbackContext context);
     }
     public interface IStateSwitcherActions
     {
@@ -699,5 +758,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnEnableThirdPersonView(InputAction.CallbackContext context);
         void OnEnableInspectionView(InputAction.CallbackContext context);
         void OnEnableHostileInspectionView(InputAction.CallbackContext context);
+        void OnExitState(InputAction.CallbackContext context);
     }
 }

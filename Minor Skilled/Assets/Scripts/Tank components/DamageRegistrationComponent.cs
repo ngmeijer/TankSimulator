@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 [Serializable]
 public enum TankParts
@@ -15,6 +16,8 @@ public enum TankParts
 public class DamageRegistrationComponent : TankComponent
 {
     public TankData CurrentData = new TankData();
+
+    public TankPart CurrentSelectedPart;
     
     private void Start()
     {
@@ -32,7 +35,6 @@ public class DamageRegistrationComponent : TankComponent
     private void OnTankDestruction()
     {
         _componentManager.StateSwitcher.SwitchToTankState(E_TankState.Death);
-        HUDStateSwitcher.Instance.SwitchToHUDState(E_TankState.Death);
     }
 
     private void UpdateGeneralStats()
@@ -47,5 +49,15 @@ public class DamageRegistrationComponent : TankComponent
         {
             part.EnableCanvas(enabled);
         }
+    }
+
+    public void SelectPart(TankPart part)
+    {
+        CurrentSelectedPart = part;
+    }
+    
+    public void RepairPart(InputAction.CallbackContext cb)
+    {
+        CurrentSelectedPart.RepairPart();
     }
 }

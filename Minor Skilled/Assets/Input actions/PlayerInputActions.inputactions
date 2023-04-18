@@ -2,7 +2,7 @@
     "name": "PlayerInputActions",
     "maps": [
         {
-            "name": "Tank movement",
+            "name": "TankMovement",
             "id": "5b3aecbc-2dc5-4276-8545-caad1a667647",
             "actions": [
                 {
@@ -194,7 +194,7 @@
             ]
         },
         {
-            "name": "Tank inspection",
+            "name": "TankInspection",
             "id": "9fdae027-3088-448a-b802-ae71285b08c4",
             "actions": [
                 {
@@ -202,7 +202,7 @@
                     "type": "Value",
                     "id": "247a3333-d24b-451f-b96e-9fa4782e989f",
                     "expectedControlType": "Delta",
-                    "processors": "",
+                    "processors": "InvertVector2(invertX=false)",
                     "interactions": "",
                     "initialStateCheck": true
                 },
@@ -211,7 +211,7 @@
                     "type": "Value",
                     "id": "1bdee200-bcc0-4c1d-b364-e2075823e52d",
                     "expectedControlType": "Vector2",
-                    "processors": "NormalizeVector2,ScaleVector2(x=2,y=2)",
+                    "processors": "NormalizeVector2,ScaleVector2(x=2,y=2),InvertVector2(invertX=false)",
                     "interactions": "",
                     "initialStateCheck": true
                 },
@@ -219,6 +219,15 @@
                     "name": "AllowInspection",
                     "type": "Button",
                     "id": "50ac47e4-ab7a-4fc3-aaf2-19fb2ff13a3f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RepairTank",
+                    "type": "Button",
+                    "id": "08e1c2db-5908-4abf-97c7-b702c83c2f59",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -256,6 +265,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "AllowInspection",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "51ee57de-2bdb-4cc2-8691-15d7b87f2819",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RepairTank",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -300,6 +320,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ExitState",
+                    "type": "Button",
+                    "id": "7a68b1a9-7b34-4f89-b27c-874425f9d36f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -328,7 +357,7 @@
                 {
                     "name": "",
                     "id": "33e5edeb-082c-4da5-b6d6-3bf99482c283",
-                    "path": "<Keyboard>/escape",
+                    "path": "<Keyboard>/i",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -344,6 +373,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "EnableHostileInspectionView",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1f778525-3985-4b53-96c6-08022dcc9685",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ExitState",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
