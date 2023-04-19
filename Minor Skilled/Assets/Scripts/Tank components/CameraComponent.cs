@@ -119,6 +119,7 @@ public class CameraComponent : TankComponent
     {
         Vector3 convertedPos = _playerStateSwitcher.CurrentCameraState.ViewCam.WorldToScreenPoint(_estimatedTargetCrosshair.position);
         convertedPos.y = GameManager.Instance.CurrentBarrelCrosshairPos.y;
+        convertedPos.z = GameManager.Instance.CurrentBarrelCrosshairPos.z;
         return convertedPos;
     }
 

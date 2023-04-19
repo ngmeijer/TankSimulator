@@ -138,16 +138,21 @@ MonoBehaviour:
   TP_HorizontalSensitivity: 30
   ADS_HorizontalSensitivity:
   - 25
-  - 12
-  - 8
-  - 4
-  - 2
+  - 10
+  - 7
+  - 3
+  - 1
   TankMass: 60000
   KickbackForce: 70000
   ShellSpeed: 500
   ReloadTime: 3
   TP_VerticalSensitivity: 20
-  ADS_VerticalSensitivity: 8
+  ADS_VerticalSensitivity:
+  - 25
+  - 10
+  - 7
+  - 3
+  - 1
   APAmmo: 500
   HEATAmmo: 500
   HEAmmo: 500

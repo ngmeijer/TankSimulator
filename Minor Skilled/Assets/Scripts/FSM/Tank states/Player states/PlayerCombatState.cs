@@ -118,7 +118,10 @@ public class PlayerCombatState : TankCombatState
         if (camState == E_CameraState.ThirdPerson)
             multiplier = Properties.TP_VerticalSensitivity;
         else if (camState == E_CameraState.ADS)
-            multiplier = Properties.ADS_VerticalSensitivity;
+        {
+            int currentFOV = _playerStateSwitcher.CurrentCameraState.GetFOVLevel();
+            multiplier = _componentManager.Properties.ADS_HorizontalSensitivity[currentFOV];
+        }
 
         Debug.Assert(multiplier != 0, "Sensitivity multiplier is 0. Check Properties SO and if the CamState is ThirdPerson or ADS.");
         

@@ -61,7 +61,6 @@ public class InspectorCamState : CameraState
     public override void LateUpdateState()
     {
         _totalPosDelta += _currentPosDelta;
-        //_totalPosDelta = Vector3Extensions.Clamp(_totalPosDelta, _maxPosDelta, Vector3.zero);
         _totalPosDelta.x = 0;
         _totalPosDelta.y = Mathf.Clamp(_totalPosDelta.y, _maxPosDelta.y, 0);
         _totalPosDelta.z = Mathf.Clamp(_totalPosDelta.z, 0, _maxPosDelta.z);

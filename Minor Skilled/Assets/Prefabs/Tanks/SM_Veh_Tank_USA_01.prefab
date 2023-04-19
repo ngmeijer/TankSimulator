@@ -325,7 +325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
+  m_IgnoreReversedGraphics: 0
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
@@ -740,7 +740,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
+  m_IgnoreReversedGraphics: 0
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
@@ -3694,8 +3694,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PartState: 0
   _propertiesCanvas: {fileID: 1974948082562948887}
-  HealthSlider: {fileID: 8964921992782324607}
-  ArmorSlider: {fileID: 789460840505663733}
+  _healthSlider: {fileID: 0}
+  _armorSlider: {fileID: 0}
+  _stateText: {fileID: 0}
   _currentArmorText: {fileID: 2645129409888422060}
   _maxArmorText: {fileID: 1588481221439623347}
   _currentHealthText: {fileID: 4173088347213869210}
@@ -3703,6 +3704,7 @@ MonoBehaviour:
   _vfxLevels: []
   _canvasTweenY: 2
   _tweenSpeed: 1
+  _repairPerSecond: 5
   MaxHealth: 100
   MaxArmor: 160
   CurrentHealth: 0
@@ -4597,7 +4599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
+  m_IgnoreReversedGraphics: 0
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
@@ -4910,7 +4912,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
+  m_IgnoreReversedGraphics: 0
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
@@ -5261,8 +5263,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PartState: 0
   _propertiesCanvas: {fileID: 6892157723834266311}
-  HealthSlider: {fileID: 3934154582869973474}
-  ArmorSlider: {fileID: 2404713938649758866}
+  _healthSlider: {fileID: 0}
+  _armorSlider: {fileID: 0}
+  _stateText: {fileID: 0}
   _currentArmorText: {fileID: 1202004673937752780}
   _maxArmorText: {fileID: 8025715886040826073}
   _currentHealthText: {fileID: 5877842617185455853}
@@ -5270,6 +5273,7 @@ MonoBehaviour:
   _vfxLevels: []
   _canvasTweenY: 2
   _tweenSpeed: 1
+  _repairPerSecond: 5
   MaxHealth: 100
   MaxArmor: 250
   CurrentHealth: 0
@@ -6868,7 +6872,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
+  m_IgnoreReversedGraphics: 0
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
@@ -7275,8 +7279,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PartState: 0
   _propertiesCanvas: {fileID: 6083304839725423419}
-  HealthSlider: {fileID: 1186370063634778629}
-  ArmorSlider: {fileID: 5697607755702088082}
+  _healthSlider: {fileID: 0}
+  _armorSlider: {fileID: 0}
+  _stateText: {fileID: 0}
   _currentArmorText: {fileID: 5017498213115909705}
   _maxArmorText: {fileID: 7240734880769325959}
   _currentHealthText: {fileID: 7503462319378186963}
@@ -7284,6 +7289,7 @@ MonoBehaviour:
   _vfxLevels: []
   _canvasTweenY: 2
   _tweenSpeed: 1
+  _repairPerSecond: 5
   MaxHealth: 100
   MaxArmor: 160
   CurrentHealth: 0
@@ -10386,6 +10392,7 @@ MonoBehaviour:
   _combatState: {fileID: 182467015}
   _deathState: {fileID: 2300530068981873399}
   _hostileInspectionState: {fileID: 0}
+  TankStateEnum: 0
 --- !u!1 &6587632306946441639
 GameObject:
   m_ObjectHideFlags: 0
@@ -10617,8 +10624,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PartState: 0
   _propertiesCanvas: {fileID: 5448225127460209801}
-  HealthSlider: {fileID: 5057641366716423374}
-  ArmorSlider: {fileID: 7145397410691090180}
+  _healthSlider: {fileID: 0}
+  _armorSlider: {fileID: 0}
+  _stateText: {fileID: 0}
   _currentArmorText: {fileID: 2179354402239856441}
   _maxArmorText: {fileID: 7515028784601870388}
   _currentHealthText: {fileID: 2304672369945070809}
@@ -10626,6 +10634,7 @@ MonoBehaviour:
   _vfxLevels: []
   _canvasTweenY: 2
   _tweenSpeed: 1
+  _repairPerSecond: 5
   MaxHealth: 100
   MaxArmor: 250
   CurrentHealth: 0
@@ -11864,6 +11873,7 @@ MonoBehaviour:
     - {fileID: 3787735716450038002}
     - {fileID: 5352004737216810325}
     - {fileID: 8791770480403170878}
+  CurrentSelectedPart: {fileID: 0}
 --- !u!1 &7792220255463876249
 GameObject:
   m_ObjectHideFlags: 0

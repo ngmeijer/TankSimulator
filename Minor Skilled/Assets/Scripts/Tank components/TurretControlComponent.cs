@@ -55,8 +55,19 @@ public class TurretControlComponent : TankComponent
         Vector3 currentPosition = _barrelLookAt.transform.position;
         Vector3 newPosition = currentPosition;
         newPosition.y = minY + yDelta;
+
+        E_CameraState camState = _playerStateSwitcher.CurrentCameraState.ThisState;
+        float multiplier = 0;
+        if (camState == E_CameraState.ThirdPerson)
+            multiplier = _componentManager.Properties.TP_VerticalSensitivity;
+        else if (camState == E_CameraState.ADS)
+        {
+            int currentFOV = _playerStateSwitcher.CurrentCameraState.GetFOVLevel();
+            multiplier = _componentManager.Properties.ADS_VerticalSensitivity[currentFOV];
+        }
+        
         _barrelLookAt.transform.position = Vector3.MoveTowards(currentPosition,
-            newPosition, _properties.ADS_VerticalSensitivity * Time.deltaTime);
+            newPosition, multiplier * Time.deltaTime);
 
         Vector3 lookatPosition = new Vector3(_barrelLowerBound.position.x, _barrelLookAt.position.y, _barrelLowerBound.position.z);
         _barrelTransform.LookAt(lookatPosition);

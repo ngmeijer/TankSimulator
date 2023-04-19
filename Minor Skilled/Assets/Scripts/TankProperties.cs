@@ -17,7 +17,7 @@ public class TankProperties : ScriptableObject
     public float ShellSpeed = 50f;
     public float ReloadTime = 4f;
     public float TP_VerticalSensitivity = 1f;
-    public float ADS_VerticalSensitivity = 0.75f;
+    public float[] ADS_VerticalSensitivity;
     public int APAmmo = 50;
     public int HEATAmmo = 50;
     public int HEAmmo = 50;
