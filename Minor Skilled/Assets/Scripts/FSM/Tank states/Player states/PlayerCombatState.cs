@@ -56,6 +56,7 @@ public class PlayerCombatState : TankCombatState
 
     public override void LateUpdateState()
     {
+        if (_playerStateSwitcher.CurrentCameraState.InTransition) return;
         _componentManager.TurretControlComponent.HandleTurretRotation(_mouseInput.x);
     }
 

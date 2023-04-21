@@ -35,13 +35,18 @@ public class TankPart : MonoBehaviour
     [SerializeField] private float _tweenSpeed = 1f;
 
     [SerializeField] private int _repairPerSecond = 5;
+
+    [SerializeField] private bool _lookAtCamera;
     
     public int MaxHealth;
     public int MaxArmor;
 
-    public int CurrentHealth;
-    public int CurrentArmor;
-
+    [HideInInspector] public int CurrentHealth;
+    [HideInInspector] public float CurrentArmor;
+    
+    private bool _repairing;
+    public void IsRepairing(bool isTrue) => _repairing = isTrue;
+    
     [HideInInspector] public UnityEvent OnDamageRegistered = new UnityEvent();
     [HideInInspector] public UnityEvent OnZeroHealthReached = new UnityEvent();
     
@@ -63,8 +68,18 @@ public class TankPart : MonoBehaviour
         _explosionActivationOffset = (int)0.2f * MaxHealth;
         
         _propertiesCanvas.SetActive(false);
+        foreach (var vfx in _vfxLevels)
+        {
+            vfx.SetActive(false);
+        }
         EnableCanvas(false);
         UpdateUI();
+    }
+
+    private void Update()
+    {
+        if(_lookAtCamera)
+            _propertiesCanvas.transform.LookAt(GameManager.Instance.InspectionCameraTrans);
     }
 
     public void EnableCanvas(bool enabled)
@@ -113,17 +128,25 @@ public class TankPart : MonoBehaviour
             _maxHealthText.SetText(MaxHealth.ToString());
         
         if(_currentArmorText != null)
-            _currentArmorText.SetText(CurrentArmor.ToString());
+            _currentArmorText.SetText(CurrentArmor.ToString("f0"));
        
         if(_maxArmorText != null)
             _maxArmorText.SetText(MaxArmor.ToString());
+        
+        if(CurrentArmor >= MaxArmor && CurrentHealth == MaxHealth)
+            SetStateText(PartState.Good);
+        else if (CurrentArmor < MaxArmor)
+            SetStateText(PartState.Caution);
+        
+        if(CurrentHealth < MaxHealth)
+            SetStateText(PartState.Critical);
     }
 
     private void CalculateNewStats(Shell shellData)
     {
         if (CurrentArmor > 0)
         {
-            int newArmor = CurrentArmor - shellData.Damage;
+            int newArmor = (int)CurrentArmor - shellData.Damage;
             CurrentArmor = newArmor;
             SetStateText(PartState.Caution);
             
@@ -181,8 +204,12 @@ public class TankPart : MonoBehaviour
 
     public void RepairPart()
     {
-        CurrentArmor += _repairPerSecond;
-        SetStateText(PartState.Good);
+        if (!_repairing) return;
+        
+        var increase=_repairPerSecond * Time.deltaTime;
+        CurrentArmor += increase;
+        
+        CurrentArmor = Mathf.Clamp(CurrentArmor, 0, MaxArmor);
         UpdateUI();
         ActivateNewVFX(CurrentHealth, MaxHealth);
     }
@@ -191,7 +218,7 @@ public class TankPart : MonoBehaviour
     {
         if (CurrentArmor > 0)
         {
-            int newArmor = CurrentArmor - damage;
+            int newArmor = (int)CurrentArmor - damage;
             CurrentArmor = newArmor;
             SetStateText(PartState.Caution);
                 

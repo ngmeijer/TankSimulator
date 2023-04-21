@@ -69,7 +69,7 @@ public class PlayerStateSwitcher : StateSwitcher
             CurrentCameraState.ExitState();
             LastCameraState = CurrentCameraState;
         }
-
+        
         CameraState newState = newStateEnum switch
         {
             E_CameraState.ADS => _adsState,
@@ -79,6 +79,11 @@ public class PlayerStateSwitcher : StateSwitcher
             E_CameraState.Death => _deathCamState
         };
 
+        if (CurrentCameraState == null)
+        {
+            newState.ViewCam.transform.position = newState.CameraTargetDestination.position;
+        }
+        else newState.ViewCam.transform.position = CurrentCameraState.ViewCam.transform.position;
         newState.EnterState();
         CurrentCameraState = newState;
         CamStateEnum = CurrentCameraState.ThisState;
@@ -88,5 +93,12 @@ public class PlayerStateSwitcher : StateSwitcher
     {
         SwitchToCamState(E_CameraState.Death);
         HUDStateSwitcher.Instance.SwitchToHUDState(E_TankState.Death);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        if(CurrentCameraState != null)
+            Gizmos.DrawSphere(CurrentCameraState.ViewCam.transform.position, 0.2f);
     }
 }

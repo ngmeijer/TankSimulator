@@ -1,21 +1,16 @@
-﻿using UnityEditor;
+﻿using System;
+using UnityEditor;
 using UnityEngine;
 
 public class ThirdPersonState : CameraState
 {
     [SerializeField] private float _cameraRotationDamp = 1f;
-    [SerializeField] private Transform _cameraTargetDestination;
     [SerializeField] private Transform _lookAtPosition;
 
     [Header("Y Ranges")] 
     [SerializeField] private Transform _cameraLowerBound;
     [SerializeField] private Transform _cameraUpperBound;
-    
-    private void Start()
-    {
-        transform.position = _cameraTargetDestination.position;
-    }
-    
+
     public override void EnterState()
     {
         base.EnterState();
@@ -26,6 +21,8 @@ public class ThirdPersonState : CameraState
 
     public override void UpdateState()
     {
+        if(InTransition) return;
+
         UpdateThirdPersonCameraPosition();
     }
 
@@ -40,13 +37,13 @@ public class ThirdPersonState : CameraState
         Vector3 newPosition = minY + yDelta;
 
         Vector3 currentPosition = ViewCam.transform.position;
-        _cameraTargetDestination.position = newPosition;
-        ViewCam.transform.position = Vector3.MoveTowards(currentPosition, _cameraTargetDestination.position,
+        CameraTargetDestination.position = newPosition;
+        ViewCam.transform.position = Vector3.MoveTowards(currentPosition, CameraTargetDestination.position,
             _cameraRotationDamp * Time.deltaTime);
         ViewCam.transform.LookAt(_lookAtPosition.position);
     }
 
-    private void OnDrawGizmos()
+    protected override void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
         Gizmos.DrawSphere(_lookAtPosition.position, 0.2f);
@@ -59,9 +56,9 @@ public class ThirdPersonState : CameraState
         Gizmos.DrawLine(_cameraLowerBound.position, _cameraUpperBound.position);
 
         Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(_cameraTargetDestination.position, 0.2f);
-        Handles.Label(_cameraTargetDestination.position + GameManager.HandlesOffset,
-            _cameraTargetDestination.name);
+        Gizmos.DrawSphere(CameraTargetDestination.position, 0.2f);
+        Handles.Label(CameraTargetDestination.position + GameManager.HandlesOffset,
+            CameraTargetDestination.name);
 
         if (ViewCam != null)
         {

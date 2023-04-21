@@ -9,10 +9,10 @@ public class InspectorCamState : CameraState
     [SerializeField] private float _horizontalSpeed = 50f;
     [SerializeField] private float _verticalSpeed = 25f;
     [SerializeField] private float _zoomSpeed = 50f;
+    [SerializeField] private float _cameraFollowSpeed = 10f;
     [SerializeField] private Transform _lowerBound;
     [SerializeField] private Transform _upperBound;
     [SerializeField] private Transform _rotationTarget;
-    [SerializeField] private Transform _cameraTargetDestination;
     private Vector2 _scrollInput;
     private Vector2 _mouseInput;
     private float _zoomLevel;
@@ -25,8 +25,7 @@ public class InspectorCamState : CameraState
     
     private PlayerInputActions _inputActions;
     protected bool _canMove;
-    protected bool _inAnimation;
-
+    
     public override void EnterState()
     {
         base.EnterState();
@@ -42,17 +41,19 @@ public class InspectorCamState : CameraState
         ViewCam.transform.localPosition = _upperBound.localPosition;
         _camStartPos = ViewCam.transform.localPosition;
         _maxPosDelta = _lowerBound.localPosition - _upperBound.localPosition;
+        GameManager.Instance.InspectionCameraTrans = ViewCam.transform;
     }
 
     public override void UpdateState()
     {
+        if (InTransition) return;
+        
         _currentPosDelta = Vector3.zero;
         GetInputValues();
 
         ZoomInspectView();
 
         if (!_canMove) return;
-        if (_inAnimation) return;
         
         MoveCameraHorizontally();
         MoveCameraVertically();
@@ -64,11 +65,13 @@ public class InspectorCamState : CameraState
         _totalPosDelta.x = 0;
         _totalPosDelta.y = Mathf.Clamp(_totalPosDelta.y, _maxPosDelta.y, 0);
         _totalPosDelta.z = Mathf.Clamp(_totalPosDelta.z, 0, _maxPosDelta.z);
-        _cameraTargetDestination.localPosition = _camStartPos + _totalPosDelta;
-        ViewCam.transform.localPosition = Vector3.MoveTowards(ViewCam.transform.localPosition, _cameraTargetDestination.localPosition,_verticalSpeed * Time.deltaTime);
+        CameraTargetDestination.localPosition = _camStartPos + _totalPosDelta;
         
+        ViewCam.transform.localPosition = Vector3.Slerp(ViewCam.transform.localPosition,
+                CameraTargetDestination.localPosition, _cameraFollowSpeed * Time.deltaTime);
+            
         ViewCam.transform.LookAt(StateLookAt);
-        _cameraTargetDestination.LookAt(StateLookAt);
+        CameraTargetDestination.LookAt(StateLookAt);
     }
     
     private void MoveCameraHorizontally()
@@ -103,11 +106,13 @@ public class InspectorCamState : CameraState
 
     private void ZoomInspectView()
     {
-        _currentPosDelta += transform.forward * (_scrollInput.y * _zoomSpeed * Time.deltaTime);
+        _currentPosDelta += Vector3.forward * (_scrollInput.y * _zoomSpeed * Time.deltaTime);
     }
 
-    private void OnDrawGizmos()
+    protected override void OnDrawGizmos()
     {
+        base.OnDrawGizmos();
+        
         Gizmos.color = Color.green;
         Gizmos.DrawSphere(_upperBound.position, 0.2f);
         Handles.Label(_upperBound.position + GameManager.HandlesOffset, _upperBound.name);
@@ -117,8 +122,8 @@ public class InspectorCamState : CameraState
         Handles.color = Color.red;
         Vector3[] lines = {
             _upperBound.position,
-            _cameraTargetDestination.position,
-            _cameraTargetDestination.position,
+            CameraTargetDestination.position,
+            CameraTargetDestination.position,
             _lowerBound.position
         };
         Handles.DrawLines(lines);
@@ -128,8 +133,8 @@ public class InspectorCamState : CameraState
         Handles.Label(_lowerBound.position + GameManager.HandlesOffset, _lowerBound.name);
 
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(_cameraTargetDestination.position, 0.15f);
-        Handles.Label(_cameraTargetDestination.position + GameManager.HandlesOffset, _cameraTargetDestination.name);
+        Gizmos.DrawSphere(CameraTargetDestination.position, 0.15f);
+        Handles.Label(CameraTargetDestination.position + GameManager.HandlesOffset, CameraTargetDestination.name);
 
         if (_rotationTarget != null && StateLookAt != null)
         {

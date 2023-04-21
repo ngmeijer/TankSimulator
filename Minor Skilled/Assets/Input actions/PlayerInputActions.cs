@@ -224,7 +224,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""type"": ""Value"",
                     ""id"": ""247a3333-d24b-451f-b96e-9fa4782e989f"",
                     ""expectedControlType"": ""Delta"",
-                    ""processors"": ""InvertVector2(invertX=false)"",
+                    ""processors"": ""InvertVector2(invertX=false,invertY=false)"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 },

@@ -22,6 +22,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     public readonly Dictionary<int, Vector3> EntityWorldPositions = new();
     private HUDCombatState _hudCombatState;
 
+    public Transform InspectionCameraTrans;
+
     private void OnValidate()
     {
         Debug.Assert(Player != null,

@@ -48,7 +48,7 @@ public class TankData
         int currentArmor = 0;
         foreach (var part in TankParts)
         {
-            currentArmor += part.CurrentArmor;
+            currentArmor += (int)part.CurrentArmor;
         }
 
         return currentArmor;

@@ -18,7 +18,7 @@ public class HostileInspectorCamState : InspectorCamState
         
         private void LerpToPosition(Transform to)
         {
-                _inAnimation = true;
+                InTransition = true;
                 StateLookAt.parent = to;
                 Sequence lerpSeq = DOTween.Sequence();
                 lerpSeq.Append(ViewCam.transform.DOLookAt(to.position, _lerpSpeed));
@@ -29,7 +29,7 @@ public class HostileInspectorCamState : InspectorCamState
 
         private void PostLerpActions()
         {
-                _inAnimation = false;
+                InTransition = false;
                 StateLookAt.localPosition = Vector3.zero;
                 _hostileComponent.ShowUI(true);
         }
