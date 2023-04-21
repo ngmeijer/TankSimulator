@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class HUDCombatState : HUDState
 {
+    private const int CROSSHAIR_LERP_SPEED = 10;
+    
     [Header("Movement")] 
     [SerializeField] private TextMeshProUGUI _tankSpeedText;
     [SerializeField] private TextMeshProUGUI _gearIndexText;
@@ -90,8 +92,9 @@ public class HUDCombatState : HUDState
 
     public void UpdateCrosshair()
     {
-        _currentBarrelCrosshair.position = GameManager.Instance.CurrentBarrelCrosshairPos;
-        _targetBarrelCrosshair.position = GameManager.Instance.TargetBarrelCrosshairPos;
+        _currentBarrelCrosshair.position = Vector3.Lerp(_currentBarrelCrosshair.position, GameManager.Instance.CurrentBarrelCrosshairPos, CROSSHAIR_LERP_SPEED * Time.deltaTime);
+        _targetBarrelCrosshair.position = Vector3.Lerp(_targetBarrelCrosshair.position,
+            GameManager.Instance.TargetBarrelCrosshairPos, CROSSHAIR_LERP_SPEED * Time.deltaTime);
     }
     
     public void HandleCamModeUI(E_CameraState camState)

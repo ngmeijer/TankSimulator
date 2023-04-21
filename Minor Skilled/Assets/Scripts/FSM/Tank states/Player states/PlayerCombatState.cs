@@ -40,6 +40,7 @@ public class PlayerCombatState : TankCombatState
 
     public override void UpdateState()
     {
+        if (_playerStateSwitcher.CurrentCameraState.InTransition) return;
         GetInputValues();
         TankMove();
         HandleCrosshair();

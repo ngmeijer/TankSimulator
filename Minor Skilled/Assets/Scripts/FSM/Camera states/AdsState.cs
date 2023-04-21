@@ -34,7 +34,6 @@ public class AdsState : CameraState
         _currentFOVIndex = 0;
         ViewCam.fieldOfView = _fovRanges[_currentFOVIndex];
         _hudCombatState.SetZoomLevelText(_currentFOVIndex + 1, true);
-        ViewCam.transform.position = new Vector3(0f,ViewCam.transform.position.y, ViewCam.transform.position.z);
     }
 
     public override int GetFOVLevel()

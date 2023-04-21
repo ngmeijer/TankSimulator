@@ -38,8 +38,6 @@ public class InspectorCamState : CameraState
         _inputActions.TankInspection.AllowInspection.canceled += DisableRotate;
         _inputActions.TankInspection.Enable();
 
-        ViewCam.transform.localPosition = _upperBound.localPosition;
-        _camStartPos = ViewCam.transform.localPosition;
         _maxPosDelta = _lowerBound.localPosition - _upperBound.localPosition;
         GameManager.Instance.InspectionCameraTrans = ViewCam.transform;
     }
@@ -65,7 +63,7 @@ public class InspectorCamState : CameraState
         _totalPosDelta.x = 0;
         _totalPosDelta.y = Mathf.Clamp(_totalPosDelta.y, _maxPosDelta.y, 0);
         _totalPosDelta.z = Mathf.Clamp(_totalPosDelta.z, 0, _maxPosDelta.z);
-        CameraTargetDestination.localPosition = _camStartPos + _totalPosDelta;
+        CameraTargetDestination.localPosition = _upperBound.localPosition + _totalPosDelta;
         
         ViewCam.transform.localPosition = Vector3.Slerp(ViewCam.transform.localPosition,
                 CameraTargetDestination.localPosition, _cameraFollowSpeed * Time.deltaTime);

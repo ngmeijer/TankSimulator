@@ -40,6 +40,7 @@ public class PlayerStateSwitcher : StateSwitcher
         base.Update();
         
         if (CurrentCameraState == null) return;
+
         CurrentCameraState.UpdateState();
     }
 
@@ -48,6 +49,7 @@ public class PlayerStateSwitcher : StateSwitcher
         base.FixedUpdate();
         
         if (CurrentCameraState == null) return;
+        if (CurrentCameraState.InTransition) return;
         CurrentCameraState.FixedUpdateState();
     }
 
@@ -56,6 +58,7 @@ public class PlayerStateSwitcher : StateSwitcher
         base.LateUpdate();
         
         if (CurrentCameraState == null) return;
+        if (CurrentCameraState.InTransition) return;
         CurrentCameraState.LateUpdateState();
     }
 
@@ -79,11 +82,9 @@ public class PlayerStateSwitcher : StateSwitcher
             E_CameraState.Death => _deathCamState
         };
 
-        if (CurrentCameraState == null)
-        {
-            newState.ViewCam.transform.position = newState.CameraTargetDestination.position;
-        }
-        else newState.ViewCam.transform.position = CurrentCameraState.ViewCam.transform.position;
+        if (CurrentCameraState != null)
+            newState.LastCamPos = CurrentCameraState.ViewCam.transform.position;
+        //Debug.Break();
         newState.EnterState();
         CurrentCameraState = newState;
         CamStateEnum = CurrentCameraState.ThisState;
