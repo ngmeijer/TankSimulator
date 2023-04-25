@@ -86,6 +86,11 @@ public class ShootComponent : TankComponent
 
     public virtual void FireShell()
     {
+        if (_currentAmmoCountForShell <= 0)
+        {
+            CanFire = false;
+            return;
+        }
         _firedShells.Clear();
         InstantiateShell();
         HandleCannonFireFX();

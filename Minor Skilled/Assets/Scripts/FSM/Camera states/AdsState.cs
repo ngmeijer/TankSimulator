@@ -25,9 +25,9 @@ public class AdsState : CameraState
         _hudCombatState = HUDStateSwitcher.Instance.HUDCombatState as HUDCombatState;
     }
     
-    public override void EnterState()
+    public override void Enter()
     {
-        base.EnterState();
+        base.Enter();
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -53,9 +53,9 @@ public class AdsState : CameraState
         _hudCombatState.SetZoomLevelText(_currentFOVIndex + 1, true);
     }
 
-    public override void ExitState()
+    public override void Exit()
     {
-        base.ExitState();
+        base.Exit();
         
         _hudCombatState.SetZoomLevelText(_currentFOVIndex + 1, false);
     }

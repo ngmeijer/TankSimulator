@@ -2,16 +2,16 @@
 
 public class PlayerInspectState : TankInspectState
 {
-    public override void EnterState()
+    public override void Enter()
     {
-        base.EnterState();
+        base.Enter();
         
         HandleDamageRegistrationUI(true);
     }
 
-    public override void ExitState()
+    public override void Exit()
     {
-        base.ExitState();
+        base.Exit();
         
         HandleDamageRegistrationUI(false);
     }

@@ -6,9 +6,9 @@ public class HostileInspectorCamState : InspectorCamState
 {
         public DamageRegistrationComponent _hostileComponent;
 
-        public override void EnterState()
+        public override void Enter()
         {
-                base.EnterState();
+                base.Enter();
 
                 GameManager.Instance.HostileTargetTransform.TryGetComponent(out TankComponentManager tankManager);
                 _hostileComponent = tankManager.DamageComponent;
@@ -34,9 +34,9 @@ public class HostileInspectorCamState : InspectorCamState
                 _hostileComponent.ShowUI(true);
         }
 
-        public override void ExitState()
+        public override void Exit()
         {
-                base.ExitState();
+                base.Exit();
                 
                 if(_hostileComponent != null)
                         _hostileComponent.ShowUI(false);

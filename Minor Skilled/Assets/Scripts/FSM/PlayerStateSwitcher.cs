@@ -22,11 +22,11 @@ public class PlayerStateSwitcher : StateSwitcher
         Debug.Assert(_adsState != null, "ADSView reference is null. Drag it into the inspector slot.");
         Debug.Assert(_inspectorCamState != null, "InspectorView reference is null. Drag it into the inspector slot.");
 
-        _tpState.ExitState();
-        _inspectorCamState.ExitState();
-        _adsState.ExitState();
-        _hostileInspectorCamState.ExitState();
-        _deathCamState.ExitState();
+        _tpState.Exit();
+        _inspectorCamState.Exit();
+        _adsState.Exit();
+        _hostileInspectorCamState.Exit();
+        _deathCamState.Exit();
         
         SwitchToTankState(DefaultTankState);
         SwitchToCamState(DefaultCamState);
@@ -69,7 +69,7 @@ public class PlayerStateSwitcher : StateSwitcher
             if (CurrentCameraState.ThisState == newStateEnum)
                 return;
             
-            CurrentCameraState.ExitState();
+            CurrentCameraState.Exit();
             LastCameraState = CurrentCameraState;
         }
         
@@ -85,7 +85,7 @@ public class PlayerStateSwitcher : StateSwitcher
         if (CurrentCameraState != null)
             newState.LastCamPos = CurrentCameraState.ViewCam.transform.position;
         //Debug.Break();
-        newState.EnterState();
+        newState.Enter();
         CurrentCameraState = newState;
         CamStateEnum = CurrentCameraState.ThisState;
     }

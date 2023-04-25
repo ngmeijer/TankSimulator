@@ -3596,6 +3596,10 @@ GameObject:
   - component: {fileID: 1629477346}
   - component: {fileID: 182467016}
   - component: {fileID: 1391781248}
+  - component: {fileID: 182467024}
+  - component: {fileID: 182467031}
+  - component: {fileID: 182467032}
+  - component: {fileID: 182467033}
   m_Layer: 0
   m_Name: SM_Veh_Tank_USA_01
   m_TagString: Enemy
@@ -3806,6 +3810,71 @@ MonoBehaviour:
   _deathState: {fileID: 2300530068981873399}
   _hostileInspectionState: {fileID: 0}
   TankStateEnum: 0
+--- !u!114 &182467024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6587442561008276303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd442f30086b65040bcb3d85d31e7816, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!195 &182467031
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6587442561008276303}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 4.31
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &182467032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6587442561008276303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc14d7b796e74abcae8bd44a55ee0866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Agent: {fileID: 182467031}
+  ThisTrans: {fileID: 6584836204776738019}
+  PlayerTrans: {fileID: 0}
+  CurrentAgentDestination: {x: 0, y: 0, z: 0}
+  MaxInstantVisionRange: 20
+  MaxVisionInvestigationRange: 50
+  MaxPatrolRange: 15
+--- !u!114 &182467033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6587442561008276303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e3d7c7b351b46889ab0aaa54b34d56d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6587632306946441639
 GameObject:
   m_ObjectHideFlags: 0

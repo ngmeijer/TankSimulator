@@ -26,9 +26,9 @@ public class InspectorCamState : CameraState
     private PlayerInputActions _inputActions;
     protected bool _canMove;
     
-    public override void EnterState()
+    public override void Enter()
     {
-        base.EnterState();
+        base.Enter();
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;

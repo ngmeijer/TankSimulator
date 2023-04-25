@@ -1,8 +1,8 @@
 ﻿public class DeathCamState : CameraState
 {
-    public override void EnterState()
+    public override void Enter()
     {
-        base.EnterState();
+        base.Enter();
         
         OnDeathActions();
     }

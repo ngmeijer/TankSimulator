@@ -1,6 +1,6 @@
 ﻿public class HostileInspectState : TankInspectState
 {
-    public override void EnterState()
+    public override void Enter()
     {
                
     }

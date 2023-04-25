@@ -39,7 +39,7 @@ public class StateSwitcher : MonoBehaviour
             if (CurrentTankState.ThisState == newStateEnum)
                 return;
             
-            CurrentTankState.ExitState();
+            CurrentTankState.Exit();
             LastTankState = CurrentTankState;
         }
 
@@ -51,7 +51,7 @@ public class StateSwitcher : MonoBehaviour
             E_TankState.HostileInspection => _hostileInspectionState,
         };
 
-        newState.EnterState();
+        newState.Enter();
         CurrentTankState = newState;
         TankStateEnum = CurrentTankState.ThisState;
     }

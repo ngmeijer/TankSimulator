@@ -9,9 +9,9 @@ public class HUDInspectState : HUDState
     [SerializeField] private TextMeshProUGUI _rotateText;
     private InputControlScheme _controlScheme;
 
-    public override void EnterState()
+    public override void Enter()
     {
-        base.EnterState();
+        base.Enter();
 
         //_controlScheme = _inputActions.controlSchemes[0];
         SetUIContent();
@@ -27,9 +27,9 @@ public class HUDInspectState : HUDState
     }
     
     
-    public override void ExitState()
+    public override void Exit()
     {
-        base.ExitState();
+        base.Exit();
         
     }
 }

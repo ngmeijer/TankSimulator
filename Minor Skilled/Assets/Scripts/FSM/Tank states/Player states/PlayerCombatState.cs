@@ -24,16 +24,16 @@ public class PlayerCombatState : TankCombatState
         _inputActions.TankMovement.Enable();
     }
     
-    public override void EnterState()
+    public override void Enter()
     {
-        base.EnterState();
+        base.Enter();
         
         _inputActions.TankMovement.Enable();
     }
 
-    public override void ExitState()
+    public override void Exit()
     {
-        base.ExitState();
+        base.Exit();
         
         _inputActions.TankMovement.Disable();
     }

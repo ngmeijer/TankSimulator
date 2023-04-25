@@ -20,12 +20,12 @@ public abstract class HUDState : FSMState
         _inputActions.Enable();
     }
 
-    public override void EnterState()
+    public override void Enter()
     {
         HUDContainer.SetActive(true);
     }
 
-    public override void ExitState()
+    public override void Exit()
     {
         HUDContainer.SetActive(false);
     }

@@ -11,9 +11,9 @@ public class ThirdPersonState : CameraState
     [SerializeField] private Transform _cameraLowerBound;
     [SerializeField] private Transform _cameraUpperBound;
 
-    public override void EnterState()
+    public override void Enter()
     {
-        base.EnterState();
+        base.Enter();
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;

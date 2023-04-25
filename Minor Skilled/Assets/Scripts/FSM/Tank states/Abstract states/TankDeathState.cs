@@ -18,9 +18,9 @@ public abstract class TankDeathState : TankState
         _hudDeathState = HUDStateSwitcher.Instance.HUDDeathState as HUDDeathState;
     }
     
-    public override void EnterState()
+    public override void Enter()
     {
-        base.EnterState();
+        base.Enter();
 
         OnDeathActions();
     }

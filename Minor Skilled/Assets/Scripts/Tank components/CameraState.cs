@@ -20,9 +20,9 @@ public abstract class CameraState : FSMState
         ViewCam = GetComponent<Camera>();
     }
 
-    public override void EnterState()
+    public override void Enter()
     {
-        base.EnterState();
+        base.Enter();
 
         if (LastCamPos != Vector3.zero)
         {
@@ -34,9 +34,9 @@ public abstract class CameraState : FSMState
         SetCameraEnable(true);
     }
 
-    public override void ExitState()
+    public override void Exit()
     {
-        base.ExitState();
+        base.Exit();
         
         SetCameraEnable(false);
     }

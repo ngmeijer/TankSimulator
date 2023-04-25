@@ -195,7 +195,7 @@ MonoBehaviour:
   ViewCam: {fileID: 261092897}
   StateLookAt: {fileID: 7817720855815354587}
   ThisState: 5
-  _lerpSpeed: 1
+  _lerpSpeed: 0.5
   CameraTargetDestination: {fileID: 8668419169536204710}
   LastCamPos: {x: 0, y: 0, z: 0}
 --- !u!1 &278367536
@@ -496,7 +496,7 @@ MonoBehaviour:
   ViewCam: {fileID: 550209002}
   StateLookAt: {fileID: 502710295}
   ThisState: 3
-  _lerpSpeed: 1
+  _lerpSpeed: 0.5
   CameraTargetDestination: {fileID: 106126344}
   LastCamPos: {x: 0, y: 0, z: 0}
   _horizontalSpeed: 60
@@ -2286,7 +2286,7 @@ MonoBehaviour:
   ViewCam: {fileID: 4238494059236804285}
   StateLookAt: {fileID: 1618565770983655641}
   ThisState: 4
-  _lerpSpeed: 1
+  _lerpSpeed: 0.5
   CameraTargetDestination: {fileID: 5014370686634257881}
   LastCamPos: {x: 0, y: 0, z: 0}
   _horizontalSpeed: 60
@@ -5749,7 +5749,7 @@ MonoBehaviour:
   ViewCam: {fileID: 7817720856352731540}
   StateLookAt: {fileID: 888501358}
   ThisState: 1
-  _lerpSpeed: 1
+  _lerpSpeed: 0.5
   CameraTargetDestination: {fileID: 1832808938}
   LastCamPos: {x: 0, y: 0, z: 0}
 --- !u!1 &7935548429213967554

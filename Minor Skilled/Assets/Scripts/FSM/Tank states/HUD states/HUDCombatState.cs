@@ -41,20 +41,14 @@ public class HUDCombatState : HUDState
         CreateEnemyIndicators();
     }
 
-    public override void EnterState()
+    public override void Enter()
     {
-        base.EnterState();
+        base.Enter();
         
         SetZoomLevelText(0, false);
         EnableInspectHostileText(false);
     }
-    
-    public override void ExitState()
-    {
-        base.ExitState();
-        
-    }
-    
+
     public void UpdateGearboxData(MovementData data)
     {
         _tankSpeedText.SetText($"{data.Velocity}");

@@ -21,9 +21,9 @@ public class HUDStateSwitcher : SingletonMonobehaviour<HUDStateSwitcher>
 
     private void Start()
     {
-        HUDDeathState.ExitState();
-        HUDInspectState.ExitState();
-        HUDHostileInspectState.ExitState();
+        HUDDeathState.Exit();
+        HUDInspectState.Exit();
+        HUDHostileInspectState.Exit();
     }
 
     public void SwitchToHUDState(E_TankState newStateEnum)
@@ -33,7 +33,7 @@ public class HUDStateSwitcher : SingletonMonobehaviour<HUDStateSwitcher>
             if (CurrentHUDState.ThisState == newStateEnum)
                 return;
             
-            CurrentHUDState.ExitState();
+            CurrentHUDState.Exit();
         }
         
         HUDState newState = newStateEnum switch
@@ -44,7 +44,7 @@ public class HUDStateSwitcher : SingletonMonobehaviour<HUDStateSwitcher>
             E_TankState.HostileInspection => HUDHostileInspectState,
         };
         
-        newState.EnterState();
+        newState.Enter();
         CurrentHUDState = newState;
     }
 }

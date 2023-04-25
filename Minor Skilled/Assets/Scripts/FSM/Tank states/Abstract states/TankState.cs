@@ -16,7 +16,7 @@ public abstract class TankState : FSMState
     protected TankProperties Properties { get; private set; }
     public E_TankState ThisState;
     
-    protected void Awake()
+    protected virtual void Awake()
     {
         _componentManager = GetComponentInParent<TankComponentManager>();
         Properties = _componentManager.Properties;
