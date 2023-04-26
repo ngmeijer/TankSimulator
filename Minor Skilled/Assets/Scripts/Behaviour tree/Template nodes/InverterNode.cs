@@ -1,18 +1,18 @@
-﻿public class InverterNode : BehaviourNode
+﻿using System.Drawing;
+using Color = UnityEngine.Color;
+
+public class InverterNode : BehaviourNode
 {
     private BehaviourNode _node;
     
-    public InverterNode(BehaviourNode node)
+    public InverterNode(AIBlackboard blackboard, BehaviourNode node) : base(blackboard)
     {
         _node = node;
     }
     
-    public override NodeState Evaluate(AIBlackboard blackboard)
+    public override NodeState Evaluate()
     {
-        if (_blackboard == null)
-            _blackboard = blackboard;
-        
-        _nodeState = _node.Evaluate(blackboard) switch
+        _nodeState = _node.Evaluate() switch
         {
             NodeState.Running => NodeState.Running,
             NodeState.Success => NodeState.Failure,

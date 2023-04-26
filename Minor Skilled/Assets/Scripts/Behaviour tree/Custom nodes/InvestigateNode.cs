@@ -5,17 +5,14 @@ using UnityEngine.AI;
 
 public class InvestigateNode : SequenceNode
 {
-    private CheckIfPlayerInRangeNode playerRangeNode;
-    private CheckIfPlayerInVision playerVisionNode;
-    
-    public InvestigateNode()
+    public InvestigateNode(AIBlackboard blackboard) : base(blackboard)
     {
         
     }
 
-    public override NodeState Evaluate(AIBlackboard blackboard)
+    public override NodeState Evaluate()
     {
-        base.Evaluate(blackboard);
+        base.Evaluate();
 
         return _nodeState;
     }

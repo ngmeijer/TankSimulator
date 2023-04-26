@@ -22,10 +22,12 @@ public abstract class BehaviourNode
 
     protected List<BehaviourNode> _childNodes = new List<BehaviourNode>();
     public BehaviourNode ParentNode;
+    public Color GizmoColor = new Color(255, 255, 255, 0.01f);
+    protected const float DEFAULT_ALPHA = 0.05f;
 
-    public BehaviourNode()
+    public BehaviourNode(AIBlackboard blackboard)
     {
-        
+        _blackboard = blackboard;
     }
     
     public void AddChildNode(BehaviourNode node)
@@ -33,7 +35,7 @@ public abstract class BehaviourNode
         _childNodes.Add(node);
     }
 
-    public abstract NodeState Evaluate(AIBlackboard blackboard);
+    public abstract NodeState Evaluate();
 
     public abstract void DrawGizmos();
 }

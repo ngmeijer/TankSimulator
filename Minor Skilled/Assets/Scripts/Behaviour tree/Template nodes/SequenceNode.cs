@@ -2,21 +2,18 @@
 
 public class SequenceNode : BehaviourNode
 {
-    public SequenceNode()
+    public SequenceNode(AIBlackboard blackboard) : base(blackboard)
     {
         
     }
     
-    public override NodeState Evaluate(AIBlackboard blackboard)
+    public override NodeState Evaluate()
     {
-        if (_blackboard == null)
-            _blackboard = blackboard;
-        
         bool hasRunningChild = false;
         
         foreach (var child in _childNodes)
         {
-            NodeState state = child.Evaluate(blackboard);
+            NodeState state = child.Evaluate();
 
             switch (state)
             {

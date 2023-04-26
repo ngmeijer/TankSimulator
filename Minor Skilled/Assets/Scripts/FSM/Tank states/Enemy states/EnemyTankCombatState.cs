@@ -11,6 +11,7 @@ public class EnemyTankCombatState : TankCombatState
     private NavMeshAgent _agent;
     private PatrolNode _patrolNode;
     private InvestigateNode _investigateNode;
+    private ShootNode _shootNode;
 
     protected override void Awake()
     {
@@ -25,22 +26,16 @@ public class EnemyTankCombatState : TankCombatState
     {
         base.Start();
         
-        SequenceNode rootNode = new();
-        _patrolNode = new PatrolNode();
-        _investigateNode = new InvestigateNode();
-        
-        _investigateNode.AddChildNode(new CheckIfPlayerInRangeNode());
-        _investigateNode.AddChildNode(new CheckIfPlayerInVision());
-    
-        rootNode.AddChildNode(_patrolNode);
-        rootNode.AddChildNode(_investigateNode);
+        SequenceNode rootNode = new(_blackboard);
+        _shootNode = new ShootNode(_blackboard);
+        rootNode.AddChildNode(_shootNode);
         _tree.SetRootNode(rootNode);
     }
 
 
     private void Update()
     {
-        _tree.EvaluateTree(_blackboard);
+        _tree.EvaluateTree();
     }
 
     private void OnDrawGizmos()

@@ -9,19 +9,16 @@ public class PatrolNode : BehaviourNode
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private float _stoppingDistance = 2f;
 
-    public PatrolNode()
+    public PatrolNode(AIBlackboard blackboard) : base(blackboard)
     {
         
     }
 
-    public override NodeState Evaluate(AIBlackboard blackboard)
+    public override NodeState Evaluate()
     {
-        if (_blackboard == null)
-            _blackboard = blackboard;
-
         if (CheckIfReachedDestination())
             FindNewDestination();
-        else blackboard.Agent.SetDestination(_blackboard.CurrentAgentDestination);
+        else _blackboard.Agent.SetDestination(_blackboard.CurrentAgentDestination);
         
         _nodeState = NodeState.Running;
         return _nodeState;

@@ -1,20 +1,18 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class SelectorNode : BehaviourNode
 {
-    public SelectorNode()
+    public SelectorNode(AIBlackboard blackboard) : base(blackboard)
     {
         
     }
 
-    public override NodeState Evaluate(AIBlackboard blackboard)
+    public override NodeState Evaluate()
     {
-        if (_blackboard == null)
-            _blackboard = blackboard;
-        
         foreach (var child in _childNodes)
         {
-            NodeState state = child.Evaluate(blackboard);
+            NodeState state = child.Evaluate();
 
             switch (state)
             {

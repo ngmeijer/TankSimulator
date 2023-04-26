@@ -6,7 +6,11 @@ public class TurretControlComponent : TankComponent
 {
     [Header("Tank part transforms")] [SerializeField]
     private Transform _turretTransform;
-
+    public Transform TurretTransform
+    {
+        get { return _turretTransform; }
+    }
+    
     [SerializeField] private Transform _barrelTransform;
     [SerializeField] private Transform _rotationTargetParent;
 

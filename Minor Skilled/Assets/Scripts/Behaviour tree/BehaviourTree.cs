@@ -15,9 +15,9 @@ public class BehaviourTree : MonoBehaviour
         _rootNode = rootNode;
     }
 
-    public void EvaluateTree(AIBlackboard _blackboard)
+    public void EvaluateTree()
     {
-        _rootNode?.Evaluate(_blackboard);
+        _rootNode?.Evaluate();
     }
 
     private void OnDrawGizmos()
