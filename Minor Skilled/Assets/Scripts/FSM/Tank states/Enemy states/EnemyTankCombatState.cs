@@ -6,50 +6,37 @@ using UnityEngine.AI;
 
 public class EnemyTankCombatState : TankCombatState
 {
-    private BehaviourTree _tree;
-    private AIBlackboard _blackboard;
-    private NavMeshAgent _agent;
-    private PatrolNode _patrolNode;
-    private InvestigateNode _investigateNode;
-    private ShootNode _shootNode;
-
-    protected override void Awake()
+    public bool IsReloading()
     {
-        base.Awake();
-
-        _agent = GetComponentInParent<NavMeshAgent>();
-        _blackboard = GetComponentInParent<AIBlackboard>();
-        _tree = GetComponentInParent<BehaviourTree>();
+        return _componentManager.ShootComponent.IsReloading;
     }
     
-    protected override void Start()
+    public bool HasShells()
     {
-        base.Start();
-        
-        SequenceNode rootNode = new(_blackboard);
-        _shootNode = new ShootNode(_blackboard);
-        rootNode.AddChildNode(_shootNode);
-        _tree.SetRootNode(rootNode);
+        return _componentManager.ShootComponent.GetShellCount() > 0;
+    }
+    
+    public void RotateTurret(float direction)
+    {
+        _componentManager.TurretControlComponent.HandleTurretRotation(direction, _componentManager.Properties.TP_HorizontalSensitivity);
     }
 
-
-    private void Update()
+    public void FireShell()
     {
-        _tree.EvaluateTree();
+        _componentManager.ShootComponent.FireShell(); 
     }
 
-    private void OnDrawGizmos()
+    public float GetHealthPercentage()
     {
-        if (_patrolNode != null)
-        {
-            Gizmos.color = new Color(255, 0, 0);
-            Gizmos.DrawSphere(_blackboard.CurrentAgentDestination, 0.5f);
-            Handles.Label(_blackboard.CurrentAgentDestination + GameManager.HandlesOffset, "Agent destination");
-            
-            Gizmos.color = new Color(0, 0, 255f);
-            Gizmos.DrawSphere(transform.position, 1f);
+        float percent = _componentManager.DamageComponent.CurrentData.GetMostDamagedPartHealth();
 
-            Gizmos.color = Color.red;
-        }
+        return percent;
+    }
+    
+    public float GetArmorPercentage()
+    {
+        float percent = _componentManager.DamageComponent.CurrentData.GetMostDamagedPartArmor();
+
+        return percent;
     }
 }

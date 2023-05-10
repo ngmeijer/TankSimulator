@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class BehaviourTree : MonoBehaviour
+public class BehaviourTree
 {
     private BehaviourNode _rootNode;
     
@@ -20,7 +20,7 @@ public class BehaviourTree : MonoBehaviour
         _rootNode?.Evaluate();
     }
 
-    private void OnDrawGizmos()
+    public void DrawGizmos()
     {
         _rootNode?.DrawGizmos();
     }

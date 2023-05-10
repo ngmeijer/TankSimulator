@@ -1081,7 +1081,7 @@ MonoBehaviour:
   _functioningTankGFX: {fileID: 7817554744197927519}
   _destroyedTankGFX: {fileID: 4712586073713347565}
   _deathVFX: {fileID: 4711635311610703500}
-  _bigassExplosionDetonator: {fileID: 5671288248461344165}
+  _bigassExplosionDetonator: {fileID: 0}
 --- !u!114 &249388063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2091,6 +2091,7 @@ MonoBehaviour:
   MaxArmor: 200
   CurrentHealth: 0
   CurrentArmor: 0
+  _debugMode: 0
   OnDamageRegistered:
     m_PersistentCalls:
       m_Calls: []
@@ -3991,6 +3992,7 @@ MonoBehaviour:
   MaxArmor: 350
   CurrentHealth: 0
   CurrentArmor: 0
+  _debugMode: 0
   OnDamageRegistered:
     m_PersistentCalls:
       m_Calls: []
@@ -4909,6 +4911,7 @@ MonoBehaviour:
   MaxArmor: 320
   CurrentHealth: 0
   CurrentArmor: 0
+  _debugMode: 0
   OnDamageRegistered:
     m_PersistentCalls:
       m_Calls: []
@@ -5256,6 +5259,7 @@ GameObject:
   - component: {fileID: 1054301939}
   - component: {fileID: 1913808485}
   - component: {fileID: 4711635310943932853}
+  - component: {fileID: 2061594771}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -5444,7 +5448,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DefaultTankState: 1
   _inspectionState: {fileID: 249388064}
-  _combatState: {fileID: 249388063}
+  CombatState: {fileID: 249388063}
   _deathState: {fileID: 414376520}
   _hostileInspectionState: {fileID: 249388065}
   TankStateEnum: 0
@@ -5570,6 +5574,20 @@ MonoBehaviour:
   OnTankDestruction:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2061594771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7817720855815354588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e70d1ed9cd2374449181e537eeaeed8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RaysToShoot: 30
+  Cooldown: 1
 --- !u!1 &7817720856352731542
 GameObject:
   m_ObjectHideFlags: 0
@@ -5829,6 +5847,7 @@ MonoBehaviour:
   MaxArmor: 200
   CurrentHealth: 0
   CurrentArmor: 0
+  _debugMode: 0
   OnDamageRegistered:
     m_PersistentCalls:
       m_Calls: []
@@ -5993,6 +6012,7 @@ MonoBehaviour:
   - {fileID: 4122469408070507833, guid: 15dd83de937c37546a369107f4ed431a, type: 3}
   _audioSource: {fileID: 1181831519}
   CurrentRange: 0
+  IsReloading: 0
   CanFire: 1
 --- !u!1 &8853720785565731980
 GameObject:
@@ -8738,19 +8758,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 7514e3ecececf4075a101607065d0ea5, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7514e3ecececf4075a101607065d0ea5, type: 3}
---- !u!114 &5671288248461344165 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 11400000, guid: 7514e3ecececf4075a101607065d0ea5, type: 3}
-  m_PrefabInstance: {fileID: 5671288248468459237}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b4007f1233a9b74fa9be42583fafba6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &5671288248468067429 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 7514e3ecececf4075a101607065d0ea5, type: 3}

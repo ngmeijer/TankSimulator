@@ -26,7 +26,7 @@ public class ShootComponent : TankComponent
     public float CurrentRange;
     public float RangePercent { get; private set; }
     public float MinRange { get; } = 0f;
-
+    public bool IsReloading;
     public bool CanFire = true;
     public float MaxRange { get; private set; } = 1000f;
     private int _currentAmmoCountForShell;
@@ -65,8 +65,6 @@ public class ShootComponent : TankComponent
 
             _ammoCountsPerShellType.Add(shell.GetShellType(), ammoCount);
         }
-
-        _ammoCountsPerShellType.TryGetValue(_currentShellType, out _currentAmmoCountForShell);
     }
 
     private void Start()
@@ -158,8 +156,10 @@ public class ShootComponent : TankComponent
 
     private IEnumerator ReloadCannon()
     {
+        IsReloading = true;
         yield return new WaitForSeconds(_componentManager.Properties.ReloadTime);
 
+        IsReloading = false;
         CanFire = true;
     }
 
@@ -181,5 +181,12 @@ public class ShootComponent : TankComponent
         CurrentRange = (float)Math.Round(CurrentRange, 2);
         
         GameManager.Instance.BarrelRotationValue = CurrentRange / MaxRange;
+    }
+
+    public int GetShellCount()
+    {
+        _ammoCountsPerShellType.TryGetValue(_currentShellType, out _currentAmmoCountForShell);
+
+        return _currentAmmoCountForShell;
     }
 }

@@ -11,19 +11,23 @@ public class PlayerCombatState : TankCombatState
     private PlayerStateSwitcher _playerStateSwitcher;
     private HUDCombatState _hudCombatState;
 
-    protected override void Start()
+    protected override void Awake()
     {
-        _playerStateSwitcher = _componentManager.StateSwitcher as PlayerStateSwitcher;
-        _hudCombatState = HUDStateSwitcher.Instance.HUDCombatState as HUDCombatState;
-
+        base.Awake();
+        
         _inputActions = new PlayerInputActions();
         _inputActions.TankMovement.Shoot.started += TankFire;
         _inputActions.TankMovement.IncreaseGear.started += IncreaseGear;
         _inputActions.TankMovement.DecreaseGear.started += DecreaseGear;
         _inputActions.TankMovement.ShellSwitch.started += ShellTypeSwitch;
-        _inputActions.TankMovement.Enable();
     }
     
+    protected override void Start()
+    {
+        _playerStateSwitcher = _componentManager.StateSwitcher as PlayerStateSwitcher;
+        _hudCombatState = HUDStateSwitcher.Instance.HUDCombatState as HUDCombatState;
+    }
+
     public override void Enter()
     {
         base.Enter();
@@ -58,7 +62,17 @@ public class PlayerCombatState : TankCombatState
     public override void LateUpdateState()
     {
         if (_playerStateSwitcher.CurrentCameraState.InTransition) return;
-        _componentManager.TurretControlComponent.HandleTurretRotation(_mouseInput.x);
+        float multiplier = 0;
+        E_CameraState camState = _playerStateSwitcher.CurrentCameraState.ThisState;
+        if (camState == E_CameraState.ThirdPerson)
+            multiplier = _componentManager.Properties.TP_HorizontalSensitivity;
+        else if (camState == E_CameraState.ADS)
+        {
+            int currentFOV = _playerStateSwitcher.CurrentCameraState.GetFOVLevel();
+            multiplier = _componentManager.Properties.ADS_HorizontalSensitivity[currentFOV];
+        }
+        
+        _componentManager.TurretControlComponent.HandleTurretRotation(_mouseInput.x, multiplier);
     }
 
     protected override void GetInputValues()

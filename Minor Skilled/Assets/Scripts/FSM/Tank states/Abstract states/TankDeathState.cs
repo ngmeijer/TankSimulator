@@ -31,7 +31,8 @@ public abstract class TankDeathState : TankState
         _functioningTankGFX.SetActive(false);
         _destroyedTankGFX.SetActive(true);
         _deathVFX.SetActive(true);
-        _bigassExplosionDetonator.Explode();
+        if(_bigassExplosionDetonator != null)
+            _bigassExplosionDetonator.Explode();    
         _componentManager.HasDied = true;
     }
 }

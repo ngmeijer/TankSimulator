@@ -14,15 +14,16 @@ public abstract class BehaviourNode
 {
     protected AIBlackboard _blackboard;
 
-    protected NodeState _nodeState;
+    protected NodeState _nodeState = NodeState.Failure;
     public NodeState CurrentNodeState
     {
         get { return _nodeState; }
     }
 
-    protected List<BehaviourNode> _childNodes = new List<BehaviourNode>();
     public BehaviourNode ParentNode;
-    public Color GizmoColor = new Color(255, 255, 255, 0.01f);
+    protected List<BehaviourNode> _childNodes = new List<BehaviourNode>();
+    public Color TransparentGizmoColor = new Color(255, 255, 255, 0.01f);
+    public Color SolidGizmoColor = new Color(255, 255, 255);
     protected const float DEFAULT_ALPHA = 0.05f;
 
     public BehaviourNode(AIBlackboard blackboard)
@@ -33,9 +34,25 @@ public abstract class BehaviourNode
     public void AddChildNode(BehaviourNode node)
     {
         _childNodes.Add(node);
+        node.ParentNode = this;
     }
+
+    public int GetChildCount() => _childNodes.Count;
 
     public abstract NodeState Evaluate();
 
     public abstract void DrawGizmos();
+
+    public virtual string ShowAscendingLeafChain(string currentChain = "")
+    {
+        currentChain += ToString();
+
+        if (ParentNode == null)
+            return currentChain;
+
+        currentChain += " > ";
+        currentChain = ParentNode.ShowAscendingLeafChain(currentChain);
+
+        return currentChain;
+    }
 }

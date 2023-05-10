@@ -53,4 +53,30 @@ public class TankData
 
         return currentArmor;
     }
+
+    public float GetMostDamagedPartHealth()
+    {
+        float currentLowestPercentage = 1;
+        foreach (var part in TankParts)
+        {
+            float percent = part.CurrentHealth / (float)part.MaxHealth;
+            if (percent < currentLowestPercentage)
+                currentLowestPercentage = percent;
+        }
+
+        return currentLowestPercentage;
+    }
+    
+    public float GetMostDamagedPartArmor()
+    {
+        float currentLowestPercentage = 1;
+        foreach (var part in TankParts)
+        {
+            float percent = part.CurrentArmor / part.MaxArmor;
+            if (percent < currentLowestPercentage)
+                currentLowestPercentage = percent;
+        }
+
+        return currentLowestPercentage;
+    }
 }

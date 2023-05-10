@@ -20,10 +20,14 @@ public class SelectorNode : BehaviourNode
                     continue;
                 case NodeState.Success:
                     _nodeState = NodeState.Success;
+                    if(child.GetChildCount() == 0)
+                        Debug.Log($"SELECTOR: <color=green> Branch: </color>  ({child.ShowAscendingLeafChain()})");
                     return _nodeState;
                 case NodeState.Failure:
                     _nodeState = NodeState.Failure;
-                    return _nodeState;
+                    if(child.GetChildCount() == 0)
+                        Debug.Log($"SELECTOR: <color=red> Branch: </color>    ({child.ShowAscendingLeafChain()})");
+                    continue;
             }
         }
 
@@ -33,6 +37,9 @@ public class SelectorNode : BehaviourNode
 
     public override void DrawGizmos()
     {
-        
+        foreach (var child in _childNodes)
+        {
+            child.DrawGizmos();
+        }
     }
 }

@@ -41,9 +41,10 @@ public class TankPart : MonoBehaviour
     public int MaxHealth;
     public int MaxArmor;
 
-    [HideInInspector] public int CurrentHealth;
-    [HideInInspector] public float CurrentArmor;
-    
+    public int CurrentHealth;
+    public float CurrentArmor;
+
+    [SerializeField] private bool _debugMode;
     private bool _repairing;
     public void IsRepairing(bool isTrue) => _repairing = isTrue;
     
@@ -57,8 +58,12 @@ public class TankPart : MonoBehaviour
     
     private void Awake()
     {
-        CurrentHealth = MaxHealth;
-        CurrentArmor = MaxArmor;
+        if (!_debugMode)
+        {
+            CurrentHealth = MaxHealth;
+            CurrentArmor = MaxArmor;
+        }
+
         SetStateText(PartState.Good);
         _canvasStartPos = _propertiesCanvas.transform.position;
         _canvasHidePos = _canvasStartPos;
@@ -198,6 +203,7 @@ public class TankPart : MonoBehaviour
         
         for (int i = 0; i < selectedVFX; i++)
         {
+            if (i >= _vfxLevels.Count) return;
             _vfxLevels[i].SetActive(true);
         }
     }

@@ -13,11 +13,20 @@ public class TurretControlComponent : TankComponent
     
     [SerializeField] private Transform _barrelTransform;
     [SerializeField] private Transform _rotationTargetParent;
-
+    public Transform RotationTarget
+    {
+        get { return _rotationTargetParent; }
+    }
+    
     [Header("Barrel rotation")] 
     [SerializeField] private Transform _barrelLowerBound;
     [SerializeField] private Transform _barrelUpperBound;
     [SerializeField] private Transform _barrelLookAt;
+
+    public Transform BarrelLookAt
+    {
+        get { return _barrelLookAt; }
+    }
     
     private float _currentXRotation;
     
@@ -26,21 +35,12 @@ public class TurretControlComponent : TankComponent
     protected void Start()
     {
         _playerStateSwitcher = _componentManager.StateSwitcher as PlayerStateSwitcher;
-        Debug.Assert(_turretTransform != null, $"TurretTransform on '{gameObject.name}' is null.");
-        Debug.Assert(_barrelTransform != null, $"BarrelTransform on '{gameObject.name}' is null.");
+        Debug.Assert(_turretTransform != null, $"TurretTransform on '{gameObject.transform.root.name}' is null.");
+        Debug.Assert(_barrelTransform != null, $"BarrelTransform on '{gameObject.transform.root.name}' is null.");
     }
 
-    public void HandleTurretRotation(float rotateInput)
+    public void HandleTurretRotation(float rotateInput, float multiplier)
     {
-        float multiplier = 0;
-        E_CameraState camState = _playerStateSwitcher.CurrentCameraState.ThisState;
-        if (camState == E_CameraState.ThirdPerson)
-            multiplier = _properties.TP_HorizontalSensitivity;
-        else if (camState == E_CameraState.ADS)
-        {
-            int currentFOV = _playerStateSwitcher.CurrentCameraState.GetFOVLevel();
-            multiplier = _properties.ADS_HorizontalSensitivity[currentFOV];
-        }
         Vector3 newRotation = new Vector3(0,
             _rotationTargetParent.localEulerAngles.y + (rotateInput * multiplier * Time.deltaTime), 0);
         _rotationTargetParent.localEulerAngles = newRotation;
@@ -91,12 +91,18 @@ public class TurretControlComponent : TankComponent
         Handles.Label(_barrelUpperBound.position + GameManager.HandlesOffset, _barrelUpperBound.name);
         Gizmos.DrawLine(_barrelLowerBound.position, _barrelUpperBound.position);
 
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(_barrelLookAt.position, 0.2f);
-        Handles.Label(_barrelLookAt.position + GameManager.HandlesOffset, _barrelLookAt.name);
+        if (_barrelLookAt != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawSphere(_barrelLookAt.position, 0.2f);
+            Handles.Label(_barrelLookAt.position + GameManager.HandlesOffset, _barrelLookAt.name);
+        }
 
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawSphere(_rotationTargetParent.position,  0.2f);
-        Handles.Label(_rotationTargetParent.position + GameManager.HandlesOffset, _rotationTargetParent.name);
+        if (_rotationTargetParent != null)
+        {
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawSphere(_rotationTargetParent.position, 0.2f);
+            Handles.Label(_rotationTargetParent.position + GameManager.HandlesOffset, _rotationTargetParent.name);
+        }
     }
 }
