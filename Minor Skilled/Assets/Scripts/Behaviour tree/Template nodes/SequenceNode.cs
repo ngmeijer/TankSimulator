@@ -20,6 +20,7 @@ public class SequenceNode : BehaviourNode
             {
                 case NodeState.Running:
                     hasRunningChild = true;
+                    Debug.Log($"SEQUENCE:<color=orange> Branch:</color> ({child.ShowAscendingLeafChain()})");
                     continue;
                 case NodeState.Success:
                     if(child.GetChildCount() == 0)

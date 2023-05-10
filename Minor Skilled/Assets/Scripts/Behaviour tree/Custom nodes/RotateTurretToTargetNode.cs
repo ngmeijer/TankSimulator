@@ -4,29 +4,15 @@ using UnityEngine;
 public class RotateTurretToTargetNode : BehaviourNode
 {
     private EnemyTankCombatState _combatState;
-    private Vector3 _targetPosition;
-    private Transform _targetTransform;
-    private Vector3 _currentTarget;
     private float _dotResult;
     
-    public RotateTurretToTargetNode(AIBlackboard blackboard, Vector3 targetPosition) : base(blackboard)
+    public RotateTurretToTargetNode(AIBlackboard blackboard) : base(blackboard)
     {
-        _targetPosition = targetPosition;
-        _combatState = _blackboard.StateSwitcher.CombatState as EnemyTankCombatState;
-    }
-    
-    public RotateTurretToTargetNode(AIBlackboard blackboard, Transform targetTransform) : base(blackboard)
-    {
-        _targetTransform = targetTransform;
         _combatState = _blackboard.StateSwitcher.CombatState as EnemyTankCombatState;
     }
 
     public override NodeState Evaluate()
     {
-        if (_targetTransform != null)
-            _currentTarget = _targetTransform.position;
-        else _currentTarget = _targetPosition;
-
         if (IsAimingAtTarget())
             _nodeState = NodeState.Success;
         else
@@ -46,7 +32,7 @@ public class RotateTurretToTargetNode : BehaviourNode
 
     private bool IsAimingAtTarget()
     {
-        Vector3 direction =  _currentTarget - _blackboard.ThisTrans.position;
+        Vector3 direction =  _blackboard.TurretLookAtPosition - _blackboard.ThisTrans.position;
         direction.Normalize();
         _dotResult = Vector3.Dot(direction, _blackboard.TurretTrans.right);
 

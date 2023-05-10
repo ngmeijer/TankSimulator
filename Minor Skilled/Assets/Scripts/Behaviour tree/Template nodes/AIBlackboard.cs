@@ -13,12 +13,14 @@ public class AIBlackboard : MonoBehaviour
     public Vector3 CurrentAgentDestination;
     public Vector3 SelectedCoverPosition;
 
+    public float MaxStoppingDistance;
     public float MaxInstantVisionRange;
     public float MaxVisionInvestigationRange;
     public float MaxPatrolRange;
     public float MaxShootingRange;
     public float ViewAngle;
-    public Vector3 InvestigatePosition;
+    public Vector3 TurretLookAtPosition;
+    public Vector3 MoveToPosition;
 
     private void Awake()
     {

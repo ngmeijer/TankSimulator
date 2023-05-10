@@ -31,10 +31,9 @@ public class AIController : MonoBehaviour
         rootNode.AddChildNode(_investigateNode);
         
         _shootNode = new ShootNode(_blackboard);
-        //rootNode.AddChildNode(_shootNode);
+        rootNode.AddChildNode(_shootNode);
     }
-
-
+    
     private void Update()
     {
         _tree.EvaluateTree();

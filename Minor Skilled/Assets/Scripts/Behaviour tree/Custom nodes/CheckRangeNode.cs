@@ -5,29 +5,25 @@ public class CheckRangeNode : BehaviourNode
 {
     private float _maxRange;
     private Vector3 _targetPosition;
-    
-    public CheckRangeNode(AIBlackboard blackboard, Vector3 targetPosition, float maxRange) : base(blackboard)
+    private Transform _targetTransform;
+
+    public CheckRangeNode(AIBlackboard blackboard, Transform targetTransform, float maxRange) : base(blackboard)
     {
         _maxRange = maxRange;
-        _targetPosition = targetPosition;
-    }
-    
-    public CheckRangeNode(AIBlackboard blackboard, Transform targetPosition, float maxRange) : base(blackboard)
-    {
-        _maxRange = maxRange;
-        _targetPosition = targetPosition.position;
+        _targetTransform = targetTransform;
     }
 
     public override NodeState Evaluate()
     {
-        _nodeState = PlayerInRange() ? NodeState.Success : NodeState.Failure;
+        _nodeState = TargetInRange() ? NodeState.Success : NodeState.Failure;
         
         return _nodeState;
     }
     
-    private bool PlayerInRange()
+    private bool TargetInRange()
     {
-        float distance = Vector3.Distance(_targetPosition, _blackboard.ThisTrans.position);
+        Vector3 target = _targetTransform ? _targetTransform.position : _targetPosition;
+        float distance = Vector3.Distance(target, _blackboard.ThisTrans.position);
 
         return distance <= _maxRange;
     }
@@ -44,5 +40,8 @@ public class CheckRangeNode : BehaviourNode
             SolidGizmoColor = Color.green;
             TransparentGizmoColor = new Color(0, 255, 0, DEFAULT_ALPHA);    
         }
+
+        Handles.color = TransparentGizmoColor;
+        Handles.DrawWireDisc(_blackboard.ThisTrans.position, _blackboard.ThisTrans.up, _maxRange);
     }
 }

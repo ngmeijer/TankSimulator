@@ -17,6 +17,7 @@ public class SelectorNode : BehaviourNode
             switch (state)
             {
                 case NodeState.Running:
+                    Debug.Log($"SELECTOR:<color=orange> Branch:</color> ({child.ShowAscendingLeafChain()})");
                     continue;
                 case NodeState.Success:
                     _nodeState = NodeState.Success;

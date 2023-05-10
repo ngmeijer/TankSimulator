@@ -6,10 +6,10 @@ public class ShootNode : SequenceNode
 {
     public ShootNode(AIBlackboard blackboard) : base(blackboard)
     {
-        CheckIfCanSeePositionNode canSeePositionNode = new(blackboard, GameManager.Instance.Player.EntityOrigin, blackboard.MaxShootingRange);
+        CheckIfCanSeePositionNode canSeePositionNode = new(blackboard, GameManager.Instance.Player.transform, blackboard.MaxShootingRange);
         AddChildNode(canSeePositionNode);
 
-        RotateTurretToTargetNode rotateTurretToTargetNode = new(blackboard, GameManager.Instance.Player.EntityOrigin);
+        RotateTurretToTargetNode rotateTurretToTargetNode = new(blackboard);
         AddChildNode(rotateTurretToTargetNode);
         
         CheckShellCountNode shellCountNode = new(blackboard);
@@ -24,8 +24,6 @@ public class ShootNode : SequenceNode
     
     public override NodeState Evaluate()
     {
-        Console.Clear();
-
         base.Evaluate();
         
         return _nodeState;
