@@ -65,6 +65,8 @@ public class ShootComponent : TankComponent
 
             _ammoCountsPerShellType.Add(shell.GetShellType(), ammoCount);
         }
+
+        _ammoCountsPerShellType.TryGetValue(_currentShellType, out _currentAmmoCountForShell);
     }
 
     private void Start()

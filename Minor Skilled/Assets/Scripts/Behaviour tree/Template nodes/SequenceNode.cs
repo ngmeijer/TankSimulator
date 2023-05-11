@@ -20,14 +20,14 @@ public class SequenceNode : BehaviourNode
             {
                 case NodeState.Running:
                     hasRunningChild = true;
-                    Debug.Log($"SEQUENCE:<color=orange> Branch:</color> ({child.ShowAscendingLeafChain()})");
+                    // Debug.Log($"SEQUENCE:<color=orange> Branch:</color> ({child.ShowAscendingLeafChain()})");
                     continue;
                 case NodeState.Success:
-                    if(child.GetChildCount() == 0)
-                        Debug.Log($"SEQUENCE:<color=green> Branch:</color> ({child.ShowAscendingLeafChain()})");
+                    // if(child.GetChildCount() == 0)
+                        // Debug.Log($"SEQUENCE:<color=green> Branch:</color> ({child.ShowAscendingLeafChain()})");
                     continue;
                 case NodeState.Failure:
-                    Debug.Log($"SEQUENCE:<color=red> Branch:</color>    ({child.ShowAscendingLeafChain()})");
+                    // Debug.Log($"SEQUENCE:<color=red> Branch:</color>    ({child.ShowAscendingLeafChain()})");
                     _nodeState = NodeState.Failure;
                     return _nodeState;
             }

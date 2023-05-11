@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Behaviour_tree.Custom_nodes;
+using UnityEngine;
 
 public class CoverNode : SequenceNode
 {

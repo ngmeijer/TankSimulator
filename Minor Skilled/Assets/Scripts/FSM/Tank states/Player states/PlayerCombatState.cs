@@ -53,7 +53,7 @@ public class PlayerCombatState : TankCombatState
 
     public override void FixedUpdateState()
     {
-        if (_moveInput.y == 0 && _moveInput.x == 0 && _componentManager.MoveComponent.GetTankVelocity() > 0)
+        if (_moveInput.y == 0f && _moveInput.x == 0f && _componentManager.MoveComponent.GetTankVelocity() > 0)
         {
             _componentManager.MoveComponent.SlowTankDown();
         }

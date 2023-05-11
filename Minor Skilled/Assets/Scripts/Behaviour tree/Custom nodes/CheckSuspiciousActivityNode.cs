@@ -1,4 +1,6 @@
-﻿public class CheckSuspiciousActivityNode : SelectorNode
+﻿using Behaviour_tree.Template_nodes;
+
+public class CheckSuspiciousActivityNode : SelectorNode
 {
     //Any or several of these nodes can return SUCCESS, so should be a selector node rather than sequence.
     public CheckSuspiciousActivityNode(AIBlackboard blackboard) : base(blackboard)

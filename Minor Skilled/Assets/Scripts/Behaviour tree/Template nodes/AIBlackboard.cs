@@ -16,6 +16,7 @@ public class AIBlackboard : MonoBehaviour
     public float MaxStoppingDistance;
     public float MaxInstantVisionRange;
     public float MaxVisionInvestigationRange;
+    public float MinPatrolRange;
     public float MaxPatrolRange;
     public float MaxShootingRange;
     public float ViewAngle;

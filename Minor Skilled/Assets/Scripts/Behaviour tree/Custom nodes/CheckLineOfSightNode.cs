@@ -1,42 +1,41 @@
 ﻿using UnityEngine;
 
-public class CheckLineOfSightNode : BehaviourNode
+namespace Behaviour_tree.Custom_nodes
 {
-    public CheckLineOfSightNode(AIBlackboard blackboard) : base(blackboard)
+    public class CheckLineOfSightNode : BehaviourNode
     {
-    }
+        public CheckLineOfSightNode(AIBlackboard blackboard) : base(blackboard)
+        {
+        }
 
-    public override NodeState Evaluate()
-    {
-        _nodeState = CanSeePlayer() ? NodeState.Success : NodeState.Failure;
+        public override NodeState Evaluate()
+        {
+            _nodeState = CanSeePlayer() ? NodeState.Success : NodeState.Failure;
         
-        return _nodeState;
-    }
+            return _nodeState;
+        }
     
-    private bool CanSeePlayer()
-    {
-        bool hitCollider = Physics.Linecast(
-            _blackboard.Raycaster.position,
-            GameManager.Instance.Player.EntityOrigin.position, out RaycastHit hit);
+        private bool CanSeePlayer()
+        {
+            bool hitCollider = Physics.Linecast(
+                _blackboard.Raycaster.position,
+                GameManager.Instance.Player.EntityOrigin.position, out RaycastHit hit, 1);
         
-        if (!hitCollider) 
-            return false;
-        if (!hit.collider.transform.root.CompareTag("Player")) 
-            return false;
-        return true;
-    }
+            return hitCollider && hit.collider.transform.root.CompareTag("Player");
+        }
 
-    public override void DrawGizmos()
-    {
-        if (_nodeState == NodeState.Success)
+        public override void DrawGizmos()
         {
-            Gizmos.color = Color.green;
-        }
-        else
-        {
-            Gizmos.color = Color.red;
-        }
+            if (_nodeState == NodeState.Success)
+            {
+                Gizmos.color = Color.green;
+            }
+            else
+            {
+                Gizmos.color = Color.red;
+            }
         
-        Gizmos.DrawLine(_blackboard.Raycaster.position, GameManager.Instance.Player.EntityOrigin.position);
+            Gizmos.DrawLine(_blackboard.Raycaster.position, GameManager.Instance.Player.EntityOrigin.position);
+        }
     }
 }

@@ -1,3 +1,4 @@
+using Behaviour_tree.Template_nodes;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
@@ -6,7 +7,6 @@ public class AIController : MonoBehaviour
 {
     private BehaviourTree _tree;
     private AIBlackboard _blackboard;
-    private NavMeshAgent _agent;
     private PatrolNode _patrolNode;
     private InvestigateNode _investigateNode;
     private ShootNode _shootNode;
@@ -14,7 +14,6 @@ public class AIController : MonoBehaviour
 
     protected void Awake()
     {
-        _agent = GetComponentInParent<NavMeshAgent>();
         _blackboard = GetComponentInParent<AIBlackboard>();
         _tree = new BehaviourTree();
     }
@@ -32,6 +31,9 @@ public class AIController : MonoBehaviour
         
         _shootNode = new ShootNode(_blackboard);
         rootNode.AddChildNode(_shootNode);
+
+        _patrolNode = new PatrolNode(_blackboard);
+        //rootNode.AddChildNode(_patrolNode);
     }
     
     private void Update()

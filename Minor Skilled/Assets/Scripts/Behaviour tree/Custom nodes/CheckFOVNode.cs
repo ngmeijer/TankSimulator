@@ -28,6 +28,7 @@ public class CheckFOVNode : BehaviourNode
         return _nodeState;
     }
     
+    //Refactor node (related to GetRandomNavMeshPointNode. Both check if a point is inside FOV)
     private bool IsTargetInsideFOV()
     {
         _currentTarget = _targetTransform != null ? _targetTransform.position : _targetPosition;

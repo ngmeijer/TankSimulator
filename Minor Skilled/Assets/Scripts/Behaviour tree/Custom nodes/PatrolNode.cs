@@ -3,25 +3,15 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class PatrolNode : BehaviourNode
-{ 
-    public float PatrolRange { get; private set; } = 50f;
-    [SerializeField] private float _moveSpeed = 5f;
-    [SerializeField] private float _stoppingDistance = 2f;
-
+public class PatrolNode : SequenceNode
+{
     public PatrolNode(AIBlackboard blackboard) : base(blackboard)
     {
-        
-    }
+        GetRandomNavMeshPointNode getRandomPointNode = new GetRandomNavMeshPointNode(_blackboard);
+        AddChildNode(getRandomPointNode);
 
-    public override NodeState Evaluate()
-    {
-        if (CheckIfReachedDestination())
-            FindNewDestination();
-        else _blackboard.Agent.SetDestination(_blackboard.CurrentAgentDestination);
-        
-        _nodeState = NodeState.Running;
-        return _nodeState;
+        MoveToPositionNode moveToPositionNode = new MoveToPositionNode(_blackboard);
+        AddChildNode(moveToPositionNode);
     }
 
     public override void DrawGizmos()
