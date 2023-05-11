@@ -21,6 +21,7 @@ public class AIBlackboard : MonoBehaviour
     public float ViewAngle;
     public Vector3 TurretLookAtPosition;
     public Vector3 MoveToPosition;
+    public float PathCalculationInterval;
 
     private void Awake()
     {

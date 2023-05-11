@@ -657,7 +657,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1614434262}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.00000047683716, y: 0, z: 3.3999944}
+  m_LocalPosition: {x: -0.00000071525574, y: 0.5, z: 5.649995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4109,12 +4109,15 @@ MonoBehaviour:
   Raycaster: {fileID: 1614434263}
   CurrentAgentDestination: {x: 0, y: 0, z: 0}
   SelectedCoverPosition: {x: 0, y: 0, z: 0}
+  MaxStoppingDistance: 50
   MaxInstantVisionRange: 80
-  MaxVisionInvestigationRange: 120
+  MaxVisionInvestigationRange: 150
   MaxPatrolRange: 15
   MaxShootingRange: 100
   ViewAngle: 140
-  InvestigatePosition: {x: 0, y: 0, z: 0}
+  TurretLookAtPosition: {x: 0, y: 0, z: 0}
+  MoveToPosition: {x: 0, y: 0, z: 0}
+  PathCalculationInterval: 2
 --- !u!1 &6587632306946441639
 GameObject:
   m_ObjectHideFlags: 0

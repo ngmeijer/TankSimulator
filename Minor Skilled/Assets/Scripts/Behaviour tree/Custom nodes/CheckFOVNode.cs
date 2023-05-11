@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class CheckFOVNode : BehaviourNode
@@ -7,15 +8,15 @@ public class CheckFOVNode : BehaviourNode
     private Vector3 _targetPosition;
     private Transform _targetTransform;
     private Vector3 _currentTarget;
-    private float _maxRange;
+    private KeyValuePair<string, float> _maxRange;
 
-    public CheckFOVNode(AIBlackboard blackboard, Vector3 targetPosition, float maxRange) : base(blackboard)
+    public CheckFOVNode(AIBlackboard blackboard, Vector3 targetPosition, KeyValuePair<string, float> maxRange) : base(blackboard)
     {
         _targetPosition = targetPosition;
         _maxRange = maxRange;
     }
     
-    public CheckFOVNode(AIBlackboard blackboard, Transform targetTransform, float maxRange) : base(blackboard)
+    public CheckFOVNode(AIBlackboard blackboard, Transform targetTransform, KeyValuePair<string, float> maxRange) : base(blackboard)
     {
         _targetTransform = targetTransform;
         _maxRange = maxRange;
@@ -49,9 +50,9 @@ public class CheckFOVNode : BehaviourNode
         }
         
         Handles.color = TransparentGizmoColor;
-        Handles.DrawSolidArc(_blackboard.TurretTrans.position, _blackboard.TurretTrans.up, _blackboard.TurretTrans.forward, -_blackboard.ViewAngle / 2, _maxRange);
-        Handles.DrawSolidArc(_blackboard.TurretTrans.position, _blackboard.TurretTrans.up, _blackboard.TurretTrans.forward, _blackboard.ViewAngle / 2, _maxRange);
-        Handles.Label(_blackboard.TurretTrans.position + Vector3.right * _maxRange, $"Max range: {_maxRange}");
+        Handles.DrawSolidArc(_blackboard.TurretTrans.position, _blackboard.TurretTrans.up, _blackboard.TurretTrans.forward, -_blackboard.ViewAngle / 2, _maxRange.Value);
+        Handles.DrawSolidArc(_blackboard.TurretTrans.position, _blackboard.TurretTrans.up, _blackboard.TurretTrans.forward, _blackboard.ViewAngle / 2, _maxRange.Value);
+        Handles.Label(_blackboard.ThisTrans.position + Vector3.right * _maxRange.Value, $"{_maxRange.Key}: {_maxRange.Value}");
         
         Gizmos.color = Color.red;
         Gizmos.DrawRay(_blackboard.TurretTrans.position, _blackboard.TurretTrans.forward * _blackboard.MaxInstantVisionRange);

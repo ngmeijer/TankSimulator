@@ -6,7 +6,9 @@ public class ShootNode : SequenceNode
 {
     public ShootNode(AIBlackboard blackboard) : base(blackboard)
     {
-        CheckIfCanSeePositionNode canSeePositionNode = new(blackboard, GameManager.Instance.Player.transform, blackboard.MaxShootingRange);
+        CheckIfCanSeePositionNode canSeePositionNode = new(blackboard, 
+            GameManager.Instance.Player.transform, 
+            new KeyValuePair<string, float>("Max shooting range", blackboard.MaxShootingRange));
         AddChildNode(canSeePositionNode);
 
         RotateTurretToTargetNode rotateTurretToTargetNode = new(blackboard);
