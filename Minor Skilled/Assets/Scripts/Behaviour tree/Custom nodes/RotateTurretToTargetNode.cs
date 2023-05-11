@@ -24,7 +24,7 @@ public class RotateTurretToTargetNode : BehaviourNode
                 direction = -1;
             
             MoveTurretToTarget(direction);
-            _nodeState = NodeState.Failure;
+            _nodeState = NodeState.Running;
         }
 
         return _nodeState;

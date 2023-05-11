@@ -7,7 +7,7 @@ public class CheckIfCanSeePositionNode : SequenceNode
 {
     private Transform _targetTransform;
 
-    public CheckIfCanSeePositionNode(AIBlackboard blackboard, Transform targetTransform, float maxRange) : base(blackboard)
+    public CheckIfCanSeePositionNode(AIBlackboard blackboard, Transform targetTransform, KeyValuePair<string, float> maxRange) : base(blackboard)
     {
         _targetTransform = targetTransform;
         
