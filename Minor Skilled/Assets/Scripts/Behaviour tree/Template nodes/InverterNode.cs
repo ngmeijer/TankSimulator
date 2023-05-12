@@ -5,10 +5,10 @@ public class InverterNode : BehaviourNode
 {
     private BehaviourNode _node;
     
-    public InverterNode(AIBlackboard blackboard, BehaviourNode node) : base(blackboard)
-    {
-        _node = node;
-    }
+    // public InverterNode(AIBlackboard blackboard, BehaviourNode node) : base(blackboard)
+    // {
+    //     _node = node;
+    // }
     
     public override NodeState Evaluate()
     {

@@ -17,15 +17,18 @@ public class AIBlackboard : ScriptableObject
     public float MaxVisionInvestigationRange;
     public float MinPatrolRange;
     public float MaxPatrolRange;
-    public float MaxShootingRange;
     public float ViewAngle;
     public Vector3 TurretLookAtPosition;
     public Vector3 MoveToPosition;
     public float PathCalculationInterval;
-
+    
     private void OnEnable()
     {
+        if (AIController == null)
+            return;
+        
         Agent = AIController.NavAgent;
+        ThisTrans = AIController.transform;
         TurretTrans = AIController.ComponentManager.TurretControlComponent.TurretTransform;
         Raycaster = AIController.ComponentManager.ShootComponent.Raycaster;
     }

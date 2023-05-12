@@ -1,18 +1,19 @@
 ﻿using System;
 using UnityEngine;
 
-public class BehaviourTree
+[CreateAssetMenu(menuName = "Behaviour tree/Tree instance")]
+public class BehaviourTree : ScriptableObject
 {
-    private BehaviourNode _rootNode;
-    
-    public BehaviourTree()
+    [SerializeField] private BehaviourNode _rootNode;
+
+    public void AssignBlackboardToTreeNodes(AIBlackboard blackboard)
     {
-        _rootNode = null;
+        _rootNode?.AssignBlackboard(blackboard);
     }
 
-    public void SetRootNode(BehaviourNode rootNode)
+    public void AssignParentNodesToTreeNodes()
     {
-        _rootNode = rootNode;
+        _rootNode?.AssignParentToChildren();
     }
 
     public void EvaluateTree()

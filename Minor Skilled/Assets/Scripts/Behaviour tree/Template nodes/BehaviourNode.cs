@@ -10,38 +10,44 @@ public enum NodeState{
 }
 
 [Serializable]
-public abstract class BehaviourNode
+public class BehaviourNode : ScriptableObject
 {
-    protected AIBlackboard _blackboard;
-
+    [HideInInspector] public AIBlackboard _blackboard;
     protected NodeState _nodeState = NodeState.Failure;
-    public NodeState CurrentNodeState
-    {
-        get { return _nodeState; }
-    }
 
     public BehaviourNode ParentNode;
-    protected List<BehaviourNode> _childNodes = new List<BehaviourNode>();
+    [SerializeField] protected List<BehaviourNode> _childNodes = new List<BehaviourNode>();
     public Color TransparentGizmoColor = new Color(255, 255, 255, 0.01f);
     public Color SolidGizmoColor = new Color(255, 255, 255);
     protected const float DEFAULT_ALPHA = 0.05f;
 
-    public BehaviourNode(AIBlackboard blackboard)
-    {
-        _blackboard = blackboard;
-    }
-    
-    public void AddChildNode(BehaviourNode node)
-    {
-        _childNodes.Add(node);
-        node.ParentNode = this;
-    }
-
     public int GetChildCount() => _childNodes.Count;
 
-    public abstract NodeState Evaluate();
+    public virtual NodeState Evaluate()
+    {
+        return _nodeState;
+    }
 
-    public abstract void DrawGizmos();
+    public void AssignBlackboard(AIBlackboard blackboard)
+    {
+        _blackboard = blackboard;
+
+        foreach (var child in _childNodes)
+        {
+            child.AssignBlackboard(blackboard);
+        }
+    }
+
+    public virtual void DrawGizmos()
+    {
+        if (_blackboard == null)
+            return;
+        
+        foreach (var child in _childNodes)
+        {
+            child.DrawGizmos();
+        }
+    }
 
     public virtual string ShowAscendingLeafChain(string currentChain = "")
     {
@@ -54,5 +60,13 @@ public abstract class BehaviourNode
         currentChain = ParentNode.ShowAscendingLeafChain(currentChain);
 
         return currentChain;
+    }
+
+    public void AssignParentToChildren()
+    {
+        foreach (var child in _childNodes)
+        {
+            child.ParentNode = this;
+        }
     }
 }

@@ -2,15 +2,9 @@
 using System.Linq;
 using UnityEngine;
 
-namespace Behaviour_tree.Template_nodes
-{
+    [CreateAssetMenu(menuName = "Behaviour tree/Composite/SelectorNode")]
     public class SelectorNode : BehaviourNode
     {
-        public SelectorNode(AIBlackboard blackboard) : base(blackboard)
-        {
-        
-        }
-
         public override NodeState Evaluate()
         {
             //Could use LINQ here, but wouldn't be able to do child.Function().
@@ -46,4 +40,3 @@ namespace Behaviour_tree.Template_nodes
             }
         }
     }
-}

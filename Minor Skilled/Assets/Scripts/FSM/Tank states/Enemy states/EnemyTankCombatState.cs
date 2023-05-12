@@ -39,4 +39,9 @@ public class EnemyTankCombatState : TankCombatState
 
         return percent;
     }
+
+    public void TestFunc()
+    {
+        Debug.Log("test");
+    }
 }

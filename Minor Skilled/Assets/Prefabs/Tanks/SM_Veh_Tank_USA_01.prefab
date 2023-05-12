@@ -3857,7 +3857,6 @@ GameObject:
   - component: {fileID: 1391781248}
   - component: {fileID: 182467024}
   - component: {fileID: 182467031}
-  - component: {fileID: 182467032}
   m_Layer: 0
   m_Name: SM_Veh_Tank_USA_01
   m_TagString: Enemy
@@ -4068,6 +4067,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd442f30086b65040bcb3d85d31e7816, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NavAgent: {fileID: 182467031}
+  StateSwitcher: {fileID: 1391781248}
+  ComponentManager: {fileID: 1629477345}
+  _tree: {fileID: 11400000, guid: 200b4237cede0f24cbef4f952fbf7352, type: 2}
+  _blackboard: {fileID: 11400000, guid: 9956501cb57ef8c44b4fa9f0dae498bf, type: 2}
 --- !u!195 &182467031
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -4090,34 +4094,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &182467032
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6587442561008276303}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc14d7b796e74abcae8bd44a55ee0866, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  StateSwitcher: {fileID: 1391781248}
-  Agent: {fileID: 182467031}
-  ThisTrans: {fileID: 6584836204776738019}
-  TurretTrans: {fileID: 6592327624090865561}
-  Raycaster: {fileID: 1614434263}
-  CurrentAgentDestination: {x: 0, y: 0, z: 0}
-  SelectedCoverPosition: {x: 0, y: 0, z: 0}
-  MaxStoppingDistance: 50
-  MaxInstantVisionRange: 80
-  MaxVisionInvestigationRange: 150
-  MaxPatrolRange: 15
-  MaxShootingRange: 100
-  ViewAngle: 140
-  TurretLookAtPosition: {x: 0, y: 0, z: 0}
-  MoveToPosition: {x: 0, y: 0, z: 0}
-  PathCalculationInterval: 2
 --- !u!1 &6587632306946441639
 GameObject:
   m_ObjectHideFlags: 0
@@ -5053,6 +5029,7 @@ MonoBehaviour:
   - {fileID: 7587118454724400453, guid: 5cd1a1d4e085d424eb7253c22f61ae02, type: 3}
   - {fileID: 4122469408070507833, guid: 15dd83de937c37546a369107f4ed431a, type: 3}
   _audioSource: {fileID: 182467016}
+  _rayCaster: {fileID: 1614434263}
   CurrentRange: 0
   IsReloading: 0
   CanFire: 1

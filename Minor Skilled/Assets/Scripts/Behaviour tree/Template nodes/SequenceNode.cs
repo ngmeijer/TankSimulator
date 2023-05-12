@@ -2,13 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "Behaviour tree/Composite/SequenceNode")]
 public class SequenceNode : BehaviourNode
 {
-    public SequenceNode(AIBlackboard blackboard) : base(blackboard)
-    {
-        
-    }
-    
     public override NodeState Evaluate()
     {
         bool hasRunningChild = false;
@@ -36,13 +32,5 @@ public class SequenceNode : BehaviourNode
         
         _nodeState = hasRunningChild ? NodeState.Running : NodeState.Success;
         return _nodeState;
-    }
-
-    public override void DrawGizmos()
-    {
-        foreach (var child in _childNodes)
-        {
-            child.DrawGizmos();
-        }
     }
 }

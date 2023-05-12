@@ -5,10 +5,10 @@ public class WaitForSecondsNode : BehaviourNode
     private float _waitTime;
     private float _currentTime;
     
-    public WaitForSecondsNode(AIBlackboard blackboard, float waitTime) : base(blackboard)
-    {
-        _waitTime = waitTime;
-    }
+    // public WaitForSecondsNode(AIBlackboard blackboard, float waitTime) : base(blackboard)
+    // {
+    //     _waitTime = waitTime;
+    // }
 
     public override NodeState Evaluate()
     {
