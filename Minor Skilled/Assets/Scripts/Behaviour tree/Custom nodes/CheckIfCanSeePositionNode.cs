@@ -30,7 +30,7 @@ public class CheckIfCanSeePositionNode : SequenceNode
             _blackboard.TurretLookAtPosition = GameManager.Instance.Player.transform.position;
             _blackboard.MoveToPosition = _blackboard.TurretLookAtPosition;
         }
-
+        
         return _nodeState;
     }
     

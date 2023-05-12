@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using UnityEngine;
 
 namespace Behaviour_tree.Template_nodes
 {
@@ -12,22 +13,21 @@ namespace Behaviour_tree.Template_nodes
 
         public override NodeState Evaluate()
         {
-            foreach (var state in _childNodes.Select(child => child.Evaluate()))
+            //Could use LINQ here, but wouldn't be able to do child.Function().
+            foreach (var child in _childNodes)
             {
-                switch (state)
+                switch (child.Evaluate())
                 {
                     case NodeState.Running:
-                        //Debug.Log($"SELECTOR:<color=orange> Branch:</color> ({child.ShowAscendingLeafChain()})");
+                        Debug.Log($"SELECTOR:<color=orange> Branch:</color> ({child.ShowAscendingLeafChain()})");
                         continue;
                     case NodeState.Success:
                         _nodeState = NodeState.Success;
-                        // if(child.GetChildCount() == 0)
-                        //     Debug.Log($"SELECTOR: <color=green> Branch: </color>  ({child.ShowAscendingLeafChain()})");
+                        Debug.Log($"SELECTOR: <color=green> Branch: </color>  ({child.ShowAscendingLeafChain()})");
                         return _nodeState;
                     case NodeState.Failure:
                         _nodeState = NodeState.Failure;
-                        // if(child.GetChildCount() == 0)
-                        //     Debug.Log($"SELECTOR: <color=red> Branch: </color>    ({child.ShowAscendingLeafChain()})");
+                        Debug.Log($"SELECTOR: <color=red> Branch: </color>    ({child.ShowAscendingLeafChain()})");
                         continue;
                     default:
                         throw new ArgumentOutOfRangeException();

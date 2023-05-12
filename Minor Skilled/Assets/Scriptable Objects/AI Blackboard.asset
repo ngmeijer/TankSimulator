@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc14d7b796e74abcae8bd44a55ee0866, type: 3}
+  m_Name: AI Blackboard
+  m_EditorClassIdentifier: 
+  AIController: {fileID: 0}
+  ThisTrans: {fileID: 0}
+  TurretTrans: {fileID: 0}
+  Raycaster: {fileID: 0}
+  CurrentAgentDestination: {x: 0, y: 0, z: 0}
+  SelectedCoverPosition: {x: 0, y: 0, z: 0}
+  MaxStoppingDistance: 0
+  MaxInstantVisionRange: 0
+  MaxVisionInvestigationRange: 0
+  MinPatrolRange: 0
+  MaxPatrolRange: 0
+  MaxShootingRange: 0
+  ViewAngle: 0
+  TurretLookAtPosition: {x: 0, y: 0, z: 0}
+  MoveToPosition: {x: 0, y: 0, z: 0}
+  PathCalculationInterval: 0

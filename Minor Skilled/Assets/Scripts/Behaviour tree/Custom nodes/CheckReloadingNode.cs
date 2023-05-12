@@ -4,7 +4,7 @@
 
     public CheckReloadingNode(AIBlackboard blackboard) : base(blackboard)
     {
-        _combatState = _blackboard.StateSwitcher.CombatState as EnemyTankCombatState;
+        _combatState = _blackboard.AIController.StateSwitcher.CombatState as EnemyTankCombatState;
     }
 
     public override NodeState Evaluate()

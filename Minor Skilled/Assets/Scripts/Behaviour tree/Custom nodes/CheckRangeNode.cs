@@ -17,7 +17,6 @@ public class CheckRangeNode : BehaviourNode
     public override NodeState Evaluate()
     {
         _nodeState = TargetInRange() ? NodeState.Success : NodeState.Failure;
-        
         return _nodeState;
     }
     

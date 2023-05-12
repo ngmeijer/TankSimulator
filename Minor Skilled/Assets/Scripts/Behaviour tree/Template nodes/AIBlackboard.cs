@@ -1,18 +1,17 @@
 ﻿using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AIBlackboard : MonoBehaviour
+[CreateAssetMenu(menuName = "AI blackboards/Blackboard instance")]
+public class AIBlackboard : ScriptableObject
 {
-    public StateSwitcher StateSwitcher;
-    public NavMeshAgent Agent;
-    public Transform ThisTrans;
-    public Transform TurretTrans;
-    public Transform Raycaster;
-
-    public Vector3 CurrentAgentDestination;
-    public Vector3 SelectedCoverPosition;
-
+    [HideInInspector] public AIController AIController;
+    [HideInInspector] public NavMeshAgent Agent;
+    [HideInInspector] public Transform ThisTrans;
+    [HideInInspector] public Transform TurretTrans;
+    [HideInInspector] public Transform Raycaster;
+    
     public float MaxStoppingDistance;
     public float MaxInstantVisionRange;
     public float MaxVisionInvestigationRange;
@@ -24,8 +23,10 @@ public class AIBlackboard : MonoBehaviour
     public Vector3 MoveToPosition;
     public float PathCalculationInterval;
 
-    private void Awake()
+    private void OnEnable()
     {
-        StateSwitcher = GetComponent<StateSwitcher>();
+        Agent = AIController.NavAgent;
+        TurretTrans = AIController.ComponentManager.TurretControlComponent.TurretTransform;
+        Raycaster = AIController.ComponentManager.ShootComponent.Raycaster;
     }
 }

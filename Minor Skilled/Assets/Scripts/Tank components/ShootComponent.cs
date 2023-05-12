@@ -18,6 +18,12 @@ public class ShootComponent : TankComponent
     [SerializeField] protected ParticleSystem _fireExplosion;
     [SerializeField] protected List<Shell> _shellPrefabs;
     [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private Transform _rayCaster;
+
+    public Transform Raycaster
+    {
+        get { return _rayCaster; }
+    }
     private List<Shell> _firedShells = new();
     private int _maxShellTypes;
     private int _currentShellIndex;

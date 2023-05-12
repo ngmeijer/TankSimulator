@@ -1,4 +1,6 @@
-﻿public class CheckArmorNode : CombatNode
+﻿using UnityEngine;
+
+public class CheckArmorNode : CombatNode
 {
     private float _requiredArmorToFlee;
     
