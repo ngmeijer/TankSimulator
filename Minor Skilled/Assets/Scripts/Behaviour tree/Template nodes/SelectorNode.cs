@@ -5,12 +5,12 @@ using UnityEngine;
     [CreateAssetMenu(menuName = "Behaviour tree/Composite/SelectorNode")]
     public class SelectorNode : BehaviourNode
     {
-        public override NodeState Evaluate()
+        public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
         {
             //Could use LINQ here, but wouldn't be able to do child.Function().
             foreach (var child in _childNodes)
             {
-                switch (child.Evaluate())
+                switch (child.Evaluate(blackboard, controller))
                 {
                     case NodeState.Running:
                         Debug.Log($"SELECTOR:<color=orange> Branch:</color> ({child.ShowAscendingLeafChain()})");
@@ -32,11 +32,11 @@ using UnityEngine;
             return _nodeState;
         }
 
-        public override void DrawGizmos()
+        public override void DrawGizmos(AIBlackboard blackboard, AIController controller)
         {
             foreach (var child in _childNodes)
             {
-                child.DrawGizmos();
+                child.DrawGizmos(blackboard, controller);
             }
         }
     }

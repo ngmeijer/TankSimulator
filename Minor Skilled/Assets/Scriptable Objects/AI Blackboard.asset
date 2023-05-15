@@ -12,18 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc14d7b796e74abcae8bd44a55ee0866, type: 3}
   m_Name: AI Blackboard
   m_EditorClassIdentifier: 
-  AIController: {fileID: 0}
-  Agent: {fileID: 0}
-  ThisTrans: {fileID: 0}
-  TurretTrans: {fileID: 0}
-  Raycaster: {fileID: 0}
-  MaxStoppingDistance: 20
-  MaxInstantVisionRange: 60
-  MaxVisionInvestigationRange: 150
-  MinPatrolRange: 10
-  MaxPatrolRange: 45
-  MaxShootingRange: 75
-  ViewAngle: 140
   TurretLookAtPosition: {x: -193.60011, y: 0.008234837, z: 181.60208}
   MoveToPosition: {x: -233.31406, y: 0.025009155, z: 226.2563}
   PathCalculationInterval: 2
+  TargetInvestigatePosition: {x: 0, y: 0, z: 0}

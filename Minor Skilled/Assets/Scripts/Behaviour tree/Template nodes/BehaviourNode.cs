@@ -10,42 +10,33 @@ public enum NodeState{
 }
 
 [Serializable]
-public class BehaviourNode : ScriptableObject
-{
-    [HideInInspector] public AIBlackboard _blackboard;
+public abstract class BehaviourNode : ScriptableObject
+{ 
     protected NodeState _nodeState = NodeState.Failure;
 
     public BehaviourNode ParentNode;
-    [SerializeField] protected List<BehaviourNode> _childNodes = new List<BehaviourNode>();
-    public Color TransparentGizmoColor = new Color(255, 255, 255, 0.01f);
-    public Color SolidGizmoColor = new Color(255, 255, 255);
+    [SerializeField] protected List<BehaviourNode> _childNodes = new();
+    public Color TransparentGizmoColor;
+    public Color SolidGizmoColor;
     protected const float DEFAULT_ALPHA = 0.05f;
 
     public int GetChildCount() => _childNodes.Count;
 
-    public virtual NodeState Evaluate()
+    public virtual NodeState Evaluate(AIBlackboard blackboard, AIController controller)
     {
         return _nodeState;
     }
 
-    public void AssignBlackboard(AIBlackboard blackboard)
+    public virtual void DrawGizmos(AIBlackboard blackboard, AIController controller)
     {
-        _blackboard = blackboard;
-
         foreach (var child in _childNodes)
         {
-            child.AssignBlackboard(blackboard);
-        }
-    }
-
-    public virtual void DrawGizmos()
-    {
-        if (_blackboard == null)
-            return;
-        
-        foreach (var child in _childNodes)
-        {
-            child.DrawGizmos();
+            if (child == null)
+            {
+                Debug.Log($"Null reference exception. Check node '{this}'s for child nodes that are null.");
+                continue;
+            }
+            child.DrawGizmos(blackboard, controller);
         }
     }
 

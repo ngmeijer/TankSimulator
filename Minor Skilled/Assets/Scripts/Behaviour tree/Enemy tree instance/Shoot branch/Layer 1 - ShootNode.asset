@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cf5c119daee4e8daccaa0d71970091e, type: 3}
   m_Name: Layer 1 - ShootNode
   m_EditorClassIdentifier: 
-  _blackboard: {fileID: 11400000, guid: 9956501cb57ef8c44b4fa9f0dae498bf, type: 2}
   ParentNode: {fileID: 11400000, guid: 0661eb32166ae29408fe4118d3678ead, type: 2}
   _childNodes:
   - {fileID: 11400000, guid: c98f46ce02f6ce4408c4300518b3d8d3, type: 2}

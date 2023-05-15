@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2990f6bc9d94c0dbafcd323ba5ec12c, type: 3}
   m_Name: Root node
   m_EditorClassIdentifier: 
-  _blackboard: {fileID: 11400000, guid: 9956501cb57ef8c44b4fa9f0dae498bf, type: 2}
   ParentNode: {fileID: 0}
   _childNodes:
+  - {fileID: 11400000, guid: 69a5d59385805b6499c5f157b7e96516, type: 2}
   - {fileID: 11400000, guid: 33a87511c170c564a8a35da30b70b118, type: 2}
   TransparentGizmoColor: {r: 0, g: 0, b: 0, a: 0}
   SolidGizmoColor: {r: 0, g: 0, b: 0, a: 0}

@@ -35,8 +35,8 @@ MonoBehaviour:
   ReloadTime: 5
   TP_VerticalSensitivity: 1
   ADS_VerticalSensitivity: []
-  APAmmo: 52
-  HEATAmmo: 49
-  HEAmmo: 80
+  APAmmo: 500
+  HEATAmmo: 500
+  HEAmmo: 500
   OnShellFired: The enemy is targeting us!
   OnEntityDeath: One enemy less.

@@ -5,13 +5,13 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Behaviour tree/Composite/SequenceNode")]
 public class SequenceNode : BehaviourNode
 {
-    public override NodeState Evaluate()
+    public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
     {
         bool hasRunningChild = false;
         
         foreach (var child in _childNodes)
         {
-            switch (child.Evaluate())
+            switch (child.Evaluate(blackboard, controller))
             {
                 case NodeState.Running:
                     hasRunningChild = true;

@@ -6,23 +6,23 @@ public class BehaviourTree : ScriptableObject
 {
     [SerializeField] private BehaviourNode _rootNode;
 
-    public void AssignBlackboardToTreeNodes(AIBlackboard blackboard)
-    {
-        _rootNode?.AssignBlackboard(blackboard);
-    }
-
     public void AssignParentNodesToTreeNodes()
     {
         _rootNode?.AssignParentToChildren();
     }
 
-    public void EvaluateTree()
+    public void EvaluateTree(AIBlackboard blackboard, AIController controller)
     {
-        _rootNode?.Evaluate();
+        _rootNode?.Evaluate(blackboard, controller);
     }
 
-    public void DrawGizmos()
+    public void DrawGizmos(AIBlackboard blackboard, AIController controller)
     {
-        _rootNode?.DrawGizmos();
+        if (blackboard == null)
+            return;
+        if (controller == null)
+            return;
+        
+        _rootNode?.DrawGizmos(blackboard, controller);
     }
 }

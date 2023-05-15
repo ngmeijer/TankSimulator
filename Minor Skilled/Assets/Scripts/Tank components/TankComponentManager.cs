@@ -15,6 +15,7 @@ public class TankComponentManager : MonoBehaviour
     public DamageRegistrationComponent DamageComponent { get; private set; }
 
     public Transform EntityOrigin;
+    public Transform Raycaster;
     
     public bool HasDied;
     public int ID;
