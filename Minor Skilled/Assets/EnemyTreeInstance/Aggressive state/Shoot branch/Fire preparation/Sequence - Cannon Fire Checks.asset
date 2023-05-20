@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cf5c119daee4e8daccaa0d71970091e, type: 3}
+  m_Name: Sequence - Cannon Fire Checks
+  m_EditorClassIdentifier: 
+  ParentNode: {fileID: 0}
+  _childNodes:
+  - {fileID: 11400000, guid: 197ad60735b74484b9b55a5eb0c110a0, type: 2}
+  - {fileID: 11400000, guid: 787187a4f2ad9d044bc6db6d778f6eb7, type: 2}
+  - {fileID: 11400000, guid: d89f6043c2ca15a4e9d09256066faeab, type: 2}
+  TransparentGizmoColor: {r: 255, g: 255, b: 255, a: 0.01}
+  SolidGizmoColor: {r: 255, g: 255, b: 255, a: 1}

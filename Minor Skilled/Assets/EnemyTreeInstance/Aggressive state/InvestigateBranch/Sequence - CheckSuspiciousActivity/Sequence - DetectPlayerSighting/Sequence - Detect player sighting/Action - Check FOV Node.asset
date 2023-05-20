@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bddcf18e23df4907a3a9005c2cd19652, type: 3}
+  m_Name: Action - Check FOV Node
+  m_EditorClassIdentifier: 
+  ParentNode: {fileID: 11400000, guid: a46560a826c16bf4e8d664ee59805a90, type: 2}
+  _childNodes: []
+  TransparentGizmoColor: {r: 1, g: 0.99517125, b: 0, a: 0.05}
+  SolidGizmoColor: {r: 0, g: 1, b: 0, a: 1}
+  <RangeName>k__BackingField: Investigation range
+  <RangeValue>k__BackingField: 150
+  <ViewAngle>k__BackingField: 140
