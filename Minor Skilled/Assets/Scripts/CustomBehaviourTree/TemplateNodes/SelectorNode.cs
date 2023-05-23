@@ -18,15 +18,18 @@ using UnityEngine;
                 switch (child.Evaluate(blackboard, controller))
                 {
                     case NodeState.Running:
-                        Debug.Log($"SELECTOR:<color=orange> Branch:</color> ({child.ShowAscendingLeafChain()})");
+                        if(_showLogs)
+                            Debug.Log($"SELECTOR:<color=orange> Branch:</color> ({child.ShowAscendingLeafChain()})");
                         continue;
                     case NodeState.Success:
                         _nodeState = NodeState.Success;
-                        Debug.Log($"SELECTOR: <color=green> Branch: </color>  ({child.ShowAscendingLeafChain()})");
+                        if(_showLogs)
+                            Debug.Log($"SELECTOR: <color=green> Branch: </color>  ({child.ShowAscendingLeafChain()})");
                         return _nodeState;
                     case NodeState.Failure:
                         _nodeState = NodeState.Failure;
-                        Debug.Log($"SELECTOR: <color=red> Branch: </color>    ({child.ShowAscendingLeafChain()})");
+                        if(_showLogs)
+                            Debug.Log($"SELECTOR: <color=red> Branch: </color>    ({child.ShowAscendingLeafChain()})");
                         continue;
                     default:
                         throw new ArgumentOutOfRangeException();

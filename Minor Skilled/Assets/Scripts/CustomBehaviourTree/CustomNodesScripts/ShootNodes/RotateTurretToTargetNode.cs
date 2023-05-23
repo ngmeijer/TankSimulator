@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 
 namespace CustomBehaviourTree.CustomNodesScripts.ShootNodes
 {
@@ -28,7 +29,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.ShootNodes
 
         private bool IsAimingAtTarget(AIBlackboard blackboard, AIController controller)
         {
-            Vector3 direction =  blackboard.DefiniteFocusPoint - controller.transform.position;
+            Vector3 direction =  blackboard.PointToRotateTurretTo - controller.transform.position;
             direction.Normalize();
             Transform turretTransform = controller.ComponentManager.TurretControlComponent.TurretTransform;
             _dotResult = Vector3.Dot(direction, turretTransform.right);

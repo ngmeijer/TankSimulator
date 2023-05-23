@@ -15,5 +15,5 @@ MonoBehaviour:
   ParentNode: {fileID: 0}
   _childNodes:
   - {fileID: 11400000, guid: 916f0d2c05d37194b8567a3d9152576c, type: 2}
-  TransparentGizmoColor: {r: 0, g: 0, b: 0, a: 0}
-  SolidGizmoColor: {r: 0, g: 0, b: 0, a: 0}
+  - {fileID: 11400000, guid: 06fd09ec749cea646a145cbcb59ee90d, type: 2}
+  _showLogs: 1

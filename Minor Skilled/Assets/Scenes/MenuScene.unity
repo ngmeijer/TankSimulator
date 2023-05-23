@@ -2606,6 +2606,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4342320312432086, guid: 2782dec6256301047bb26888e2c27841, type: 3}
   m_PrefabInstance: {fileID: 309321194}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &313282726 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4491469037624196, guid: 9562f24f293ad134389b7d263ef42b9d, type: 3}
+  m_PrefabInstance: {fileID: 785075569}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &324022261
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4027,6 +4032,18 @@ MonoBehaviour:
       - m_Target: {fileID: 252649200}
         m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
         m_MethodName: OnQuitClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1921495960}
+        m_TargetAssemblyTypeName: Detonator, Assembly-CSharp
+        m_MethodName: Explode
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6202,6 +6219,7 @@ GameObject:
   - component: {fileID: 763240038}
   - component: {fileID: 763240037}
   - component: {fileID: 763240036}
+  - component: {fileID: 763240039}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -6275,6 +6293,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: -7.154, y: 17.772, z: -0.841}
+--- !u!114 &763240039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763240035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98f1cfc75b4bc964bba58126a36bdb0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sensitivity: 15
+  _slerpSpeed: 3
+  _cannonTransform: {fileID: 313282726}
 --- !u!1001 &773039971
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16745,6 +16778,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4224011265681394, guid: b573d59a3f5ff494f91cefdf28b4acd2, type: 3}
   m_PrefabInstance: {fileID: 1920771724}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1921495960 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 11400000, guid: b9dd5ecd168e0b54295932b5b107b983, type: 3}
+  m_PrefabInstance: {fileID: 1942168266}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b4007f1233a9b74fa9be42583fafba6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1926415830
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16815,6 +16859,67 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4010455486446270, guid: dd24c983c3deb564e8e23071721b2db6, type: 3}
   m_PrefabInstance: {fileID: 1926415830}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1942168266
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 100000, guid: b9dd5ecd168e0b54295932b5b107b983, type: 3}
+      propertyPath: m_Name
+      value: Detonator-Spray
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b9dd5ecd168e0b54295932b5b107b983, type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b9dd5ecd168e0b54295932b5b107b983, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 37.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b9dd5ecd168e0b54295932b5b107b983, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.568
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b9dd5ecd168e0b54295932b5b107b983, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 59.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b9dd5ecd168e0b54295932b5b107b983, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b9dd5ecd168e0b54295932b5b107b983, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b9dd5ecd168e0b54295932b5b107b983, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b9dd5ecd168e0b54295932b5b107b983, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b9dd5ecd168e0b54295932b5b107b983, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b9dd5ecd168e0b54295932b5b107b983, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b9dd5ecd168e0b54295932b5b107b983, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: b9dd5ecd168e0b54295932b5b107b983, type: 3}
+      propertyPath: explodeOnStart
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b9dd5ecd168e0b54295932b5b107b983, type: 3}
 --- !u!1001 &1947721832
 PrefabInstance:
   m_ObjectHideFlags: 0

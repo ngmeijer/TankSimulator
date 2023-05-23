@@ -20,14 +20,16 @@ public class SequenceNode : BehaviourNode
             {
                 case NodeState.Running:
                     hasRunningChild = true;
-                    Debug.Log($"SEQUENCE:<color=orange> Branch:</color> ({child.ShowAscendingLeafChain()})");
+                    if(_showLogs)
+                        Debug.Log($"SEQUENCE:<color=orange> Branch:</color> ({child.ShowAscendingLeafChain()})");
                     continue;
                 case NodeState.Success:
-                    if(child.GetChildCount() == 0)
+                    if(_showLogs)
                         Debug.Log($"SEQUENCE:<color=green> Branch:</color> ({child.ShowAscendingLeafChain()})");
                     continue;
                 case NodeState.Failure:
-                    Debug.Log($"SEQUENCE:<color=red> Branch:</color>    ({child.ShowAscendingLeafChain()})");
+                    if(_showLogs)
+                        Debug.Log($"SEQUENCE:<color=red> Branch:</color>    ({child.ShowAscendingLeafChain()})");
                     _nodeState = NodeState.Failure;
                     return _nodeState;
                 default:
@@ -37,5 +39,15 @@ public class SequenceNode : BehaviourNode
         
         _nodeState = hasRunningChild ? NodeState.Running : NodeState.Success;
         return _nodeState;
+    }
+
+    protected void OnValidate()
+    {
+        foreach (var child in _childNodes)
+        {
+            if (child == null)
+                continue;
+            child.SetLogEnabled(_showLogs);
+        }
     }
 }

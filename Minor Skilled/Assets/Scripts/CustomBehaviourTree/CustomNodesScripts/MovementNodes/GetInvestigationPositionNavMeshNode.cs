@@ -11,11 +11,10 @@ namespace CustomBehaviourTree.CustomNodesScripts.MovementNodes
 
         public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
         {
-            Vector3 currentTargetPosition = SamplePosition(blackboard);
+            Vector3 currentTargetPosition = SamplePosition(blackboard.PointToRotateTurretTo);
             if (currentTargetPosition != Vector3.zero)
             {
-                blackboard.MoveToPosition = currentTargetPosition;
-                blackboard.DefiniteFocusPoint = currentTargetPosition;
+                blackboard.PointToRotateTurretTo = currentTargetPosition;
                 _nodeState = NodeState.Success;
             }
             else _nodeState = NodeState.Failure;
@@ -23,9 +22,9 @@ namespace CustomBehaviourTree.CustomNodesScripts.MovementNodes
             return _nodeState;
         }
 
-        private Vector3 SamplePosition(AIBlackboard blackboard)
+        private Vector3 SamplePosition(Vector3 position)
         {
-            NavMesh.SamplePosition(blackboard.InvestigationFocusPoint, out NavMeshHit hit, MaxInvestigationRange.Value, 1);
+            NavMesh.SamplePosition(position, out NavMeshHit hit, MaxInvestigationRange.Value, 1);
             return hit.position;
         }
     }

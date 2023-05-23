@@ -7,18 +7,15 @@ namespace CustomBehaviourTree.CustomNodesScripts.DetectionNodes
     {
         public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
         {
-            _nodeState = CanSeePlayer(controller) ? NodeState.Success : NodeState.Failure;
+            _nodeState = PointCheck.HasLineOfSight(controller.ComponentManager.Raycaster.position,
+                GameManager.Instance.Player.EntityOrigin.position,
+                "Player"
+            )
+                ? NodeState.Success
+                : NodeState.Failure;
+
 
             return _nodeState;
-        }
-
-        private bool CanSeePlayer(AIController controller)
-        {
-            bool hitCollider = Physics.Linecast(
-                controller.ComponentManager.Raycaster.position,
-                GameManager.Instance.Player.EntityOrigin.position, out RaycastHit hit, 1);
-
-            return hitCollider && hit.collider.transform.root.CompareTag("Player");
         }
 
         public override void DrawGizmos(AIBlackboard blackboard, AIController controller)

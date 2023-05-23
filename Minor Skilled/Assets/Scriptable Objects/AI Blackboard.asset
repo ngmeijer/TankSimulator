@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc14d7b796e74abcae8bd44a55ee0866, type: 3}
   m_Name: AI Blackboard
   m_EditorClassIdentifier: 
-  TurretLookAtPosition: {x: -193.60011, y: 0.008234837, z: 181.60208}
-  MoveToPosition: {x: -233.31406, y: 0.025009155, z: 226.2563}
-  PathCalculationInterval: 2
-  TargetInvestigatePosition: {x: 0, y: 0, z: 0}
+  PointToRotateTurretTo: {x: -169.2201, y: 0.0118004205, z: 78.52975}
+  LastTargetSighting: {x: -155.59999, y: 0.010750052, z: 107.59995}
+  PathCalculationInterval: 1
+  PatrolPoints: []

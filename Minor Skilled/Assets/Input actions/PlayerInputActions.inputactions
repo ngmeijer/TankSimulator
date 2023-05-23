@@ -388,6 +388,54 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "MenuInput",
+            "id": "6737a303-340f-40c6-b2aa-d3f7e7f940dc",
+            "actions": [
+                {
+                    "name": "MouseMove",
+                    "type": "Value",
+                    "id": "b5788ec4-2b67-4d78-aa7d-3c0a0225babb",
+                    "expectedControlType": "Vector2",
+                    "processors": "NormalizeVector2,InvertVector2",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Click",
+                    "type": "Button",
+                    "id": "6b2dd49a-7170-49f6-9c77-79be86433340",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d3d5a6cc-1dcd-44e1-9315-9d18c5dc9d68",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseMove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "235a3d81-0645-48fa-be39-6a110d6dda58",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

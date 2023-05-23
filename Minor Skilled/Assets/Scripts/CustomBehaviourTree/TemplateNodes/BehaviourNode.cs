@@ -13,12 +13,9 @@ public enum NodeState{
 public abstract class BehaviourNode : ScriptableObject
 { 
     protected NodeState _nodeState = NodeState.Failure;
-
     public BehaviourNode ParentNode;
     [SerializeField] protected List<BehaviourNode> _childNodes = new();
-    public Color TransparentGizmoColor;
-    public Color SolidGizmoColor;
-    protected const float DEFAULT_ALPHA = 0.05f;
+    [SerializeField] protected bool _showLogs;
 
     public int GetChildCount() => _childNodes.Count;
 
@@ -59,5 +56,20 @@ public abstract class BehaviourNode : ScriptableObject
         {
             child.ParentNode = this;
         }
+    }
+
+    protected void OnValidate()
+    {
+        foreach (var child in _childNodes)
+        {
+            if (child == null)
+                continue;
+            child.SetLogEnabled(_showLogs);
+        }
+    }
+
+    public void SetLogEnabled(bool enabled)
+    {
+        _showLogs = enabled;
     }
 }

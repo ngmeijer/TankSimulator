@@ -410,6 +410,54 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""MenuInput"",
+            ""id"": ""6737a303-340f-40c6-b2aa-d3f7e7f940dc"",
+            ""actions"": [
+                {
+                    ""name"": ""MouseMove"",
+                    ""type"": ""Value"",
+                    ""id"": ""b5788ec4-2b67-4d78-aa7d-3c0a0225babb"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": ""NormalizeVector2,InvertVector2"",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Click"",
+                    ""type"": ""Button"",
+                    ""id"": ""6b2dd49a-7170-49f6-9c77-79be86433340"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""d3d5a6cc-1dcd-44e1-9315-9d18c5dc9d68"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""235a3d81-0645-48fa-be39-6a110d6dda58"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -436,6 +484,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_StateSwitcher_EnableInspectionView = m_StateSwitcher.FindAction("EnableInspectionView", throwIfNotFound: true);
         m_StateSwitcher_EnableHostileInspectionView = m_StateSwitcher.FindAction("EnableHostileInspectionView", throwIfNotFound: true);
         m_StateSwitcher_ExitState = m_StateSwitcher.FindAction("ExitState", throwIfNotFound: true);
+        // MenuInput
+        m_MenuInput = asset.FindActionMap("MenuInput", throwIfNotFound: true);
+        m_MenuInput_MouseMove = m_MenuInput.FindAction("MouseMove", throwIfNotFound: true);
+        m_MenuInput_Click = m_MenuInput.FindAction("Click", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -735,6 +787,60 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         }
     }
     public StateSwitcherActions @StateSwitcher => new StateSwitcherActions(this);
+
+    // MenuInput
+    private readonly InputActionMap m_MenuInput;
+    private List<IMenuInputActions> m_MenuInputActionsCallbackInterfaces = new List<IMenuInputActions>();
+    private readonly InputAction m_MenuInput_MouseMove;
+    private readonly InputAction m_MenuInput_Click;
+    public struct MenuInputActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public MenuInputActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @MouseMove => m_Wrapper.m_MenuInput_MouseMove;
+        public InputAction @Click => m_Wrapper.m_MenuInput_Click;
+        public InputActionMap Get() { return m_Wrapper.m_MenuInput; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MenuInputActions set) { return set.Get(); }
+        public void AddCallbacks(IMenuInputActions instance)
+        {
+            if (instance == null || m_Wrapper.m_MenuInputActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_MenuInputActionsCallbackInterfaces.Add(instance);
+            @MouseMove.started += instance.OnMouseMove;
+            @MouseMove.performed += instance.OnMouseMove;
+            @MouseMove.canceled += instance.OnMouseMove;
+            @Click.started += instance.OnClick;
+            @Click.performed += instance.OnClick;
+            @Click.canceled += instance.OnClick;
+        }
+
+        private void UnregisterCallbacks(IMenuInputActions instance)
+        {
+            @MouseMove.started -= instance.OnMouseMove;
+            @MouseMove.performed -= instance.OnMouseMove;
+            @MouseMove.canceled -= instance.OnMouseMove;
+            @Click.started -= instance.OnClick;
+            @Click.performed -= instance.OnClick;
+            @Click.canceled -= instance.OnClick;
+        }
+
+        public void RemoveCallbacks(IMenuInputActions instance)
+        {
+            if (m_Wrapper.m_MenuInputActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IMenuInputActions instance)
+        {
+            foreach (var item in m_Wrapper.m_MenuInputActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_MenuInputActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public MenuInputActions @MenuInput => new MenuInputActions(this);
     public interface ITankMovementActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -759,5 +865,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnEnableInspectionView(InputAction.CallbackContext context);
         void OnEnableHostileInspectionView(InputAction.CallbackContext context);
         void OnExitState(InputAction.CallbackContext context);
+    }
+    public interface IMenuInputActions
+    {
+        void OnMouseMove(InputAction.CallbackContext context);
+        void OnClick(InputAction.CallbackContext context);
     }
 }

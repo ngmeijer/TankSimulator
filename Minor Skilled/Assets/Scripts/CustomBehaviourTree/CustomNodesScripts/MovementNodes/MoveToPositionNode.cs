@@ -14,7 +14,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.MovementNodes
 
         public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
         {
-            float distanceToTargetPos = Vector3.Distance(controller.transform.position, blackboard.MoveToPosition);
+            float distanceToTargetPos = Vector3.Distance(controller.transform.position, blackboard.LastTargetSighting);
             if (distanceToTargetPos <= MaxStoppingDistance.Value)
             {
                 controller.NavAgent.ResetPath();
@@ -28,7 +28,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.MovementNodes
             {
                 NavMeshPath path = new();
                 _currentTime = 0f;
-                controller.NavAgent.CalculatePath(blackboard.MoveToPosition, path);
+                controller.NavAgent.CalculatePath(blackboard.LastTargetSighting, path);
                 controller.NavAgent.SetPath(path);
             }
         
@@ -41,17 +41,18 @@ namespace CustomBehaviourTree.CustomNodesScripts.MovementNodes
             Handles.DrawWireDisc(controller.transform.position, controller.transform.up, MaxStoppingDistance.Value);
             Handles.Label(controller.transform.position + Vector3.right * MaxStoppingDistance.Value, $"{MaxStoppingDistance.Name}: {MaxStoppingDistance.Value}");
 
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(blackboard.MoveToPosition, 2f);
-
             if (controller.NavAgent.path != null)
             {
                 Vector3[] pathPositions = controller.NavAgent.path.corners;
             
                 Gizmos.color = Color.yellow;
-                foreach (var pathPoint in pathPositions)
+                for(int i = 0; i < pathPositions.Length; i++)
                 {
-                    Gizmos.DrawSphere(pathPoint, 0.5f);
+                    Handles.Label(pathPositions[i] + GameManager.HandlesOffset, $"Path point {i} of {pathPositions.Length - 1}");
+                    Gizmos.DrawSphere(pathPositions[i], 0.5f);
+
+                    if (i >= 1)
+                        Debug.DrawLine(pathPositions[i - 1], pathPositions[i], Color.red);
                 }
             }
         }

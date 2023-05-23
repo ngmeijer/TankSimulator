@@ -8,10 +8,15 @@ namespace CustomBehaviourTree.CustomNodesScripts.DetectionNodes
     {
         public CustomKeyValue MinRange;
         public CustomKeyValue MaxRange;
-    
+
+        [SerializeField] private Color _rangeDiscColour;
+
         public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
         {
-            _nodeState = PointInRange(blackboard, controller) ? NodeState.Success : NodeState.Failure;
+            _nodeState = PointCheck.PointInRange(blackboard.PointToRotateTurretTo, controller.transform.position,
+                MinRange.Value, MaxRange.Value)
+                ? NodeState.Success
+                : NodeState.Failure;
 
             return _nodeState;
         }
@@ -20,21 +25,13 @@ namespace CustomBehaviourTree.CustomNodesScripts.DetectionNodes
         {
             base.DrawGizmos(blackboard, controller);
 
-            Handles.color = SolidGizmoColor;
+            Handles.color = _rangeDiscColour;
             Handles.DrawWireDisc(controller.transform.position, controller.transform.up, MaxRange.Value);
-        
+
             if (MaxRange.Name == "")
                 return;
-            Handles.Label(controller.transform.position + controller.transform.right * 
+            Handles.Label(controller.transform.position + controller.transform.right *
                 MaxRange.Value, $"{MaxRange.Name}: {MaxRange.Value}");
-        }
-
-        private bool PointInRange(AIBlackboard blackboard, AIController controller)
-        {
-            float distance =
-                Vector3.Distance(blackboard.InvestigationFocusPoint, controller.transform.position);
-
-            return distance >= MinRange.Value && distance <= MaxRange.Value;
         }
     }
 }

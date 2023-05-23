@@ -12,6 +12,7 @@ public class SceneLoader : MonoBehaviour
 
     private AsyncOperation _operation;
     [SerializeField] private Image _fadeImage;
+    private bool _currentlyFading;
 
     private void Awake()
     {
@@ -33,28 +34,48 @@ public class SceneLoader : MonoBehaviour
 
     private void FadeSceneIn()
     {
-        _fadeImage.DOFade(0, _transitionTime);
+        _currentlyFading = true;
+        _fadeImage.DOFade(0, _transitionTime).OnComplete(() => _currentlyFading = false);
     }
     
     private IEnumerator FadeSceneOut()
     {
+        _currentlyFading = true;
         _fadeImage.DOFade(1, _transitionTime);
         yield return new WaitForSeconds(_transitionTime + 1);
 
-        _operation.allowSceneActivation = true;
+        _currentlyFading = false;
     }
 
 
     public void OnPlayClicked()
     {
+        StartCoroutine(PlayGameSequence());
+    }
+    
+    public void OnQuitClicked()
+    {
+        StartCoroutine(QuitGameSequence());
+    }
+
+    private IEnumerator PlayGameSequence()
+    {
+        while (_currentlyFading)
+            yield return null;
+        
         if (_operation.progress >= 0.9f)
         {
             StartCoroutine(FadeSceneOut());
         }
     }
-    
-    public void OnQuitClicked()
+
+    private IEnumerator QuitGameSequence()
     {
+        StartCoroutine(FadeSceneOut());
+
+        while (_currentlyFading)
+            yield return null;
+        
         Application.Quit();
     }
 }

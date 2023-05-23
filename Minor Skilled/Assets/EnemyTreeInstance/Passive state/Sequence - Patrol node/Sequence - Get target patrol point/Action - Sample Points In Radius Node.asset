@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b149f6c0eaf412ca6cbdd55ba582fbf, type: 3}
+  m_Name: Action - Sample Points In Radius Node
+  m_EditorClassIdentifier: 
+  ParentNode: {fileID: 0}
+  _childNodes: []
+  _showLogs: 0
+  MinPatrolRange:
+    <Name>k__BackingField: Min patrol range
+    <Value>k__BackingField: 40
+  MaxPatrolRange:
+    <Name>k__BackingField: Max patrol range
+    <Value>k__BackingField: 200
+  _maxPointsGenerated: 20
+  _pointsGenerated:
+  - {x: -273.91147, y: 0.025009155, z: 130.05577}
+  - {x: -266.0621, y: 0.025009155, z: 190.45657}
+  - {x: -150.80807, y: 0.025009155, z: 160.97601}
+  - {x: -174.25653, y: 0.025009155, z: 396.80518}
+  - {x: -244.74876, y: 0.08056085, z: 303.59378}
+  - {x: -154.71544, y: 0.90460616, z: 303.66583}
+  - {x: -347.01984, y: 0.025009155, z: 269.63113}
+  - {x: -306.4189, y: 0.025009155, z: 117.17064}
+  - {x: -218.55573, y: 0.025009155, z: 367.45776}
+  - {x: -100.0423, y: 0.025009155, z: 182.97838}
+  - {x: -186.21179, y: 0.028261103, z: 259.71176}
+  - {x: -165.61816, y: 0.074018106, z: 239.06082}
+  - {x: -260.97815, y: 0.07843745, z: 326.79922}
+  - {x: -299.74652, y: 0.025009155, z: 264.94025}
+  - {x: -196.82558, y: 0.025009155, z: 276.774}
+  - {x: -302.4738, y: 0.025009155, z: 364.8509}
+  - {x: -128.1409, y: 0.07276645, z: 159.65538}
+  - {x: -202.34183, y: 0.025009155, z: 399.66983}
+  - {x: -116.22701, y: 0.30000305, z: 182.93506}
+  _minDistanceBetweenPoints: 0
+  _rangeDiscColour: {r: 0.03756249, g: 1, b: 0, a: 1}
+  _pointsGeneratedColour: {r: 0, g: 1, b: 0.9278722, a: 1}

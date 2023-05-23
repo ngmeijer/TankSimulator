@@ -1,28 +1,28 @@
-﻿using System;
-using System.Drawing;
-using UnityEngine;
-using Color = UnityEngine.Color;
+﻿using UnityEngine;
 
-[CreateAssetMenu(menuName = "Behaviour tree/Decorator/Inverter")]
-public class InverterNode : BehaviourNode
+namespace CustomBehaviourTree.TemplateNodes
 {
-    private BehaviourNode _node;
-
-    private void OnEnable()
+    [CreateAssetMenu(menuName = "Behaviour tree/Decorator/Inverter")]
+    public class InverterNode : BehaviourNode
     {
-        _node = _childNodes[0];
-    }
+        private BehaviourNode _node;
 
-    public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
-    {
-        _nodeState = _node.Evaluate(blackboard, controller) switch
+        private void OnEnable()
         {
-            NodeState.Running => NodeState.Running,
-            NodeState.Success => NodeState.Failure,
-            NodeState.Failure => NodeState.Success,
-            _ => _nodeState
-        };
+            _node = _childNodes[0];
+        }
 
-        return _nodeState;
+        public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
+        {
+            _nodeState = _node.Evaluate(blackboard, controller) switch
+            {
+                NodeState.Running => NodeState.Running,
+                NodeState.Success => NodeState.Failure,
+                NodeState.Failure => NodeState.Success,
+                _ => _nodeState
+            };
+
+            return _nodeState;
+        }
     }
 }
