@@ -10,12 +10,16 @@ public class MenuCameraAnimations : MonoBehaviour
     private Vector3 _camStartRot;
     [SerializeField] private float _sensitivity = 10f;
     [SerializeField] private float _slerpSpeed = 1f;
+    private float _slerpProgress;
     [SerializeField] private Transform _cannonTransform;
+    [SerializeField] private Transform _cameraLookat;
+    [SerializeField] private Transform _cameraLowerLeftBound;
+    [SerializeField] private Transform _cameraUpperRightBound;
 
     private void Start()
     {
         _inputActions = new PlayerInputActions();
-        _inputActions.MenuInput.MouseMove.performed += MoveCamera;
+        _inputActions.MenuInput.MouseMove.performed += MoveLookAt;
         _inputActions.MenuInput.MouseMove.performed += MoveCannon;
         _inputActions.Enable();
         _camStartRot = transform.eulerAngles;
@@ -23,15 +27,23 @@ public class MenuCameraAnimations : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
     }
 
-    private void MoveCamera(InputAction.CallbackContext cb)
+    private void Update()
     {
-        Vector2 mouseDelta = cb.ReadValue<Vector2>();
-        Vector3 targetRotation = transform.eulerAngles;
+        transform.LookAt(_cameraLookat);
+    }
 
-        targetRotation.x += mouseDelta.y * _sensitivity * Time.deltaTime;
-        targetRotation.y += mouseDelta.x * _sensitivity * Time.deltaTime;  
-        Vector3 slerpedRotation = Vector3.Slerp(transform.eulerAngles, targetRotation, _slerpSpeed * Time.time);
-        transform.eulerAngles = slerpedRotation;
+    private void MoveLookAt(InputAction.CallbackContext cb)
+    {
+        // Vector2 mouseDelta = cb.ReadValue<Vector2>();
+        //
+        // _slerpProgress += mouseDelta.x * _sensitivity * Time.deltaTime;
+        //
+        // Vector3 slerpedPosition = Vector3.Slerp(_cameraLowerLeftBound.position, _cameraUpperRightBound.position, _slerpProgress);
+        // slerpedPosition.x = Mathf.Clamp(slerpedPosition.x, _cameraLowerLeftBound.position.x, _cameraUpperRightBound.position.x);
+        // slerpedPosition.y = Mathf.Clamp(slerpedPosition.y, _cameraLowerLeftBound.position.y, _cameraUpperRightBound.position.y);
+        // slerpedPosition.z = Mathf.Clamp(slerpedPosition.y, _cameraLowerLeftBound.position.z, _cameraUpperRightBound.position.z);
+        //
+        // _cameraLookat.position = slerpedPosition;
     }
 
     private void MoveCannon(InputAction.CallbackContext cb)
@@ -40,8 +52,20 @@ public class MenuCameraAnimations : MonoBehaviour
         Vector3 targetRotation = _cannonTransform.eulerAngles;
         targetRotation.x = targetRotation.x += mouseDelta.y * _sensitivity * Time.deltaTime;
         Vector3 slerpedRotation = Vector3.Slerp(_cannonTransform.eulerAngles, targetRotation, _slerpSpeed * Time.time);
-        Debug.Log(slerpedRotation);
-        slerpedRotation.x = Mathf.Clamp(slerpedRotation.x, 340f, 370f);
+        slerpedRotation.x = Mathf.Clamp(slerpedRotation.x, 340f, 359);
         _cannonTransform.eulerAngles = slerpedRotation;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(_cameraLookat.position, 0.5f);
+        
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(_cameraLowerLeftBound.position, 0.5f);
+        
+        Debug.DrawLine(_cameraLowerLeftBound.position, _cameraLookat.position, Color.yellow);
+        Gizmos.DrawSphere(_cameraUpperRightBound.position, 0.5f);
+        Debug.DrawLine(_cameraUpperRightBound.position, _cameraLookat.position, Color.yellow);
     }
 }

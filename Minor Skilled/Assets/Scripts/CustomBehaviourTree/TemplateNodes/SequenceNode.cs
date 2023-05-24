@@ -16,20 +16,23 @@ public class SequenceNode : BehaviourNode
                 Debug.Log($"Null reference exception. Check node '{this}'s for child nodes that are null.");
                 continue;
             }
+
+            child.NodeLevel = NodeLevel + 1;
+            
             switch (child.Evaluate(blackboard, controller))
             {
                 case NodeState.Running:
                     hasRunningChild = true;
                     if(_showLogs)
-                        Debug.Log($"SEQUENCE:<color=orange> Branch:</color> ({child.ShowAscendingLeafChain()})");
+                        Debug.Log(LogFormat(child, "orange"));
                     continue;
                 case NodeState.Success:
                     if(_showLogs)
-                        Debug.Log($"SEQUENCE:<color=green> Branch:</color> ({child.ShowAscendingLeafChain()})");
+                        Debug.Log(LogFormat(child, "green"));
                     continue;
                 case NodeState.Failure:
                     if(_showLogs)
-                        Debug.Log($"SEQUENCE:<color=red> Branch:</color>    ({child.ShowAscendingLeafChain()})");
+                        Debug.Log(LogFormat(child, "red"));
                     _nodeState = NodeState.Failure;
                     return _nodeState;
                 default:
@@ -49,5 +52,10 @@ public class SequenceNode : BehaviourNode
                 continue;
             child.SetLogEnabled(_showLogs);
         }
+    }
+    
+    private string LogFormat(BehaviourNode child, string colour)
+    {
+        return $"{Indenter.GetIdent(NodeLevel)} SEQUENCE: <color={colour}> Branch: </color> [{child.NodeLevel}] ({child.name})";
     }
 }

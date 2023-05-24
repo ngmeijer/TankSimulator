@@ -5,31 +5,37 @@ using UnityEngine.AI;
 namespace CustomBehaviourTree.CustomNodesScripts.MovementNodes
 {
     [CreateAssetMenu(menuName = "Behaviour tree/Movement/CheckIfHasValidPatrolPoint")]
-    public class CheckIfHasValidPatrolPoint : BehaviourNode
+    public class CheckIfHasInvalidOrNoPatrolPoint : BehaviourNode
     {
         public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
         {
+            //If the agent has NO patrol point, the node returns failure and the parent selector node will continue. (Sample new positions)
             if (blackboard.CurrentPatrolPoint == Vector3.zero)
-                _nodeState = NodeState.Success;
+                _nodeState = NodeState.Failure;
             else
             {
-                if (CheckIfPointIsValid(blackboard.CurrentPatrolPoint, controller))
-                    _nodeState = NodeState.Failure;
-                else _nodeState = NodeState.Success;
+                if (CheckIfPointIsValid(blackboard.CurrentPatrolPoint, blackboard, controller))
+                    _nodeState = NodeState.Success;
+                else _nodeState = NodeState.Failure;
             }
             
             return _nodeState;
         }
 
-        private bool CheckIfPointIsValid(Vector3 patrolPoint, AIController controller)
+        private bool CheckIfPointIsValid(Vector3 patrolPoint, AIBlackboard blackboard, AIController controller)
         {
             NavMeshPath path = new();
             bool hasPath = controller.NavAgent.CalculatePath(patrolPoint, path);
             if (!hasPath)
                 return false;
             
+            //A path has been calculated for a point that's inside/under an object (mountain, hills)
+            //so the point cannot be reached. Get a new point.
             if (path.status is NavMeshPathStatus.PathInvalid or NavMeshPathStatus.PathPartial) 
-                return false; 
+                return false;
+
+            blackboard.PatrolPath = path;
+            
             return true;
         }
         

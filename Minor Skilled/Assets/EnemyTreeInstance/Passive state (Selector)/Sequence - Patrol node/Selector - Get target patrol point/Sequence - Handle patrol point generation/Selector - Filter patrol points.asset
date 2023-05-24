@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2990f6bc9d94c0dbafcd323ba5ec12c, type: 3}
   m_Name: Selector - Filter patrol points
   m_EditorClassIdentifier: 
+  NodeLevel: 4
   ParentNode: {fileID: 0}
   _childNodes:
   - {fileID: 11400000, guid: 8881513930c4aac44945624879b01960, type: 2}

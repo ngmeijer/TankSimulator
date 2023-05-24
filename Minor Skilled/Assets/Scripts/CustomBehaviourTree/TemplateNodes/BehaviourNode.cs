@@ -11,7 +11,8 @@ public enum NodeState{
 
 [Serializable]
 public abstract class BehaviourNode : ScriptableObject
-{ 
+{
+    public int NodeLevel;
     protected NodeState _nodeState = NodeState.Failure;
     public BehaviourNode ParentNode;
     [SerializeField] protected List<BehaviourNode> _childNodes = new();
@@ -71,5 +72,17 @@ public abstract class BehaviourNode : ScriptableObject
     public void SetLogEnabled(bool enabled)
     {
         _showLogs = enabled;
+    }
+
+    public virtual void ResetValues()
+    {
+        foreach (var child in _childNodes)
+        {
+            if (child == null)
+            {
+                continue;
+            }
+            child.ResetValues();
+        }
     }
 }

@@ -16,6 +16,7 @@ public class AIController : MonoBehaviour
             NavAgent = GetComponentInChildren<NavMeshAgent>();
         ComponentManager = GetComponent<TankComponentManager>();
         _blackboard.ResetValues();
+        _tree.ResetNodes();
     }
 
     public TankState GetState(E_TankState tankState)

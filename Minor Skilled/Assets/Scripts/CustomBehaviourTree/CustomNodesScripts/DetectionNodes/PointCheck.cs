@@ -26,8 +26,9 @@ namespace CustomBehaviourTree.CustomNodesScripts.DetectionNodes
                 raycastPos,
                 targetPosition, out RaycastHit hit, 1);
 
+            //If no tag is given, return the inverse of the result of linecast. If no collider has been hit, agent can see the position.
             if (tagCheck == "")
-                return hitCollider;
+                return !hitCollider;
 
             return hitCollider && hit.collider.transform.root.CompareTag(tagCheck);
         }

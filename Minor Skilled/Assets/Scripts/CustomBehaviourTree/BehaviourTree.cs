@@ -13,6 +13,7 @@ public class BehaviourTree : ScriptableObject
 
     public void EvaluateTree(AIBlackboard blackboard, AIController controller)
     {
+        _rootNode.NodeLevel = 0;
         _rootNode?.Evaluate(blackboard, controller);
     }
 
@@ -24,5 +25,10 @@ public class BehaviourTree : ScriptableObject
             return;
         
         _rootNode?.DrawGizmos(blackboard, controller);
+    }
+
+    public void ResetNodes()
+    {
+        _rootNode?.ResetValues();
     }
 }

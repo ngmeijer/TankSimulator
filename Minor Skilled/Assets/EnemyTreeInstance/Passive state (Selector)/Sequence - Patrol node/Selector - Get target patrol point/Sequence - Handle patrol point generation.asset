@@ -10,9 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cf5c119daee4e8daccaa0d71970091e, type: 3}
-  m_Name: Layer 1 - Patrol
+  m_Name: Sequence - Handle patrol point generation
   m_EditorClassIdentifier: 
+  NodeLevel: 0
   ParentNode: {fileID: 0}
   _childNodes:
-  - {fileID: 11400000, guid: d3615229a4883ef448f86d018ea29521, type: 2}
+  - {fileID: 11400000, guid: 336d38af02c6b4b4ea1ba829de0bf172, type: 2}
+  - {fileID: 11400000, guid: 56b59bdc40bf72942aa3082f99a61c39, type: 2}
+  - {fileID: 11400000, guid: c6d3c97726a382d48815222fdca53aba, type: 2}
   _showLogs: 1

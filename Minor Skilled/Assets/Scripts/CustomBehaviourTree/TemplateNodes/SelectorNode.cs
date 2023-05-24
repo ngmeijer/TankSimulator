@@ -15,21 +15,23 @@ using UnityEngine;
                     Debug.Log($"Null reference exception. Check node '{this}'s for child nodes that are null.");
                     continue;
                 }
+                
+                child.NodeLevel = NodeLevel + 1;
                 switch (child.Evaluate(blackboard, controller))
                 {
                     case NodeState.Running:
                         if(_showLogs)
-                            Debug.Log($"SELECTOR:<color=orange> Branch:</color> ({child.ShowAscendingLeafChain()})");
+                            Debug.Log(LogFormat(child, "orange"));
                         continue;
                     case NodeState.Success:
                         _nodeState = NodeState.Success;
                         if(_showLogs)
-                            Debug.Log($"SELECTOR: <color=green> Branch: </color>  ({child.ShowAscendingLeafChain()})");
+                            Debug.Log(LogFormat(child, "green"));
                         return _nodeState;
                     case NodeState.Failure:
                         _nodeState = NodeState.Failure;
                         if(_showLogs)
-                            Debug.Log($"SELECTOR: <color=red> Branch: </color>    ({child.ShowAscendingLeafChain()})");
+                            Debug.Log(LogFormat(child, "red"));
                         continue;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -38,5 +40,10 @@ using UnityEngine;
 
             _nodeState = NodeState.Failure;
             return _nodeState;
+        }
+
+        private string LogFormat(BehaviourNode child, string colour)
+        {
+            return $"{Indenter.GetIdent(NodeLevel)} SELECTOR: <color={colour}> Branch: </color> [{child.NodeLevel}] ({child.name})";
         }
     }

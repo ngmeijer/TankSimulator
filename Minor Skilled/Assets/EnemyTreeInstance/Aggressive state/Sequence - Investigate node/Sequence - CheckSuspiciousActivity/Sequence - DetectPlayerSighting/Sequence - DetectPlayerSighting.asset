@@ -18,5 +18,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 03f684033bf0e36469e3c643aa0c92b8, type: 2}
   - {fileID: 11400000, guid: b437380fdaa7ebd44be783e08eba4938, type: 2}
   - {fileID: 11400000, guid: 5fbb598980ac11e41a097f1e16161c8c, type: 2}
-  TransparentGizmoColor: {r: 255, g: 255, b: 255, a: 0.01}
-  SolidGizmoColor: {r: 255, g: 255, b: 255, a: 1}
+  - {fileID: 11400000, guid: a274564b0a411d442a8ee13b8f1c8065, type: 2}
+  _showLogs: 1

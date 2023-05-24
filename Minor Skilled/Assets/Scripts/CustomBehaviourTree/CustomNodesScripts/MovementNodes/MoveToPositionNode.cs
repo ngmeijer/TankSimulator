@@ -8,39 +8,49 @@ namespace CustomBehaviourTree.CustomNodesScripts.MovementNodes
     [CreateAssetMenu(menuName = "Behaviour tree/Movement/MoveToPositionNode")]
     public class MoveToPositionNode : BehaviourNode
     {
-        private Vector3 _targetPos;
         private float _currentTime;
-        [SerializeField] private CustomKeyValue MaxStoppingDistance;
+        private Vector3 _currentMoveToPosition;
 
         public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
         {
-            float distanceToTargetPos = Vector3.Distance(controller.transform.position, blackboard.LastTargetSighting);
-            if (distanceToTargetPos <= MaxStoppingDistance.Value)
+            _nodeState = NodeState.Running;
+
+            //If a path is available and the agent has no path yet, set one
+            if (blackboard.PatrolPath != null && controller.NavAgent.path != null)
             {
-                controller.NavAgent.ResetPath();
-                _nodeState = NodeState.Success;
+                controller.NavAgent.SetPath(blackboard.PatrolPath);
                 return _nodeState;
             }
-
-            _nodeState = NodeState.Running;
+            
             _currentTime += Time.deltaTime;
-            if (_currentTime > blackboard.PathCalculationInterval)
-            {
-                NavMeshPath path = new();
-                _currentTime = 0f;
-                controller.NavAgent.CalculatePath(blackboard.LastTargetSighting, path);
-                controller.NavAgent.SetPath(path);
-            }
-        
+            if (_currentTime < blackboard.PathCalculationInterval)
+                return _nodeState;
+            
+            //Did the target position not change? Then don't recalculate path
+            if(blackboard.MoveToPosition == _currentMoveToPosition) 
+                return _nodeState;
+
+            CalculateNewPath(blackboard, controller);
+
             return _nodeState;
+        }
+
+        private void CalculateNewPath(AIBlackboard blackboard, AIController controller)
+        {
+            _currentTime = 0f;
+            NavMeshPath path = new();
+            _currentMoveToPosition = blackboard.MoveToPosition;
+            controller.NavAgent.CalculatePath(blackboard.MoveToPosition, path);
+            controller.NavAgent.SetPath(path);
+        }
+
+        public override void ResetValues()
+        {
+            _currentTime = 0f;
         }
 
         public override void DrawGizmos(AIBlackboard blackboard, AIController controller)
         {
-            Handles.color = Color.blue;
-            Handles.DrawWireDisc(controller.transform.position, controller.transform.up, MaxStoppingDistance.Value);
-            Handles.Label(controller.transform.position + Vector3.right * MaxStoppingDistance.Value, $"{MaxStoppingDistance.Name}: {MaxStoppingDistance.Value}");
-
             if (controller.NavAgent.path != null)
             {
                 Vector3[] pathPositions = controller.NavAgent.path.corners;

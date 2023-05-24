@@ -7674,8 +7674,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 182467031, guid: 6b28676b20975a04088d280372b47bc6, type: 3}
+      propertyPath: m_Speed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 182467031, guid: 6b28676b20975a04088d280372b47bc6, type: 3}
+      propertyPath: m_Height
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 182467031, guid: 6b28676b20975a04088d280372b47bc6, type: 3}
+      propertyPath: m_Radius
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 182467031, guid: 6b28676b20975a04088d280372b47bc6, type: 3}
       propertyPath: m_AgentTypeID
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 182467031, guid: 6b28676b20975a04088d280372b47bc6, type: 3}
+      propertyPath: m_StoppingDistance
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1629477345, guid: 6b28676b20975a04088d280372b47bc6, type: 3}
       propertyPath: Raycaster
@@ -14143,7 +14159,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7817720855815354587, guid: 9dbf6185f3020c543bb385d5ac47b215, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -148.1
+      value: -266
       objectReference: {fileID: 0}
     - target: {fileID: 7817720855815354587, guid: 9dbf6185f3020c543bb385d5ac47b215, type: 3}
       propertyPath: m_LocalPosition.y
@@ -14151,7 +14167,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7817720855815354587, guid: 9dbf6185f3020c543bb385d5ac47b215, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 101.1
+      value: 37.4
       objectReference: {fileID: 0}
     - target: {fileID: 7817720855815354587, guid: 9dbf6185f3020c543bb385d5ac47b215, type: 3}
       propertyPath: m_LocalRotation.w
@@ -27648,6 +27664,7 @@ GameObject:
   m_Component:
   - component: {fileID: 625717968}
   - component: {fileID: 625717967}
+  - component: {fileID: 625717969}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -27732,6 +27749,26 @@ Transform:
   m_Father: {fileID: 472267415}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 91.524994, y: 0, z: 0}
+--- !u!114 &625717969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 625717966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 1
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
 --- !u!4 &625885904 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4394098499901644, guid: 3e88e1ef19880514aa4ee9b6c25ca245, type: 3}
@@ -77447,6 +77484,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: ae23ebe55cda02746bd1b1ad83b4e3b3, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6adcc2396e3cbac4f9a7bf908d07cf91, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ae23ebe55cda02746bd1b1ad83b4e3b3, type: 3}
 --- !u!4 &1847335028 stripped
