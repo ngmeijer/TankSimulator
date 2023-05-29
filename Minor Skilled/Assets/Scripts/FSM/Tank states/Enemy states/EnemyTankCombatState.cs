@@ -40,8 +40,8 @@ public class EnemyTankCombatState : TankCombatState
         return percent;
     }
 
-    public void TestFunc()
+    public void RepairTank()
     {
-        Debug.Log("test");
+        _componentManager.DamageComponent.RepairAllParts();
     }
 }

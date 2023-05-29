@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace CustomBehaviourTree.CustomNodesScripts.MovementNodes
+namespace CustomBehaviourTree.CustomNodesScripts.NavMeshNodes
 {
     [CreateAssetMenu(menuName = "Behaviour tree/Movement/CheckIfReachedDestinationNode")]
     public class CheckIfReachedDestinationNode : BehaviourNode
@@ -22,12 +22,14 @@ namespace CustomBehaviourTree.CustomNodesScripts.MovementNodes
             float distanceToTargetPos = Vector3.Distance(controller.transform.position, destination);
             if (distanceToTargetPos <= MaxStoppingDistance.Value)
             {
+                blackboard.ShouldCountDown = true;
+                blackboard.MoveToPosition = Vector3.zero;
                 blackboard.CurrentPatrolPoint = Vector3.zero;
                 controller.NavAgent.ResetPath();
-                _nodeState = NodeState.Success;
                 return true;
             }
 
+            _nodeState = NodeState.Failure;
             return false;
         }
 

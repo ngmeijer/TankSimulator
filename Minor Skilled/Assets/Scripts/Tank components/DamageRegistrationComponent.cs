@@ -60,4 +60,12 @@ public class DamageRegistrationComponent : TankComponent
     {
         CurrentSelectedPart.RepairPart();
     }
+
+    public void RepairAllParts()
+    {
+        foreach (var part in CurrentData.TankParts)
+        {
+            part.RepairPart();
+        }
+    }
 }

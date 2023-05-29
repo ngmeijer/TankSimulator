@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace CustomBehaviourTree.CustomNodesScripts.MovementNodes
+namespace CustomBehaviourTree.CustomNodesScripts.NavMeshNodes
 {
     [CreateAssetMenu(menuName = "Behaviour tree/Movement/MoveToPositionNode")]
     public class MoveToPositionNode : BehaviourNode
@@ -14,20 +14,22 @@ namespace CustomBehaviourTree.CustomNodesScripts.MovementNodes
         public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
         {
             _nodeState = NodeState.Running;
-
-            //If a path is available and the agent has no path yet, set one
-            if (blackboard.PatrolPath != null && controller.NavAgent.path != null)
+            
+            //Did the target position not change? Then don't recalculate path
+            if (blackboard.MoveToPosition == _currentMoveToPosition)
             {
-                controller.NavAgent.SetPath(blackboard.PatrolPath);
+                return _nodeState;
+            }
+            
+            //If a path is available and the agent has no path yet, set one
+            if (blackboard.GeneratedNavPath != null && controller.NavAgent.path != null)
+            {
+                controller.NavAgent.SetPath(blackboard.GeneratedNavPath);
                 return _nodeState;
             }
             
             _currentTime += Time.deltaTime;
             if (_currentTime < blackboard.PathCalculationInterval)
-                return _nodeState;
-            
-            //Did the target position not change? Then don't recalculate path
-            if(blackboard.MoveToPosition == _currentMoveToPosition) 
                 return _nodeState;
 
             CalculateNewPath(blackboard, controller);
@@ -47,6 +49,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.MovementNodes
         public override void ResetValues()
         {
             _currentTime = 0f;
+            _currentMoveToPosition = Vector3.zero;
         }
 
         public override void DrawGizmos(AIBlackboard blackboard, AIController controller)

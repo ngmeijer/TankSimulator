@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace CustomBehaviourTree.CustomNodesScripts.MovementNodes
+namespace CustomBehaviourTree.CustomNodesScripts.NavMeshNodes
 {
     [CreateAssetMenu(menuName = "Behaviour tree/Movement/GetRandomNavMeshPointNode")]
     public class GetRandomNavMeshPointNode : BehaviourNode

@@ -5,15 +5,14 @@ using UnityEngine.AI;
 
 namespace CustomBehaviourTree.CustomNodesScripts.MovementNodes
 {
-    [CreateAssetMenu(menuName = "Behaviour tree/Movement/SamplePointsInRadiusNode")]
+    [CreateAssetMenu(menuName = "Behaviour tree/Movement/SamplePointsInRadius")]
     public class SamplePointsInRadiusNode : BehaviourNode
     {
         [SerializeField] private CustomKeyValue MinPatrolRange;
         [SerializeField] private CustomKeyValue MaxPatrolRange;
         
-        [SerializeField] private int _maxPointsGenerated;
+        [SerializeField] private int _maxPointsAllowed;
         [SerializeField] private List<Vector3> _pointsGenerated = new List<Vector3>();
-        [SerializeField] private float _minDistanceBetweenPoints;
         [SerializeField] private Color _rangeDiscColour;
         [SerializeField] private Color _pointsGeneratedColour;
 
@@ -23,7 +22,13 @@ namespace CustomBehaviourTree.CustomNodesScripts.MovementNodes
             _pointsGenerated.Add(controller.transform.position);
             List<Vector3> _tempPoints = new List<Vector3>();
 
-            for (int i = 0; i < _maxPointsGenerated; i++)
+            if (_maxPointsAllowed == 0)
+            {
+                Debug.Log($"MaxPointsAllowed in {name} is 0. You won't be seeing any generated NavMesh points :)");
+                return _nodeState;
+            }
+
+            for (int i = 0; i < _maxPointsAllowed; i++)
             {
                 Vector3 position = GetNavPosition(controller);
                 if(position == Vector3.zero)
@@ -34,7 +39,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.MovementNodes
 
             _pointsGenerated.AddRange(_tempPoints);
             _pointsGenerated.Remove(controller.transform.position);
-            blackboard.GeneratedPatrolPoints = _pointsGenerated;
+            blackboard.GenericPointsFound = _pointsGenerated;
 
             _nodeState = NodeState.Success;
 
@@ -79,11 +84,19 @@ namespace CustomBehaviourTree.CustomNodesScripts.MovementNodes
             Handles.color = _rangeDiscColour;
             Handles.DrawWireDisc(controller.transform.position, controller.transform.up, MinPatrolRange.Value);
 
-            foreach (var point in _pointsGenerated)
+            if (_pointsGenerated != null)
             {
-                Gizmos.color = _pointsGeneratedColour;
-                Gizmos.DrawSphere(point, 0.5f);
+                foreach (var point in _pointsGenerated)
+                {
+                    Gizmos.color = _pointsGeneratedColour;
+                    Gizmos.DrawSphere(point, 0.5f);
+                }
             }
+        }
+
+        public override void ResetValues()
+        {
+            _pointsGenerated = new();
         }
     }
 }

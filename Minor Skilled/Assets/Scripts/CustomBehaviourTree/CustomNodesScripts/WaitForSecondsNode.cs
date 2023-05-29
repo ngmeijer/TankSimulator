@@ -1,31 +1,43 @@
-﻿using System;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Behaviour tree/Utility/WaitForSecondsNode")]
-public class WaitForSecondsNode : BehaviourNode
+namespace CustomBehaviourTree.CustomNodesScripts
 {
-    [SerializeField] private float _waitTime;
-    private float _currentTime;
-    
-    public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
+    [CreateAssetMenu(menuName = "Behaviour tree/Utility/WaitForSecondsNode")]
+    public class WaitForSecondsNode : BehaviourNode
     {
-        if (_currentTime < _waitTime)
+        [SerializeField] private float _waitTime;
+        private float _currentTime;
+
+        public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
         {
-            _currentTime += Time.deltaTime;
-            _nodeState = NodeState.Running;
-        }
-        else
-        {
-            _nodeState = NodeState.Success;
-            _currentTime = 0f;
+            if (!blackboard.ShouldCountDown)
+            {
+                _nodeState = NodeState.Failure;
+                return _nodeState;
+            }
+
+            if (_currentTime > 0)
+            {
+                _currentTime -= Time.deltaTime;
+                _nodeState = NodeState.Success;
+                return _nodeState;
+            }
+
+            _currentTime = _waitTime;
+            _nodeState = NodeState.Failure;
+            blackboard.ShouldCountDown = false;
+            return _nodeState;
         }
 
-        return _nodeState;
-    }
+        public override void ResetValues()
+        {
+            _currentTime = _waitTime;
+        }
 
-    public override void DrawGizmos(AIBlackboard blackboard, AIController controller)
-    {
-        Handles.Label(controller.transform.position, $"Time left to wait: {_waitTime - _currentTime}");
+        public override void DrawGizmos(AIBlackboard blackboard, AIController controller)
+        {
+            Handles.Label(controller.transform.position, $"Time left to wait: {_currentTime}");
+        }
     }
 }

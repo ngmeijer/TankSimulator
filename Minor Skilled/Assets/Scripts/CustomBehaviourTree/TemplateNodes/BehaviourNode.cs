@@ -51,6 +51,27 @@ public abstract class BehaviourNode : ScriptableObject
         return currentChain;
     }
 
+    public void LogNode()
+    {
+        string logColor;
+        switch (_nodeState)
+        {
+            case NodeState.Running:
+                logColor = "orange";
+                break;
+            case NodeState.Success:
+                logColor = "green";
+                break;
+            case NodeState.Failure:
+                logColor = "red";
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+        
+        Debug.Log($"{Indenter.GetIdent(NodeLevel)} SEQUENCE: <color={logColor}> Branch: </color> [{NodeLevel}] ({name})");
+    }
+
     public void AssignParentToChildren()
     {
         foreach (var child in _childNodes)

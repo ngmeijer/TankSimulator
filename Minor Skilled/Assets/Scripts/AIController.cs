@@ -9,6 +9,7 @@ public class AIController : MonoBehaviour
     public TankComponentManager ComponentManager;
     [SerializeField] private BehaviourTree _tree;
     [SerializeField] private AIBlackboard _blackboard;
+    public Transform[] CoverRaycastPositions;
 
     protected void Awake()
     {
