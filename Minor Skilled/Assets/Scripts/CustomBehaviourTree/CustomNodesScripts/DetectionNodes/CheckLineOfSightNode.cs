@@ -7,12 +7,17 @@ namespace CustomBehaviourTree.CustomNodesScripts.DetectionNodes
     {
         public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
         {
-            _nodeState = PointCheck.HasLineOfSight(controller.ComponentManager.Raycaster.position,
-                GameManager.Instance.Player.EntityOrigin.position,
-                "Player"
-            )
-                ? NodeState.Success
-                : NodeState.Failure;
+            if (PointCheck.HasLineOfSight(controller.ComponentManager.Raycaster.position,
+                    GameManager.Instance.Player.EntityOrigin.position,
+                    "Player"
+                ))
+            {
+                _nodeState = NodeState.Success;
+            }
+            else
+            {
+                _nodeState = NodeState.Failure;
+            }
 
 
             return _nodeState;

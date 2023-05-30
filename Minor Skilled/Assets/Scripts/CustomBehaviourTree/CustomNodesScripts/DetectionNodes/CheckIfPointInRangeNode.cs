@@ -11,10 +11,15 @@ namespace CustomBehaviourTree.CustomNodesScripts.DetectionNodes
         
         public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
         {
-            _nodeState = PointCheck.PointInRange(blackboard.PointToRotateTurretTo, controller.transform.position,
-                MinRange.Value, MaxRange.Value)
-                ? NodeState.Success
-                : NodeState.Failure;
+            if (PointCheck.PointInRange(blackboard.PointToRotateTurretTo, controller.transform.position,
+                    MinRange.Value, MaxRange.Value))
+            {
+                _nodeState = NodeState.Success;
+            }
+            else
+            {
+                _nodeState = NodeState.Failure;
+            }
 
             return _nodeState;
         }

@@ -9,15 +9,22 @@ namespace CustomBehaviourTree.CustomNodesScripts.NavMeshNodes
     {
         public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
         {
+            // if (blackboard.HasTarget)
+            // {
+            //     _nodeState = NodeState.Success;
+            //     return _nodeState;
+            // }
+
             if (blackboard.MoveToPosition == Vector3.zero)
-                _nodeState = NodeState.Failure;
-            else
             {
-                if (CheckIfPointIsValid(blackboard.MoveToPosition, blackboard, controller))
-                    _nodeState = NodeState.Success;
-                else _nodeState = NodeState.Failure;
+                _nodeState = NodeState.Failure;
+                return _nodeState;
             }
             
+            if (CheckIfPointIsValid(blackboard.MoveToPosition, blackboard, controller))
+                    _nodeState = NodeState.Success;
+            else _nodeState = NodeState.Failure;
+
             return _nodeState;
         }
 

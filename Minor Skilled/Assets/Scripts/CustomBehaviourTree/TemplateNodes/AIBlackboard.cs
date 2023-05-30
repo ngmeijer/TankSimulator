@@ -21,6 +21,7 @@ public class AIBlackboard : ScriptableObject
     public NavMeshPath GeneratedNavPath;
     public bool ShouldCountDown;
     public bool IsCurrentlyRepairing;
+    public bool CanGenerateNavPoints;
 
     public void ResetValues()
     {
@@ -33,6 +34,7 @@ public class AIBlackboard : ScriptableObject
         CurrentCoverPoint = Vector3.zero;
         MoveToPosition = Vector3.zero;
         GeneratedNavPath = null;
-        ShouldCountDown = false;
+        ShouldCountDown = true;
+        CanGenerateNavPoints = false;
     }
 }

@@ -13,9 +13,10 @@ namespace CustomBehaviourTree.CustomNodesScripts.CoverNodes
                 _nodeState = NodeState.Success;
             
             EnemyTankCombatState combatState = controller.GetState(E_TankState.Combat) as EnemyTankCombatState;
-            float currentHealth = combatState.GetArmorPercentage();
-            if (currentHealth <= _requiredArmorToFlee)
+            float currentArmor = combatState.GetArmorPercentage();
+            if (currentArmor <= _requiredArmorToFlee)
                 _nodeState = NodeState.Failure;
+            
 
             return _nodeState;
         }

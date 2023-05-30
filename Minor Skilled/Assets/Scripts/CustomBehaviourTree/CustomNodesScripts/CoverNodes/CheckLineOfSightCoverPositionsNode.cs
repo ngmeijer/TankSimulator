@@ -65,5 +65,10 @@ namespace CustomBehaviourTree.CustomNodesScripts.CoverNodes
 
             return _nodeState;
         }
+
+        public override void ResetValues()
+        {
+            _filteredOutPoints = new();
+        }
     }
 }

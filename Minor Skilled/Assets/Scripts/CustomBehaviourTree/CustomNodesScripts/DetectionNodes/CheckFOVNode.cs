@@ -16,9 +16,14 @@ namespace CustomBehaviourTree.CustomNodesScripts.DetectionNodes
 
         public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
         {
-            _nodeState = PointCheck.IsPointInsideFOV(blackboard.PointToRotateTurretTo, controller.transform, _viewAngle)
-                ? NodeState.Success
-                : NodeState.Failure;
+            if (PointCheck.IsPointInsideFOV(blackboard.PointToRotateTurretTo, controller.transform, _viewAngle))
+            {
+                _nodeState = NodeState.Success;
+            }
+            else
+            {
+                _nodeState = NodeState.Failure;
+            }
 
             return _nodeState;
         }

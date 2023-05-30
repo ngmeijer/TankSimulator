@@ -10,27 +10,24 @@ namespace CustomBehaviourTree.CustomNodesScripts.NavMeshNodes
 
         public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
         {
-            if (CheckIfReachedDestination(blackboard.MoveToPosition, blackboard, controller))
+            if (CheckIfReachedDestination(ref blackboard.MoveToPosition, blackboard, controller))
                 _nodeState = NodeState.Success;
-
+            else _nodeState = NodeState.Failure;
+            
             return _nodeState;
         }
         
-        private bool CheckIfReachedDestination(Vector3 destination, AIBlackboard blackboard, AIController controller)
+        private bool CheckIfReachedDestination(ref Vector3 destination, AIBlackboard blackboard, AIController controller)
         {
             controller.NavAgent.stoppingDistance = MaxStoppingDistance.Value;
             float distanceToTargetPos = Vector3.Distance(controller.transform.position, destination);
-            if (distanceToTargetPos <= MaxStoppingDistance.Value)
-            {
-                blackboard.ShouldCountDown = true;
-                blackboard.MoveToPosition = Vector3.zero;
-                blackboard.CurrentPatrolPoint = Vector3.zero;
-                controller.NavAgent.ResetPath();
-                return true;
-            }
-
-            _nodeState = NodeState.Failure;
-            return false;
+            if (distanceToTargetPos > MaxStoppingDistance.Value)
+                return false;
+            
+            destination = Vector3.zero;
+            blackboard.CurrentPatrolPoint = Vector3.zero; 
+            controller.NavAgent.ResetPath(); 
+            return true;
         }
 
         public override void DrawGizmos(AIBlackboard blackboard, AIController controller)

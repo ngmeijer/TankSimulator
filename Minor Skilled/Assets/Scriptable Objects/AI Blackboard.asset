@@ -12,7 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc14d7b796e74abcae8bd44a55ee0866, type: 3}
   m_Name: AI Blackboard
   m_EditorClassIdentifier: 
-  PointToRotateTurretTo: {x: -169.2201, y: 0.0118004205, z: 78.52975}
-  LastTargetSighting: {x: -155.59999, y: 0.010750052, z: 107.59995}
+  PointToRotateTurretTo: {x: 0, y: 0, z: 0}
+  LastTargetSighting: {x: 0, y: 0, z: 0}
+  MoveToPosition: {x: 0, y: 0, z: 0}
+  CurrentPatrolPoint: {x: 0, y: 0, z: 0}
+  CurrentCoverPoint: {x: 0, y: 0, z: 0}
   PathCalculationInterval: 1
-  PatrolPoints: []
+  GenericPointsFound: []
+  GeneratedPatrolPoints: []
+  GeneratedCoverPoints: []
+  ShouldCountDown: 1
+  IsCurrentlyRepairing: 0
+  CanGenerateNavPoints: 0

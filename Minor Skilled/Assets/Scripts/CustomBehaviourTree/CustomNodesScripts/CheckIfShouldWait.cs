@@ -8,8 +8,8 @@ namespace CustomBehaviourTree.CustomNodesScripts
         public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
         {
             if (blackboard.ShouldCountDown)
-                _nodeState = NodeState.Success;
-            else _nodeState = NodeState.Failure;
+                _nodeState = NodeState.Failure;
+            else _nodeState = NodeState.Success;
             
             return _nodeState;
         }

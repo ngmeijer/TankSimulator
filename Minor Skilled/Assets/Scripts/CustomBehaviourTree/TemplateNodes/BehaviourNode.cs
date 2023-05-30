@@ -20,6 +20,11 @@ public abstract class BehaviourNode : ScriptableObject
 
     public int GetChildCount() => _childNodes.Count;
 
+    private void Awake()
+    {
+        LogChildren();
+    }
+
     public virtual NodeState Evaluate(AIBlackboard blackboard, AIController controller)
     {
         return _nodeState;
@@ -53,6 +58,9 @@ public abstract class BehaviourNode : ScriptableObject
 
     public void LogNode()
     {
+        if (!_showLogs)
+            return;
+        
         string logColor;
         switch (_nodeState)
         {
@@ -81,6 +89,11 @@ public abstract class BehaviourNode : ScriptableObject
     }
 
     protected void OnValidate()
+    {
+        LogChildren();
+    }
+
+    private void LogChildren()
     {
         foreach (var child in _childNodes)
         {

@@ -1,5 +1,8 @@
-﻿namespace CustomBehaviourTree.CustomNodesScripts.CoverNodes
+﻿using UnityEngine;
+
+namespace CustomBehaviourTree.CustomNodesScripts.CoverNodes
 {
+    [CreateAssetMenu(menuName = "Behaviour tree/Cover/RepairTank")]
     public class RepairTankNode : BehaviourNode
     {
         public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
@@ -8,14 +11,14 @@
             if (combatState.GetArmorPercentage() < 1f)
             {
                 blackboard.IsCurrentlyRepairing = true;
-                _nodeState = NodeState.Running;
+                _nodeState = NodeState.Success;
                 combatState.RepairTank();
                 
                 return _nodeState;
             }
 
             blackboard.IsCurrentlyRepairing = false;
-            _nodeState = NodeState.Success;
+            _nodeState = NodeState.Failure;
             return _nodeState;
         }
     }
