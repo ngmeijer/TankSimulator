@@ -17,6 +17,11 @@ namespace CustomBehaviourTree.CustomNodesScripts.PatrolNodes
 
         public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
         {
+            if (blackboard.GeneratedPatrolPoints.Count == 0)
+            {
+                Debug.Log("No patrol points have been generated. Check if there is a NavMesh generated.");
+                return _nodeState;
+            }
             CheckPatrolPointRequirements(blackboard, controller);
 
             if (_potentialPatrolPoints.Count != 0)

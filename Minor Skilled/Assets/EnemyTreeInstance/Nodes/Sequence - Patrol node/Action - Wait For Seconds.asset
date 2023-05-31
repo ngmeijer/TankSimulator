@@ -15,5 +15,6 @@ MonoBehaviour:
   NodeLevel: 0
   ParentNode: {fileID: 0}
   _childNodes: []
-  _showLogs: 0
+  _showLogs: 1
+  _waitPurpose: Patrol point
   _waitTime: 3

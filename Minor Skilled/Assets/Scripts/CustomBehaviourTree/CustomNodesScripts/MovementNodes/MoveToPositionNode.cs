@@ -22,7 +22,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.NavMeshNodes
             }
             
             //If a path is available and the agent has no path yet, set one
-            if (blackboard.GeneratedNavPath != null && controller.NavAgent.path != null)
+            if (blackboard.GeneratedNavPath != null && !controller.NavAgent.hasPath)
             {
                 controller.NavAgent.SetPath(blackboard.GeneratedNavPath);
                 return _nodeState;

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cf5c119daee4e8daccaa0d71970091e, type: 3}
-  m_Name: Sequence - Find suitable cover position
+  m_Name: Sequence - Sample and filter cover position
   m_EditorClassIdentifier: 
   NodeLevel: 4
   ParentNode: {fileID: 0}

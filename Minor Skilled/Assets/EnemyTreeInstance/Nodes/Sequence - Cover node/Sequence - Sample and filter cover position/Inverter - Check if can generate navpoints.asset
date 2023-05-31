@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4255fdc4352941d3903dbb9b4527db8b, type: 3}
-  m_Name: Condition - Check if HasValidPatrolPoint
+  m_Script: {fileID: 11500000, guid: cd48f0cc178347c4903ba7e91a67e602, type: 3}
+  m_Name: Inverter - Check if can generate navpoints
   m_EditorClassIdentifier: 
-  NodeLevel: 4
+  NodeLevel: 0
   ParentNode: {fileID: 0}
-  _childNodes: []
+  _childNodes:
+  - {fileID: 11400000, guid: 80bfcaa8bdc0ba14a8422388e5e17423, type: 2}
   _showLogs: 0

@@ -2,7 +2,7 @@
 
 namespace CustomBehaviourTree.CustomNodesScripts.NavMeshNodes
 {
-    [CreateAssetMenu(menuName = "Behaviour tree/Movement/StopMovementNode")]
+    [CreateAssetMenu(menuName = "Behaviour tree/Movement/StopMovement")]
     public class StopMovementNode : BehaviourNode
     {
         public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
@@ -10,7 +10,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.NavMeshNodes
             blackboard.GeneratedNavPath = null;
             blackboard.MoveToPosition = Vector3.zero;
             controller.NavAgent.isStopped = true;
-            blackboard.CanGenerateNavPoints = false;
+            controller.NavAgent.ResetPath();
 
             _nodeState = NodeState.Success;
             return _nodeState;

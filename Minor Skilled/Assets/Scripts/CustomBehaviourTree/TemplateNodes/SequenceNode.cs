@@ -38,14 +38,4 @@ public class SequenceNode : BehaviourNode
         _nodeState = hasRunningChild ? NodeState.Running : NodeState.Success;
         return _nodeState;
     }
-
-    protected void OnValidate()
-    {
-        foreach (var child in _childNodes)
-        {
-            if (child == null)
-                continue;
-            child.SetLogEnabled(_showLogs);
-        }
-    }
 }

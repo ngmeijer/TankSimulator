@@ -35,6 +35,6 @@ public class AIBlackboard : ScriptableObject
         MoveToPosition = Vector3.zero;
         GeneratedNavPath = null;
         ShouldCountDown = true;
-        CanGenerateNavPoints = false;
+        CanGenerateNavPoints = true;
     }
 }

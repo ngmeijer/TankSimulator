@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cf5c119daee4e8daccaa0d71970091e, type: 3}
-  m_Name: Sequence - Patrol
+  m_Name: Sequence - NavigateToInvestigatePoint
   m_EditorClassIdentifier: 
-  NodeLevel: 1
+  NodeLevel: 2
   ParentNode: {fileID: 0}
   _childNodes:
-  - {fileID: 11400000, guid: 32ebdcf66b4b56b4f917d7c882db2b5b, type: 2}
-  - {fileID: 11400000, guid: 6735321d6360e2c44800378ba0599f09, type: 2}
-  - {fileID: 11400000, guid: 98212b65968e5a44abd517d0a3d3ba55, type: 2}
-  _showLogs: 0
+  - {fileID: 11400000, guid: 94271f9a51bcbb548bdcb498c3883ac4, type: 2}
+  - {fileID: 11400000, guid: 951a92a5740c7b2429b050352d1db324, type: 2}
+  - {fileID: 11400000, guid: d7158b9242079ce45aa64ffb00f70c98, type: 2}
+  _showLogs: 1

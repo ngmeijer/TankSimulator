@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2990f6bc9d94c0dbafcd323ba5ec12c, type: 3}
   m_Name: Selector - Find new cover position
   m_EditorClassIdentifier: 
-  NodeLevel: 0
+  NodeLevel: 2
   ParentNode: {fileID: 0}
   _childNodes:
+  - {fileID: 11400000, guid: d7b75c3702129ca4fbaffda396e05e0b, type: 2}
   - {fileID: 11400000, guid: c10d4046a1cefa14cb225385f24934a9, type: 2}
   - {fileID: 11400000, guid: bbb58a8d6abdd5b4f9ab635f83c4abdf, type: 2}
   - {fileID: 11400000, guid: 9bcfb07061218634c9402297a8353480, type: 2}
-  _showLogs: 0
+  _showLogs: 1

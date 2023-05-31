@@ -11,7 +11,6 @@ namespace CustomBehaviourTree.CustomNodesScripts
         {
             blackboard.ShouldCountDown = _shouldCountDown;
             _nodeState = NodeState.Success;
-            Debug.Log($"enabled should wait. {_nodeState}");
             return _nodeState;
         }
     }
