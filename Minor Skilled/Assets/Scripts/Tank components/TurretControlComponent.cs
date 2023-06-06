@@ -41,6 +41,7 @@ public class TurretControlComponent : TankComponent
 
     public void HandleTurretRotation(float rotateInput, float multiplier)
     {
+        Debug.Log("turret rotation");
         Vector3 newRotation = new Vector3(0,
             _rotationTargetParent.localEulerAngles.y + (rotateInput * multiplier * Time.deltaTime), 0);
         _rotationTargetParent.localEulerAngles = newRotation;

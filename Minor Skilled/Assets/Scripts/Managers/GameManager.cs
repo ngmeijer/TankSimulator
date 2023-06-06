@@ -65,6 +65,12 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         }
     }
 
+    public void ResumeGame()
+    {
+        Player.StateSwitcher.SwitchToTankState(Player.StateSwitcher.LastTankState.ThisState);
+        HUDStateSwitcher.Instance.SwitchToHUDState(HUDStateSwitcher.Instance.LastState);
+    }
+
     private void RemoveEntityFromWorld(int entityID)
     {
         EntityWorldPositions.Remove(entityID);

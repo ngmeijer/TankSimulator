@@ -329,6 +329,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "EnableMenu",
+                    "type": "Button",
+                    "id": "49260634-b1e3-4b5d-9659-2a6852480edb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -386,6 +395,17 @@
                     "action": "ExitState",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5fd64aab-72c4-4495-ac06-e86d78d79b62",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EnableMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -394,11 +414,11 @@
             "id": "6737a303-340f-40c6-b2aa-d3f7e7f940dc",
             "actions": [
                 {
-                    "name": "MouseMove",
+                    "name": "MousePosition",
                     "type": "Value",
                     "id": "b5788ec4-2b67-4d78-aa7d-3c0a0225babb",
                     "expectedControlType": "Vector2",
-                    "processors": "NormalizeVector2,InvertVector2",
+                    "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
                 },
@@ -416,11 +436,11 @@
                 {
                     "name": "",
                     "id": "d3d5a6cc-1dcd-44e1-9315-9d18c5dc9d68",
-                    "path": "<Mouse>/delta",
+                    "path": "<Mouse>/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MouseMove",
+                    "action": "MousePosition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

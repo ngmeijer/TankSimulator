@@ -351,6 +351,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EnableMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""49260634-b1e3-4b5d-9659-2a6852480edb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -408,6 +417,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""ExitState"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5fd64aab-72c4-4495-ac06-e86d78d79b62"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EnableMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -416,11 +436,11 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             ""id"": ""6737a303-340f-40c6-b2aa-d3f7e7f940dc"",
             ""actions"": [
                 {
-                    ""name"": ""MouseMove"",
+                    ""name"": ""MousePosition"",
                     ""type"": ""Value"",
                     ""id"": ""b5788ec4-2b67-4d78-aa7d-3c0a0225babb"",
                     ""expectedControlType"": ""Vector2"",
-                    ""processors"": ""NormalizeVector2,InvertVector2"",
+                    ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 },
@@ -438,11 +458,11 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d3d5a6cc-1dcd-44e1-9315-9d18c5dc9d68"",
-                    ""path"": ""<Mouse>/delta"",
+                    ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MouseMove"",
+                    ""action"": ""MousePosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -484,9 +504,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_StateSwitcher_EnableInspectionView = m_StateSwitcher.FindAction("EnableInspectionView", throwIfNotFound: true);
         m_StateSwitcher_EnableHostileInspectionView = m_StateSwitcher.FindAction("EnableHostileInspectionView", throwIfNotFound: true);
         m_StateSwitcher_ExitState = m_StateSwitcher.FindAction("ExitState", throwIfNotFound: true);
+        m_StateSwitcher_EnableMenu = m_StateSwitcher.FindAction("EnableMenu", throwIfNotFound: true);
         // MenuInput
         m_MenuInput = asset.FindActionMap("MenuInput", throwIfNotFound: true);
-        m_MenuInput_MouseMove = m_MenuInput.FindAction("MouseMove", throwIfNotFound: true);
+        m_MenuInput_MousePosition = m_MenuInput.FindAction("MousePosition", throwIfNotFound: true);
         m_MenuInput_Click = m_MenuInput.FindAction("Click", throwIfNotFound: true);
     }
 
@@ -718,6 +739,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_StateSwitcher_EnableInspectionView;
     private readonly InputAction m_StateSwitcher_EnableHostileInspectionView;
     private readonly InputAction m_StateSwitcher_ExitState;
+    private readonly InputAction m_StateSwitcher_EnableMenu;
     public struct StateSwitcherActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -727,6 +749,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @EnableInspectionView => m_Wrapper.m_StateSwitcher_EnableInspectionView;
         public InputAction @EnableHostileInspectionView => m_Wrapper.m_StateSwitcher_EnableHostileInspectionView;
         public InputAction @ExitState => m_Wrapper.m_StateSwitcher_ExitState;
+        public InputAction @EnableMenu => m_Wrapper.m_StateSwitcher_EnableMenu;
         public InputActionMap Get() { return m_Wrapper.m_StateSwitcher; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -751,6 +774,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ExitState.started += instance.OnExitState;
             @ExitState.performed += instance.OnExitState;
             @ExitState.canceled += instance.OnExitState;
+            @EnableMenu.started += instance.OnEnableMenu;
+            @EnableMenu.performed += instance.OnEnableMenu;
+            @EnableMenu.canceled += instance.OnEnableMenu;
         }
 
         private void UnregisterCallbacks(IStateSwitcherActions instance)
@@ -770,6 +796,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ExitState.started -= instance.OnExitState;
             @ExitState.performed -= instance.OnExitState;
             @ExitState.canceled -= instance.OnExitState;
+            @EnableMenu.started -= instance.OnEnableMenu;
+            @EnableMenu.performed -= instance.OnEnableMenu;
+            @EnableMenu.canceled -= instance.OnEnableMenu;
         }
 
         public void RemoveCallbacks(IStateSwitcherActions instance)
@@ -791,13 +820,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     // MenuInput
     private readonly InputActionMap m_MenuInput;
     private List<IMenuInputActions> m_MenuInputActionsCallbackInterfaces = new List<IMenuInputActions>();
-    private readonly InputAction m_MenuInput_MouseMove;
+    private readonly InputAction m_MenuInput_MousePosition;
     private readonly InputAction m_MenuInput_Click;
     public struct MenuInputActions
     {
         private @PlayerInputActions m_Wrapper;
         public MenuInputActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @MouseMove => m_Wrapper.m_MenuInput_MouseMove;
+        public InputAction @MousePosition => m_Wrapper.m_MenuInput_MousePosition;
         public InputAction @Click => m_Wrapper.m_MenuInput_Click;
         public InputActionMap Get() { return m_Wrapper.m_MenuInput; }
         public void Enable() { Get().Enable(); }
@@ -808,9 +837,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_MenuInputActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_MenuInputActionsCallbackInterfaces.Add(instance);
-            @MouseMove.started += instance.OnMouseMove;
-            @MouseMove.performed += instance.OnMouseMove;
-            @MouseMove.canceled += instance.OnMouseMove;
+            @MousePosition.started += instance.OnMousePosition;
+            @MousePosition.performed += instance.OnMousePosition;
+            @MousePosition.canceled += instance.OnMousePosition;
             @Click.started += instance.OnClick;
             @Click.performed += instance.OnClick;
             @Click.canceled += instance.OnClick;
@@ -818,9 +847,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
 
         private void UnregisterCallbacks(IMenuInputActions instance)
         {
-            @MouseMove.started -= instance.OnMouseMove;
-            @MouseMove.performed -= instance.OnMouseMove;
-            @MouseMove.canceled -= instance.OnMouseMove;
+            @MousePosition.started -= instance.OnMousePosition;
+            @MousePosition.performed -= instance.OnMousePosition;
+            @MousePosition.canceled -= instance.OnMousePosition;
             @Click.started -= instance.OnClick;
             @Click.performed -= instance.OnClick;
             @Click.canceled -= instance.OnClick;
@@ -865,10 +894,11 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnEnableInspectionView(InputAction.CallbackContext context);
         void OnEnableHostileInspectionView(InputAction.CallbackContext context);
         void OnExitState(InputAction.CallbackContext context);
+        void OnEnableMenu(InputAction.CallbackContext context);
     }
     public interface IMenuInputActions
     {
-        void OnMouseMove(InputAction.CallbackContext context);
+        void OnMousePosition(InputAction.CallbackContext context);
         void OnClick(InputAction.CallbackContext context);
     }
 }

@@ -23,7 +23,14 @@ public class PlayerInputChecker : SingletonMonobehaviour<PlayerInputChecker>
         _inputActions.StateSwitcher.EnableThirdPersonView.started += EnableTP;
         _inputActions.StateSwitcher.EnableHostileInspectionView.started += EnableHostileInspection;
         _inputActions.StateSwitcher.ExitState.started += DisableInspection;
+        _inputActions.StateSwitcher.EnableMenu.started += EnableMenuState;
         _inputActions.Enable();
+    }
+
+    private void EnableMenuState(InputAction.CallbackContext callbackContext)
+    {
+        _playerStateSwitcher.SwitchToTankState(E_TankState.Pause);
+        HUDStateSwitcher.Instance.SwitchToHUDState(E_TankState.Pause);
     }
 
     private void EnableADS(InputAction.CallbackContext cb)

@@ -13,7 +13,6 @@ public class PlayerStateSwitcher : StateSwitcher
     
     public CameraState CurrentCameraState { get; private set; }
     public E_CameraState CamStateEnum;
-    
     public CameraState LastCameraState { get; private set; }
     
     private void Start()
@@ -31,6 +30,9 @@ public class PlayerStateSwitcher : StateSwitcher
         SwitchToTankState(DefaultTankState);
         SwitchToCamState(DefaultCamState);
         HUDStateSwitcher.Instance.SwitchToHUDState(DefaultTankState);
+
+        Vector3 camStartPos = transform.position + new Vector3(0, 3, 0);
+        CurrentCameraState.SetCameraPosition(camStartPos);
         
         GameManager.Instance.Player.EventManager.OnTankDestruction.AddListener(SwitchToDeathState);
     }

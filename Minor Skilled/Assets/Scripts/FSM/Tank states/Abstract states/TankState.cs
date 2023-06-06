@@ -7,7 +7,8 @@ public enum E_TankState
     Inspection,
     Combat,
     Death,
-    HostileInspection
+    HostileInspection,
+    Pause
 };
 
 public abstract class TankState : FSMState

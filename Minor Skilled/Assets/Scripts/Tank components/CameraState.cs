@@ -46,6 +46,11 @@ public abstract class CameraState : FSMState
         return -1;
     }
 
+    public void SetCameraPosition(Vector3 position)
+    {
+        ViewCam.transform.position = position;
+    }
+
     private void SetCameraEnable(bool enable)
     {
         ViewCam.gameObject.SetActive(enable);

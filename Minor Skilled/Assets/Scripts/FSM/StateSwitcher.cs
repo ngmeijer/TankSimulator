@@ -9,6 +9,7 @@ public class StateSwitcher : MonoBehaviour
     public TankState CombatState;
     [SerializeField] private TankState _deathState;
     [SerializeField] private TankState _hostileInspectionState;
+    [SerializeField] private TankState _pauseState;
 
     public TankState CurrentTankState { get; private set; }
     public E_TankState TankStateEnum;
@@ -49,6 +50,7 @@ public class StateSwitcher : MonoBehaviour
             E_TankState.Combat => CombatState,
             E_TankState.Death => _deathState,
             E_TankState.HostileInspection => _hostileInspectionState,
+            E_TankState.Pause => _pauseState,
         };
 
         newState.Enter();
