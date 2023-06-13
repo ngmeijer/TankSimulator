@@ -28,11 +28,20 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             ""id"": ""5b3aecbc-2dc5-4276-8545-caad1a667647"",
             ""actions"": [
                 {
-                    ""name"": ""Move"",
+                    ""name"": ""MoveTank"",
                     ""type"": ""Value"",
                     ""id"": ""23affdb2-0436-435b-a1cc-03484e14a52b"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": ""NormalizeVector2"",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""RotateTank"",
+                    ""type"": ""Value"",
+                    ""id"": ""e8ed1ad3-8ea0-40b1-988a-d1b7fd71f3dd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 },
@@ -110,7 +119,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""MoveTank"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -121,7 +130,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""MoveTank"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -132,29 +141,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""cbfb3294-61c0-4d2b-b63c-9bed4e8a7597"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""b754ef64-9bcc-4cbe-ade5-ef1086c6a463"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""MoveTank"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -212,6 +199,39 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""ZoomADS"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""bb09adb2-7dbb-476a-9ca1-b970b24805f6"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateTank"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""4f4147ef-0dd7-491d-aba8-0711a3a558c0"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateTank"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""19829456-0d62-4311-a02c-f2156d8c54ae"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateTank"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -484,7 +504,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
 }");
         // TankMovement
         m_TankMovement = asset.FindActionMap("TankMovement", throwIfNotFound: true);
-        m_TankMovement_Move = m_TankMovement.FindAction("Move", throwIfNotFound: true);
+        m_TankMovement_MoveTank = m_TankMovement.FindAction("MoveTank", throwIfNotFound: true);
+        m_TankMovement_RotateTank = m_TankMovement.FindAction("RotateTank", throwIfNotFound: true);
         m_TankMovement_Shoot = m_TankMovement.FindAction("Shoot", throwIfNotFound: true);
         m_TankMovement_IncreaseGear = m_TankMovement.FindAction("IncreaseGear", throwIfNotFound: true);
         m_TankMovement_DecreaseGear = m_TankMovement.FindAction("DecreaseGear", throwIfNotFound: true);
@@ -570,7 +591,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     // TankMovement
     private readonly InputActionMap m_TankMovement;
     private List<ITankMovementActions> m_TankMovementActionsCallbackInterfaces = new List<ITankMovementActions>();
-    private readonly InputAction m_TankMovement_Move;
+    private readonly InputAction m_TankMovement_MoveTank;
+    private readonly InputAction m_TankMovement_RotateTank;
     private readonly InputAction m_TankMovement_Shoot;
     private readonly InputAction m_TankMovement_IncreaseGear;
     private readonly InputAction m_TankMovement_DecreaseGear;
@@ -581,7 +603,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     {
         private @PlayerInputActions m_Wrapper;
         public TankMovementActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_TankMovement_Move;
+        public InputAction @MoveTank => m_Wrapper.m_TankMovement_MoveTank;
+        public InputAction @RotateTank => m_Wrapper.m_TankMovement_RotateTank;
         public InputAction @Shoot => m_Wrapper.m_TankMovement_Shoot;
         public InputAction @IncreaseGear => m_Wrapper.m_TankMovement_IncreaseGear;
         public InputAction @DecreaseGear => m_Wrapper.m_TankMovement_DecreaseGear;
@@ -597,9 +620,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_TankMovementActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_TankMovementActionsCallbackInterfaces.Add(instance);
-            @Move.started += instance.OnMove;
-            @Move.performed += instance.OnMove;
-            @Move.canceled += instance.OnMove;
+            @MoveTank.started += instance.OnMoveTank;
+            @MoveTank.performed += instance.OnMoveTank;
+            @MoveTank.canceled += instance.OnMoveTank;
+            @RotateTank.started += instance.OnRotateTank;
+            @RotateTank.performed += instance.OnRotateTank;
+            @RotateTank.canceled += instance.OnRotateTank;
             @Shoot.started += instance.OnShoot;
             @Shoot.performed += instance.OnShoot;
             @Shoot.canceled += instance.OnShoot;
@@ -622,9 +648,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
 
         private void UnregisterCallbacks(ITankMovementActions instance)
         {
-            @Move.started -= instance.OnMove;
-            @Move.performed -= instance.OnMove;
-            @Move.canceled -= instance.OnMove;
+            @MoveTank.started -= instance.OnMoveTank;
+            @MoveTank.performed -= instance.OnMoveTank;
+            @MoveTank.canceled -= instance.OnMoveTank;
+            @RotateTank.started -= instance.OnRotateTank;
+            @RotateTank.performed -= instance.OnRotateTank;
+            @RotateTank.canceled -= instance.OnRotateTank;
             @Shoot.started -= instance.OnShoot;
             @Shoot.performed -= instance.OnShoot;
             @Shoot.canceled -= instance.OnShoot;
@@ -872,7 +901,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     public MenuInputActions @MenuInput => new MenuInputActions(this);
     public interface ITankMovementActions
     {
-        void OnMove(InputAction.CallbackContext context);
+        void OnMoveTank(InputAction.CallbackContext context);
+        void OnRotateTank(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnIncreaseGear(InputAction.CallbackContext context);
         void OnDecreaseGear(InputAction.CallbackContext context);

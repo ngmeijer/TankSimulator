@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3b48bbe43d54895997911c5e865cd72, type: 3}
   m_Name: Condition - Check armor
   m_EditorClassIdentifier: 
-  NodeLevel: 2
+  NodeLevel: 3
   ParentNode: {fileID: 0}
   _childNodes: []
   _showLogs: 1

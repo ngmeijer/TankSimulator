@@ -87,8 +87,11 @@ public class HUDCombatState : HUDState
     public void UpdateCrosshair()
     {
         _currentBarrelCrosshair.position = Vector3.Lerp(_currentBarrelCrosshair.position, GameManager.Instance.CurrentBarrelCrosshairPos, CROSSHAIR_LERP_SPEED * Time.deltaTime);
-        _targetBarrelCrosshair.position = Vector3.Lerp(_targetBarrelCrosshair.position,
+        Vector3 clampedPosition = Vector3.Lerp(_targetBarrelCrosshair.position,
             GameManager.Instance.TargetBarrelCrosshairPos, CROSSHAIR_LERP_SPEED * Time.deltaTime);
+        clampedPosition.x = Mathf.Clamp(clampedPosition.x, -915f, 915f);
+        clampedPosition.y = Mathf.Clamp(clampedPosition.y,-480f, 510f);
+        _targetBarrelCrosshair.position = clampedPosition;
     }
     
     public void HandleCamModeUI(E_CameraState camState)
@@ -106,7 +109,7 @@ public class HUDCombatState : HUDState
 
     public void SetZoomLevelText(int currentCameraFOVLevel, bool enabled)
     {
-        _zoomLevelText.SetText($"{currentCameraFOVLevel}x");
+        _zoomLevelText.SetText($"Zoom level: {currentCameraFOVLevel}x");
         _zoomLevelText.gameObject.SetActive(enabled);
     }
     

@@ -43,6 +43,9 @@ public class AdsState : CameraState
     
     private void ZoomADS(InputAction.CallbackContext cb)
     {
+        if (!_stateActive)
+            return;
+        
         if (_currentFOVIndex >= _fovRanges.Length - 1)
             _currentFOVIndex = 0;
         else _currentFOVIndex++;

@@ -20,25 +20,25 @@ MonoBehaviour:
       time: 0
       value: 0
       inSlope: 0
-      outSlope: 2.348274
+      outSlope: 1.2122219
       tangentMode: 69
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 319.19403
-      value: 749.55505
-      inSlope: 1.5754857
-      outSlope: 1.5754857
+      time: 330.54474
+      value: 400.69357
+      inSlope: 1.0289993
+      outSlope: 1.0289993
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 1116.3767
-      value: 1389.4514
-      inSlope: 0.7719692
-      outSlope: 0.7719692
+      time: 1241.2344
+      value: 1170.9338
+      inSlope: 1.1008755
+      outSlope: 1.1008755
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -89,42 +89,42 @@ MonoBehaviour:
       time: 0
       value: 0
       inSlope: 9
-      outSlope: 2
+      outSlope: 0.8210449
       tangentMode: 69
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 2
-      inSlope: 2
-      outSlope: 4
+      value: 0.8210449
+      inSlope: 0.8210449
+      outSlope: 3.3623657
       tangentMode: 69
       weightedMode: 2
       inWeight: 0.33333334
       outWeight: 0.34348816
     - serializedVersion: 3
       time: 2
-      value: 6
-      inSlope: 4
-      outSlope: 4
+      value: 4.1834106
+      inSlope: 3.3623657
+      outSlope: 3.670862
       tangentMode: 69
       weightedMode: 3
       inWeight: 0.32845256
       outWeight: 0.3275734
     - serializedVersion: 3
-      time: 3
-      value: 10
-      inSlope: 4
-      outSlope: 3
+      time: 3.0111084
+      value: 7.89505
+      inSlope: 3.670862
+      outSlope: 3.5877051
       tangentMode: 69
       weightedMode: 3
       inWeight: 0.34445712
       outWeight: 0.3155965
     - serializedVersion: 3
       time: 4
-      value: 13
-      inSlope: 3
+      value: 11.442902
+      inSlope: 3.5877051
       outSlope: Infinity
       tangentMode: 69
       weightedMode: 3
@@ -134,7 +134,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   MaxGears: 4
-  SingleTrackTorqueMultiplier: 5
+  SingleTrackTorqueMultiplier: 7
   TP_HorizontalSensitivity: 30
   ADS_HorizontalSensitivity:
   - 25
@@ -142,8 +142,8 @@ MonoBehaviour:
   - 7
   - 3
   - 1
-  TankMass: 60000
-  KickbackForce: 70000
+  TankMass: 3000
+  KickbackForce: 400
   ShellSpeed: 500
   ReloadTime: 3
   TP_VerticalSensitivity: 20

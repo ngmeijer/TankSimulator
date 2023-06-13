@@ -4,7 +4,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerCombatState : TankCombatState
 {
-    private Vector2 _moveInput;
+    private Vector2 _moveForwardInput;
+    private Vector2 _rotateTankInput;
     private Vector2 _mouseInput;
 
     private PlayerInputActions _inputActions;
@@ -46,14 +47,16 @@ public class PlayerCombatState : TankCombatState
     {
         if (_playerStateSwitcher.CurrentCameraState.InTransition) return;
         GetInputValues();
-        TankMove();
-        HandleCrosshair();
+        _componentManager.MoveComponent.RotateTank(_rotateTankInput.x);
+        _componentManager.MoveComponent.MoveForward(_moveForwardInput.y);
         _componentManager.MoveComponent.UpdateHUD();
+        _componentManager.MoveComponent.ChangeCenterOfMass(new Vector2(_rotateTankInput.x, _moveForwardInput.y));
+        HandleCrosshair();
     }
 
     public override void FixedUpdateState()
     {
-        if (_moveInput.y == 0f && _moveInput.x == 0f && _componentManager.MoveComponent.GetTankVelocity() > 0)
+        if (_moveForwardInput.y == 0f && _rotateTankInput.x == 0f && _componentManager.MoveComponent.GetTankVelocity() > 0)
         {
             _componentManager.MoveComponent.SlowTankDown();
         }
@@ -77,16 +80,10 @@ public class PlayerCombatState : TankCombatState
 
     protected override void GetInputValues()
     {
-        _moveInput = _inputActions.TankMovement.Move.ReadValue<Vector2>();
+        _moveForwardInput = _inputActions.TankMovement.MoveTank.ReadValue<Vector2>();
+        _rotateTankInput = _inputActions.TankMovement.RotateTank.ReadValue<Vector2>();
+        
         _mouseInput = _inputActions.TankMovement.TurretRotate.ReadValue<Vector2>();
-    }
-    
-    private void TankMove()
-    {
-        _componentManager.MoveComponent.MoveTank(_moveInput.y);
-
-        if (_moveInput.x < 0 || _moveInput.x > 0)
-            _componentManager.MoveComponent.RotateTank(_moveInput.x);
     }
 
     private void TankFire(InputAction.CallbackContext cb)
@@ -122,7 +119,7 @@ public class PlayerCombatState : TankCombatState
         if (_componentManager.ShootComponent.CurrentRange > _componentManager.ShootComponent.MaxRange) return;
 
         _componentManager.ShootComponent.UpdateCurrentRange(_mouseInput.y, GetSensitivityMultiplier());
-        _componentManager.TurretControlComponent.OffsetCannonOnRangeChange(_componentManager.ShootComponent.RangePercent);
+        _componentManager.TurretControlComponent.AdjustCannonRotation(_componentManager.ShootComponent.RangePercent);
         _hudCombatState.UpdateCrosshair();
     }
     

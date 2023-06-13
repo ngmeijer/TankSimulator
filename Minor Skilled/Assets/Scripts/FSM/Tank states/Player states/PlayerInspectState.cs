@@ -2,10 +2,13 @@
 
 public class PlayerInspectState : TankInspectState
 {
+    [SerializeField] private GameObject _adsPostProcessVolume;
+    
     public override void Enter()
     {
         base.Enter();
         
+        _adsPostProcessVolume.SetActive(false);
         HandleDamageRegistrationUI(true);
     }
 
@@ -13,6 +16,7 @@ public class PlayerInspectState : TankInspectState
     {
         base.Exit();
         
+        _adsPostProcessVolume.SetActive(true);
         HandleDamageRegistrationUI(false);
     }
 

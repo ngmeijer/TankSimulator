@@ -41,7 +41,6 @@ public class TurretControlComponent : TankComponent
 
     public void HandleTurretRotation(float rotateInput, float multiplier)
     {
-        Debug.Log("turret rotation");
         Vector3 newRotation = new Vector3(0,
             _rotationTargetParent.localEulerAngles.y + (rotateInput * multiplier * Time.deltaTime), 0);
         _rotationTargetParent.localEulerAngles = newRotation;
@@ -50,17 +49,26 @@ public class TurretControlComponent : TankComponent
                 multiplier * Time.deltaTime);
     }
 
-    public void OffsetCannonOnRangeChange(float rangePercent)
+    public void AdjustCannonRotation(float currentRotationPercent)
     {
         float minY = _barrelLowerBound.position.y;
         float maxY = _barrelUpperBound.position.y;
         float maxLength = maxY - minY;
-        float yDelta = rangePercent * maxLength;
+        float yDelta = currentRotationPercent * maxLength;
         
         Vector3 currentPosition = _barrelLookAt.transform.position;
         Vector3 newPosition = currentPosition;
         newPosition.y = minY + yDelta;
+        
+        _barrelLookAt.transform.position = Vector3.MoveTowards(currentPosition,
+            newPosition, DetermineSensitivityMultiplier() * Time.deltaTime);
 
+        Vector3 lookatPosition = new Vector3(_barrelLowerBound.position.x, _barrelLookAt.position.y, _barrelLowerBound.position.z);
+        _barrelTransform.LookAt(lookatPosition);
+    }
+
+    private float DetermineSensitivityMultiplier()
+    {
         E_CameraState camState = _playerStateSwitcher.CurrentCameraState.ThisState;
         float multiplier = 0;
         if (camState == E_CameraState.ThirdPerson)
@@ -70,12 +78,8 @@ public class TurretControlComponent : TankComponent
             int currentFOV = _playerStateSwitcher.CurrentCameraState.GetFOVLevel();
             multiplier = _componentManager.Properties.ADS_VerticalSensitivity[currentFOV];
         }
-        
-        _barrelLookAt.transform.position = Vector3.MoveTowards(currentPosition,
-            newPosition, multiplier * Time.deltaTime);
 
-        Vector3 lookatPosition = new Vector3(_barrelLowerBound.position.x, _barrelLookAt.position.y, _barrelLowerBound.position.z);
-        _barrelTransform.LookAt(lookatPosition);
+        return multiplier;
     }
 
     public Vector3 GetCurrentBarrelDirection()

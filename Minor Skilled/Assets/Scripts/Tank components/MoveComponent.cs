@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 enum MoveDirection
 {
@@ -21,7 +22,7 @@ public class MoveComponent : TankComponent
 {
     private const int REAR_DRIVE_GEAR = -1;
     private const int MIN_RPM = 750;
-    private const int FINAL_DRIVE_RATIO = 14;
+    private const int FINAL_DRIVE_RATIO = 1;
     
     private MoveDirection _moveDirection;
     private float _hudCurrentUpdateTime;
@@ -35,13 +36,23 @@ public class MoveComponent : TankComponent
     private HUDCombatState _hudCombatState;
     
     [SerializeField] private Rigidbody _tankRB;
+    
+    [Header("Center of Mass (CoM)")]
     [SerializeField] private Transform _centerOfMass;
+    [SerializeField] private Transform _leftBound;
+    [SerializeField] private Transform _rightBound;
+    [SerializeField] private Transform _frontBound;
+    [SerializeField] private Transform _backBound;
+    
     [SerializeField] private MeshRenderer _leftTrackRenderer;    
     [SerializeField] private MeshRenderer _rightTrackRenderer;
 
     public List<WheelCollider> LeftTrackWheelColliders = new List<WheelCollider>();  
     public List<WheelCollider> RightTrackWheelColliders = new List<WheelCollider>();
-
+    public List<WheelCollider> GetLeftWheelColliders() => LeftTrackWheelColliders;
+    public List<WheelCollider> GetRightWheelColliders() => RightTrackWheelColliders;
+    public float GetTankVelocity() => _tankRB.velocity.magnitude;
+    
     private void Start()
     {
         _hudCombatState = HUDStateSwitcher.Instance.HUDCombatState as HUDCombatState;
@@ -81,6 +92,16 @@ public class MoveComponent : TankComponent
             Gizmos.DrawSphere(wheel.transform.position, 0.2f);
             Handles.Label(wheel.transform.position - new Vector3(0, 0.25f, 0), $"Motor torque: {wheel.motorTorque}");
         }
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(_centerOfMass.position, 0.25f);
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(_frontBound.position, 0.3f);
+        Gizmos.DrawLine(_frontBound.position, _backBound.position);
+        Gizmos.DrawSphere(_backBound.position, 0.3f);
+        Gizmos.DrawSphere(_leftBound.position, 0.3f);
+        Gizmos.DrawLine(_leftBound.position, _rightBound.position);
+        Gizmos.DrawSphere(_rightBound.position, 0.3f);
     }
 
     public void UpdateHUD()
@@ -93,11 +114,6 @@ public class MoveComponent : TankComponent
         }
     }
 
-    public float GetTankVelocity()
-    {
-        return _tankRB.velocity.magnitude;
-    }
-
     private void AnimateTankTracks(float inputValueLeftTrack, float inputValueRightTrack)
     {
         var offsetLeft = Time.time * inputValueLeftTrack * GetTankVelocity();
@@ -108,10 +124,48 @@ public class MoveComponent : TankComponent
         _rightTrackRenderer.material.mainTextureOffset = _textureOffsetRightTrack;
     }
 
-    private void SetMotorTorque(float leftTrackTorque, float rightTrackTorque)
+    public void MoveForward(float inputValue)
     {
-        SetTorqueForTracks(LeftTrackWheelColliders, leftTrackTorque);
-        SetTorqueForTracks(RightTrackWheelColliders, rightTrackTorque);
+        _movementData.Velocity = (float)Math.Round(GetTankVelocity(), 1);
+        AnimateTankTracks(inputValue, inputValue);
+
+        if (inputValue == 0)
+            return;
+
+        float torquePerWheel = CalculateTorque(inputValue);
+        Debug.Log("Setting torque for MoveForward");
+        SetTorqueForTracks(LeftTrackWheelColliders, torquePerWheel);
+        SetTorqueForTracks(RightTrackWheelColliders, torquePerWheel);
+    }
+
+    public void RotateTank(float rotateInputValue)
+    {
+        float torquePerWheel = CalculateTorque(rotateInputValue);
+        torquePerWheel /= 2;
+
+        if (rotateInputValue == 0)
+            return;
+
+        switch (rotateInputValue)
+        {
+            //Rotating to left
+            case < 0:
+                AnimateTankTracks(0, rotateInputValue);
+                SetTorqueForTracks(LeftTrackWheelColliders, -torquePerWheel * (_properties.SingleTrackTorqueMultiplier / 2));
+                SetTorqueForTracks(RightTrackWheelColliders, torquePerWheel * _properties.SingleTrackTorqueMultiplier);
+                break;
+            //Rotating to right
+            case > 0:
+                AnimateTankTracks(rotateInputValue, 0);
+                SetTorqueForTracks(LeftTrackWheelColliders, torquePerWheel * _properties.SingleTrackTorqueMultiplier);
+                SetTorqueForTracks(RightTrackWheelColliders, -torquePerWheel * (_properties.SingleTrackTorqueMultiplier / 2));
+                break;
+        }
+    }
+
+    private void TankKickbackOnShellFire()
+    {
+        _tankRB.AddForce(0,0, -_componentManager.GetCurrentBarrelDirection().z * _properties.KickbackForce,ForceMode.Impulse);
     }
 
     private void SetTorqueForTracks(List<WheelCollider> listToUpdate, float torqueNewtonMeters)
@@ -121,48 +175,6 @@ public class MoveComponent : TankComponent
             wheel.motorTorque = torqueNewtonMeters;
         }
     }
-
-    public void MoveTank(float inputValue)
-    {
-        AnimateTankTracks(inputValue, inputValue);
-        //For the AI, input value can be generated as well so should be a reusable class.
-        float torquePerWheel = CalculateTorque(inputValue);
-        SetMotorTorque(torquePerWheel, torquePerWheel);
-        _movementData.Velocity = (float)Math.Round(GetTankVelocity(), 1);
-    }
-
-    public void RotateTank(float rotateInputValue)
-    {
-        float torquePerWheel = CalculateTorque(rotateInputValue);
-
-        switch (rotateInputValue)
-        {
-            //Rotating to left
-            case < 0:
-                AnimateTankTracks(-rotateInputValue, rotateInputValue);
-                SetMotorTorque(-torquePerWheel * _properties.SingleTrackTorqueMultiplier, torquePerWheel * _properties.SingleTrackTorqueMultiplier);
-                break;
-            //Rotating to right
-            case > 0:
-                AnimateTankTracks(rotateInputValue, -rotateInputValue);
-                SetMotorTorque(torquePerWheel * _properties.SingleTrackTorqueMultiplier, -torquePerWheel * _properties.SingleTrackTorqueMultiplier);
-                break;
-        }
-    }
-
-    public void SlowTankDown()
-    {
-        SetMotorTorque(0f,0f);
-    }
-
-    private void TankKickbackOnShellFire()
-    {
-        _tankRB.AddForce(0,0, -_componentManager.GetCurrentBarrelDirection().z * _properties.KickbackForce,ForceMode.Impulse);
-    }
-    
-    public List<WheelCollider> GetLeftWheelColliders() => LeftTrackWheelColliders;       
-                                                                                      
-    public List<WheelCollider> GetRightWheelColliders() => RightTrackWheelColliders;
 
     private float CalculateRPM()
     {
@@ -195,21 +207,43 @@ public class MoveComponent : TankComponent
     private float CalculateTorque(float inputValue)
     {
         _movementData.RPM = (int)CalculateRPM();
-
-        if (inputValue == 0) return 0;
         
-        //Prevents moving forward when in rear gear
-        if (_movementData.GearIndex < 0)
+        if (_movementData.GearIndex is > 0 or < 0 && inputValue < 0)
             inputValue = Mathf.Abs(inputValue);
-        //Prevents moving backwards when in any gear above 0
-        else if (_movementData.GearIndex > 0 && inputValue < 0)
-            inputValue = Mathf.Abs(inputValue);
-
+        
+        inputValue = Mathf.Abs(inputValue);
         _movementData.RPM = Mathf.Abs(_movementData.RPM);
         _currentTorque = _properties.MotorTorque.Evaluate(_movementData.RPM) * _properties.GearRatios.Evaluate(_movementData.GearIndex) * FINAL_DRIVE_RATIO * inputValue;
         float torquePerWheel = _currentTorque / _wheelCount;
 
         return torquePerWheel;
+    }
+
+    private int elapsedFrames = 0;
+    private const int maxFrames = 60;
+    
+    public void ChangeCenterOfMass(Vector2 moveDir)
+    {
+        Vector3 newCoMPosition = _componentManager.EntityOrigin.localPosition;
+
+        elapsedFrames++;
+        if (elapsedFrames >= maxFrames && moveDir == Vector2.zero)
+            elapsedFrames = 0;
+        
+        float interpolationRatio = (float)elapsedFrames / maxFrames;
+
+        if (moveDir.x < 0)
+            newCoMPosition = _leftBound.localPosition;
+        else if (moveDir.x > 0)
+            newCoMPosition = _rightBound.localPosition;
+        
+        if (moveDir.y < 0)
+            newCoMPosition = _backBound.localPosition;
+        else if (moveDir.y > 0)
+            newCoMPosition = _frontBound.localPosition;
+            
+        Vector3 lerpedPos = Vector3.Lerp(_centerOfMass.localPosition, newCoMPosition, interpolationRatio);
+        _centerOfMass.localPosition = lerpedPos;
     }
 
     public void IncreaseGear()
@@ -224,5 +258,11 @@ public class MoveComponent : TankComponent
         _movementData.GearIndex--;
         if (_movementData.GearIndex < REAR_DRIVE_GEAR)
             _movementData.GearIndex = REAR_DRIVE_GEAR;
+    }
+
+    public void SlowTankDown()
+    {
+        SetTorqueForTracks(LeftTrackWheelColliders, 0);
+        SetTorqueForTracks(RightTrackWheelColliders, 0);
     }
 }

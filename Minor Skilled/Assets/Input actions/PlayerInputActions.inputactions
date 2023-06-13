@@ -6,11 +6,20 @@
             "id": "5b3aecbc-2dc5-4276-8545-caad1a667647",
             "actions": [
                 {
-                    "name": "Move",
+                    "name": "MoveTank",
                     "type": "Value",
                     "id": "23affdb2-0436-435b-a1cc-03484e14a52b",
                     "expectedControlType": "Vector2",
                     "processors": "NormalizeVector2",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "RotateTank",
+                    "type": "Value",
+                    "id": "e8ed1ad3-8ea0-40b1-988a-d1b7fd71f3dd",
+                    "expectedControlType": "Button",
+                    "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
                 },
@@ -88,7 +97,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "MoveTank",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -99,7 +108,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "MoveTank",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -110,29 +119,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "cbfb3294-61c0-4d2b-b63c-9bed4e8a7597",
-                    "path": "<Keyboard>/a",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "b754ef64-9bcc-4cbe-ade5-ef1086c6a463",
-                    "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
+                    "action": "MoveTank",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -190,6 +177,39 @@
                     "action": "ZoomADS",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "2D Vector",
+                    "id": "bb09adb2-7dbb-476a-9ca1-b970b24805f6",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateTank",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "left",
+                    "id": "4f4147ef-0dd7-491d-aba8-0711a3a558c0",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateTank",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "19829456-0d62-4311-a02c-f2156d8c54ae",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateTank",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },

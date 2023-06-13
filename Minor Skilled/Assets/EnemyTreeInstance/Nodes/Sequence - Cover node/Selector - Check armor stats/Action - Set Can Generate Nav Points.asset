@@ -15,5 +15,5 @@ MonoBehaviour:
   NodeLevel: 0
   ParentNode: {fileID: 0}
   _childNodes: []
-  _showLogs: 1
+  _showLogs: 0
   _canGenerate: 1
