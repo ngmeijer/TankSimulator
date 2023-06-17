@@ -22,6 +22,11 @@ public class CameraComponent : TankComponent
     [SerializeField] private Transform _raycaster;
     [SerializeField] private Transform _currentBarrelCrosshair;
     [SerializeField] private Transform _estimatedTargetCrosshair;
+    [SerializeField] private float _maxFOVValue;
+    [SerializeField] private float _minFOVValue;
+    [SerializeField] private float _FOVAnimateSpeed = 1f;
+    private float _fromFOV = 60f;
+    private float _toFOV = 60f;
     
     private RaycastHit _currentHitData;
     private string _colliderTag;
@@ -32,6 +37,7 @@ public class CameraComponent : TankComponent
     private PlayerInputActions _inputActions;
 
     private Camera _currentCamera;
+    private Vector2 _moveForwardInput;
     
     private void Start()
     {
@@ -49,6 +55,8 @@ public class CameraComponent : TankComponent
 
     private void LateUpdate()
     {
+        _moveForwardInput = _inputActions.TankMovement.MoveTank.ReadValue<Vector2>();
+
         CameraState camState = _playerStateSwitcher.CurrentCameraState;
         _currentCamera = camState.ViewCam;
         if (camState.ThisState == E_CameraState.InspectMode) return;
@@ -56,6 +64,7 @@ public class CameraComponent : TankComponent
         GameManager.Instance.CurrentBarrelCrosshairPos = ConvertCurrentBarrelCrosshair();
         GameManager.Instance.TargetBarrelCrosshairPos = ConvertTargetBarrelCrosshair();
 
+        AnimateCameraFOV(_moveForwardInput.y);
         RaycastToAllEnemies();
 
         if (RaycastForwardFromBarrelTip())
@@ -137,6 +146,31 @@ public class CameraComponent : TankComponent
         else _colliderTag = "No collision detected";
 
         return hasCollision && !_currentHitData.collider.CompareTag("Shell");
+    }
+    
+    private float elapsedTime = 0f;
+    private void AnimateCameraFOV(float inputValue)
+    {
+        //Only animate FOV in 3rd person
+        if (_playerStateSwitcher.CurrentCameraState.ThisState != E_CameraState.ThirdPerson)
+            return;
+
+        float maxFrames = _FOVAnimateSpeed / Time.deltaTime;
+        float interpolationRatio = elapsedTime / maxFrames;
+
+        if (inputValue != 0)
+        {
+            _toFOV = _maxFOVValue;
+            elapsedTime = Mathf.Min(elapsedTime + Time.deltaTime, maxFrames);
+        }
+        else if (elapsedTime > 0)
+        {
+            _toFOV = _minFOVValue;
+            elapsedTime = Mathf.Max(elapsedTime - Time.deltaTime, 0f);
+        }
+
+        interpolationRatio = elapsedTime / maxFrames;
+        _currentCamera.fieldOfView = Mathf.Lerp(_currentCamera.fieldOfView, _toFOV, interpolationRatio);
     }
 
     private void OnDrawGizmos()

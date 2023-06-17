@@ -47,19 +47,14 @@ public class PlayerCombatState : TankCombatState
     {
         if (_playerStateSwitcher.CurrentCameraState.InTransition) return;
         GetInputValues();
-        _componentManager.MoveComponent.RotateTank(_rotateTankInput.x);
-        _componentManager.MoveComponent.MoveForward(_moveForwardInput.y);
-        _componentManager.MoveComponent.UpdateHUD();
-        _componentManager.MoveComponent.ChangeCenterOfMass(new Vector2(_rotateTankInput.x, _moveForwardInput.y));
         HandleCrosshair();
     }
 
     public override void FixedUpdateState()
     {
-        if (_moveForwardInput.y == 0f && _rotateTankInput.x == 0f && _componentManager.MoveComponent.GetTankVelocity() > 0)
-        {
-            _componentManager.MoveComponent.SlowTankDown();
-        }
+        _componentManager.MoveComponent.CheckGroundCoverage();
+        _componentManager.MoveComponent.MoveForward(_moveForwardInput.y);
+        _componentManager.MoveComponent.HandleSteering(_rotateTankInput.x);
     }
 
     public override void LateUpdateState()
@@ -105,12 +100,12 @@ public class PlayerCombatState : TankCombatState
 
     private void IncreaseGear(InputAction.CallbackContext cb)
     {
-        _componentManager.MoveComponent.IncreaseGear();
+        //_componentManager.MoveComponent.IncreaseGear();
     }
 
     private void DecreaseGear(InputAction.CallbackContext cb)
     {
-        _componentManager.MoveComponent.DecreaseGear();
+        //_componentManager.MoveComponent.DecreaseGear();
     }
 
     private void HandleCrosshair()

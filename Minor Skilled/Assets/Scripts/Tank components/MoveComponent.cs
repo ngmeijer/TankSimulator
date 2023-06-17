@@ -133,7 +133,6 @@ public class MoveComponent : TankComponent
             return;
 
         float torquePerWheel = CalculateTorque(inputValue);
-        Debug.Log("Setting torque for MoveForward");
         SetTorqueForTracks(LeftTrackWheelColliders, torquePerWheel);
         SetTorqueForTracks(RightTrackWheelColliders, torquePerWheel);
     }

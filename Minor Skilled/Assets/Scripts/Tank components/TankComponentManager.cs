@@ -9,7 +9,7 @@ public class TankComponentManager : MonoBehaviour
     public StateSwitcher StateSwitcher;
     public TankProperties Properties;
     public EventManager EventManager { get; private set; }
-    public MoveComponent MoveComponent { get; private set; }
+    public NewMoveComponent MoveComponent { get; private set; }
     public TurretControlComponent TurretControlComponent { get; private set; }
     public ShootComponent ShootComponent { get; private set; }
     public DamageRegistrationComponent DamageComponent { get; private set; }
@@ -23,7 +23,7 @@ public class TankComponentManager : MonoBehaviour
     private void Awake()
     {
         StateSwitcher = GetComponent<StateSwitcher>();
-        MoveComponent = GetComponentInChildren<MoveComponent>();
+        MoveComponent = GetComponentInChildren<NewMoveComponent>();
         TurretControlComponent = GetComponentInChildren<TurretControlComponent>();
         ShootComponent = GetComponentInChildren<ShootComponent>();
         DamageComponent = GetComponentInChildren<DamageRegistrationComponent>();
@@ -44,8 +44,8 @@ public class TankComponentManager : MonoBehaviour
     
     public List<WheelCollider> GetLeftWheelColliders()
     {
-        if (MoveComponent != null)
-            return MoveComponent.GetLeftWheelColliders();
+        // if (MoveComponent != null)
+        //     return MoveComponent.GetLeftWheelColliders();
         
         Debug.LogError($"There is no MoveComponent attached to {this.gameObject.name}. Cannot retrieve wheels");
         return null;
@@ -53,8 +53,8 @@ public class TankComponentManager : MonoBehaviour
 
     public List<WheelCollider> GetRightWheelColliders()
     {
-        if (MoveComponent != null)
-            return MoveComponent.GetRightWheelColliders();
+        // if (MoveComponent != null)
+        //     return MoveComponent.GetRightWheelColliders();
         
         Debug.LogError($"There is no MoveComponent attached to {this.gameObject.name}. Cannot retrieve wheels");
         return null;

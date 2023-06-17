@@ -11,7 +11,9 @@ namespace CustomBehaviourTree.CustomNodesScripts.NavMeshNodes
             blackboard.MoveToPosition = Vector3.zero;
             controller.NavAgent.isStopped = true;
             controller.NavAgent.ResetPath();
-
+            controller.NavAgent.enabled = false;
+            controller.NavAgent.enabled = true;
+            
             _nodeState = NodeState.Success;
             return _nodeState;
         }

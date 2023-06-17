@@ -2891,7 +2891,7 @@ GameObject:
   - component: {fileID: 7813478646166526755}
   - component: {fileID: 7785475534403663463}
   - component: {fileID: 7795015114002453899}
-  - component: {fileID: 4711635312134279533}
+  - component: {fileID: 1823967596}
   m_Layer: 0
   m_Name: SM_Veh_Tank_German_Track_Wheel_R_05
   m_TagString: Untagged
@@ -2964,36 +2964,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!146 &4711635312134279533
-WheelCollider:
+--- !u!135 &1823967596
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7816044660165716057}
-  m_Center: {x: 0, y: -0.05, z: 0}
-  m_Radius: 0.34
-  m_SuspensionSpring:
-    spring: 4000
-    damper: 50
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.5
-  m_ForceAppPointDistance: 0
-  m_Mass: 20
-  m_WheelDampingRate: 0.25
-  m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.38955122
+  m_Center: {x: -0.0076580048, y: 0, z: -0.00000014901161}
 --- !u!1 &7816060645878397303
 GameObject:
   m_ObjectHideFlags: 0
@@ -3005,7 +2988,7 @@ GameObject:
   - component: {fileID: 7813454612267104293}
   - component: {fileID: 7784630258508849943}
   - component: {fileID: 7795130103028588465}
-  - component: {fileID: 4711635310858002928}
+  - component: {fileID: 1835848906}
   m_Layer: 0
   m_Name: SM_Veh_Tank_German_Track_Wheel_L_08
   m_TagString: Untagged
@@ -3078,36 +3061,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!146 &4711635310858002928
-WheelCollider:
+--- !u!135 &1835848906
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7816060645878397303}
-  m_Center: {x: 0, y: -0.05, z: 0}
-  m_Radius: 0.34
-  m_SuspensionSpring:
-    spring: 4000
-    damper: 50
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.5
-  m_ForceAppPointDistance: 0
-  m_Mass: 20
-  m_WheelDampingRate: 0.25
-  m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.38955122
+  m_Center: {x: 0.0076580048, y: 0, z: 0}
 --- !u!1 &7816062262460980725
 GameObject:
   m_ObjectHideFlags: 0
@@ -3119,7 +3085,7 @@ GameObject:
   - component: {fileID: 7813897607263298045}
   - component: {fileID: 7784698642935608751}
   - component: {fileID: 7794764553757902461}
-  - component: {fileID: 4711635311277990326}
+  - component: {fileID: 242087281}
   m_Layer: 0
   m_Name: SM_Veh_Tank_German_Track_Wheel_R_04
   m_TagString: Untagged
@@ -3192,36 +3158,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!146 &4711635311277990326
-WheelCollider:
+--- !u!135 &242087281
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7816062262460980725}
-  m_Center: {x: 0, y: -0.05, z: 0}
-  m_Radius: 0.34
-  m_SuspensionSpring:
-    spring: 4000
-    damper: 50
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.5
-  m_ForceAppPointDistance: 0
-  m_Mass: 20
-  m_WheelDampingRate: 0.25
-  m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.3895513
+  m_Center: {x: -0.0076580048, y: 0, z: -0.000015497208}
 --- !u!1 &7816066949517728197
 GameObject:
   m_ObjectHideFlags: 0
@@ -3233,7 +3182,7 @@ GameObject:
   - component: {fileID: 7814304876839319889}
   - component: {fileID: 7784616017547528743}
   - component: {fileID: 7794354735488555823}
-  - component: {fileID: 4711635312514563302}
+  - component: {fileID: 1911712089}
   m_Layer: 0
   m_Name: SM_Veh_Tank_German_Track_Wheel_R_08
   m_TagString: Untagged
@@ -3306,36 +3255,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!146 &4711635312514563302
-WheelCollider:
+--- !u!135 &1911712089
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7816066949517728197}
-  m_Center: {x: 0, y: -0.05, z: 0}
-  m_Radius: 0.34
-  m_SuspensionSpring:
-    spring: 4000
-    damper: 50
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.5
-  m_ForceAppPointDistance: 0
-  m_Mass: 20
-  m_WheelDampingRate: 0.25
-  m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.38955122
+  m_Center: {x: -0.0076580048, y: 0, z: 0}
 --- !u!1 &7816077929816109347
 GameObject:
   m_ObjectHideFlags: 0
@@ -3347,7 +3279,7 @@ GameObject:
   - component: {fileID: 7813926428019637381}
   - component: {fileID: 7784851991206619105}
   - component: {fileID: 7794062855291280633}
-  - component: {fileID: 4711635310482081930}
+  - component: {fileID: 283100399}
   m_Layer: 0
   m_Name: SM_Veh_Tank_German_Track_Wheel_R_01
   m_TagString: Untagged
@@ -3420,36 +3352,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!146 &4711635310482081930
-WheelCollider:
+--- !u!135 &283100399
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7816077929816109347}
-  m_Center: {x: 0, y: -0.05, z: 0}
-  m_Radius: 0.34
-  m_SuspensionSpring:
-    spring: 4000
-    damper: 50
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.5
-  m_ForceAppPointDistance: 0
-  m_Mass: 20
-  m_WheelDampingRate: 0.25
-  m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.32021835
+  m_Center: {x: -0.000000022351742, y: 0, z: 0.0000002682209}
 --- !u!1 &7816094703756319489
 GameObject:
   m_ObjectHideFlags: 0
@@ -3544,7 +3459,7 @@ GameObject:
   - component: {fileID: 7813348811815118181}
   - component: {fileID: 7784001794948533009}
   - component: {fileID: 7794949806798843585}
-  - component: {fileID: 4711635312097632042}
+  - component: {fileID: 1369617298}
   m_Layer: 0
   m_Name: SM_Veh_Tank_German_Track_Wheel_R_09
   m_TagString: Untagged
@@ -3617,36 +3532,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!146 &4711635312097632042
-WheelCollider:
+--- !u!135 &1369617298
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7816097968453092031}
-  m_Center: {x: 0, y: -0.05, z: 0}
-  m_Radius: 0.34
-  m_SuspensionSpring:
-    spring: 4000
-    damper: 50
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.5
-  m_ForceAppPointDistance: 0
-  m_Mass: 20
-  m_WheelDampingRate: 0.25
-  m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.35830778
+  m_Center: {x: 0.0000018328428, y: 0.000000014901161, z: -0.000000044703484}
 --- !u!1 &7816149301953182957
 GameObject:
   m_ObjectHideFlags: 0
@@ -3658,7 +3556,7 @@ GameObject:
   - component: {fileID: 7813487755317658607}
   - component: {fileID: 7783957786238741799}
   - component: {fileID: 7794314297617472593}
-  - component: {fileID: 4711635312201203253}
+  - component: {fileID: 874384827}
   m_Layer: 0
   m_Name: SM_Veh_Tank_German_Track_Wheel_L_01
   m_TagString: Untagged
@@ -3731,36 +3629,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!146 &4711635312201203253
-WheelCollider:
+--- !u!135 &874384827
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7816149301953182957}
-  m_Center: {x: 0, y: -0.05, z: 0}
-  m_Radius: 0.34
-  m_SuspensionSpring:
-    spring: 4000
-    damper: 50
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.5
-  m_ForceAppPointDistance: 0
-  m_Mass: 20
-  m_WheelDampingRate: 0.25
-  m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.32021835
+  m_Center: {x: 0.000000022351742, y: 0, z: 0.00001552701}
 --- !u!1 &7816163327322523319
 GameObject:
   m_ObjectHideFlags: 0
@@ -3855,7 +3736,7 @@ GameObject:
   - component: {fileID: 7813923648329632057}
   - component: {fileID: 7784000285144695453}
   - component: {fileID: 7794161429740537943}
-  - component: {fileID: 4711635310607141580}
+  - component: {fileID: 1711930691}
   m_Layer: 0
   m_Name: SM_Veh_Tank_German_Track_Wheel_L_09
   m_TagString: Untagged
@@ -3928,36 +3809,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!146 &4711635310607141580
-WheelCollider:
+--- !u!135 &1711930691
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7816164143362535039}
-  m_Center: {x: 0, y: -0.05, z: 0}
-  m_Radius: 0.34
-  m_SuspensionSpring:
-    spring: 4000
-    damper: 50
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.5
-  m_ForceAppPointDistance: 0
-  m_Mass: 20
-  m_WheelDampingRate: 0.25
-  m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.35830784
+  m_Center: {x: 0, y: 0.000000014901161, z: -0.000000044703484}
 --- !u!1 &7816698424329343403
 GameObject:
   m_ObjectHideFlags: 0
@@ -3969,7 +3833,7 @@ GameObject:
   - component: {fileID: 7813893744554208093}
   - component: {fileID: 7784871812021987909}
   - component: {fileID: 7794098022340003517}
-  - component: {fileID: 4711635310897519717}
+  - component: {fileID: 53750858}
   m_Layer: 0
   m_Name: SM_Veh_Tank_German_Track_Wheel_R_03
   m_TagString: Untagged
@@ -4042,36 +3906,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!146 &4711635310897519717
-WheelCollider:
+--- !u!135 &53750858
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7816698424329343403}
-  m_Center: {x: 0, y: -0.05, z: 0}
-  m_Radius: 0.34
-  m_SuspensionSpring:
-    spring: 4000
-    damper: 50
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.5
-  m_ForceAppPointDistance: 0
-  m_Mass: 20
-  m_WheelDampingRate: 0.25
-  m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.38955128
+  m_Center: {x: -0.0076580048, y: 0, z: -0.000000074505806}
 --- !u!1 &7816744180191801285
 GameObject:
   m_ObjectHideFlags: 0
@@ -4166,7 +4013,7 @@ GameObject:
   - component: {fileID: 7814081164180124667}
   - component: {fileID: 7785021668662774985}
   - component: {fileID: 7794139996049730301}
-  - component: {fileID: 4711635311487096178}
+  - component: {fileID: 70164172}
   m_Layer: 0
   m_Name: SM_Veh_Tank_German_Track_Wheel_L_02
   m_TagString: Untagged
@@ -4239,36 +4086,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!146 &4711635311487096178
-WheelCollider:
+--- !u!135 &70164172
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7816788815164533585}
-  m_Center: {x: 0, y: -0.05, z: 0}
-  m_Radius: 0.34
-  m_SuspensionSpring:
-    spring: 4000
-    damper: 50
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.5
-  m_ForceAppPointDistance: 0
-  m_Mass: 20
-  m_WheelDampingRate: 0.25
-  m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.38955128
+  m_Center: {x: 0.0076580048, y: 0, z: -0.000000074505806}
 --- !u!1 &7816788989873489565
 GameObject:
   m_ObjectHideFlags: 0
@@ -4426,7 +4256,7 @@ GameObject:
   - component: {fileID: 7813482464304025515}
   - component: {fileID: 7784865242168918779}
   - component: {fileID: 7794824633086146551}
-  - component: {fileID: 4711635310948222710}
+  - component: {fileID: 1298119676}
   m_Layer: 0
   m_Name: SM_Veh_Tank_German_Track_Wheel_L_05
   m_TagString: Untagged
@@ -4499,36 +4329,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!146 &4711635310948222710
-WheelCollider:
+--- !u!135 &1298119676
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7816891806977211677}
-  m_Center: {x: 0, y: -0.05, z: 0}
-  m_Radius: 0.34
-  m_SuspensionSpring:
-    spring: 4000
-    damper: 50
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.5
-  m_ForceAppPointDistance: 0
-  m_Mass: 20
-  m_WheelDampingRate: 0.25
-  m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.38955122
+  m_Center: {x: 0.0076580048, y: 0, z: -0.00000014901161}
 --- !u!1 &7816930217446876311
 GameObject:
   m_ObjectHideFlags: 0
@@ -4540,7 +4353,7 @@ GameObject:
   - component: {fileID: 7813963994737406803}
   - component: {fileID: 7784662898860324277}
   - component: {fileID: 7794613855263520691}
-  - component: {fileID: 4711635310725151940}
+  - component: {fileID: 641089551}
   m_Layer: 0
   m_Name: SM_Veh_Tank_German_Track_Wheel_L_07
   m_TagString: Untagged
@@ -4613,36 +4426,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!146 &4711635310725151940
-WheelCollider:
+--- !u!135 &641089551
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7816930217446876311}
-  m_Center: {x: 0, y: -0.05, z: 0}
-  m_Radius: 0.34
-  m_SuspensionSpring:
-    spring: 4000
-    damper: 50
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.5
-  m_ForceAppPointDistance: 0
-  m_Mass: 20
-  m_WheelDampingRate: 0.25
-  m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.38955116
+  m_Center: {x: 0.0076580048, y: 0, z: -0.000000074505806}
 --- !u!1 &7816949591445268933
 GameObject:
   m_ObjectHideFlags: 0
@@ -4654,7 +4450,7 @@ GameObject:
   - component: {fileID: 7813493347297359527}
   - component: {fileID: 7784928122749541865}
   - component: {fileID: 7795028016508218817}
-  - component: {fileID: 4711635310583894804}
+  - component: {fileID: 684550445}
   m_Layer: 0
   m_Name: SM_Veh_Tank_German_Track_Wheel_R_06
   m_TagString: Untagged
@@ -4727,36 +4523,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!146 &4711635310583894804
-WheelCollider:
+--- !u!135 &684550445
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7816949591445268933}
-  m_Center: {x: 0, y: -0.05, z: 0}
-  m_Radius: 0.34
-  m_SuspensionSpring:
-    spring: 4000
-    damper: 50
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.5
-  m_ForceAppPointDistance: 0
-  m_Mass: 20
-  m_WheelDampingRate: 0.25
-  m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.38955116
+  m_Center: {x: -0.0076560974, y: 0, z: 0.000000074505806}
 --- !u!1 &7816950642352173113
 GameObject:
   m_ObjectHideFlags: 0
@@ -4768,7 +4547,7 @@ GameObject:
   - component: {fileID: 7813645744510628777}
   - component: {fileID: 7785537075818645935}
   - component: {fileID: 7795633062753422435}
-  - component: {fileID: 4711635311255306566}
+  - component: {fileID: 1379711681}
   m_Layer: 0
   m_Name: SM_Veh_Tank_German_Track_Wheel_L_03
   m_TagString: Untagged
@@ -4841,36 +4620,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!146 &4711635311255306566
-WheelCollider:
+--- !u!135 &1379711681
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7816950642352173113}
-  m_Center: {x: 0, y: -0.05, z: 0}
-  m_Radius: 0.34
-  m_SuspensionSpring:
-    spring: 4000
-    damper: 50
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.5
-  m_ForceAppPointDistance: 0
-  m_Mass: 20
-  m_WheelDampingRate: 0.25
-  m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.38955128
+  m_Center: {x: 0.0076580048, y: 0, z: 0.000015184283}
 --- !u!1 &7816962217091811011
 GameObject:
   m_ObjectHideFlags: 0
@@ -4882,7 +4644,7 @@ GameObject:
   - component: {fileID: 7814122410007351241}
   - component: {fileID: 7783968454429129033}
   - component: {fileID: 7794942428760444381}
-  - component: {fileID: 4711635311921810960}
+  - component: {fileID: 1176405098}
   m_Layer: 0
   m_Name: SM_Veh_Tank_German_Track_Wheel_L_04
   m_TagString: Untagged
@@ -4955,36 +4717,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!146 &4711635311921810960
-WheelCollider:
+--- !u!135 &1176405098
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7816962217091811011}
-  m_Center: {x: 0, y: -0.05, z: 0}
-  m_Radius: 0.34
-  m_SuspensionSpring:
-    spring: 4000
-    damper: 50
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.5
-  m_ForceAppPointDistance: 0
-  m_Mass: 20
-  m_WheelDampingRate: 0.25
-  m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.3895513
+  m_Center: {x: 0.0076580048, y: 0, z: -0.00000023841858}
 --- !u!1 &7817061203060421109
 GameObject:
   m_ObjectHideFlags: 0
@@ -5087,7 +4832,7 @@ GameObject:
   - component: {fileID: 7813881832000505697}
   - component: {fileID: 7784967921892455959}
   - component: {fileID: 7794914007078282619}
-  - component: {fileID: 4711635312019123186}
+  - component: {fileID: 397626605}
   m_Layer: 0
   m_Name: SM_Veh_Tank_German_Track_Wheel_R_07
   m_TagString: Untagged
@@ -5160,36 +4905,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!146 &4711635312019123186
-WheelCollider:
+--- !u!135 &397626605
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7817098353698111197}
-  m_Center: {x: 0, y: -0.05, z: 0}
-  m_Radius: 0.34
-  m_SuspensionSpring:
-    spring: 4000
-    damper: 50
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.5
-  m_ForceAppPointDistance: 0
-  m_Mass: 20
-  m_WheelDampingRate: 0.25
-  m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.38955116
+  m_Center: {x: -0.0076560974, y: 0, z: -0.000000074505806}
 --- !u!1 &7817554744197927519
 GameObject:
   m_ObjectHideFlags: 0
@@ -5345,7 +5073,7 @@ GameObject:
   - component: {fileID: 7813432613605206337}
   - component: {fileID: 7784537384399459303}
   - component: {fileID: 7794833074994196143}
-  - component: {fileID: 4711635310596444961}
+  - component: {fileID: 1679182411}
   m_Layer: 0
   m_Name: SM_Veh_Tank_German_Track_Wheel_L_06
   m_TagString: Untagged
@@ -5418,36 +5146,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!146 &4711635310596444961
-WheelCollider:
+--- !u!135 &1679182411
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7817614511585178773}
-  m_Center: {x: 0, y: -0.05, z: 0}
-  m_Radius: 0.34
-  m_SuspensionSpring:
-    spring: 4000
-    damper: 50
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.5
-  m_ForceAppPointDistance: 0
-  m_Mass: 20
-  m_WheelDampingRate: 0.25
-  m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.38955116
+  m_Center: {x: 0.0076580048, y: 0, z: 0.000000074505806}
 --- !u!1 &7817652799994923491
 GameObject:
   m_ObjectHideFlags: 0
@@ -5542,7 +5253,7 @@ GameObject:
   - component: {fileID: 7813868298543069983}
   - component: {fileID: 7784637212218588957}
   - component: {fileID: 7795046606789101691}
-  - component: {fileID: 4711635310852351298}
+  - component: {fileID: 1089704231}
   m_Layer: 0
   m_Name: SM_Veh_Tank_German_Track_Wheel_R_02
   m_TagString: Untagged
@@ -5615,36 +5326,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!146 &4711635310852351298
-WheelCollider:
+--- !u!135 &1089704231
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7817674329786305563}
-  m_Center: {x: 0, y: -0.05, z: 0}
-  m_Radius: 0.34
-  m_SuspensionSpring:
-    spring: 4000
-    damper: 50
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.5
-  m_ForceAppPointDistance: 0
-  m_Mass: 20
-  m_WheelDampingRate: 0.25
-  m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.38955128
+  m_Center: {x: -0.0076580048, y: 0, z: -0.000000074505806}
 --- !u!1 &7817720855815354588
 GameObject:
   m_ObjectHideFlags: 0
@@ -6258,10 +5952,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4372828312337807301}
   - component: {fileID: 7090261991069830890}
-  - component: {fileID: 8117995908048637600}
   - component: {fileID: 4370580087547608718}
   - component: {fileID: 6586113773951705879}
   - component: {fileID: 3299169525347878349}
+  - component: {fileID: 1573350437}
   m_Layer: 0
   m_Name: Components
   m_TagString: Untagged
@@ -6299,46 +5993,6 @@ MonoBehaviour:
   _raycaster: {fileID: 2141285872}
   _currentBarrelCrosshair: {fileID: 34388345}
   _estimatedTargetCrosshair: {fileID: 1481984251597974469}
---- !u!114 &8117995908048637600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8715849255493687944}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8385bf33ecade164887f077e7cc51a32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _tankRB: {fileID: 7817720855815354584}
-  _centerOfMass: {fileID: 4711635311839923123}
-  _leftBound: {fileID: 1835669870}
-  _rightBound: {fileID: 1343234871}
-  _frontBound: {fileID: 1193606507}
-  _backBound: {fileID: 294482080}
-  _leftTrackRenderer: {fileID: 7794745515856452165}
-  _rightTrackRenderer: {fileID: 7794260535265662005}
-  LeftTrackWheelColliders:
-  - {fileID: 4711635312201203253}
-  - {fileID: 4711635311487096178}
-  - {fileID: 4711635311255306566}
-  - {fileID: 4711635311921810960}
-  - {fileID: 4711635310948222710}
-  - {fileID: 4711635310596444961}
-  - {fileID: 4711635310725151940}
-  - {fileID: 4711635310858002928}
-  - {fileID: 4711635310607141580}
-  RightTrackWheelColliders:
-  - {fileID: 4711635310482081930}
-  - {fileID: 4711635310852351298}
-  - {fileID: 4711635310897519717}
-  - {fileID: 4711635311277990326}
-  - {fileID: 4711635312134279533}
-  - {fileID: 4711635310583894804}
-  - {fileID: 4711635312019123186}
-  - {fileID: 4711635312514563302}
-  - {fileID: 4711635312097632042}
 --- !u!114 &4370580087547608718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6399,6 +6053,37 @@ MonoBehaviour:
   CurrentRange: 0
   IsReloading: 0
   CanFire: 1
+--- !u!114 &1573350437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8715849255493687944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9491c0709440d974e966748dcf206838, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _wheels:
+  - {fileID: 874384827}
+  - {fileID: 70164172}
+  - {fileID: 1379711681}
+  - {fileID: 1176405098}
+  - {fileID: 1298119676}
+  - {fileID: 1679182411}
+  - {fileID: 641089551}
+  - {fileID: 1835848906}
+  - {fileID: 1711930691}
+  - {fileID: 283100399}
+  - {fileID: 1089704231}
+  - {fileID: 53750858}
+  - {fileID: 242087281}
+  - {fileID: 1823967596}
+  - {fileID: 684550445}
+  - {fileID: 397626605}
+  - {fileID: 1911712089}
+  - {fileID: 1369617298}
 --- !u!1 &8853720785565731980
 GameObject:
   m_ObjectHideFlags: 0

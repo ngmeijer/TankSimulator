@@ -15,8 +15,9 @@ MonoBehaviour:
   NodeLevel: 0
   ParentNode: {fileID: 0}
   _childNodes:
+  - {fileID: 11400000, guid: 66388db09823783499e55f8296e1aebb, type: 2}
   - {fileID: 11400000, guid: a6566bc76e9a8cb48987fa2aba6b0596, type: 2}
   - {fileID: 11400000, guid: 69a5d59385805b6499c5f157b7e96516, type: 2}
   - {fileID: 11400000, guid: 33a87511c170c564a8a35da30b70b118, type: 2}
   - {fileID: 11400000, guid: 56cfc43dea297b24f839dde4cdd6f621, type: 2}
-  _showLogs: 0
+  _showLogs: 1
