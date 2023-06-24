@@ -12,15 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10e8868eea404992919f8d839609de80, type: 3}
   m_Name: Action - Get best point in FOV and LineOfSight
   m_EditorClassIdentifier: 
-  ParentNode: {fileID: 0}
+  NodeLevel: 6
+  ParentNode: {fileID: 11400000, guid: 56b59bdc40bf72942aa3082f99a61c39, type: 2}
   _childNodes: []
-  _showLogs: 0
+  _showLogs: 1
   _viewAngle:
     <Name>k__BackingField: Patrol FOV
     <Value>k__BackingField: 180
   _viewRange:
     <Name>k__BackingField: 
     <Value>k__BackingField: 200
-  _fovConeColour: {r: 0, g: 0.4413719, b: 0.5943396, a: 0.13333334}
-  CheckFOV: 1
-  CheckLineOfSight: 1
+  _fovConeColour: {r: 0, g: 0.4413719, b: 0.5943396, a: 0.019607844}
+  _alliedAgentCircleColour: {r: 1, g: 0, b: 0.8780918, a: 0.039215688}
+  _agentAvoidanceRange: 60

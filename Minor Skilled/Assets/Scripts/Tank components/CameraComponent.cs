@@ -78,25 +78,28 @@ public class CameraComponent : TankComponent
 
     private void RaycastToAllEnemies()
     {
-        Dictionary<int, Vector3> entityPositions = GameManager.Instance.EntityWorldPositions;
-        foreach (var entity in entityPositions)
+        List<TankComponentManager> entities = GameManager.Instance.Entities;
+        foreach (var entity in entities)
         {
-            Vector3 direction = entity.Value - _currentCamera.transform.position;
-            Vector3 screenPos = ConvertWorldIntoScreenPos(entity.Value);
+            Vector3 direction = entity.transform.position - _currentCamera.transform.position;
+            Vector3 screenPos = ConvertWorldIntoScreenPos(entity.transform.position);
 
+            //Disable enemy indicator if no line of sight to enemy position
             if (!Physics.Raycast(_currentCamera.transform.position, direction, out RaycastHit hitInfo))
             {
-                HandleEnemyIndicator(entity, false, screenPos);
+                HandleEnemyIndicator(new KeyValuePair<int, Vector3>(entity.ID, entity.transform.position), false, screenPos);
                 return;
             }
 
-            if (!hitInfo.collider.CompareTag("Enemy"))
+            //Disable enemy indicator if detected collider is not the enemy
+            if (!hitInfo.collider.transform.root.CompareTag("Enemy"))
             {
-                HandleEnemyIndicator(entity, false, screenPos);
+                HandleEnemyIndicator(new KeyValuePair<int, Vector3>(entity.ID, entity.transform.position), false, screenPos);
                 return;
             }
             
-            HandleEnemyIndicator(entity, true, screenPos);
+            //Enable enemy indicator, can see enemy.
+            HandleEnemyIndicator(new KeyValuePair<int, Vector3>(entity.ID, entity.transform.position), true, screenPos);
         }
     }
 
@@ -133,7 +136,9 @@ public class CameraComponent : TankComponent
 
     private void SelectEnemyToInspect(InputAction.CallbackContext cb)
     {
-        GameManager.Instance.HostileTargetTransform = _currentHitData.collider.transform.root;
+        if (!_currentHitData.collider.transform.root.TryGetComponent(out TankComponentManager manager))
+            return;
+        GameManager.Instance.HostileManager = manager;
     }
 
     private bool RaycastForwardFromBarrelTip()
@@ -197,10 +202,10 @@ public class CameraComponent : TankComponent
         if (GameManager.Instance != null)
         {
             Gizmos.color = Color.red;
-            Dictionary<int, Vector3> entityPositions = GameManager.Instance.EntityWorldPositions;
-            foreach (var entityPos in entityPositions)
+            List<TankComponentManager> entities = GameManager.Instance.Entities;
+            foreach (var entity in entities)
             {
-                Gizmos.DrawWireSphere(entityPos.Value, 3f);
+                Gizmos.DrawWireSphere(entity.transform.position, 3f);
             }
         }
     }

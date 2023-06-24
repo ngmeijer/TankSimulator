@@ -20,8 +20,9 @@ public abstract class BehaviourNode : ScriptableObject
 
     public int GetChildCount() => _childNodes.Count;
 
-    private void Awake()
+    protected void OnEnable()
     {
+        AssignParentToChildren();
         LogChildren();
     }
 
@@ -56,7 +57,7 @@ public abstract class BehaviourNode : ScriptableObject
         return currentChain;
     }
 
-    public void LogNode()
+    public void LogNode(string nodeType)
     {
         if (!_showLogs)
             return;
@@ -77,7 +78,7 @@ public abstract class BehaviourNode : ScriptableObject
                 throw new ArgumentOutOfRangeException();
         }
         
-        Debug.Log($"{Indenter.GetIdent(NodeLevel)} SEQUENCE: <color={logColor}> Branch: </color> [{NodeLevel}] ({name})");
+        Debug.Log($"{Indenter.GetIdent(NodeLevel)} {nodeType}: <color={logColor}> Branch: </color> [{NodeLevel}] ({name})");
     }
 
     public void AssignParentToChildren()
@@ -88,11 +89,6 @@ public abstract class BehaviourNode : ScriptableObject
         }
     }
 
-    protected void OnValidate()
-    {
-        LogChildren();
-    }
-
     private void LogChildren()
     {
         foreach (var child in _childNodes)
@@ -100,13 +96,16 @@ public abstract class BehaviourNode : ScriptableObject
             if (child == null)
                 continue;
             child.SetLogEnabled(_showLogs);
+            child.LogChildren(); // Recursively propagate the log state to grandchildren
         }
     }
 
     public void SetLogEnabled(bool enabled)
     {
         _showLogs = enabled;
+        LogChildren(); // Propagate the log state to children
     }
+
 
     public virtual void ResetValues()
     {

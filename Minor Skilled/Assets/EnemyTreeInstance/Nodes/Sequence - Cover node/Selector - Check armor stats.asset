@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Selector - Check armor stats
   m_EditorClassIdentifier: 
   NodeLevel: 2
-  ParentNode: {fileID: 0}
+  ParentNode: {fileID: 11400000, guid: 56cfc43dea297b24f839dde4cdd6f621, type: 2}
   _childNodes:
   - {fileID: 11400000, guid: e4b6ecdcd11e1de4bab2ecbeddc7735f, type: 2}
+  - {fileID: 11400000, guid: dcf0ef5ef9d14ca489ff2d3ef7d1de52, type: 2}
   - {fileID: 11400000, guid: df0cf6810ac93bf43bd20756cd6ce07d, type: 2}
   - {fileID: 11400000, guid: 4877876f6a29fe34eb662691d60d1cab, type: 2}
   _showLogs: 1

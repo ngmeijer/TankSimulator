@@ -10,14 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cf5c119daee4e8daccaa0d71970091e, type: 3}
-  m_Name: Sequence - Sample and filter cover position
+  m_Name: Sequence - check if in range when not attacked
   m_EditorClassIdentifier: 
-  NodeLevel: 4
+  NodeLevel: 5
   ParentNode: {fileID: 0}
   _childNodes:
-  - {fileID: 11400000, guid: 5e6abee13632e5d43a2f20a85650c7d2, type: 2}
-  - {fileID: 11400000, guid: 730587379f56bc14ab6dcfec66083579, type: 2}
-  - {fileID: 11400000, guid: 4ed1190cc3c12824cb44565a65297328, type: 2}
-  - {fileID: 11400000, guid: 2cf722f3c29a69a44af6321f47921fcb, type: 2}
-  - {fileID: 11400000, guid: 36c5f8316985fde4ead6905e230d7d4d, type: 2}
+  - {fileID: 11400000, guid: 70616f3ae6c98794abdbb1b4e4ae051c, type: 2}
+  - {fileID: 11400000, guid: 6a6941538bc9701479565727ad6ef804, type: 2}
   _showLogs: 1

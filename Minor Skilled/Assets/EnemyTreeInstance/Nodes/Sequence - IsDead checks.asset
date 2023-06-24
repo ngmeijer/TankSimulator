@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cf5c119daee4e8daccaa0d71970091e, type: 3}
   m_Name: Sequence - IsDead checks
   m_EditorClassIdentifier: 
-  NodeLevel: 0
-  ParentNode: {fileID: 0}
+  NodeLevel: 1
+  ParentNode: {fileID: 11400000, guid: 0661eb32166ae29408fe4118d3678ead, type: 2}
   _childNodes:
   - {fileID: 11400000, guid: 355a0c50c3e1f9f4ab0f1a309304d11e, type: 2}
   - {fileID: 11400000, guid: 566e85b3c67af1041b972d82354ddb02, type: 2}

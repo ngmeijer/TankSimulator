@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: Sequence - Execute patrol
   m_EditorClassIdentifier: 
   NodeLevel: 2
-  ParentNode: {fileID: 0}
+  ParentNode: {fileID: 11400000, guid: a6566bc76e9a8cb48987fa2aba6b0596, type: 2}
   _childNodes:
   - {fileID: 11400000, guid: 29f109bbc4253974985bdb5ec4cc9d17, type: 2}
+  - {fileID: 11400000, guid: 8e447cd6329482c48b7132ad453e34eb, type: 2}
+  - {fileID: 11400000, guid: 37c397eeb0a6e5b4fa4ac9d0d84dcb4f, type: 2}
   - {fileID: 11400000, guid: 4331f94143f07a6408679822bd6f150c, type: 2}
   - {fileID: 11400000, guid: dc7ee5f278b9e98458feb1d63e9f5694, type: 2}
   - {fileID: 11400000, guid: 1a02cfcc3691d104fbe69499cf7e9119, type: 2}
-  _showLogs: 1
+  _showLogs: 0

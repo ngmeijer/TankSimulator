@@ -17,7 +17,7 @@ using UnityEngine;
                 }
                 
                 child.NodeLevel = NodeLevel + 1;
-                child.LogNode();
+                child.LogNode("SELECTOR");
 
                 switch (child.Evaluate(blackboard, controller))
                 {

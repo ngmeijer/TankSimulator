@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Sequence - Cover
   m_EditorClassIdentifier: 
   NodeLevel: 1
-  ParentNode: {fileID: 0}
+  ParentNode: {fileID: 11400000, guid: 0661eb32166ae29408fe4118d3678ead, type: 2}
   _childNodes:
   - {fileID: 11400000, guid: 7aaec698b35ba1647a43979cdc8aafbc, type: 2}
   - {fileID: 11400000, guid: d3131adf5f1d0c74ea3707d201f2effa, type: 2}
   - {fileID: 11400000, guid: 6346af58d393aa64e8d6dc7d4c17adbd, type: 2}
   - {fileID: 11400000, guid: 05968d9a96b31a44897e596967c27c5c, type: 2}
-  _showLogs: 0
+  _showLogs: 1

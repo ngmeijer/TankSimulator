@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f038545ec564d1b9cb3ca8be73364d1, type: 3}
-  m_Name: Action - Stop movement
+  m_Script: {fileID: 11500000, guid: fd236b01707a42e39de6cbbbccc6ddeb, type: 3}
+  m_Name: Condition - Check if already in cover
   m_EditorClassIdentifier: 
-  NodeLevel: 2
+  NodeLevel: 0
   ParentNode: {fileID: 0}
   _childNodes: []
-  _showLogs: 1
+  _showLogs: 0

@@ -10,10 +10,10 @@ public class HostileInspectorCamState : InspectorCamState
         {
                 base.Enter();
 
-                GameManager.Instance.HostileTargetTransform.TryGetComponent(out TankComponentManager tankManager);
+                GameManager.Instance.HostileManager.TryGetComponent(out TankComponentManager tankManager);
                 _hostileComponent = tankManager.DamageComponent;
 
-                LerpToPosition(GameManager.Instance.HostileTargetTransform);
+                LerpToPosition(_hostileComponent.transform);
         }
         
         private void LerpToPosition(Transform to)

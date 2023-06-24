@@ -714,6 +714,37 @@ Transform:
   m_Father: {fileID: 6362695685710467049}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &658118751
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 658118752}
+  m_Layer: 0
+  m_Name: LeftForcePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &658118752
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 658118751}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.5000014, y: 1.5, z: -4.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7817720855815354587}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &695699233
 GameObject:
   m_ObjectHideFlags: 0
@@ -746,6 +777,37 @@ Transform:
   - {fileID: 4723670137701690}
   m_Father: {fileID: 878133468}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &820388514
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 820388515}
+  m_Layer: 0
+  m_Name: RightForcePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &820388515
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 820388514}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.5, y: 1.5, z: -4.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7817720855815354587}
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &878133467
 GameObject:
@@ -998,7 +1060,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1112894036}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 8, y: 8, z: 8}
@@ -3820,7 +3882,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.35830784
+  m_Radius: 0.3
   m_Center: {x: 0, y: 0.000000014901161, z: -0.000000044703484}
 --- !u!1 &7816698424329343403
 GameObject:
@@ -5390,6 +5452,8 @@ Transform:
   - {fileID: 502710295}
   - {fileID: 903085096}
   - {fileID: 6979701779248343085}
+  - {fileID: 658118752}
+  - {fileID: 820388515}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5401,7 +5465,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7817720855815354588}
   serializedVersion: 2
-  m_Mass: 100
+  m_Mass: 6000
   m_Drag: 0
   m_AngularDrag: 1
   m_UseGravity: 1
@@ -5993,6 +6057,9 @@ MonoBehaviour:
   _raycaster: {fileID: 2141285872}
   _currentBarrelCrosshair: {fileID: 34388345}
   _estimatedTargetCrosshair: {fileID: 1481984251597974469}
+  _maxFOVValue: 90
+  _minFOVValue: 60
+  _FOVAnimateSpeed: 1
 --- !u!114 &4370580087547608718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6030,6 +6097,8 @@ MonoBehaviour:
     - {fileID: 1256501674}
     - {fileID: 5502065707063126291}
   CurrentSelectedPart: {fileID: 0}
+  RecentlyShot: 0
+  CalmDownTimer: 0
 --- !u!114 &3299169525347878349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6066,7 +6135,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _wheels:
-  - {fileID: 874384827}
   - {fileID: 70164172}
   - {fileID: 1379711681}
   - {fileID: 1176405098}
@@ -6074,8 +6142,6 @@ MonoBehaviour:
   - {fileID: 1679182411}
   - {fileID: 641089551}
   - {fileID: 1835848906}
-  - {fileID: 1711930691}
-  - {fileID: 283100399}
   - {fileID: 1089704231}
   - {fileID: 53750858}
   - {fileID: 242087281}
@@ -6083,7 +6149,14 @@ MonoBehaviour:
   - {fileID: 684550445}
   - {fileID: 397626605}
   - {fileID: 1911712089}
-  - {fileID: 1369617298}
+  _tankRB: {fileID: 7817720855815354584}
+  _moveForce: 15
+  _rotationSpeed: 25
+  _maxSpeed: 5
+  _coverageCheckLength: 0.5
+  _leftTrackRenderer: {fileID: 7794745515856452165}
+  _rightTrackRenderer: {fileID: 7794260535265662005}
+  _animationSpeedRegulator: 0.01
 --- !u!1 &8853720785565731980
 GameObject:
   m_ObjectHideFlags: 0

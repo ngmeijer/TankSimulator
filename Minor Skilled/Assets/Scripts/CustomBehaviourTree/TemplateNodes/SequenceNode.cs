@@ -18,7 +18,7 @@ public class SequenceNode : BehaviourNode
             }
 
             child.NodeLevel = NodeLevel + 1;
-            child.LogNode();
+            child.LogNode("SEQUENCE");
             
             switch (child.Evaluate(blackboard, controller))
             {

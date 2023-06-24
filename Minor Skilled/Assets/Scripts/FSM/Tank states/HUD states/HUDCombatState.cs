@@ -33,11 +33,9 @@ public class HUDCombatState : HUDState
 
     [SerializeField] private GameObject _enemyIndicatorPrefab;
     private Dictionary<int, GameObject> _enemyIndicators = new();
-    private Dictionary<int, TankComponentManager> _entities;
 
     protected void Start()
     {
-        _entities = GameManager.Instance.GetEntities();
         CreateEnemyIndicators();
     }
 
@@ -129,12 +127,12 @@ public class HUDCombatState : HUDState
     
     private void CreateEnemyIndicators()
     {
-        foreach (KeyValuePair<int, TankComponentManager> entity in _entities)
+        foreach (TankComponentManager entity in GameManager.Instance.Entities)
         {
-            if (entity.Key == GameManager.PLAYER_ID) continue;
+            if (entity.ID == GameManager.PLAYER_ID) continue;
             
             GameObject indicator = Instantiate(_enemyIndicatorPrefab, _targetsIndicatorParent);
-            _enemyIndicators.Add(entity.Key, indicator);
+            _enemyIndicators.Add(entity.ID, indicator);
         }
     }
     

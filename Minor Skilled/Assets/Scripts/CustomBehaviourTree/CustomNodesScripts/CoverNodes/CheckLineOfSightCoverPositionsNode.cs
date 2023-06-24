@@ -7,6 +7,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.CoverNodes
     public class CheckLineOfSightCoverPositionsNode : BehaviourNode
     {
         private List<Vector3> _filteredOutPoints;
+        private List<Vector3> _selectedPoints;
 
         public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
         {
@@ -69,6 +70,17 @@ namespace CustomBehaviourTree.CustomNodesScripts.CoverNodes
         public override void ResetValues()
         {
             _filteredOutPoints = new();
+        }
+
+        public override void DrawGizmos(AIBlackboard blackboard, AIController controller)
+        {
+            base.DrawGizmos(blackboard, controller);
+
+            Gizmos.color = Color.cyan;
+            foreach (Vector3 pos in blackboard.GeneratedCoverPoints)
+            {
+                Gizmos.DrawSphere(pos, 0.2f);
+            }
         }
     }
 }

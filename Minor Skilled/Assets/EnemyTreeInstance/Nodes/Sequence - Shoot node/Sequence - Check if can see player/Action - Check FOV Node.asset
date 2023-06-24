@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bddcf18e23df4907a3a9005c2cd19652, type: 3}
   m_Name: Action - Check FOV Node
   m_EditorClassIdentifier: 
-  ParentNode: {fileID: 11400000, guid: a46560a826c16bf4e8d664ee59805a90, type: 2}
+  NodeLevel: 0
+  ParentNode: {fileID: 11400000, guid: c98f46ce02f6ce4408c4300518b3d8d3, type: 2}
   _childNodes: []
-  _showLogs: 0
-  _useCollection: 0
-  _fovConeColour: {r: 1, g: 1, b: 0, a: 0.039215688}
-  <RangeName>k__BackingField: Investigation range
-  <RangeValue>k__BackingField: 150
-  _viewAngle: 130
+  _showLogs: 1
+  _fovConeColour: {r: 1, g: 0, b: 0, a: 0.019607844}
+  <RangeName>k__BackingField: Shoot range
+  <RangeValue>k__BackingField: 100
+  _viewAngle: 120

@@ -2,6 +2,7 @@
 using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public abstract class CameraState : FSMState
 {
@@ -14,6 +15,7 @@ public abstract class CameraState : FSMState
     public Vector3 LastCamPos;
     private bool _lookatTweenDone;
     private bool _moveToTweenDone;
+    [SerializeField] private Volume _postProcessing;
 
     protected void Awake()
     {
@@ -27,6 +29,7 @@ public abstract class CameraState : FSMState
         if (LastCamPos != Vector3.zero)
         {
             ViewCam.transform.position = LastCamPos;
+            SetPostProcessingEnable(true);
             SetCameraEnable(true);
             TweenToTargetPos();
         } else SetCameraEnable(true);
@@ -38,6 +41,7 @@ public abstract class CameraState : FSMState
     {
         base.Exit();
         
+        SetPostProcessingEnable(false);
         SetCameraEnable(false);
     }
 
@@ -54,6 +58,17 @@ public abstract class CameraState : FSMState
     private void SetCameraEnable(bool enable)
     {
         ViewCam.gameObject.SetActive(enable);
+    }
+    
+    private void SetPostProcessingEnable(bool enabled)
+    {
+        if (_postProcessing == null)
+        {
+            Debug.Log($"PostProcessing for {this.name} is null.");
+            return;
+        }
+
+        _postProcessing.enabled = enabled;
     }
 
     private void TweenToTargetPos()

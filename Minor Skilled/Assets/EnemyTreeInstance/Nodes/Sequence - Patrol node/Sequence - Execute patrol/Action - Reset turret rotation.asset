@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26d798552f974a4c8abdd223b23ee21d, type: 3}
-  m_Name: Action - Set Player As Definitive Focus
+  m_Script: {fileID: 11500000, guid: b8f8ff84459b400d9157494f3686c627, type: 3}
+  m_Name: Action - Reset turret rotation
   m_EditorClassIdentifier: 
+  NodeLevel: 0
   ParentNode: {fileID: 0}
   _childNodes: []
-  TransparentGizmoColor: {r: 0, g: 0, b: 0, a: 0}
-  SolidGizmoColor: {r: 0, g: 0, b: 0, a: 0}
+  _showLogs: 0

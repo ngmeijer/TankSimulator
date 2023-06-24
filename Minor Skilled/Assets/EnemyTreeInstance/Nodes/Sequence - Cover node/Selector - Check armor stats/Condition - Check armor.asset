@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Condition - Check armor
   m_EditorClassIdentifier: 
   NodeLevel: 3
-  ParentNode: {fileID: 0}
+  ParentNode: {fileID: 11400000, guid: 7aaec698b35ba1647a43979cdc8aafbc, type: 2}
   _childNodes: []
   _showLogs: 1
-  _requiredArmorToFlee: 0.9
+  _requiredArmorToFlee: 0.8

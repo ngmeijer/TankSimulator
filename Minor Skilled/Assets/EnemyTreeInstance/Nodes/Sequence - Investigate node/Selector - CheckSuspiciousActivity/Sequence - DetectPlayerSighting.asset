@@ -13,10 +13,9 @@ MonoBehaviour:
   m_Name: Sequence - DetectPlayerSighting
   m_EditorClassIdentifier: 
   NodeLevel: 3
-  ParentNode: {fileID: 0}
+  ParentNode: {fileID: 11400000, guid: dae98ad10241b754ebb975b3916b7341, type: 2}
   _childNodes:
-  - {fileID: 11400000, guid: 6a6941538bc9701479565727ad6ef804, type: 2}
-  - {fileID: 11400000, guid: a7c4111936cfde1428bbbeb060aa23f7, type: 2}
+  - {fileID: 11400000, guid: ffc0617ed6283124da1212a00cf1c336, type: 2}
   - {fileID: 11400000, guid: 03f684033bf0e36469e3c643aa0c92b8, type: 2}
   - {fileID: 11400000, guid: b437380fdaa7ebd44be783e08eba4938, type: 2}
   - {fileID: 11400000, guid: 5fbb598980ac11e41a097f1e16161c8c, type: 2}

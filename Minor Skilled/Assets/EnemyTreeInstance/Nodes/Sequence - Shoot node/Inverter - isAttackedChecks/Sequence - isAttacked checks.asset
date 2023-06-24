@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cf5c119daee4e8daccaa0d71970091e, type: 3}
+  m_Name: Sequence - isAttacked checks
+  m_EditorClassIdentifier: 
+  NodeLevel: 2
+  ParentNode: {fileID: 11400000, guid: 33a87511c170c564a8a35da30b70b118, type: 2}
+  _childNodes:
+  - {fileID: 11400000, guid: 91c6df9e5ff3ee84d9ad3eb9fa1b8746, type: 2}
+  - {fileID: 11400000, guid: 060e55a73329e76459c3ad7f9dca2a19, type: 2}
+  - {fileID: 11400000, guid: c5f21f7c3fe790242a02bfd6511d2e55, type: 2}
+  - {fileID: 11400000, guid: b9df7432ba500f748b73007b81641c11, type: 2}
+  _showLogs: 1

@@ -56,7 +56,7 @@ public class PlayerInputChecker : SingletonMonobehaviour<PlayerInputChecker>
 
     private void EnableHostileInspection(InputAction.CallbackContext cb)
     {
-        if (GameManager.Instance.HostileTargetTransform == null) return;
+        if (GameManager.Instance.HostileManager == null) return;
         _playerStateSwitcher.SwitchToTankState(E_TankState.HostileInspection);
         _playerStateSwitcher.SwitchToCamState(E_CameraState.HostileInspection);
         HUDStateSwitcher.Instance.SwitchToHUDState(E_TankState.HostileInspection);

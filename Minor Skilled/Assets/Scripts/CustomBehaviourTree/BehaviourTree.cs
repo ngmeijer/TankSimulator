@@ -6,11 +6,6 @@ public class BehaviourTree : ScriptableObject
 {
     [SerializeField] private BehaviourNode _rootNode;
 
-    public void AssignParentNodesToTreeNodes()
-    {
-        _rootNode?.AssignParentToChildren();
-    }
-
     public void EvaluateTree(AIBlackboard blackboard, AIController controller)
     {
         _rootNode.NodeLevel = 0;

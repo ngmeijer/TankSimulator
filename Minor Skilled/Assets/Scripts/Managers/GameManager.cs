@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameManager : SingletonMonobehaviour<GameManager>
@@ -9,7 +10,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     public const int PLAYER_ID = 0;
     
     [HideInInspector] public float BarrelRotationValue;
-    [HideInInspector] public Transform HostileTargetTransform;
+    [HideInInspector] public TankComponentManager HostileManager;
     [HideInInspector] public Vector3 CurrentBarrelCrosshairPos;
     [HideInInspector] public Vector3 TargetBarrelCrosshairPos;
 
@@ -17,9 +18,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     public Transform GetShellParent() => _spawnedShellsParent;
     [SerializeField] private Transform _spawnedShellsParent;
     [SerializeField] private EventManager _eventManager;
-    private readonly Dictionary<int, TankComponentManager> _entities = new();
-    public Dictionary<int, TankComponentManager> GetEntities() => _entities;
-    public readonly Dictionary<int, Vector3> EntityWorldPositions = new();
+    public List<TankComponentManager> Entities;
     private HUDCombatState _hudCombatState;
 
     public Transform InspectionCameraTrans;
@@ -38,42 +37,17 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     {
         base.Awake();
 
-        foreach (var entity in _entities)
-        {
-            if (!entity.Value.TryGetComponent(out TankComponentManager tankManager)) continue;
-            if (tankManager.ID == PLAYER_ID) continue;
-            _entities.Add(tankManager.ID, tankManager);
-            tankManager.EventManager.OnTankDestruction.AddListener(RemoveEntityFromWorld);
-        }
+        Entities = FindObjectsOfType<TankComponentManager>().ToList();
     }
 
     private void Start()
     {
-        foreach (var entity in _entities)
-        {
-            EntityWorldPositions.Add(entity.Key, Vector2.zero);
-        }
-        
         _hudCombatState = HUDStateSwitcher.Instance.HUDCombatState as HUDCombatState;
-    }
-
-    private void Update()
-    {
-        foreach (var entity in _entities)
-        {
-            EntityWorldPositions[entity.Key] = entity.Value.EntityOrigin.position;
-        }
     }
 
     public void ResumeGame()
     {
         Player.StateSwitcher.SwitchToTankState(Player.StateSwitcher.LastTankState.ThisState);
         HUDStateSwitcher.Instance.SwitchToHUDState(HUDStateSwitcher.Instance.LastState);
-    }
-
-    private void RemoveEntityFromWorld(int entityID)
-    {
-        EntityWorldPositions.Remove(entityID);
-        _entities.Remove(entityID);
     }
 }

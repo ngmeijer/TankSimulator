@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class AdsState : CameraState
@@ -15,11 +16,13 @@ public class AdsState : CameraState
     private PlayerInputActions _inputActions;
 
     private HUDCombatState _hudCombatState;
+    [SerializeField] private float _fovLerpSpeed = 0.5f;
+
 
     private void Start()
     {
         _inputActions = new PlayerInputActions();
-        _inputActions.TankMovement.ZoomADS.started += ZoomADS;
+        _inputActions.TankMovement.ZoomADS.started += ZoomADSWrapper;
         _inputActions.Enable();
         
         _hudCombatState = HUDStateSwitcher.Instance.HUDCombatState as HUDCombatState;
@@ -41,7 +44,7 @@ public class AdsState : CameraState
         return _currentFOVIndex;
     }
     
-    private void ZoomADS(InputAction.CallbackContext cb)
+    private void ZoomADSWrapper(InputAction.CallbackContext cb)
     {
         if (!_stateActive)
             return;
@@ -51,9 +54,26 @@ public class AdsState : CameraState
         else _currentFOVIndex++;
         
         float newFOV = _fovRanges[_currentFOVIndex];
-        ViewCam.fieldOfView = newFOV;
-
+        StartCoroutine(ZoomADS(newFOV));
         _hudCombatState.SetZoomLevelText(_currentFOVIndex + 1, true);
+    }
+
+    private IEnumerator ZoomADS(float newFOV)
+    {
+        float initialFOV = ViewCam.fieldOfView;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < _fovLerpSpeed)
+        {
+            float time = elapsedTime / _fovLerpSpeed;
+            float lerpedFOV = Mathf.Lerp(initialFOV, newFOV, time);
+            ViewCam.fieldOfView = lerpedFOV;
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        ViewCam.fieldOfView = newFOV;
     }
 
     public override void Exit()

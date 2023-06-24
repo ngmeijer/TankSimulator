@@ -210,41 +210,11 @@ public class TankPart : MonoBehaviour
 
     public void RepairPart()
     {
-        if (!_repairing) return;
-        
         var increase=_repairPerSecond * Time.deltaTime;
         CurrentArmor += increase;
         
         CurrentArmor = Mathf.Clamp(CurrentArmor, 0, MaxArmor);
         UpdateUI();
         ActivateNewVFX(CurrentHealth, MaxHealth);
-    }
-
-    public void TestDamage(int damage)
-    {
-        if (CurrentArmor > 0)
-        {
-            int newArmor = (int)CurrentArmor - damage;
-            CurrentArmor = newArmor;
-            SetStateText(PartState.Caution);
-                
-            if (newArmor < 0)
-            {
-                CurrentArmor = 0;
-                CurrentHealth -= Mathf.Abs(newArmor);
-            }
-        }
-        else
-        {
-            SetStateText(PartState.Critical);
-            CurrentHealth -= damage;
-        }
-        
-        UpdateUI();
-        ActivateNewVFX(CurrentHealth, MaxHealth);
-        if (CurrentHealth <= 0)
-        {
-            OnZeroHealthReached.Invoke();
-        }
     }
 }

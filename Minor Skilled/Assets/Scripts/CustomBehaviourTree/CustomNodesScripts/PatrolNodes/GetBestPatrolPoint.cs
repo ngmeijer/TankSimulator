@@ -12,6 +12,9 @@ namespace CustomBehaviourTree.CustomNodesScripts.PatrolNodes
         [SerializeField] private CustomKeyValue _viewRange;
 
         [SerializeField] private Color _fovConeColour;
+
+        [SerializeField] private Color _alliedAgentCircleColour;
+        [SerializeField] private float _agentAvoidanceRange;
         
         private List<Vector3> _potentialPatrolPoints = new List<Vector3>();
 
@@ -50,6 +53,9 @@ namespace CustomBehaviourTree.CustomNodesScripts.PatrolNodes
             //Get best point. Should be in FOV and have a line of sight. 
             foreach (var patrolPoint in blackboard.GeneratedPatrolPoints)
             {
+                if (CheckIfPointInAgentRange(controller, patrolPoint))
+                    continue;
+                
                 if (!PointCheck.IsPointInsideFOV(patrolPoint, controller.transform, _viewAngle.Value))
                     continue; 
                     
@@ -73,6 +79,21 @@ namespace CustomBehaviourTree.CustomNodesScripts.PatrolNodes
             }
         }
 
+        private bool CheckIfPointInAgentRange(AIController controller, Vector3 patrolPoint)
+        {
+            bool agentInAvoidanceRange = false;
+            foreach (var entity in GameManager.Instance.Entities)
+            {
+                if (entity.ID == controller.ComponentManager.ID)
+                    continue;
+                float distance = Vector3.Distance(controller.transform.position, entity.transform.position);
+                if (distance < _agentAvoidanceRange)
+                    return true;
+            }
+
+            return false;
+        }
+
         public override void ResetValues()
         {
             _potentialPatrolPoints = new List<Vector3>();
@@ -86,6 +107,18 @@ namespace CustomBehaviourTree.CustomNodesScripts.PatrolNodes
                 -_viewAngle.Value / 2, _viewRange.Value);
             Handles.DrawSolidArc(controller.transform.position, controller.transform.up, turretTransform.forward,
                 _viewAngle.Value / 2, _viewRange.Value);
+
+            Handles.color = _alliedAgentCircleColour;
+            if (GameManager.Instance != null)
+            {
+                foreach (var entity in GameManager.Instance.Entities)
+                {
+                    if (entity.ID == GameManager.PLAYER_ID)
+                        continue;
+
+                    Handles.DrawSolidDisc(entity.transform.position, entity.transform.up, _agentAvoidanceRange);
+                }
+            }
         }
     }
 }

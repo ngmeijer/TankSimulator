@@ -10,15 +10,6 @@ namespace CustomBehaviourTree.CustomNodesScripts.CoverNodes
             bool hasHitPlayer = false;
             Color hitColor = Color.magenta;
 
-            //Could be on its way to a cover point. Not having this check results in the agent stopping the moment it 
-            //doesn't see the player anymore. Keep returning failure until reached destination
-            // (prevents next node from executing too soon)
-            // if (blackboard.IsMoving)
-            // {
-            //     _nodeState = NodeState.Failure;
-            //     return _nodeState;
-            // }
-                
             foreach (var raycastTransform in controller.CoverRaycastPositions)
             {
                 bool hasHitCollider = Physics.Linecast(raycastTransform.position, GameManager.Instance.Player.EntityOrigin.position, out RaycastHit hit);

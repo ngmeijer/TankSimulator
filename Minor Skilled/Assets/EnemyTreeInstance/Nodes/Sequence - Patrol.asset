@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Sequence - Patrol
   m_EditorClassIdentifier: 
   NodeLevel: 1
-  ParentNode: {fileID: 0}
+  ParentNode: {fileID: 11400000, guid: 0661eb32166ae29408fe4118d3678ead, type: 2}
   _childNodes:
   - {fileID: 11400000, guid: 32ebdcf66b4b56b4f917d7c882db2b5b, type: 2}
   - {fileID: 11400000, guid: 6735321d6360e2c44800378ba0599f09, type: 2}
   - {fileID: 11400000, guid: 98212b65968e5a44abd517d0a3d3ba55, type: 2}
-  _showLogs: 0
+  _showLogs: 1

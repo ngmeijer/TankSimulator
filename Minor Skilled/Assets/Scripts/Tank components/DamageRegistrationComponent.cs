@@ -18,7 +18,9 @@ public class DamageRegistrationComponent : TankComponent
     public TankData CurrentData = new TankData();
 
     public TankPart CurrentSelectedPart;
-    
+    public bool RecentlyShot;
+    public float CalmDownTimer;
+
     private void Start()
     {
         //HUDManager.Instance.UpdateMaxHealthForEntity(_componentManager.ID, CurrentData.GetMaxTotalHealth());
@@ -39,8 +41,7 @@ public class DamageRegistrationComponent : TankComponent
 
     private void UpdateGeneralStats()
     {
-        //HUDManager.Instance.UpdateCurrentHealthForEntity(_componentManager.ID, CurrentData.GetCurrentTotalHealth(), CurrentData.GetMaxTotalHealth());
-        //HUDManager.Instance.UpdateCurrentArmorForEntity(_componentManager.ID, CurrentData.GetCurrentTotalArmor(), CurrentData.GetMaxTotalArmor());
+        RecentlyShot = true;
     }
 
     public void ShowUI(bool enabled)

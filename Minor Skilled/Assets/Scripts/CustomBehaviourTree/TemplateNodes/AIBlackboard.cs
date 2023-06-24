@@ -22,6 +22,7 @@ public class AIBlackboard : ScriptableObject
     public bool ShouldCountDown;
     public bool IsCurrentlyRepairing;
     public bool CanGenerateNavPoints;
+    public bool HasBeenShot;
 
     public void ResetValues()
     {
@@ -36,5 +37,6 @@ public class AIBlackboard : ScriptableObject
         GeneratedNavPath = null;
         ShouldCountDown = true;
         CanGenerateNavPoints = true;
+        HasBeenShot = false;
     }
 }
