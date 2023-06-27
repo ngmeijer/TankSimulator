@@ -47,7 +47,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
 
     public void ResumeGame()
     {
-        Player.StateSwitcher.SwitchToTankState(Player.StateSwitcher.LastTankState.ThisState);
+        Player.ThisStateSwitcher.SwitchToTankState(Player.ThisStateSwitcher.LastTankState.ThisState);
         HUDStateSwitcher.Instance.SwitchToHUDState(HUDStateSwitcher.Instance.LastState);
     }
 }

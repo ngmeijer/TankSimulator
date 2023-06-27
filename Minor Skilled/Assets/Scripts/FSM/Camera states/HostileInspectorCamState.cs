@@ -11,7 +11,7 @@ public class HostileInspectorCamState : InspectorCamState
                 base.Enter();
 
                 GameManager.Instance.HostileManager.TryGetComponent(out TankComponentManager tankManager);
-                _hostileComponent = tankManager.DamageComponent;
+                _hostileComponent = tankManager.DamageComp;
 
                 LerpToPosition(_hostileComponent.transform);
         }

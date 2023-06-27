@@ -101,7 +101,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.PatrolNodes
         
         public override void DrawGizmos(AIBlackboard blackboard, AIController controller)
         {
-            Transform turretTransform = controller.ComponentManager.TurretControlComponent.TurretTransform;
+            Transform turretTransform = controller.ComponentManager.TurretControlComp.TurretTransform;
             Handles.color = _fovConeColour;
             Handles.DrawSolidArc(controller.transform.position, controller.transform.up, turretTransform.forward,
                 -_viewAngle.Value / 2, _viewRange.Value);

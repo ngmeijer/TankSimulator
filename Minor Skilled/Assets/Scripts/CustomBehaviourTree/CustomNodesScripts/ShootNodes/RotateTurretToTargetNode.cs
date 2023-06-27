@@ -31,7 +31,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.ShootNodes
         {
             Vector3 direction =  blackboard.PointToRotateTurretTo - controller.transform.position;
             direction.Normalize();
-            Transform turretTransform = controller.ComponentManager.TurretControlComponent.TurretTransform;
+            Transform turretTransform = controller.ComponentManager.TurretControlComp.TurretTransform;
             _dotResult = Vector3.Dot(direction, turretTransform.right);
 
             return _dotResult is > -0.01f and < 0.01f;

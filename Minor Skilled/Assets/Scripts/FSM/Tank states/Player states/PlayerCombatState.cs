@@ -25,7 +25,7 @@ public class PlayerCombatState : TankCombatState
     
     protected override void Start()
     {
-        _playerStateSwitcher = _componentManager.StateSwitcher as PlayerStateSwitcher;
+        _playerStateSwitcher = _componentManager.ThisStateSwitcher as PlayerStateSwitcher;
         _hudCombatState = HUDStateSwitcher.Instance.HUDCombatState as HUDCombatState;
     }
 
@@ -52,9 +52,9 @@ public class PlayerCombatState : TankCombatState
 
     public override void FixedUpdateState()
     {
-        _componentManager.MoveComponent.CheckGroundCoverage();
-        _componentManager.MoveComponent.MoveForward(_moveForwardInput.y);
-        _componentManager.MoveComponent.HandleSteering(_rotateTankInput.x);
+        _componentManager.MoveComp.CheckGroundCoverage();
+        _componentManager.MoveComp.MoveForward(_moveForwardInput.y);
+        _componentManager.MoveComp.HandleSteering(_rotateTankInput.x);
     }
 
     public override void LateUpdateState()
@@ -70,7 +70,7 @@ public class PlayerCombatState : TankCombatState
             multiplier = _componentManager.Properties.ADS_HorizontalSensitivity[currentFOV];
         }
         
-        _componentManager.TurretControlComponent.HandleTurretRotation(_mouseInput.x, multiplier);
+        _componentManager.TurretControlComp.HandleTurretRotation(_mouseInput.x, multiplier);
     }
 
     protected override void GetInputValues()
@@ -83,19 +83,19 @@ public class PlayerCombatState : TankCombatState
 
     private void TankFire(InputAction.CallbackContext cb)
     {
-        if (!_componentManager.ShootComponent.CanFire) return;
+        if (!_componentManager.ShootComp.CanFire) return;
 
-        _componentManager.ShootComponent.FireShell();
-        _hudCombatState.UpdateAmmoCount(_componentManager.ShootComponent.GetCurrentAmmoCount());
-        if (_componentManager.ShootComponent.GetCurrentAmmoCount() > 0)
+        _componentManager.ShootComp.FireShell();
+        _hudCombatState.UpdateAmmoCount(_componentManager.ShootComp.GetCurrentAmmoCount());
+        if (_componentManager.ShootComp.GetCurrentAmmoCount() > 0)
             StartCoroutine(_hudCombatState.UpdateReloadUI(Properties.ReloadTime));
     }
 
     private void ShellTypeSwitch(InputAction.CallbackContext cb)
     {
-        _componentManager.ShootComponent.SwitchShell();
-        _hudCombatState.UpdateShellTypeUI(_componentManager.ShootComponent.GetCurrentShellType());
-        _hudCombatState.UpdateAmmoCount(_componentManager.ShootComponent.GetCurrentAmmoCount());
+        _componentManager.ShootComp.SwitchShell();
+        _hudCombatState.UpdateShellTypeUI(_componentManager.ShootComp.GetCurrentShellType());
+        _hudCombatState.UpdateAmmoCount(_componentManager.ShootComp.GetCurrentAmmoCount());
     }
 
     private void IncreaseGear(InputAction.CallbackContext cb)
@@ -110,11 +110,11 @@ public class PlayerCombatState : TankCombatState
 
     private void HandleCrosshair()
     {
-        if (_componentManager.ShootComponent.CurrentRange < _componentManager.ShootComponent.MinRange) return;
-        if (_componentManager.ShootComponent.CurrentRange > _componentManager.ShootComponent.MaxRange) return;
+        if (_componentManager.ShootComp.CurrentRange < _componentManager.ShootComp.MinRange) return;
+        if (_componentManager.ShootComp.CurrentRange > _componentManager.ShootComp.MaxRange) return;
 
-        _componentManager.ShootComponent.UpdateCurrentRange(_mouseInput.y, GetSensitivityMultiplier());
-        _componentManager.TurretControlComponent.AdjustCannonRotation(_componentManager.ShootComponent.RangePercent);
+        _componentManager.ShootComp.UpdateCurrentRange(_mouseInput.y, GetSensitivityMultiplier());
+        _componentManager.TurretControlComp.AdjustCannonRotation(_componentManager.ShootComp.RangePercent);
         _hudCombatState.UpdateCrosshair();
     }
     

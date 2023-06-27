@@ -8,40 +8,40 @@ public class EnemyTankCombatState : TankCombatState
 {
     public bool IsReloading()
     {
-        return _componentManager.ShootComponent.IsReloading;
+        return _componentManager.ShootComp.IsReloading;
     }
     
     public bool HasShells()
     {
-        return _componentManager.ShootComponent.GetShellCount() > 0;
+        return _componentManager.ShootComp.GetShellCount() > 0;
     }
     
     public void RotateTurret(float direction)
     {
-        _componentManager.TurretControlComponent.HandleTurretRotation(direction, _componentManager.Properties.TP_HorizontalSensitivity);
+        _componentManager.TurretControlComp.HandleTurretRotation(direction, _componentManager.Properties.TP_HorizontalSensitivity);
     }
 
     public void FireShell()
     {
-        _componentManager.ShootComponent.FireShell(); 
+        _componentManager.ShootComp.FireShell(); 
     }
 
     public float GetHealthPercentage()
     {
-        float percent = _componentManager.DamageComponent.CurrentData.GetMostDamagedPartHealth();
+        float percent = _componentManager.DamageComp.CurrentData.GetMostDamagedPartHealth();
 
         return percent;
     }
     
     public float GetArmorPercentage()
     {
-        float percent = _componentManager.DamageComponent.CurrentData.GetMostDamagedPartArmor();
+        float percent = _componentManager.DamageComp.CurrentData.GetMostDamagedPartArmor();
 
         return percent;
     }
 
     public void RepairTank()
     {
-        _componentManager.DamageComponent.RepairAllParts();
+        _componentManager.DamageComp.RepairAllParts();
     }
 }

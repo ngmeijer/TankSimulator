@@ -36,7 +36,7 @@ public class DamageRegistrationComponent : TankComponent
 
     private void OnTankDestruction()
     {
-        _componentManager.StateSwitcher.SwitchToTankState(E_TankState.Death);
+        _componentManager.ThisStateSwitcher.SwitchToTankState(E_TankState.Death);
     }
 
     private void UpdateGeneralStats()

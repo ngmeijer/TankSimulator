@@ -6,13 +6,13 @@ using UnityEngine;
 [ExecuteAlways]
 public class TankComponentManager : MonoBehaviour
 {
-    public StateSwitcher StateSwitcher;
+    public StateSwitcher ThisStateSwitcher;
     public TankProperties Properties;
     public EventManager EventManager { get; private set; }
-    public NewMoveComponent MoveComponent { get; private set; }
-    public TurretControlComponent TurretControlComponent { get; private set; }
-    public ShootComponent ShootComponent { get; private set; }
-    public DamageRegistrationComponent DamageComponent { get; private set; }
+    public NewMoveComponent MoveComp { get; private set; }
+    public TurretControlComponent TurretControlComp { get; private set; }
+    public ShootComponent ShootComp { get; private set; }
+    public DamageRegistrationComponent DamageComp { get; private set; }
 
     public Transform EntityOrigin;
     public Transform Raycaster;
@@ -22,11 +22,11 @@ public class TankComponentManager : MonoBehaviour
     
     private void Awake()
     {
-        StateSwitcher = GetComponent<StateSwitcher>();
-        MoveComponent = GetComponentInChildren<NewMoveComponent>();
-        TurretControlComponent = GetComponentInChildren<TurretControlComponent>();
-        ShootComponent = GetComponentInChildren<ShootComponent>();
-        DamageComponent = GetComponentInChildren<DamageRegistrationComponent>();
+        ThisStateSwitcher = GetComponent<StateSwitcher>();
+        MoveComp = GetComponentInChildren<NewMoveComponent>();
+        TurretControlComp = GetComponentInChildren<TurretControlComponent>();
+        ShootComp = GetComponentInChildren<ShootComponent>();
+        DamageComp = GetComponentInChildren<DamageRegistrationComponent>();
         EventManager = GetComponent<EventManager>();
     }
 
@@ -40,7 +40,7 @@ public class TankComponentManager : MonoBehaviour
         HasDied = true;
     }
 
-    public Vector3 GetCurrentBarrelDirection() => TurretControlComponent.GetCurrentBarrelDirection();
+    public Vector3 GetCurrentBarrelDirection() => TurretControlComp.GetCurrentBarrelDirection();
     
     public List<WheelCollider> GetLeftWheelColliders()
     {

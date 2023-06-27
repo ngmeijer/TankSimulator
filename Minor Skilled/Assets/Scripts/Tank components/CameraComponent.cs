@@ -44,7 +44,7 @@ public class CameraComponent : TankComponent
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         
-        _playerStateSwitcher = _componentManager.StateSwitcher as PlayerStateSwitcher;
+        _playerStateSwitcher = _componentManager.ThisStateSwitcher as PlayerStateSwitcher;
 
         _hudCombatState = HUDStateSwitcher.Instance.HUDCombatState as HUDCombatState;
         

@@ -27,6 +27,6 @@ public class PlayerInspectState : TankInspectState
 
     private void HandleDamageRegistrationUI(bool enabled)
     {
-        _componentManager.DamageComponent.ShowUI(enabled);
+        _componentManager.DamageComp.ShowUI(enabled);
     }
 }

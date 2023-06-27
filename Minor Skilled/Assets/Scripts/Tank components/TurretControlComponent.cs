@@ -34,7 +34,7 @@ public class TurretControlComponent : TankComponent
 
     protected void Start()
     {
-        _playerStateSwitcher = _componentManager.StateSwitcher as PlayerStateSwitcher;
+        _playerStateSwitcher = _componentManager.ThisStateSwitcher as PlayerStateSwitcher;
         Debug.Assert(_turretTransform != null, $"TurretTransform on '{gameObject.transform.root.name}' is null.");
         Debug.Assert(_barrelTransform != null, $"BarrelTransform on '{gameObject.transform.root.name}' is null.");
     }

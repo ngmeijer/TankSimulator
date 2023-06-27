@@ -7,7 +7,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.DetectionNodes
     {
         public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
         {
-            DamageRegistrationComponent component = controller.ComponentManager.DamageComponent;
+            DamageRegistrationComponent component = controller.ComponentManager.DamageComp;
             if (component.RecentlyShot)
                 _nodeState = NodeState.Success;
             else _nodeState = NodeState.Failure;

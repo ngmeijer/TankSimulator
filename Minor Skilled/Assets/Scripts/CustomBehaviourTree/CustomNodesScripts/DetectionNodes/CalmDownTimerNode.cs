@@ -10,7 +10,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.DetectionNodes
 
         public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
         {
-            DamageRegistrationComponent component = controller.ComponentManager.DamageComponent;
+            DamageRegistrationComponent component = controller.ComponentManager.DamageComp;
             // if (component.CalmDownTimer > 0 && blackboard.should)
             //     component.CalmDownTimer -= Time.deltaTime;
 
