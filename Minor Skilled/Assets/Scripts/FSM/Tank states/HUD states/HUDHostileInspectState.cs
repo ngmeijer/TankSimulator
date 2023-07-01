@@ -1,4 +1,7 @@
-﻿public class HUDHostileInspectState : HUDState
+﻿namespace FSM.HUDStates
 {
-    
+    public class HUDHostileInspectState : HUDState
+    {
+
+    }
 }

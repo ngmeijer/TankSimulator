@@ -1,4 +1,6 @@
 ﻿using System;
+using Tank_components;
+using TankComponents;
 using UnityEngine;
 
 [Serializable]
@@ -11,20 +13,24 @@ public enum E_TankState
     Pause
 };
 
-public abstract class TankState : FSMState
+namespace FSM
 {
-    protected TankComponentManager _componentManager;
-    protected TankProperties Properties { get; private set; }
-    public E_TankState ThisState;
-    
-    protected virtual void Awake()
+    public abstract class TankState : FSMState
     {
-        _componentManager = GetComponentInParent<TankComponentManager>();
-        Properties = _componentManager.Properties;
-    }
+        protected TankComponentManager _componentManager;
+        protected TankProperties Properties { get; private set; }
+        public E_TankState ThisState;
 
-    protected virtual void Start()
-    {
-        Debug.Assert(_componentManager != null, "ComponentManager in a TankState is null. Drag it into the inspector slot.");
+        protected virtual void Awake()
+        {
+            _componentManager = GetComponentInParent<TankComponentManager>();
+            Properties = _componentManager.Properties;
+        }
+
+        protected virtual void Start()
+        {
+            Debug.Assert(_componentManager != null,
+                "ComponentManager in a TankState is null. Drag it into the inspector slot.");
+        }
     }
 }

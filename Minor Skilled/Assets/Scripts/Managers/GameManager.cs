@@ -2,6 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using FSM.HUDStates;
+using Tank_components;
+using TankComponents;
 using UnityEngine;
 
 public class GameManager : SingletonMonobehaviour<GameManager>

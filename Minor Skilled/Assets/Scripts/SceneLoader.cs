@@ -14,14 +14,11 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] private Image _fadeImage;
     private AsyncOperation _operation;
     private bool _currentlyFading;
-    private PlayerInputActions _inputActions;
     
     private void Awake()
     {
         FadeSceneIn();
         LoadSceneAsyncWrapper();
-        _inputActions = new PlayerInputActions();
-        _inputActions.Enable();
     }
 
     private void LoadSceneAsyncWrapper()
@@ -58,6 +55,7 @@ public class SceneLoader : MonoBehaviour
         yield return new WaitForSeconds(_transitionTime + 1);
         _currentlyFading = false;
         _operation.allowSceneActivation = true;
+        Debug.Log("Allowed scene activation");
     }
 
     public void OnPlaySceneClicked()

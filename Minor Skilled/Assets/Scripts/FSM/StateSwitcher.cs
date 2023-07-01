@@ -1,4 +1,5 @@
 ﻿using System;
+using FSM;
 using UnityEngine;
 
 public class StateSwitcher : MonoBehaviour

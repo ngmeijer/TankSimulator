@@ -1,32 +1,35 @@
 ﻿using UnityEngine;
 
-public class PlayerInspectState : TankInspectState
+namespace FSM.TankStates
 {
-    [SerializeField] private GameObject _adsPostProcessVolume;
-    
-    public override void Enter()
+    public class PlayerInspectState : TankInspectState
     {
-        base.Enter();
-        
-        _adsPostProcessVolume.SetActive(false);
-        HandleDamageRegistrationUI(true);
-    }
+        [SerializeField] private GameObject _adsPostProcessVolume;
 
-    public override void Exit()
-    {
-        base.Exit();
-        
-        _adsPostProcessVolume.SetActive(true);
-        HandleDamageRegistrationUI(false);
-    }
+        public override void Enter()
+        {
+            base.Enter();
 
-    public override void UpdateState()
-    {
-        GetInputValues();
-    }
+            _adsPostProcessVolume.SetActive(false);
+            HandleDamageRegistrationUI(true);
+        }
 
-    private void HandleDamageRegistrationUI(bool enabled)
-    {
-        _componentManager.DamageComp.ShowUI(enabled);
+        public override void Exit()
+        {
+            base.Exit();
+
+            _adsPostProcessVolume.SetActive(true);
+            HandleDamageRegistrationUI(false);
+        }
+
+        public override void UpdateState()
+        {
+            GetInputValues();
+        }
+
+        private void HandleDamageRegistrationUI(bool enabled)
+        {
+            _componentManager.DamageComp.ShowUI(enabled);
+        }
     }
 }

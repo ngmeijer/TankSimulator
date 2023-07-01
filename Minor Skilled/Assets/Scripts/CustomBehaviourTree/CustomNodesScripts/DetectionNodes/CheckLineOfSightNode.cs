@@ -9,7 +9,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.DetectionNodes
         {
             if (PointCheck.HasLineOfSight(controller.ComponentManager.Raycaster.position,
                     GameManager.Instance.Player.EntityOrigin.position,
-                    "Player"
+                    LayerMask.NameToLayer("Player")
                 ))
             {
                 _nodeState = NodeState.Success;

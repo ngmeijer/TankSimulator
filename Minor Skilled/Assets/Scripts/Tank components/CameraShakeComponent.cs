@@ -1,4 +1,6 @@
 using DG.Tweening;
+using Tank_components;
+using TankComponents;
 using UnityEngine;
 
 public class CameraShakeComponent : TankComponent

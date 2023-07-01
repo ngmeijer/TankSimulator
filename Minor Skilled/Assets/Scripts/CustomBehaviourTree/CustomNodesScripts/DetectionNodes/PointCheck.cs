@@ -20,17 +20,20 @@ namespace CustomBehaviourTree.CustomNodesScripts.DetectionNodes
             return distance >= minRange && distance <= maxRange;
         }
         
-        public static bool HasLineOfSight(Vector3 raycastPos, Vector3 targetPosition, string tagCheck = "")
+        public static bool HasLineOfSight(Vector3 raycastPos, Vector3 targetPosition, int layerIndex = -1)
         {
-            bool hitCollider = Physics.Linecast(
+            bool hitCollider;
+            if (layerIndex == -1)
+            {
+                hitCollider = Physics.Linecast(
+                    raycastPos,
+                    targetPosition, out RaycastHit hit);
+            }
+            else hitCollider = Physics.Linecast(
                 raycastPos,
-                targetPosition, out RaycastHit hit, 1);
+                targetPosition, out RaycastHit hit, 1 << layerIndex);
 
-            //If no tag is given, return the inverse of the result of linecast. If no collider has been hit, agent can see the position.
-            if (tagCheck == "")
-                return !hitCollider;
-
-            return hitCollider && hit.collider.transform.root.CompareTag(tagCheck);
+            return hitCollider;
         }
     }
 }

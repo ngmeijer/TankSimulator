@@ -1,16 +1,19 @@
-﻿public class DeathCamState : CameraState
+﻿namespace FSM.CameraStates
 {
-    public override void Enter()
+    public class DeathCamState : CameraState
     {
-        base.Enter();
-        
-        OnDeathActions();
-    }
-    
-    
+        public override void Enter()
+        {
+            base.Enter();
 
-    private void OnDeathActions()
-    {
-        
+            OnDeathActions();
+        }
+
+
+
+        private void OnDeathActions()
+        {
+
+        }
     }
 }

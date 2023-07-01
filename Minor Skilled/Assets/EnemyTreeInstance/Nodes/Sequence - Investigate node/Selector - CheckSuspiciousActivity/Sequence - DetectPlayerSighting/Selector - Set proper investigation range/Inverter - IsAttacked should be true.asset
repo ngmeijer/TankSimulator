@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd48f0cc178347c4903ba7e91a67e602, type: 3}
+  m_Name: Inverter - IsAttacked should be true
+  m_EditorClassIdentifier: 
+  NodeLevel: 0
+  ParentNode: {fileID: 0}
+  _childNodes:
+  - {fileID: 11400000, guid: 34205e5a6544b0e4099fc9c995148fae, type: 2}
+  _showLogs: 0

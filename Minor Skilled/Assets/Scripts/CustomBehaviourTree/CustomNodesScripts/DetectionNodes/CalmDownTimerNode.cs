@@ -1,4 +1,5 @@
 ﻿using System;
+using TankComponents;
 using UnityEngine;
 
 namespace CustomBehaviourTree.CustomNodesScripts.DetectionNodes
@@ -11,8 +12,8 @@ namespace CustomBehaviourTree.CustomNodesScripts.DetectionNodes
         public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
         {
             DamageRegistrationComponent component = controller.ComponentManager.DamageComp;
-            // if (component.CalmDownTimer > 0 && blackboard.should)
-            //     component.CalmDownTimer -= Time.deltaTime;
+            if (component.CalmDownTimer > 0 && blackboard.ShouldCountDown)
+                component.CalmDownTimer -= Time.deltaTime;
 
             return _nodeState;
         }

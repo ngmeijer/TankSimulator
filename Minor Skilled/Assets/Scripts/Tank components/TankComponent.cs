@@ -1,13 +1,17 @@
 ﻿using UnityEngine;
 
-public class TankComponent : MonoBehaviour
+namespace TankComponents
 {
-    protected TankComponentManager _componentManager;
-    protected TankProperties _properties;
-    
-    protected virtual void Awake()
+    public class TankComponent : MonoBehaviour
     {
-        _componentManager = GetComponentInParent<TankComponentManager>();
-        _properties = _componentManager.Properties;
+        protected TankComponentManager _componentManager;
+        protected TankProperties _properties;
+    
+        protected virtual void Awake()
+        {
+            _componentManager = GetComponentInParent<TankComponentManager>();   
+            Debug.Assert(_componentManager != null, $"TankComponentManager on {transform.parent.name} is null.");
+            _properties = _componentManager.Properties;
+        }
     }
 }

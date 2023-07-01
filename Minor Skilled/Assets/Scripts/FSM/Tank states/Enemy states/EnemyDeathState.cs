@@ -1,4 +1,7 @@
-﻿public class EnemyDeathState : TankDeathState
+﻿namespace FSM.TankStates
 {
-    
+    public class EnemyDeathState : TankDeathState
+    {
+
+    }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TankComponents;
+using UnityEngine;
 
 namespace CustomBehaviourTree.CustomNodesScripts.DetectionNodes
 {
@@ -9,8 +10,8 @@ namespace CustomBehaviourTree.CustomNodesScripts.DetectionNodes
         {
             DamageRegistrationComponent component = controller.ComponentManager.DamageComp;
             if (component.RecentlyShot)
-                _nodeState = NodeState.Success;
-            else _nodeState = NodeState.Failure;
+                _nodeState = NodeState.Failure;
+            else _nodeState = NodeState.Success;
             
             return _nodeState;
         }

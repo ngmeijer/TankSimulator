@@ -4,44 +4,48 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyTankCombatState : TankCombatState
+namespace FSM.TankStates
 {
-    public bool IsReloading()
+    public class EnemyTankCombatState : TankCombatState
     {
-        return _componentManager.ShootComp.IsReloading;
-    }
-    
-    public bool HasShells()
-    {
-        return _componentManager.ShootComp.GetShellCount() > 0;
-    }
-    
-    public void RotateTurret(float direction)
-    {
-        _componentManager.TurretControlComp.HandleTurretRotation(direction, _componentManager.Properties.TP_HorizontalSensitivity);
-    }
+        public bool IsReloading()
+        {
+            return _componentManager.ShootComp.IsReloading;
+        }
 
-    public void FireShell()
-    {
-        _componentManager.ShootComp.FireShell(); 
-    }
+        public bool HasShells()
+        {
+            return _componentManager.ShootComp.GetShellCount() > 0;
+        }
 
-    public float GetHealthPercentage()
-    {
-        float percent = _componentManager.DamageComp.CurrentData.GetMostDamagedPartHealth();
+        public void RotateTurret(float direction)
+        {
+            _componentManager.TurretControlComp.HandleTurretRotation(direction,
+                _componentManager.Properties.TP_HorizontalSensitivity);
+        }
 
-        return percent;
-    }
-    
-    public float GetArmorPercentage()
-    {
-        float percent = _componentManager.DamageComp.CurrentData.GetMostDamagedPartArmor();
+        public void FireShell()
+        {
+            _componentManager.ShootComp.FireShell();
+        }
 
-        return percent;
-    }
+        public float GetHealthPercentage()
+        {
+            float percent = _componentManager.DamageComp.CurrentData.GetMostDamagedPartHealth();
 
-    public void RepairTank()
-    {
-        _componentManager.DamageComp.RepairAllParts();
+            return percent;
+        }
+
+        public float GetArmorPercentage()
+        {
+            float percent = _componentManager.DamageComp.CurrentData.GetMostDamagedPartArmor();
+
+            return percent;
+        }
+
+        public void RepairTank()
+        {
+            _componentManager.DamageComp.RepairAllParts();
+        }
     }
 }

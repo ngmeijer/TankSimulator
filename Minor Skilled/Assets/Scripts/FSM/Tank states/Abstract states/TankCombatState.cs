@@ -1,4 +1,7 @@
-﻿public class TankCombatState : TankState
+﻿namespace FSM
 {
-    
+    public class TankCombatState : TankState
+    {
+
+    }
 }

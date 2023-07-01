@@ -2,38 +2,41 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class HUDPauseState : HUDState
+namespace FSM.HUDStates
 {
-    [SerializeField] private Ease _selectedEase;
-    [SerializeField] private float _targetXPos;
-    [SerializeField] private float _tweenSpeed;
-    private Vector3 _pauseMenuStartPos;
-    
-    public override void Enter()
+    public class HUDPauseState : HUDState
     {
-        base.Enter();
-        ShowUI();
-    }
+        [SerializeField] private Ease _selectedEase;
+        [SerializeField] private float _targetXPos;
+        [SerializeField] private float _tweenSpeed;
+        private Vector3 _pauseMenuStartPos;
 
-    public void ShowUI()
-    {
-        Cursor.lockState = CursorLockMode.Confined;
-        _pauseMenuStartPos = HUDContainer.transform.position;
-        transform.DOMoveX(_targetXPos, _tweenSpeed)
-            .SetEase(_selectedEase);
-        Cursor.visible = true;
-    }
+        public override void Enter()
+        {
+            base.Enter();
+            ShowUI();
+        }
 
-    public void HideUI()
-    {
-        HUDContainer.transform.DOMoveX(_pauseMenuStartPos.x, _tweenSpeed)
-            .SetEase(_selectedEase)
-            .OnComplete(() => base.Exit());
-        Cursor.visible = false;
-    }
+        public void ShowUI()
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            _pauseMenuStartPos = HUDContainer.transform.position;
+            transform.DOMoveX(_targetXPos, _tweenSpeed)
+                .SetEase(_selectedEase);
+            Cursor.visible = true;
+        }
 
-    public override void Exit()
-    {
-        HideUI();
+        public void HideUI()
+        {
+            HUDContainer.transform.DOMoveX(_pauseMenuStartPos.x, _tweenSpeed)
+                .SetEase(_selectedEase)
+                .OnComplete(() => base.Exit());
+            Cursor.visible = false;
+        }
+
+        public override void Exit()
+        {
+            HideUI();
+        }
     }
 }

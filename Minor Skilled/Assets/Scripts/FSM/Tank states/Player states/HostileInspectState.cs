@@ -1,7 +1,11 @@
-﻿public class HostileInspectState : TankInspectState
+﻿
+namespace FSM.TankStates
 {
-    public override void Enter()
+    public class HostileInspectState : TankInspectState
     {
-               
+        public override void Enter()
+        {
+
+        }
     }
 }

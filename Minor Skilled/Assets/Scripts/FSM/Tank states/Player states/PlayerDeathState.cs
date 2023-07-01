@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 
-public class PlayerDeathState : TankDeathState
+namespace FSM.TankStates
 {
-    protected override void OnDeathActions()
+    public class PlayerDeathState : TankDeathState
     {
-        base.OnDeathActions();
-        
-        //
+        protected override void OnDeathActions()
+        {
+            base.OnDeathActions();
+
+            //
+        }
     }
 }

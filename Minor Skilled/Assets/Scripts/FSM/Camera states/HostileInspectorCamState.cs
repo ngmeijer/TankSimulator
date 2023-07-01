@@ -1,44 +1,49 @@
 ﻿using System;
 using DG.Tweening;
+using Tank_components;
+using TankComponents;
 using UnityEngine;
 
-public class HostileInspectorCamState : InspectorCamState
+namespace FSM.CameraStates
 {
-        public DamageRegistrationComponent _hostileComponent;
-
-        public override void Enter()
+        public class HostileInspectorCamState : InspectorCamState
         {
-                base.Enter();
+                public DamageRegistrationComponent _hostileComponent;
 
-                GameManager.Instance.HostileManager.TryGetComponent(out TankComponentManager tankManager);
-                _hostileComponent = tankManager.DamageComp;
+                public override void Enter()
+                {
+                        base.Enter();
 
-                LerpToPosition(_hostileComponent.transform);
-        }
-        
-        private void LerpToPosition(Transform to)
-        {
-                InTransition = true;
-                StateLookAt.parent = to;
-                Sequence lerpSeq = DOTween.Sequence();
-                lerpSeq.Append(ViewCam.transform.DOLookAt(to.position, _lerpSpeed));
-                lerpSeq.Append(StateLookAt.DOMove(to.position, _lerpSpeed)
-                        .OnUpdate(() => ViewCam.transform.LookAt(to.position))
-                        .OnComplete(PostLerpActions));
-        }
+                        GameManager.Instance.HostileManager.TryGetComponent(out TankComponentManager tankManager);
+                        _hostileComponent = tankManager.DamageComp;
 
-        private void PostLerpActions()
-        {
-                InTransition = false;
-                StateLookAt.localPosition = Vector3.zero;
-                _hostileComponent.ShowUI(true);
-        }
+                        LerpToPosition(_hostileComponent.transform);
+                }
 
-        public override void Exit()
-        {
-                base.Exit();
-                
-                if(_hostileComponent != null)
-                        _hostileComponent.ShowUI(false);
+                private void LerpToPosition(Transform to)
+                {
+                        InTransition = true;
+                        StateLookAt.parent = to;
+                        Sequence lerpSeq = DOTween.Sequence();
+                        lerpSeq.Append(ViewCam.transform.DOLookAt(to.position, _lerpSpeed));
+                        lerpSeq.Append(StateLookAt.DOMove(to.position, _lerpSpeed)
+                                .OnUpdate(() => ViewCam.transform.LookAt(to.position))
+                                .OnComplete(PostLerpActions));
+                }
+
+                private void PostLerpActions()
+                {
+                        InTransition = false;
+                        StateLookAt.localPosition = Vector3.zero;
+                        _hostileComponent.ShowUI(true);
+                }
+
+                public override void Exit()
+                {
+                        base.Exit();
+
+                        if (_hostileComponent != null)
+                                _hostileComponent.ShowUI(false);
+                }
         }
 }

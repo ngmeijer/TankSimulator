@@ -12,15 +12,12 @@ namespace CustomBehaviourTree.CustomNodesScripts.CoverNodes
 
             foreach (var raycastTransform in controller.CoverRaycastPositions)
             {
-                bool hasHitCollider = Physics.Linecast(raycastTransform.position, GameManager.Instance.Player.EntityOrigin.position, out RaycastHit hit);
+                bool hasHitCollider = Physics.Linecast(raycastTransform.position, GameManager.Instance.Player.EntityOrigin.position, 1 << 7);
                 if (!hasHitCollider)
                     continue;
                 
-                if (hit.collider.transform.root.CompareTag("Player")) 
-                { 
-                    hitColor = Color.red; 
-                    hasHitPlayer = true;
-                }
+                hitColor = Color.red; 
+                hasHitPlayer = true;
                 
                 Debug.DrawLine(raycastTransform.position, GameManager.Instance.Player.EntityOrigin.position, hitColor);
             }

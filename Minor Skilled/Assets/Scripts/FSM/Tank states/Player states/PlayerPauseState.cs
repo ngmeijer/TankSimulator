@@ -1,7 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-public class PlayerPauseState : TankState
+namespace FSM.TankStates
 {
-    
+    public class PlayerPauseState : TankState
+    {
+
+    }
 }

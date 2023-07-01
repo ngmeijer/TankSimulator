@@ -2,30 +2,33 @@
 using JetBrains.Annotations;
 using UnityEngine;
 
-public abstract class HUDState : FSMState
+namespace FSM.HUDStates
 {
-    public E_TankState ThisState;
-    
-    protected GameObject HUDContainer;
-    
-    protected PlayerInputActions _inputActions;
-
-    protected virtual void Awake()
+    public abstract class HUDState : FSMState
     {
-        if (HUDContainer == null)
-            HUDContainer = this.gameObject;
+        public E_TankState ThisState;
 
-        _inputActions = new PlayerInputActions();
-        _inputActions.Enable();
-    }
+        protected GameObject HUDContainer;
 
-    public override void Enter()
-    {
-        HUDContainer.SetActive(true);
-    }
+        protected PlayerInputActions _inputActions;
 
-    public override void Exit()
-    {
-        HUDContainer.SetActive(false);
+        protected virtual void Awake()
+        {
+            if (HUDContainer == null)
+                HUDContainer = this.gameObject;
+
+            _inputActions = new PlayerInputActions();
+            _inputActions.Enable();
+        }
+
+        public override void Enter()
+        {
+            HUDContainer.SetActive(true);
+        }
+
+        public override void Exit()
+        {
+            HUDContainer.SetActive(false);
+        }
     }
 }

@@ -1,38 +1,42 @@
 ﻿
+using FSM.HUDStates;
 using UnityEngine;
 
-public abstract class TankDeathState : TankState
+namespace FSM
 {
-    [SerializeField] private GameObject _functioningTankGFX;
-    [SerializeField] private GameObject _destroyedTankGFX;
-    [SerializeField] private GameObject _deathVFX;
-
-    [SerializeField] private Detonator _bigassExplosionDetonator;
-
-    private HUDDeathState _hudDeathState;
-
-    protected override void Start()
+    public abstract class TankDeathState : TankState
     {
-        base.Start();
+        [SerializeField] private GameObject _functioningTankGFX;
+        [SerializeField] private GameObject _destroyedTankGFX;
+        [SerializeField] private GameObject _deathVFX;
 
-        _hudDeathState = HUDStateSwitcher.Instance.HUDDeathState as HUDDeathState;
-    }
-    
-    public override void Enter()
-    {
-        base.Enter();
+        [SerializeField] private Detonator _bigassExplosionDetonator;
 
-        OnDeathActions();
-    }
-    
-    protected virtual void OnDeathActions()
-    {
-        _componentManager.EventManager.OnTankDestruction.Invoke(_componentManager.ID);
-        _functioningTankGFX.SetActive(false);
-        _destroyedTankGFX.SetActive(true);
-        _deathVFX.SetActive(true);
-        if(_bigassExplosionDetonator != null)
-            _bigassExplosionDetonator.Explode();    
-        _componentManager.HasDied = true;
+        private HUDDeathState _hudDeathState;
+
+        protected override void Start()
+        {
+            base.Start();
+
+            _hudDeathState = HUDStateSwitcher.Instance.HUDDeathState as HUDDeathState;
+        }
+
+        public override void Enter()
+        {
+            base.Enter();
+
+            OnDeathActions();
+        }
+
+        protected virtual void OnDeathActions()
+        {
+            _componentManager.EventManager.OnTankDestruction.Invoke(_componentManager.ID);
+            _functioningTankGFX.SetActive(false);
+            _destroyedTankGFX.SetActive(true);
+            _deathVFX.SetActive(true);
+            if (_bigassExplosionDetonator != null)
+                _bigassExplosionDetonator.Explode();
+            _componentManager.HasDied = true;
+        }
     }
 }

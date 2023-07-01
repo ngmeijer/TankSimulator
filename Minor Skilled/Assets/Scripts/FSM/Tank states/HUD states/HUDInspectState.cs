@@ -3,33 +3,36 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class HUDInspectState : HUDState
+namespace FSM.HUDStates
 {
-    [SerializeField] private TextMeshProUGUI _exitStateText;
-    [SerializeField] private TextMeshProUGUI _rotateText;
-    private InputControlScheme _controlScheme;
-
-    public override void Enter()
+    public class HUDInspectState : HUDState
     {
-        base.Enter();
+        [SerializeField] private TextMeshProUGUI _exitStateText;
+        [SerializeField] private TextMeshProUGUI _rotateText;
+        private InputControlScheme _controlScheme;
 
-        //_controlScheme = _inputActions.controlSchemes[0];
-        SetUIContent();
-    }
+        public override void Enter()
+        {
+            base.Enter();
 
-    private void SetUIContent()
-    {
-        string exitKey = _inputActions.StateSwitcher.ExitState.GetBindingDisplayString();
-        _exitStateText.SetText($"Press '{exitKey}' to return to the last view!");
+            //_controlScheme = _inputActions.controlSchemes[0];
+            SetUIContent();
+        }
 
-        string enableRotationKey = _inputActions.TankInspection.AllowInspection.GetBindingDisplayString();
-        _rotateText.SetText($"Hold '{enableRotationKey}' to rotate!'");
-    }
-    
-    
-    public override void Exit()
-    {
-        base.Exit();
-        
+        private void SetUIContent()
+        {
+            string exitKey = _inputActions.StateSwitcher.ExitState.GetBindingDisplayString();
+            _exitStateText.SetText($"Press '{exitKey}' to return to the last view!");
+
+            string enableRotationKey = _inputActions.TankInspection.AllowInspection.GetBindingDisplayString();
+            _rotateText.SetText($"Hold '{enableRotationKey}' to rotate!'");
+        }
+
+
+        public override void Exit()
+        {
+            base.Exit();
+
+        }
     }
 }

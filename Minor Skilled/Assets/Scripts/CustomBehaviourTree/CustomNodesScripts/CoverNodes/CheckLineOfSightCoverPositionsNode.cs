@@ -77,6 +77,9 @@ namespace CustomBehaviourTree.CustomNodesScripts.CoverNodes
             base.DrawGizmos(blackboard, controller);
 
             Gizmos.color = Color.cyan;
+            if (blackboard.GeneratedCoverPoints == null)
+                return;
+            
             foreach (Vector3 pos in blackboard.GeneratedCoverPoints)
             {
                 Gizmos.DrawSphere(pos, 0.2f);

@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Action - Check If Player In Range Node
   m_EditorClassIdentifier: 
   NodeLevel: 3
-  ParentNode: {fileID: 11400000, guid: c98f46ce02f6ce4408c4300518b3d8d3, type: 2}
+  ParentNode: {fileID: 11400000, guid: f40de766099cd7f499801219bc7008b7, type: 2}
   _childNodes: []
-  _showLogs: 0
+  _showLogs: 1
   MaxRange:
     <Name>k__BackingField: Max investigation range
     <Value>k__BackingField: 150

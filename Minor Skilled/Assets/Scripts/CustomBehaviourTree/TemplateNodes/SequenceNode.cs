@@ -9,7 +9,7 @@ public class SequenceNode : BehaviourNode
     {
         bool hasRunningChild = false;
         
-        foreach (var child in _childNodes)
+        foreach (BehaviourNode child in _childNodes)
         {
             if (child == null)
             {

@@ -1,4 +1,6 @@
 ﻿using System;
+using FSM.CameraStates;
+using TankComponents;
 using UnityEngine;
 
 public class PlayerStateSwitcher : StateSwitcher

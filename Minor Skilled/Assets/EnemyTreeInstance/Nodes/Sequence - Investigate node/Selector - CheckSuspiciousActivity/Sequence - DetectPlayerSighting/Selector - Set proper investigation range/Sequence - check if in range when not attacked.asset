@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Sequence - check if in range when not attacked
   m_EditorClassIdentifier: 
   NodeLevel: 5
-  ParentNode: {fileID: 0}
+  ParentNode: {fileID: 11400000, guid: ffc0617ed6283124da1212a00cf1c336, type: 2}
   _childNodes:
-  - {fileID: 11400000, guid: 70616f3ae6c98794abdbb1b4e4ae051c, type: 2}
+  - {fileID: 11400000, guid: 50a1616c566198a47a894aa3a08f5e9f, type: 2}
   - {fileID: 11400000, guid: 6a6941538bc9701479565727ad6ef804, type: 2}
   _showLogs: 1
