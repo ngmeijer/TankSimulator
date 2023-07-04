@@ -75,6 +75,7 @@ public class MenuAnimations : MonoBehaviour
         seq.Append(_cam.transform.DOLookAt(_credits_cameraLookAtPosition.position, _credits_tweenSpeed));
     }
 
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -85,4 +86,5 @@ public class MenuAnimations : MonoBehaviour
         Gizmos.DrawSphere(_mouseTransform.transform.position, 0.25f);
         Handles.Label(_mouseTransform.transform.position, "Mouse position");
     }
+    #endif
 }

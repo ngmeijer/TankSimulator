@@ -8,7 +8,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.CoverNodes
     {
         public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
         {
-            EnemyTankCombatState combatState = controller.GetState(E_TankState.Combat) as EnemyTankCombatState;
+            EnemyCombatState combatState = controller.GetState(E_TankState.Combat) as EnemyCombatState;
             if (combatState.GetArmorPercentage() < 1f)
             {
                 blackboard.IsCurrentlyRepairing = true;

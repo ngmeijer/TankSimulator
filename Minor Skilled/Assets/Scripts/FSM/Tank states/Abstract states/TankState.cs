@@ -18,13 +18,13 @@ namespace FSM
     public abstract class TankState : FSMState
     {
         protected TankComponentManager _componentManager;
-        protected TankProperties Properties { get; private set; }
+        protected TankProperties _properties { get; private set; }
         public E_TankState ThisState;
 
         protected virtual void Awake()
         {
             _componentManager = GetComponentInParent<TankComponentManager>();
-            Properties = _componentManager.Properties;
+            _properties = _componentManager.Properties;
         }
 
         protected virtual void Start()

@@ -35,11 +35,6 @@ namespace FSM.HUDStates
         [SerializeField] private GameObject _enemyIndicatorPrefab;
         private Dictionary<int, GameObject> _enemyIndicators = new();
 
-        protected void Start()
-        {
-            CreateEnemyIndicators();
-        }
-
         public override void Enter()
         {
             base.Enter();
@@ -75,12 +70,12 @@ namespace FSM.HUDStates
 
         public void UpdateAmmoCount(int ammoCount)
         {
-            _ammoCountText.SetText($"{ammoCount}");
+            _ammoCountText.SetText($"Shells left: {ammoCount}");
         }
 
         public void UpdateShellTypeUI(string shellType)
         {
-            _shellTypeText.SetText($"{shellType}");
+            //_shellTypeText.SetText($"{shellType}");
         }
 
         public void UpdateCrosshair()
@@ -89,8 +84,8 @@ namespace FSM.HUDStates
                 GameManager.Instance.CurrentBarrelCrosshairPos, CROSSHAIR_LERP_SPEED * Time.deltaTime);
             Vector3 clampedPosition = Vector3.Lerp(_targetBarrelCrosshair.position,
                 GameManager.Instance.TargetBarrelCrosshairPos, CROSSHAIR_LERP_SPEED * Time.deltaTime);
-            clampedPosition.x = Mathf.Clamp(clampedPosition.x, -915f, 915f);
-            clampedPosition.y = Mathf.Clamp(clampedPosition.y, -480f, 510f);
+            // clampedPosition.x = Mathf.Clamp(clampedPosition.x, -915f, 915f);
+            // clampedPosition.y = Mathf.Clamp(clampedPosition.y, -480f, 510f);
             _targetBarrelCrosshair.position = clampedPosition;
         }
 
@@ -125,31 +120,6 @@ namespace FSM.HUDStates
             _enemyIndicators.TryGetValue(entityID, out GameObject indicator);
             _enemyIndicators.Remove(entityID);
             Destroy(indicator);
-        }
-
-        private void CreateEnemyIndicators()
-        {
-            foreach (TankComponentManager entity in GameManager.Instance.Entities)
-            {
-                if (entity.ID == GameManager.PLAYER_ID) continue;
-
-                GameObject indicator = Instantiate(_enemyIndicatorPrefab, _targetsIndicatorParent);
-                _enemyIndicators.Add(entity.ID, indicator);
-            }
-        }
-
-        public void SetEnemyIndicator(int enemyIndex, Vector2 enemyPosition, bool inSight)
-        {
-            _enemyIndicators.TryGetValue(enemyIndex, out GameObject indicator);
-            if (indicator == null) return;
-
-            indicator.transform.position = enemyPosition;
-            if (inSight)
-            {
-                if (indicator.activeInHierarchy) return;
-                indicator.SetActive(true);
-            }
-            else indicator.SetActive(false);
         }
     }
 }

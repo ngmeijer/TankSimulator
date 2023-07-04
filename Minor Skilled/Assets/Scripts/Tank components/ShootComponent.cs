@@ -8,9 +8,6 @@ namespace TankComponents
 {
     public class ShootComponent : TankComponent
     {
-        private const float AIR_DENSITY = 1.2f;
-        private const float SHELL_FRONTAL_AREA = 0.035f;
-        private const float DRAG_COEFFICIENT = 0.1f;
 
         [SerializeField] protected Transform _shellSpawnpoint;
         [SerializeField] protected ParticleSystem _fireExplosion;
@@ -24,7 +21,7 @@ namespace TankComponents
         }
         private List<Shell> _firedShells = new();
         private int _maxShellTypes;
-        private int _currentShellIndex;
+        private int _currentShellIndex = 0;
         private HUDCombatState _hudCombatState;
 
         public float CurrentRange;
@@ -54,6 +51,8 @@ namespace TankComponents
             {
                 string shellType = shell.GetShellType();
                 int ammoCount = 0;
+                
+                //Replace with enum.
                 switch (shellType)
                 {
                     case "AP (Armor Penetration)":
@@ -112,6 +111,10 @@ namespace TankComponents
             }
         }
 
+        private const float AIR_DENSITY = 1.2f;
+        private const float SHELL_FRONTAL_AREA = 0.035f;
+        private const float DRAG_COEFFICIENT = 0.1f;
+        
         private static double CalculateDragForce(Rigidbody rb) => DRAG_COEFFICIENT * 0.5f * AIR_DENSITY * Mathf.Pow(rb.velocity.magnitude, 2) * SHELL_FRONTAL_AREA;
 
         private double GetDeceleration(Rigidbody rb)

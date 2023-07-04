@@ -113,7 +113,6 @@ namespace TankComponents
 
         private void HandleEnemyIndicator(KeyValuePair<int, Vector3> entity, bool canSeeTarget, Vector2 screenPos)
         {
-            _hudCombatState.SetEnemyIndicator(entity.Key, screenPos, canSeeTarget);
             Debug.DrawLine(_currentCamera.transform.position, entity.Value, canSeeTarget ? Color.green : Color.red);
         }
 
@@ -136,8 +135,9 @@ namespace TankComponents
 
         private Vector3 ConvertTargetBarrelCrosshair()
         {
+            Debug.Log(_estimatedTargetCrosshair.position);
             Vector3 convertedPos =
-                _playerStateSwitcher.CurrentCameraState.ViewCam.WorldToScreenPoint(_estimatedTargetCrosshair.position);
+                _playerStateSwitcher.CurrentCameraState.ViewCam.WorldToScreenPoint(_estimatedTargetCrosshair.position); 
             convertedPos.y = GameManager.Instance.CurrentBarrelCrosshairPos.y;
             convertedPos.z = GameManager.Instance.CurrentBarrelCrosshairPos.z;
             return convertedPos;
@@ -188,6 +188,7 @@ namespace TankComponents
             _currentCamera.fieldOfView = Mathf.Lerp(_currentCamera.fieldOfView, _toFOV, interpolationRatio);
         }
 
+#if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             if (_currentHitData.point != Vector3.zero && !_currentHitData.collider.CompareTag("Shell"))
@@ -219,5 +220,6 @@ namespace TankComponents
                 }
             }
         }
+        #endif
     }
 }

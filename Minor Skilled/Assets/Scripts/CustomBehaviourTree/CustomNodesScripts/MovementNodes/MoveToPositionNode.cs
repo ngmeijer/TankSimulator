@@ -52,6 +52,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.NavMeshNodes
             _currentMoveToPosition = Vector3.zero;
         }
 
+#if UNITY_EDITOR
         public override void DrawGizmos(AIBlackboard blackboard, AIController controller)
         {
             if (controller.NavAgent.path != null)
@@ -69,5 +70,6 @@ namespace CustomBehaviourTree.CustomNodesScripts.NavMeshNodes
                 }
             }
         }
+        #endif
     }
 }

@@ -89,6 +89,7 @@ namespace Tank_components
             return _barrelTransform.forward;
         }
 
+#if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
@@ -112,5 +113,6 @@ namespace Tank_components
                 Handles.Label(_rotationTargetParent.position + GameManager.HandlesOffset, _rotationTargetParent.name);
             }
         }
+        #endif
     }
 }

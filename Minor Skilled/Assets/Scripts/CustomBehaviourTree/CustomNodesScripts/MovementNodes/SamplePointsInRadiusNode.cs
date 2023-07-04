@@ -68,6 +68,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.MovementNodes
         }
         
 
+#if UNITY_EDITOR
         public override void DrawGizmos(AIBlackboard blackboard, AIController controller)
         {
             base.DrawGizmos(blackboard, controller);
@@ -93,6 +94,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.MovementNodes
                 }
             }
         }
+        #endif
 
         public override void ResetValues()
         {

@@ -44,6 +44,7 @@ namespace FSM.CameraStates
             ViewCam.transform.LookAt(_lookAtPosition.position);
         }
 
+#if UNITY_EDITOR
         protected override void OnDrawGizmos()
         {
             Gizmos.color = Color.green;
@@ -71,5 +72,6 @@ namespace FSM.CameraStates
                 Gizmos.DrawLine(ViewCam.transform.position, _lookAtPosition.position);
             }
         }
+        #endif
     }
 }

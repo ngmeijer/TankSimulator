@@ -28,6 +28,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.DetectionNodes
             return _nodeState;
         }
 
+#if UNITY_EDITOR
         public override void DrawGizmos(AIBlackboard blackboard, AIController controller)
         {
             Transform turretTransform = controller.ComponentManager.TurretControlComp.TurretTransform;
@@ -38,5 +39,6 @@ namespace CustomBehaviourTree.CustomNodesScripts.DetectionNodes
                 _viewAngle / 2, RangeValue);
             Handles.Label(controller.transform.position + Vector3.right * RangeValue, $"{RangeName}: {RangeValue}");
         }
+        #endif
     }
 }

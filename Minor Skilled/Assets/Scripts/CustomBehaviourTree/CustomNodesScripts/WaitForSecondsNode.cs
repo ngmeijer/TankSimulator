@@ -38,6 +38,7 @@ namespace CustomBehaviourTree.CustomNodesScripts
             _currentTime = _waitTime;
         }
 
+#if UNITY_EDITOR
         public override void DrawGizmos(AIBlackboard blackboard, AIController controller)
         {
             if (_nodeState == NodeState.Failure)
@@ -46,5 +47,6 @@ namespace CustomBehaviourTree.CustomNodesScripts
                 Handles.Label(controller.transform.position, $"{_waitPurpose}: time left to wait: {currentTime} seconds");
             }
         }
+        #endif
     }
 }

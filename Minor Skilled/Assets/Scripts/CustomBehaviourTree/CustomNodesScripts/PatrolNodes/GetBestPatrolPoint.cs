@@ -99,6 +99,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.PatrolNodes
             _potentialPatrolPoints = new List<Vector3>();
         }
         
+#if UNITY_EDITOR
         public override void DrawGizmos(AIBlackboard blackboard, AIController controller)
         {
             Transform turretTransform = controller.ComponentManager.TurretControlComp.TurretTransform;
@@ -120,5 +121,6 @@ namespace CustomBehaviourTree.CustomNodesScripts.PatrolNodes
                 }
             }
         }
+        #endif
     }
 }

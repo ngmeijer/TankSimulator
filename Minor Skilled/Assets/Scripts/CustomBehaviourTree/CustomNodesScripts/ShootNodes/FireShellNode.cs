@@ -8,7 +8,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.ShootNodes
     {
         public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
         {
-            EnemyTankCombatState combatState = controller.GetState(E_TankState.Combat) as EnemyTankCombatState;
+            EnemyCombatState combatState = controller.GetState(E_TankState.Combat) as EnemyCombatState;
             combatState.FireShell();
 
             _nodeState = NodeState.Success;

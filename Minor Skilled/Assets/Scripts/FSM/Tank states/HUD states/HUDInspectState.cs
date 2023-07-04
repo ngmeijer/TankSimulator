@@ -22,7 +22,7 @@ namespace FSM.HUDStates
         private void SetUIContent()
         {
             string exitKey = _inputActions.StateSwitcher.ExitState.GetBindingDisplayString();
-            _exitStateText.SetText($"Press '{exitKey}' to return to the last view!");
+            _exitStateText.SetText($"Press 1 or 3 to return to 1st/3rd person combat view!");
 
             string enableRotationKey = _inputActions.TankInspection.AllowInspection.GetBindingDisplayString();
             _rotateText.SetText($"Hold '{enableRotationKey}' to rotate!'");

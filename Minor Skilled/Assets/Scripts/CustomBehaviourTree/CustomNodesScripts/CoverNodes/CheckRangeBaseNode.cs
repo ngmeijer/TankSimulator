@@ -8,6 +8,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.CoverNodes
         public CustomKeyValue MaxRange;
         [SerializeField] private Color _rangeDiscColour;
         
+#if UNITY_EDITOR
         public override void DrawGizmos(AIBlackboard blackboard, AIController controller)
         {
             base.DrawGizmos(blackboard, controller);
@@ -20,5 +21,6 @@ namespace CustomBehaviourTree.CustomNodesScripts.CoverNodes
             Handles.Label(controller.transform.position + controller.transform.right *
                 MaxRange.Value, $"{MaxRange.Name}: {MaxRange.Value}");
         }
+        #endif
     }
 }

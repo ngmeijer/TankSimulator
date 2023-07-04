@@ -13,7 +13,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.CoverNodes
             if (blackboard.IsCurrentlyRepairing)
                 _nodeState = NodeState.Success;
             
-            EnemyTankCombatState combatState = controller.GetState(E_TankState.Combat) as EnemyTankCombatState;
+            EnemyCombatState combatState = controller.GetState(E_TankState.Combat) as EnemyCombatState;
             float currentArmor = combatState.GetArmorPercentage();
             if (currentArmor <= _requiredArmorToFlee)
                 _nodeState = NodeState.Failure;

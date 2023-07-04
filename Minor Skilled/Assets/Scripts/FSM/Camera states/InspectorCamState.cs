@@ -109,6 +109,7 @@ namespace FSM.CameraStates
             _currentPosDelta += Vector3.forward * (_scrollInput.y * _zoomSpeed * Time.deltaTime);
         }
 
+        #if UNITY_EDITOR
         protected override void OnDrawGizmos()
         {
             base.OnDrawGizmos();
@@ -144,5 +145,6 @@ namespace FSM.CameraStates
                     _rotationTarget.eulerAngles.y - StateLookAt.eulerAngles.y, 1f);
             }
         }
+        #endif
     }
 }

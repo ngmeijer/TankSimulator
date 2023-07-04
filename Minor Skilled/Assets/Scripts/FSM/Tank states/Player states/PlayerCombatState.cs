@@ -92,7 +92,7 @@ namespace FSM.TankStates
             _componentManager.ShootComp.FireShell();
             _hudCombatState.UpdateAmmoCount(_componentManager.ShootComp.GetCurrentAmmoCount());
             if (_componentManager.ShootComp.GetCurrentAmmoCount() > 0)
-                StartCoroutine(_hudCombatState.UpdateReloadUI(Properties.ReloadTime));
+                StartCoroutine(_hudCombatState.UpdateReloadUI(_properties.ReloadTime));
         }
 
         private void ShellTypeSwitch(InputAction.CallbackContext cb)
@@ -128,7 +128,7 @@ namespace FSM.TankStates
 
             E_CameraState camState = _playerStateSwitcher.CurrentCameraState.ThisState;
             if (camState == E_CameraState.ThirdPerson)
-                multiplier = Properties.TP_VerticalSensitivity;
+                multiplier = _properties.TP_VerticalSensitivity;
             else if (camState == E_CameraState.ADS)
             {
                 int currentFOV = _playerStateSwitcher.CurrentCameraState.GetFOVLevel();

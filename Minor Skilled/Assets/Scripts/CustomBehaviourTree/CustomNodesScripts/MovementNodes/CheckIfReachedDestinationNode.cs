@@ -30,11 +30,13 @@ namespace CustomBehaviourTree.CustomNodesScripts.NavMeshNodes
             return true;
         }
 
+#if UNITY_EDITOR
         public override void DrawGizmos(AIBlackboard blackboard, AIController controller)
         {
             Handles.color = Color.blue;
             Handles.DrawWireDisc(controller.transform.position, controller.transform.up, MaxStoppingDistance.Value);
             Handles.Label(controller.transform.position + Vector3.right * MaxStoppingDistance.Value, $"{MaxStoppingDistance.Name}: {MaxStoppingDistance.Value}");
         }
+        #endif
     }
 }

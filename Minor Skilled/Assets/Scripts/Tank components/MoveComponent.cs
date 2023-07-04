@@ -83,6 +83,7 @@ namespace TankComponents
                 $"Right track renderer reference in MoveComponent ({gameObject.name}) is null. Drag into the inspector");
         }
 
+#if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             if (!Application.isPlaying) return;
@@ -115,6 +116,7 @@ namespace TankComponents
             Gizmos.DrawLine(_leftBound.position, _rightBound.position);
             Gizmos.DrawSphere(_rightBound.position, 0.3f);
         }
+        #endif
 
         public void UpdateHUD()
         {

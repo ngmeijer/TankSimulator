@@ -10,7 +10,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.CoverNodes
 
         public override NodeState Evaluate(AIBlackboard blackboard, AIController controller)
         {
-            EnemyTankCombatState combatState = controller.GetState(E_TankState.Combat) as EnemyTankCombatState;
+            EnemyCombatState combatState = controller.GetState(E_TankState.Combat) as EnemyCombatState;
             float currentHealth = combatState.GetHealthPercentage();
             if (currentHealth <= _requiredHealthToFlee)
                 _nodeState = NodeState.Success;

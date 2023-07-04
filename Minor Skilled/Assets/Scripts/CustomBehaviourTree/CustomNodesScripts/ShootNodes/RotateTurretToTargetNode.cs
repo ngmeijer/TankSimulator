@@ -40,7 +40,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.ShootNodes
     
         private void MoveTurretToTarget(AIController controller, float direction)
         {
-            EnemyTankCombatState combatState = controller.GetState(E_TankState.Combat) as EnemyTankCombatState;
+            EnemyCombatState combatState = controller.GetState(E_TankState.Combat) as EnemyCombatState;
             combatState.RotateTurret(direction);
         }
     }

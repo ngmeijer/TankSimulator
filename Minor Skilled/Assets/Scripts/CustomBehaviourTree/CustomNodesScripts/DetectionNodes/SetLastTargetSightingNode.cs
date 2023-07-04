@@ -15,6 +15,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.DetectionNodes
             return _nodeState;
         }
         
+#if UNITY_EDITOR
         public override void DrawGizmos(AIBlackboard blackboard, AIController controller)
         {
             base.DrawGizmos(blackboard, controller);
@@ -23,5 +24,6 @@ namespace CustomBehaviourTree.CustomNodesScripts.DetectionNodes
             Gizmos.DrawSphere(blackboard.LastTargetSighting, 1f);
             Handles.Label(blackboard.LastTargetSighting + GameManager.HandlesOffset, "Last target sighting");
         }
+        #endif
     }
 }

@@ -86,6 +86,7 @@ namespace FSM.CameraStates
             seq.OnComplete(() => InTransition = false);
         }
 
+#if UNITY_EDITOR
         protected virtual void OnDrawGizmos()
         {
             Gizmos.color = Color.yellow;
@@ -96,5 +97,6 @@ namespace FSM.CameraStates
             Gizmos.DrawSphere(CameraTargetDestination.position, 0.1f);
             Handles.Label(CameraTargetDestination.position + GameManager.HandlesOffset, CameraTargetDestination.name);
         }
+#endif
     }
 }

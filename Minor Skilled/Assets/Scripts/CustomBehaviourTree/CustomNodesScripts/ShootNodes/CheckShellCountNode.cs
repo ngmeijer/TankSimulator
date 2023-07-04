@@ -18,7 +18,7 @@ namespace CustomBehaviourTree.CustomNodesScripts.ShootNodes
 
         private bool HasShells(AIController controller)
         {
-            EnemyTankCombatState combatState = controller.GetState(E_TankState.Combat) as EnemyTankCombatState;
+            EnemyCombatState combatState = controller.GetState(E_TankState.Combat) as EnemyCombatState;
             return combatState.HasShells();
         }
     }

@@ -26,10 +26,14 @@ namespace TankComponents
         {
             ThisStateSwitcher = GetComponent<StateSwitcher>();
             Debug.Assert(ThisStateSwitcher != null, $"StateSwitcher is not attached to {transform.name}'s component holder.");
-        
-            MoveComp = GetComponentInChildren<NewMoveComponent>();
-            Debug.Assert(MoveComp != null, $"NewMoveComponent is not attached to {transform.name}'s component holder.");
-        
+
+            if (ID == GameManager.PLAYER_ID)
+            {
+                MoveComp = GetComponentInChildren<NewMoveComponent>();
+                Debug.Assert(MoveComp != null,
+                    $"NewMoveComponent is not attached to {transform.name}'s component holder.");
+            }
+
             TurretControlComp = GetComponentInChildren<TurretControlComponent>();
             Debug.Assert(TurretControlComp != null, $"TurretControlComponent is not attached to {transform.name}'s component holder.");
 
