@@ -1,7 +1,7 @@
 Welcome to the TankSimulator README!
 
 For this project, I was free to make whatever I wanted. For a long time, I had a Synty Studios asset pack gathering dust on my computer, so I decided I wanted to see what the possibilities with those assets were.
-
+Please visit the wiki (https://github.com/ngmeijer/TankSimulator/wiki) to read an extensive project description and documentation.
 <pre>
 Timeframe: February 2023 / July 2023
 Team size: 1
